@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "341669905580",
+    "firebase_url": "https://cue-app-technion.firebaseio.com",
+    "project_id": "cue-app-technion",
+    "storage_bucket": "cue-app-technion.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:341669905580:android:34f56c2c76b907688f0b09",
+        "android_client_info": {
+          "package_name": "com.technion.cue"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "341669905580-htp0tgtgdbq7itoo2t7uq55hoj7pmn29.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDyX3LRURF7YWBHs613aXITGpeA2Gnq3jc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "341669905580-htp0tgtgdbq7itoo2t7uq55hoj7pmn29.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">Cue</string>
+    <string name="cue">Cue.</string>
+    <string name="email_hint">Email</string>
+    <string name="password_hint">Password</string>
+    <string name="sign_in_button">Sign in</string>
+    <string name="client_join">Don"'"t have an account?> Sign Up!</string>
+    <string name="business_join">Business Owner? Join Us!</string>
+
+
 </resources>
