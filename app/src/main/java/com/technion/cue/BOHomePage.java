@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.storage.FirebaseStorage;
@@ -91,6 +92,8 @@ public class BOHomePage extends AppCompatActivity {
         Glide.with(logo.getContext())
                 .load(logoRef)
                 .error(R.drawable.ic_person_outline_black_24dp)
+                .diskCacheStrategy(DiskCacheStrategy.NONE )
+                .skipMemoryCache(true)
                 .into(logo);
     }
 }

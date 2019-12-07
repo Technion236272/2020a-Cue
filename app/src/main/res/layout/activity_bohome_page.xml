@@ -52,6 +52,5 @@
         android:src="@drawable/ic_image_black_24dp"
         android:visibility="invisible"
         android:onClick="uploadLogoToFireBase"/>
->>>>>>> feature/Firebase-Logo
 
 </RelativeLayout>
