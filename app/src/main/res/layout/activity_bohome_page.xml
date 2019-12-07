@@ -11,7 +11,7 @@
         android:id="@+id/business_logo"
         android:layout_height="100dp"
         android:layout_width="100dp"
-        android:layout_margin="20dp"
+        android:layout_margin="15dp"
         android:src="@drawable/ic_person_outline_black_24dp"/>
 
     <TextView
@@ -21,8 +21,7 @@
         android:textSize="30sp"
         android:text="Business name"
         android:layout_toRightOf="@id/business_logo"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_marginTop="15dp" />
 
     <TextView
         android:id="@+id/business_description"
@@ -32,7 +31,25 @@
         android:text="-- Business description --"
         android:layout_below="@id/business_name"
         android:layout_toRightOf="@id/business_logo"
+        android:layout_marginTop="10dp" />
+
+    <ImageButton
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginLeft="5dp"/>
+        android:layout_toRightOf="@id/business_name"
+        android:background="@color/ColorSecondaryDark"
+        android:src="@drawable/ic_edit_black_24dp"
+        android:onClick="editBOHomePage"/>
+
+    <ImageButton
+        android:id="@+id/image_upload"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="15dp"
+        android:background="@color/colorPrimaryLight"
+        android:src="@drawable/ic_image_black_24dp"
+        android:visibility="invisible"/>
 
 </RelativeLayout>
