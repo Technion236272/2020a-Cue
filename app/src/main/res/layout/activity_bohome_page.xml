@@ -40,6 +40,18 @@
         android:layout_marginTop="10dp"
         android:layout_toRightOf="@id/business_name"
         android:background="@color/ColorSecondaryDark"
-        android:src="@drawable/ic_edit_black_24dp" />
+        android:src="@drawable/ic_edit_black_24dp"
+        android:onClick="editBOHomePage"/>
+
+    <ImageButton
+        android:id="@+id/image_upload"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_margin="15dp"
+        android:background="@color/colorPrimaryLight"
+        android:src="@drawable/ic_image_black_24dp"
+        android:visibility="invisible"
+        android:onClick="uploadLogoToFireBase"/>
+>>>>>>> feature/Firebase-Logo
 
 </RelativeLayout>
