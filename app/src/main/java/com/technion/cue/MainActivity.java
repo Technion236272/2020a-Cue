@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -36,11 +37,30 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         final Button button_sign_in = (Button) findViewById(R.id.button_signin);
+        final TextView client_sign_up = (TextView) findViewById(R.id.client_join);
+        final TextView bo_sign_up = (TextView) findViewById(R.id.business_join);
 
         mAuth = FirebaseAuth.getInstance();
 
-        final EditText password = (EditText) findViewById(R.id.password);
-        final EditText email = (EditText) findViewById(R.id.email_address);
+        client_sign_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                client_sign_up.setEnabled(false);
+                final Intent intent = new Intent(getBaseContext(),ClientSignUp.class);
+                client_sign_up.setEnabled(false);
+                startActivity(intent);
+            }
+        });
+
+        bo_sign_up.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                bo_sign_up.setEnabled(false);
+                final Intent intent1 = new Intent(getBaseContext(),BOSignUp.class);
+                bo_sign_up.setEnabled(true);
+                startActivity(intent1);
+            }
+        });
 
         button_sign_in.setOnClickListener(new View.OnClickListener() {
 
@@ -79,6 +99,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
 
     public void updateUI(final FirebaseUser user) {
         if (user != null) {
