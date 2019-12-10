@@ -45,6 +45,8 @@ dependencies {
 
     implementation 'com.android.support:multidex:1.0.3'
 
+    implementation 'androidx.cardview:cardview'
+
 
 }
 apply plugin: 'com.google.gms.google-services'
