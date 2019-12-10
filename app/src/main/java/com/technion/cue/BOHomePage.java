@@ -25,6 +25,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.annotations.Author;
 
 public class BOHomePage extends AppCompatActivity {
@@ -37,7 +38,7 @@ public class BOHomePage extends AppCompatActivity {
 
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser() ;
-    private BusinessOwner bo_data = new BusinessOwner();
+    private Business bo_data = new Business();
 
 
     @Override
@@ -57,9 +58,9 @@ public class BOHomePage extends AppCompatActivity {
             StorageReference storageRef = storage.getReference();
             Uri imageUri = data.getData();
 
-            // TODO: perhaps set image name as business u_id from the FireBase database?
+            // TODO: perhaps set image business_name as business u_id from the FireBase database?
             final StorageReference logosRef = storageRef.child("business_logos/" +
-                    "dt8wgZeJayyZhC4Ihtbk"); // TODO: change this to currentUser.getUid()
+                    "wpD3ST4T9dLhlz09SbpB"); // TODO: change this to currentUser.getUid()
             UploadTask uploadTask = logosRef.putFile(imageUri);
 
             // Register observers to listen for when the download is done or if it fails
@@ -85,13 +86,13 @@ public class BOHomePage extends AppCompatActivity {
      */
     @Author("Ophir Eyal")
     private void loadDataFromFirebase() {
-        final DocumentReference bo_doc = db.collection("Business Owner")
-                .document("dt8wgZeJayyZhC4Ihtbk"); // TODO: change to currentUser.getUid()
+        final DocumentReference bo_doc = db.collection("Businesses")
+                .document("wpD3ST4T9dLhlz09SbpB"); // TODO: change to currentUser.getUid()
         bo_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
-                // TODO: see if we should initialize once / each time we call the method
-                bo_data = documentSnapshot.toObject(BusinessOwner.class);
+                // TODO: see if we should initialize bo_data once / each time we call the method
+                bo_data = documentSnapshot.toObject(Business.class);
                 loadFieldsFromFirebase();
                 loadLogoFromFireBase();
             }
@@ -105,7 +106,7 @@ public class BOHomePage extends AppCompatActivity {
     private void loadFieldsFromFirebase() {
         TextView name = findViewById(R.id.business_name);
         TextView desc = findViewById(R.id.business_description);
-        name.setText(bo_data.name);
+        name.setText(bo_data.business_name);
         desc.setText(bo_data.description);
     }
 
@@ -152,18 +153,18 @@ public class BOHomePage extends AppCompatActivity {
 
         final EditText name_edit = findViewById(R.id.business_name_edit);
         final EditText desc_edit = findViewById(R.id.business_description_edit);
-        final DocumentReference bo_doc = db.collection("Business Owner")
-                .document("dt8wgZeJayyZhC4Ihtbk"); // TODO: change to currentUser.getUid()
+        final DocumentReference bo_doc = db.collection("Businesses")
+                .document("wpD3ST4T9dLhlz09SbpB"); // TODO: change to currentUser.getUid()
         bo_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
-                        BusinessOwner bo = documentSnapshot.toObject(BusinessOwner.class);
-                        bo.name = name_edit.getText().toString();
+                        Business bo = documentSnapshot.toObject(Business.class);
+                        bo.business_name = name_edit.getText().toString();
                         bo.description = desc_edit.getText().toString();
                         bo_doc.set(bo);
                         TextView name = findViewById(R.id.business_name);
                         TextView desc = findViewById(R.id.business_description);
-                        name.setText(bo.name);
+                        name.setText(bo.business_name);
                         desc.setText(bo.description);
                     }
                 });
@@ -187,7 +188,7 @@ public class BOHomePage extends AppCompatActivity {
      */
     @Author("Ophir Eyal")
     private void loadLogoFromFireBase() {
-        ImageView logo = findViewById(R.id.business_logo);
+        CircularImageView logo = findViewById(R.id.business_logo);
         StorageReference logoRef = FirebaseStorage.getInstance().getReference()
                 .child(bo_data.logo_path.substring(bo_data.logo_path.indexOf("business_logos")));
         Glide.with(logo.getContext())

@@ -6,6 +6,8 @@
     <string name="sign_in_button">Sign in</string>
     <string name="client_join">Don"'"t have an account?> Sign Up!</string>
     <string name="business_join">Business Owner? Join Us!</string>
+    <string name="opening_hours">opening hours:</string>
+    <string name="address">address:</string>
 
 
 </resources>
