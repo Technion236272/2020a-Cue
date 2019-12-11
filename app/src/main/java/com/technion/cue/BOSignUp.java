@@ -62,19 +62,9 @@ public class BOSignUp extends AppCompatActivity {
                                     if(task.isSuccessful()){
                                         FirebaseUser user = mAuth.getCurrentUser();
                                         Business business = new Business(user.getUid(),business_name,full_name);
-                                        db.collection("Businesses").add(business).addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                                            @Override
-                                            public void onSuccess(DocumentReference documentReference) {
-                                                Log.d(TAG,"what it is for?");
-                                            }
-                                        }).
-                                                addOnFailureListener(new OnFailureListener() {
-                                                    @Override
-                                                    public void onFailure(@NonNull Exception e) {
-                                                        Log.w(TAG, "error");
-                                                    }
-                                                });
-
+                                        db.collection("Businesses")
+                                                .document(user.getUid())
+                                                .set(business);
                                         //updateUI(user);
                                         finish();
                                     } else {

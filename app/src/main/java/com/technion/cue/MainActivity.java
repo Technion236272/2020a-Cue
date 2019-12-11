@@ -106,27 +106,32 @@ public class MainActivity extends AppCompatActivity {
         if (user != null) {
             final FirebaseFirestore fs = FirebaseFirestore.getInstance();
             CollectionReference cr = fs.collection("Clients");
-            fs.collection("Clients").whereEqualTo("user_uid", user.getUid())
+            fs.collection("Clients").whereEqualTo("uid", user.getUid())
                     .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
                 @Override
                 public void onComplete(@NonNull Task<QuerySnapshot> task) {
                     if (task.isSuccessful()) {
-                        startActivity(new Intent(getBaseContext(), ClientHomePage.class));
-                        finish();
-                    } else {
-                        fs.collection("Business Owner").whereEqualTo("user_uid", user.getUid())
-                                .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                            @Override
-                            public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                                if (task.isSuccessful()) {
-                                    startActivity(new Intent(getBaseContext(), BOHomePage.class));
-                                    finish();
-                                } else {
-                                    Toast.makeText(MainActivity.this,
-                                            "Authentication failed.##", Toast.LENGTH_LONG).show();
+                        if (!task.getResult().isEmpty()) {
+                            startActivity(new Intent(getBaseContext(), ClientHomePage.class));
+                            finish();
+                        } else {
+                            fs.collection("Businesses").whereEqualTo("b_id", user.getUid())
+                                    .limit(1).get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                                @Override
+                                public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                                    if (task.isSuccessful()) {
+                                        startActivity(new Intent(getBaseContext(), BOHomePage.class));
+                                        finish();
+                                    } else {
+                                        Toast.makeText(MainActivity.this,
+                                                "Authentication failed.##", Toast.LENGTH_LONG).show();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                    } else {
+                        Toast.makeText(MainActivity.this,
+                                "Authentication failed.##", Toast.LENGTH_LONG).show();
                     }
                 }
             });

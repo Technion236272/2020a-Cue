@@ -60,7 +60,7 @@ public class BOHomePage extends AppCompatActivity {
 
             // TODO: perhaps set image business_name as business u_id from the FireBase database?
             final StorageReference logosRef = storageRef.child("business_logos/" +
-                    "wpD3ST4T9dLhlz09SbpB"); // TODO: change this to currentUser.getUid()
+                    currentUser.getUid());
             UploadTask uploadTask = logosRef.putFile(imageUri);
 
             // Register observers to listen for when the download is done or if it fails
@@ -87,7 +87,8 @@ public class BOHomePage extends AppCompatActivity {
     @Author("Ophir Eyal")
     private void loadDataFromFirebase() {
         final DocumentReference bo_doc = db.collection("Businesses")
-                .document("wpD3ST4T9dLhlz09SbpB"); // TODO: change to currentUser.getUid()
+                .document(currentUser.getUid());
+        Log.d("BO-homepage", currentUser.getUid());
         bo_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
             @Override
             public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -154,7 +155,7 @@ public class BOHomePage extends AppCompatActivity {
         final EditText name_edit = findViewById(R.id.business_name_edit);
         final EditText desc_edit = findViewById(R.id.business_description_edit);
         final DocumentReference bo_doc = db.collection("Businesses")
-                .document("wpD3ST4T9dLhlz09SbpB"); // TODO: change to currentUser.getUid()
+                .document(currentUser.getUid());
         bo_doc.get().addOnSuccessListener(new OnSuccessListener<DocumentSnapshot>() {
                     @Override
                     public void onSuccess(DocumentSnapshot documentSnapshot) {
@@ -189,8 +190,11 @@ public class BOHomePage extends AppCompatActivity {
     @Author("Ophir Eyal")
     private void loadLogoFromFireBase() {
         CircularImageView logo = findViewById(R.id.business_logo);
-        StorageReference logoRef = FirebaseStorage.getInstance().getReference()
-                .child(bo_data.logo_path.substring(bo_data.logo_path.indexOf("business_logos")));
+        StorageReference logoRef = null;
+        if (bo_data.logo_path != "") {
+            logoRef = FirebaseStorage.getInstance().getReference()
+                    .child(bo_data.logo_path.substring(bo_data.logo_path.indexOf("business_logos")));
+        }
         Glide.with(logo.getContext())
                 .load(logoRef)
                 .error(R.drawable.ic_person_outline_black_24dp)
