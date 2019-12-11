@@ -4,59 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BOHomePage"
+    tools:context=".BOBusinessHomePage"
     android:background="@color/colorPrimaryLight">
 
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/business_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        app:srcCompat="@drawable/ic_person_outline_black_24dp"
-        app:civ_border_color="#EEEEEE"
-        app:civ_border_width="4dp"
-        app:civ_shadow="true"
-        app:civ_shadow_radius="10"
-        app:civ_shadow_color="#8BC34A"/>
-
-    <EditText
-        android:id="@+id/business_name_edit"
+    <fragment android:name="com.technion.cue.BusinessInfoFragment"
+        android:id="@+id/business_info"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_toRightOf="@id/business_logo"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="26dp"
-        android:visibility="invisible" />
-
-    <EditText
-        android:id="@+id/business_description_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_below="@id/business_name"
-        android:layout_toRightOf="@id/business_logo"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="26dp"
-        android:visibility="invisible" />
-
-    <TextView
-        android:id="@+id/business_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_toRightOf="@id/business_logo"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="30dp" />
-
-    <TextView
-        android:id="@+id/business_description"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_below="@id/business_name"
-        android:layout_toRightOf="@id/business_logo"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp" />
+        android:layout_height="wrap_content" />
 
     <ImageButton
         android:id="@+id/image_upload"
@@ -80,39 +34,11 @@
         android:layout_alignParentEnd="true"
         android:onClick="editBOHomePage" />
 
-    <TextView
-        android:id="@+id/opening_hours"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/business_logo"
-        android:textSize="15sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/opening_hours" />
-
-    <TextView
-        android:id="@+id/address"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/opening_hours"
-        android:textSize="15sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/address" />
-
-    <View
-        android:id="@+id/separation_line"
-        android:layout_width="fill_parent"
-        android:layout_below="@id/address"
-        android:layout_height="2dip"
-        android:layout_marginTop="15dp"
-        android:background="#44000000" />
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/separation_line" />
+        android:layout_below="@id/business_info" />
 
 </RelativeLayout>
