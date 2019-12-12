@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseUser;
@@ -19,6 +18,9 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.annotations.Author;
+import com.technion.cue.data_classes.Business;
+
+import java.util.Random;
 
 class BusinessInfoLoader {
 
@@ -59,7 +61,7 @@ class BusinessInfoLoader {
 
             // TODO: perhaps set image business_name as business u_id from the FireBase database?
             final StorageReference logosRef = storageRef
-                    .child("business_logos/" + currentUser.getUid());
+                    .child("business_logos/" + currentUser.getUid() + new Random().nextInt());
             UploadTask uploadTask = logosRef.putFile(imageUri);
 
             // Register observers to listen for when the download is done or if it fails
@@ -113,8 +115,6 @@ class BusinessInfoLoader {
             Glide.with(logo.getContext())
                     .load(logoRef)
                     .error(R.drawable.ic_person_outline_black_24dp)
-                    .diskCacheStrategy(DiskCacheStrategy.NONE )
-                    .skipMemoryCache(true)
                     .into(logo);
         });
     }
@@ -124,11 +124,11 @@ class BusinessInfoLoader {
      */
     @Author("Ophir Eyal")
     void uploadBusinessFromFB() {
-        final EditText name_edit = view.findViewById(R.id.business_name_edit);
-        final EditText desc_edit = view.findViewById(R.id.business_description_edit);
-        final DocumentReference bo_doc =
+        DocumentReference bo_doc =
                 db.collection("Businesses").document(currentUser.getUid());
         bo_doc.get().addOnSuccessListener(documentSnapshot -> {
+            final EditText name_edit = view.findViewById(R.id.business_name_edit);
+            final EditText desc_edit = view.findViewById(R.id.business_description_edit);
             Business bo = documentSnapshot.toObject(Business.class);
             bo.business_name = name_edit.getText().toString();
             bo.description = desc_edit.getText().toString();

@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity">
+        <activity android:name=".ClientBusinessHomepage"></activity>
+        <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -17,7 +18,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".BOBusinessHomePage" />
-        <activity android:name=".BOSignUp"/>
+        <activity android:name=".BOSignUp" />
         <activity android:name=".ClientSignUp" />
         <activity android:name=".ClientHomePage" />
     </application>
