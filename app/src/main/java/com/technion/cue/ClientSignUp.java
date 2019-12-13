@@ -2,6 +2,7 @@ package com.technion.cue;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.os.Bundle;
@@ -36,15 +37,12 @@ public class ClientSignUp extends AppCompatActivity {
             final EditText phone_number = findViewById(R.id.c_phone_number);
 
             // TODO: maybe require more complex conditions (e.g., minimum length for password)
-            if(!user_password.getText().toString().isEmpty() &&
-                    !email.getText().toString().isEmpty() &&
-                    !full_name.getText().toString().isEmpty() &&
-                    !phone_number.getText().toString().isEmpty()) {
+            if(allTextsValid()) {
                 mAuth.createUserWithEmailAndPassword
                         (email.getText().toString(), user_password.getText().toString()).
                         addOnSuccessListener(l -> {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Client client = new Client(user.getUid(), user.getEmail(),
+                            Client client = new Client(user.getEmail(),
                                     full_name.getText().toString(),
                                     phone_number.getText().toString());
                             db.collection("Clients")
@@ -66,6 +64,19 @@ public class ClientSignUp extends AppCompatActivity {
             button_sign_up.setEnabled(true);
         });
 
+    }
+
+    private Boolean allTextsValid() {
+        ViewGroup vg = findViewById(R.id.client_sign_up);
+        for (int i = 0 ;
+             i < vg.getChildCount() ;
+             i++) {
+            if (vg.getChildAt(i) instanceof EditText) {
+                if (((EditText) vg.getChildAt(i)).getText().toString().isEmpty())
+                    return false;
+            }
+        }
+        return true;
     }
 
     @Override

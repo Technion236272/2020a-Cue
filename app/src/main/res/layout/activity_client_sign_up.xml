@@ -5,7 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".ClientSignUp">
+    tools:context=".ClientSignUp"
+    android:id="@+id/client_sign_up">
 
     <TextView
         android:id="@+id/sign_up_text"

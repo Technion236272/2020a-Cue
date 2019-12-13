@@ -1,35 +1,54 @@
 package com.technion.cue.data_classes;
 
-import java.util.ArrayList;
+import com.google.type.DayOfWeek;
+
+import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class Business {
 
-    public String b_id;
-    public String business_name;
-    public String bo_name;
-    public String description;
-    public String logo_path;
-    public String location;
-    public String open_hours;
-    public List<String> b_appointments = new ArrayList<>(); //Appointments
-    public List<String> types = new ArrayList<>(); // Type
-    public List<String> reviews = new ArrayList<>(); // Review
-    public List<Client> b_clients = new ArrayList<>();
-    public Map<String,String> b_attributes = new HashMap<>();
+    public String phone_number = "", business_name = "", name = "",
+            description = "", logo_path = "", location = "";
+
+    // the supported key values are { SUN, MOD, TUE, WED, THU, FRI, SAT }
+    public Map<String, String> open_hours = new HashMap<>();
+    public Map<String,String> attributes = new HashMap<>();
+
+    static class ClienteleMember {
+        public String client_id = "";
+        public ClienteleMember() { }
+        public ClienteleMember(String client_id) {
+            this.client_id = client_id;
+        }
+    }
+
+    static class Review {
+        public String client_id, content;
+        public Date date;
+        public Review() { }
+        public Review(String client_id, String content, Date date) {
+            this.client_id = client_id;
+            this.content = content;
+            this.date = date;
+        }
+    }
+
+    static class AppointmentType {
+        public String name;
+        public Map<String, String> attributes = new HashMap<>();
+        public AppointmentType() { }
+        public AppointmentType(String name) {
+            this.name = name;
+        }
+    }
 
     public Business() { }
 
-    public Business(String b_id, String business_name, String bo_name) {
-        this.b_id = b_id;
+    public Business(String business_name, String name, String phone_number) {
         this.business_name = business_name;
-        this.bo_name = bo_name;
-        this.logo_path = "";
-        this.description = "";
-        this.location = "";
-        this.open_hours= "";
+        this.name = name;
+        this.phone_number = phone_number;
     }
 
 }

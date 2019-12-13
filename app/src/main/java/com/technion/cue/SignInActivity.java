@@ -84,12 +84,11 @@ public class SignInActivity extends AppCompatActivity {
     public void updateUI(@NonNull String uid) {
         FirebaseFirestore.getInstance()
                 .collection("Clients")
-                .whereEqualTo("u_id", uid)
-                .limit(1)
+                .document(uid)
                 .get()
                 .addOnCompleteListener(task -> {
                     if (task.isSuccessful()) {
-                        if (!task.getResult().isEmpty()) {
+                        if (task.getResult().exists()) {
                             startClientHomepage();
                         } else {
                             searchForBO(uid);
@@ -111,8 +110,7 @@ public class SignInActivity extends AppCompatActivity {
     private void searchForBO(String uid) {
             FirebaseFirestore.getInstance()
                     .collection("Businesses")
-                    .whereEqualTo("b_id", uid)
-                    .limit(1)
+                    .document(uid)
                     .get()
                     .addOnSuccessListener(l -> {
                         startActivity(new Intent(getBaseContext(), BOBusinessHomePage.class));

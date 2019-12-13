@@ -43,7 +43,6 @@ public class BOSignUp extends AppCompatActivity {
             final String user_password= ((EditText) findViewById(R.id.b_password)).getText().toString();
             final String email= ((EditText)findViewById(R.id.b_email_address)).getText().toString();
             final String full_name = ((EditText)findViewById(R.id.b_full_name)).getText().toString();
-            // TODO: does a business have a phone number associated with it?
             final String phone_number = ((EditText)findViewById(R.id.b_phone_number)).getText().toString();
             final String business_name = ((EditText)findViewById(R.id.business_name)).getText().toString();
 
@@ -51,8 +50,7 @@ public class BOSignUp extends AppCompatActivity {
                 mAuth.createUserWithEmailAndPassword(email,user_password).
                         addOnSuccessListener(l -> {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Business business = new Business(user.getUid(),
-                                    business_name, full_name);
+                            Business business = new Business(business_name, full_name, phone_number);
                             db.collection("Businesses")
                                     .document(user.getUid())
                                     .set(business);
@@ -75,18 +73,14 @@ public class BOSignUp extends AppCompatActivity {
     }
 
     private Boolean allTextsValid() {
-        List<EditText> edit_texts = new ArrayList<>();
         ViewGroup vg = findViewById(R.id.business_sign_up);
         for (int i = 0 ;
              i < vg.getChildCount() ;
              i++) {
             if (vg.getChildAt(i) instanceof EditText) {
-                edit_texts.add((EditText) vg.getChildAt(i));
+                if (((EditText) vg.getChildAt(i)).getText().toString().isEmpty())
+                    return false;
             }
-        }
-        for (EditText et : edit_texts) {
-            if (et.getText().toString().isEmpty())
-                return false;
         }
         return true;
     }
