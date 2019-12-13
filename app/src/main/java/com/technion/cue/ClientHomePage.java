@@ -3,16 +3,10 @@ package com.technion.cue;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.Button;
-import android.widget.Toast;
 
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -35,38 +29,57 @@ public class ClientHomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home_page);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
+
+        setUpRecyclerFavoriteView();
         setUpRecycleAppointmentAView();
-//        setUpRecyclerFavoriteView();
+
+
+
+
+
     }
 
     private void setUpRecycleAppointmentAView() {
-
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection("Clients/"+currentUser.getUid()+"/appointments");
-
+        Query query = db.collection("Appointments").whereEqualTo("client", currentUser.getUid());
         FirestoreRecyclerOptions<CAppointmentListItem> options = new FirestoreRecyclerOptions.Builder<CAppointmentListItem>()
                 .setQuery(query, CAppointmentListItem.class)
                 .build();
-        MyAppointmentListAdapter adapter = new MyAppointmentListAdapter(options);
+        MAadapter = new MyAppointmentListAdapter(options);
         RecyclerView recyclerView = findViewById(R.id.myAppointmentList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(adapter);
+        recyclerView.setAdapter(MAadapter);
+    }
+
+    private void setUpRecyclerFavoriteView() {
+
+        FirebaseUser currentUser = mAuth.getCurrentUser();
+        Query query = db.collection("Favorites").whereEqualTo("client_id", currentUser.getUid());
+
+        FirestoreRecyclerOptions<BFavoriteListItem> options = new FirestoreRecyclerOptions.Builder<BFavoriteListItem>()
+                .setQuery(query, BFavoriteListItem.class)
+                .build();
+        MFadapter = new MyFavoriteListAdapter(options);
+        RecyclerView recyclerView = findViewById(R.id.myFavoriteList);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setAdapter(MFadapter);
     }
 
 
-//    private void setUpRecyclerFavoriteView() {
-//
-//        FirebaseUser currentUser = mAuth.getCurrentUser();
-//        Query query = db.collection(currentUser.getEmail()).orderBy("content_item");
-//
-//        FirestoreRecyclerOptions<MyFavoriteListAdapter> options = new FirestoreRecyclerOptions.Builder<MyFavoriteListAdapter>()
-//                .setQuery(query, MyFavoriteListAdapter.class)
-//                .build();
-//        MyFavoriteListAdapter adapter = new MyFavoriteListAdapter(options);
-//        RecyclerView recyclerView = findViewById(R.id.myFavoriteList);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-//        recyclerView.setAdapter(adapter);
-//    }
+    protected void onStart() {
+        super.onStart();
+        MAadapter.startListening();
+        MFadapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        MAadapter.stopListening();
+        MFadapter.stopListening();
+    }
 }

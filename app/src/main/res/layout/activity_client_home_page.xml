@@ -7,16 +7,30 @@
     tools:context=".ClientHomePage"
     android:orientation="vertical">
 
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:title="My Appointments"
+
+        android:background="@color/colorPrimaryDark"
+        android:elevation="4dp"
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myFavoriteList"
-        android:scrollbars="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="125dp"
+        android:background="@color/ColorSecondaryLight"
+        android:scrollbars="horizontal"
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myAppointmentList"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent"
+        android:background="@color/colorPrimary"/>
+
 
 </LinearLayout>

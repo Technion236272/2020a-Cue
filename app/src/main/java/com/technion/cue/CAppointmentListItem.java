@@ -2,16 +2,31 @@ package com.technion.cue;
 
 public class CAppointmentListItem {
 
-    private String appointment_business_ref;
+    private String business;
+    private String notes;
+    private String type;
+    private String date;
 
     public CAppointmentListItem() {}
 
-    public CAppointmentListItem(String appointment_business_ref) {
-        this.appointment_business_ref=appointment_business_ref;
+    public CAppointmentListItem(String business, String date , String notes, String type) {
+        this.business=business;
+        this.notes=notes;
+        this.type=type;
+        this.date=date;
     }
 
 
-    public String getAppointment_business_ref() {
-        return appointment_business_ref;
+    public String getBusiness() {
+        return business;
+    }
+    public String getNotes() {
+        return notes;
+    }
+    public String getType() {
+        return type;
+    }
+    public String getDate() {
+        return date;
     }
 }

@@ -2,16 +2,18 @@ package com.technion.cue;
 
 public class BFavoriteListItem {
 
-    private String favorite_business_ref;
+    private String b_id;
+
 
     public BFavoriteListItem() {}
 
-    public BFavoriteListItem(String favorite_business_ref) {
-        this.favorite_business_ref=favorite_business_ref;
+    public BFavoriteListItem(String b_id) {
+        this.b_id=b_id;
+
     }
 
-
-    public String getFavorite_business_ref() {
-        return favorite_business_ref;
+    public String getB_id() {
+        return b_id;
     }
+
 }
