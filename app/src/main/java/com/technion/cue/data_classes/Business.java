@@ -15,7 +15,7 @@ public class Business {
     public Map<String, String> open_hours = new HashMap<>();
     public Map<String,String> attributes = new HashMap<>();
 
-    static class ClienteleMember {
+    public static class ClienteleMember {
         public String client_id = "";
         public ClienteleMember() { }
         public ClienteleMember(String client_id) {
@@ -23,7 +23,7 @@ public class Business {
         }
     }
 
-    static class Review {
+    public static class Review {
         public String client_id, content;
         public Date date;
         public Review() { }
@@ -34,7 +34,7 @@ public class Business {
         }
     }
 
-    static class AppointmentType {
+    public static class AppointmentType {
         public String name;
         public Map<String, String> attributes = new HashMap<>();
         public AppointmentType() { }

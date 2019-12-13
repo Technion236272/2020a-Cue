@@ -5,7 +5,7 @@ public class Client {
     public String email, name, phone_number;
 
 
-    static class Favorite {
+    public static class Favorite {
         public String business_id;
         public Favorite() { }
         public Favorite(String business_id) {

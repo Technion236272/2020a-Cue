@@ -69,7 +69,7 @@ class BusinessInfoLoader {
                 Log.d(this.toString(), "failure to upload business logo");
             }).addOnSuccessListener(taskSnapshot ->  {
                 Log.d(this.toString(), "success to upload business logo");
-                BusinessInfoLoader.this.business.logo_path = logosRef.getPath();
+                business.logo_path = logosRef.getPath();
                 updateBusiness();
                 loadLogoFromFireBase();
             });
