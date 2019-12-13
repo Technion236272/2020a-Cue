@@ -1,5 +1,7 @@
 package com.technion.cue.data_classes;
 
+import com.google.firebase.Timestamp;
+
 import java.util.Date;
 
 public class Appointment {
@@ -8,11 +10,12 @@ public class Appointment {
 
     public Appointment() { }
 
-    public Appointment(String business_id, String client_id, String type, String notes, Date date) {
+    public Appointment(String business_id, String client_id,
+                       String type, String notes, Timestamp ts) {
         this.business_id = business_id;
         this.client_id = client_id;
         this.type = type;
         this.notes = notes;
-        this.date = date;
+        this.date = ts.toDate();
     }
 }

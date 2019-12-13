@@ -17,10 +17,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.technion.cue.annotations.Author;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
+import java.util.Objects;
 import java.util.Random;
+
+import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
 class BusinessInfoLoader {
 
@@ -34,16 +37,17 @@ class BusinessInfoLoader {
         this.view = view;
         this.db = db;
         this.currentUser = currentUser;
-        businessLoadTask = db.collection("Businesses")
+        businessLoadTask = db.collection(BUSINESSES_COLLECTION)
                 .document(currentUser.getUid())
-                .get().addOnSuccessListener(documentSnapshot ->
-                        BusinessInfoLoader.this.business =
-                                documentSnapshot.toObject(Business.class));
+                .get()
+                .addOnSuccessListener(documentSnapshot ->
+                        business = documentSnapshot.toObject(Business.class));
     }
+
     /**
      * loads data from Firebase into matching fields in the BO homepage activity
      */
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     void loadDataFromFB() {
         Tasks.whenAll(businessLoadTask).addOnCompleteListener(task -> {
             loadInfoFromFB();
@@ -51,24 +55,27 @@ class BusinessInfoLoader {
         });
     }
 
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     void uploadLogoToFB(Intent data) {
 
         Tasks.whenAll(businessLoadTask).addOnCompleteListener(task -> {
-            FirebaseStorage storage = FirebaseStorage.getInstance();
-            StorageReference storageRef = storage.getReference();
-            Uri imageUri = data.getData();
-
-            // TODO: perhaps set image business_name as business u_id from the FireBase database?
-            final StorageReference logosRef = storageRef
+            final StorageReference logosRef = FirebaseStorage.getInstance().getReference()
                     .child("business_logos/" + currentUser.getUid() + new Random().nextInt());
-            UploadTask uploadTask = logosRef.putFile(imageUri);
+            UploadTask uploadTask = logosRef.putFile(Objects.requireNonNull(data.getData()));
 
             // Register observers to listen for when the download is done or if it fails
             uploadTask.addOnFailureListener(exception -> {
-                Log.d(this.toString(), "failure to upload business logo");
+                Log.d(this.toString(), "failed to upload business logo");
             }).addOnSuccessListener(taskSnapshot ->  {
-                Log.d(this.toString(), "success to upload business logo");
+                Log.d(this.toString(), "succeeded to upload business logo");
+
+                // deleting previous logo
+                FirebaseStorage.getInstance()
+                        .getReference()
+                        .child(getLogoPath())
+                        .delete().addOnSuccessListener(l -> {
+                            Log.d(this.toString(), "succeeded to delete previous logo");
+                        });
                 business.logo_path = logosRef.getPath();
                 updateBusiness();
                 loadLogoFromFireBase();
@@ -78,14 +85,18 @@ class BusinessInfoLoader {
 
     private void updateBusiness() {
         final DocumentReference bo_doc =
-                db.collection("Businesses").document(currentUser.getUid());
+                db.collection(BUSINESSES_COLLECTION).document(currentUser.getUid());
         bo_doc.get().addOnSuccessListener(documentSnapshot -> bo_doc.set(business));
+    }
+
+    private String getLogoPath() {
+        return business.logo_path.substring(business.logo_path.indexOf("business_logos"));
     }
 
     /**
      * loads fields from Firebase into BO object
      */
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     private void loadInfoFromFB() {
 
         Tasks.whenAll(businessLoadTask).addOnCompleteListener(task -> {
@@ -101,16 +112,14 @@ class BusinessInfoLoader {
      * loads logo from fireBase into the "business_logo" ImageView
      * uses the Glide framework for image download & processing
      */
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     private void loadLogoFromFireBase()
     {
         Tasks.whenAll(businessLoadTask).addOnCompleteListener(task -> {
             CircularImageView logo = view.findViewById(R.id.business_logo);
             StorageReference logoRef = null;
             if (!business.logo_path.equals("")) {
-                logoRef = FirebaseStorage.getInstance().getReference()
-                        .child(business.logo_path
-                                .substring(business.logo_path.indexOf("business_logos")));
+                logoRef = FirebaseStorage.getInstance().getReference().child(getLogoPath());
             }
             Glide.with(logo.getContext())
                     .load(logoRef)
@@ -122,10 +131,10 @@ class BusinessInfoLoader {
     /**
      * uploads business data (after changes) to Firebase database
      */
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     void uploadBusinessFromFB() {
         DocumentReference bo_doc =
-                db.collection("Businesses").document(currentUser.getUid());
+                db.collection(BUSINESSES_COLLECTION).document(currentUser.getUid());
         bo_doc.get().addOnSuccessListener(documentSnapshot -> {
             final EditText name_edit = view.findViewById(R.id.business_name_edit);
             final EditText desc_edit = view.findViewById(R.id.business_description_edit);

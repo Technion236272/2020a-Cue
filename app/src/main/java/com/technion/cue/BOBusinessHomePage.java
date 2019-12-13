@@ -11,7 +11,7 @@ import android.widget.TextView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.technion.cue.annotations.Author;
+import com.technion.cue.annotations.ModuleAuthor;
 
 public class BOBusinessHomePage extends AppCompatActivity {
 
@@ -42,7 +42,7 @@ public class BOBusinessHomePage extends AppCompatActivity {
      * where the BO will able to change his business's profile
      * @param view
      */
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     public void editBOHomePage(View view) {
 
         switch (mode) {
@@ -77,7 +77,7 @@ public class BOBusinessHomePage extends AppCompatActivity {
      * TODO: consider moving this into it's own class
      * @param view
      */
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     public void uploadLogoToFireBase(View view) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
@@ -85,7 +85,7 @@ public class BOBusinessHomePage extends AppCompatActivity {
     }
 
     @Override
-    @Author("Ophir Eyal")
+    @ModuleAuthor("Ophir Eyal")
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
         if (reqCode == GET_LOGO) {

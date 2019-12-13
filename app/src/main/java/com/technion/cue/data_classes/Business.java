@@ -1,6 +1,6 @@
 package com.technion.cue.data_classes;
 
-import com.google.type.DayOfWeek;
+import com.google.firebase.Timestamp;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -27,10 +27,10 @@ public class Business {
         public String client_id, content;
         public Date date;
         public Review() { }
-        public Review(String client_id, String content, Date date) {
+        public Review(String client_id, String content, Timestamp ts) {
             this.client_id = client_id;
             this.content = content;
-            this.date = date;
+            this.date = ts.toDate();
         }
     }
 

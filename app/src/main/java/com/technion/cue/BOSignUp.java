@@ -1,27 +1,19 @@
 package com.technion.cue;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.annotation.NonNull;
-
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.os.Bundle;
 import android.widget.EditText;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.data_classes.Business;
 
-import java.util.ArrayList;
-import java.util.List;
+import static com.technion.cue.FirebaseCollections.*;
 
 public class BOSignUp extends AppCompatActivity {
 
@@ -51,7 +43,7 @@ public class BOSignUp extends AppCompatActivity {
                         addOnSuccessListener(l -> {
                             FirebaseUser user = mAuth.getCurrentUser();
                             Business business = new Business(business_name, full_name, phone_number);
-                            db.collection("Businesses")
+                            db.collection(BUSINESSES_COLLECTION)
                                     .document(user.getUid())
                                     .set(business);
                             finish();

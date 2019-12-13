@@ -23,21 +23,20 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 
 import java.util.Objects;
 
+import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+
 public class MyFavoriteListAdapter extends
         FirestoreRecyclerAdapter<Client.Favorite, MyFavoriteListAdapter.itemHolder > {
 
-    private FirebaseFirestore db;
-
-
-    public MyFavoriteListAdapter(@NonNull FirestoreRecyclerOptions<Client.Favorite> options) {
+    MyFavoriteListAdapter(@NonNull FirestoreRecyclerOptions<Client.Favorite> options) {
         super(options);
-
     }
 
     @Override
     protected void onBindViewHolder(final @NonNull itemHolder holder,
                                     int position, @NonNull Client.Favorite model) {
-        FirebaseFirestore.getInstance().collection("Businesses")
+        FirebaseFirestore.getInstance()
+                .collection(BUSINESSES_COLLECTION)
                 .document(model.business_id)
                 .get()
                 .addOnCompleteListener(task -> {

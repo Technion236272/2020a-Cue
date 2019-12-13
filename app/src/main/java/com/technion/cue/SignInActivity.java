@@ -17,6 +17,9 @@ import com.google.firebase.firestore.FirebaseFirestore;
 
 import android.util.Log;
 
+import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
+
 
 /**
  * this is the app's main activity
@@ -83,7 +86,7 @@ public class SignInActivity extends AppCompatActivity {
 
     public void updateUI(@NonNull String uid) {
         FirebaseFirestore.getInstance()
-                .collection("Clients")
+                .collection(CLIENTS_COLLECTION)
                 .document(uid)
                 .get()
                 .addOnCompleteListener(task -> {
@@ -109,7 +112,7 @@ public class SignInActivity extends AppCompatActivity {
 
     private void searchForBO(String uid) {
             FirebaseFirestore.getInstance()
-                    .collection("Businesses")
+                    .collection(BUSINESSES_COLLECTION)
                     .document(uid)
                     .get()
                     .addOnSuccessListener(l -> {

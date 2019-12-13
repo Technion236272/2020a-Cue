@@ -1,5 +1,5 @@
 package com.technion.cue.annotations;
 
-public @interface Author {
+public @interface ModuleAuthor {
     String value() default "Unknown";
 }

@@ -7,7 +7,6 @@ import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -15,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Client;
+
+import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 
 
 public class ClientHomePage extends AppCompatActivity {
@@ -38,7 +39,8 @@ public class ClientHomePage extends AppCompatActivity {
 
     private void setUpRecycleAppointmentAView() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection("Appointments").whereEqualTo("client", currentUser.getUid());
+        Query query = db.collection(APPOINTMENTS_COLLECTION)
+                .whereEqualTo("client_id", currentUser.getUid());
         FirestoreRecyclerOptions<Appointment> options =
                 new FirestoreRecyclerOptions.Builder<Appointment>()
                         .setQuery(query, Appointment.class)
@@ -53,7 +55,9 @@ public class ClientHomePage extends AppCompatActivity {
     private void setUpRecyclerFavoriteView() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection("Favorites").whereEqualTo("client_id", currentUser.getUid());
+        Query query = db.collection("Clients")
+                .document(currentUser.getUid())
+                .collection("Favorites");
 
         FirestoreRecyclerOptions<Client.Favorite> options =
                 new FirestoreRecyclerOptions.Builder<Client.Favorite>()
@@ -62,7 +66,9 @@ public class ClientHomePage extends AppCompatActivity {
         favoriteAdapter = new MyFavoriteListAdapter(options);
         RecyclerView recyclerView = findViewById(R.id.myFavoriteList);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.HORIZONTAL,false));
+        recyclerView.setLayoutManager
+                (new LinearLayoutManager(
+                        this, LinearLayoutManager.HORIZONTAL,false));
         recyclerView.setAdapter(favoriteAdapter);
     }
 

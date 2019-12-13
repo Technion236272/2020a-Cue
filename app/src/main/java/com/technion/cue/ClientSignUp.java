@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.data_classes.Client;
 
+import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
+
 public class ClientSignUp extends AppCompatActivity {
     FirebaseAuth mAuth;
     private static final String TAG = "ClientSignUpActivity";
@@ -45,7 +47,7 @@ public class ClientSignUp extends AppCompatActivity {
                             Client client = new Client(user.getEmail(),
                                     full_name.getText().toString(),
                                     phone_number.getText().toString());
-                            db.collection("Clients")
+                            db.collection(CLIENTS_COLLECTION)
                                     .document(user.getUid())
                                     .set(client);
                             finish();
