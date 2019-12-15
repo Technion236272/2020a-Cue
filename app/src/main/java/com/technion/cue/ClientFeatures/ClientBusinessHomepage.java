@@ -1,8 +1,10 @@
-package com.technion.cue;
+package com.technion.cue.ClientFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import com.technion.cue.R;
 
 public class ClientBusinessHomepage extends AppCompatActivity {
 

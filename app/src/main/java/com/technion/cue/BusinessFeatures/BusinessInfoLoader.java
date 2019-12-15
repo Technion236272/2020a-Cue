@@ -1,4 +1,4 @@
-package com.technion.cue;
+package com.technion.cue.BusinessFeatures;
 
 import android.content.Intent;
 import android.net.Uri;
@@ -17,6 +17,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 

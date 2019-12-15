@@ -4,9 +4,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ClientBusinessHomepage">
+    tools:context=".ClientFeatures.ClientBusinessHomepage">
 
-    <fragment android:name="com.technion.cue.BusinessInfoFragment"
+    <fragment android:name="com.technion.cue.BusinessFeatures.BusinessInfoFragment"
         android:id="@+id/business_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

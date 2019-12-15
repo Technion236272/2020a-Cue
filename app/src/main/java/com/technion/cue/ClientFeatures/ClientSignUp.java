@@ -1,4 +1,4 @@
-package com.technion.cue;
+package com.technion.cue.ClientFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -12,6 +12,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.technion.cue.R;
 import com.technion.cue.data_classes.Client;
 
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;

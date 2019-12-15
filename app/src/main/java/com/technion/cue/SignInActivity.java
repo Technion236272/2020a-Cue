@@ -12,8 +12,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
+import com.technion.cue.BusinessFeatures.BusinessSignUp;
+import com.technion.cue.ClientFeatures.ClientHomePage;
+import com.technion.cue.ClientFeatures.ClientSignUp;
 
 import android.util.Log;
 
@@ -42,7 +45,7 @@ public class SignInActivity extends AppCompatActivity {
         // open up sign up activity for clients
         client_sign_up.setOnClickListener(v -> {
             client_sign_up.setEnabled(false);
-            final Intent intent = new Intent(getBaseContext(),ClientSignUp.class);
+            final Intent intent = new Intent(getBaseContext(), ClientSignUp.class);
             client_sign_up.setEnabled(false);
             startActivity(intent);
         });
@@ -50,7 +53,7 @@ public class SignInActivity extends AppCompatActivity {
         // open up sign up activity for business owners
         bo_sign_up.setOnClickListener(v -> {
             bo_sign_up.setEnabled(false);
-            final Intent intent1 = new Intent(getBaseContext(),BOSignUp.class);
+            final Intent intent1 = new Intent(getBaseContext(), BusinessSignUp.class);
             bo_sign_up.setEnabled(true);
             startActivity(intent1);
         });

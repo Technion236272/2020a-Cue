@@ -4,10 +4,10 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BOBusinessHomePage"
+    tools:context=".BusinessFeatures.BOBusinessHomePage"
     android:background="@color/colorPrimaryLight">
 
-    <fragment android:name="com.technion.cue.BusinessInfoFragment"
+    <fragment android:name="com.technion.cue.BusinessFeatures.BusinessInfoFragment"
         android:id="@+id/business_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />

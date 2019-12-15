@@ -1,4 +1,4 @@
-package com.technion.cue;
+package com.technion.cue.BusinessFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.ViewGroup;
@@ -11,11 +11,12 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.technion.cue.R;
 import com.technion.cue.data_classes.Business;
 
 import static com.technion.cue.FirebaseCollections.*;
 
-public class BOSignUp extends AppCompatActivity {
+public class BusinessSignUp extends AppCompatActivity {
 
     FirebaseAuth mAuth;
     private static final String TAG = "BOSignUpActivity";
@@ -49,13 +50,13 @@ public class BOSignUp extends AppCompatActivity {
                             finish();
                         }).addOnFailureListener(l ->
                         // If sign in fails, display a message to the user.
-                        Toast.makeText(BOSignUp.this,
+                        Toast.makeText(BusinessSignUp.this,
                                 "failed",
                                 Toast.LENGTH_LONG).show());
 
             }
             else {
-                Toast.makeText(BOSignUp.this, "empty fields, try again!",
+                Toast.makeText(BusinessSignUp.this, "empty fields, try again!",
                         Toast.LENGTH_SHORT).show();
             }
             button_sign_up.setEnabled(true);

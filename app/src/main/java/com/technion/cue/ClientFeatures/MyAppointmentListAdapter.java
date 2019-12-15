@@ -1,4 +1,4 @@
-package com.technion.cue;
+package com.technion.cue.ClientFeatures;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 
 

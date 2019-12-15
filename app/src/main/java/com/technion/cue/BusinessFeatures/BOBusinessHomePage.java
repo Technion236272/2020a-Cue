@@ -1,16 +1,15 @@
-package com.technion.cue;
+package com.technion.cue.BusinessFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
 public class BOBusinessHomePage extends AppCompatActivity {
@@ -45,31 +44,35 @@ public class BOBusinessHomePage extends AppCompatActivity {
     @ModuleAuthor("Ophir Eyal")
     public void editBOHomePage(View view) {
 
-        switch (mode) {
-            case READ:
-                findViewById(R.id.image_upload).setVisibility(View.VISIBLE);
-                final TextView bo_name = fragment_view.findViewById(R.id.business_name);
-                final TextView bo_desc = fragment_view.findViewById(R.id.business_description);
-                bo_name.setVisibility(View.INVISIBLE);
-                bo_desc.setVisibility(View.INVISIBLE);
-                final EditText bo_name_edit = fragment_view.findViewById(R.id.business_name_edit);
-                final EditText bo_desc_edit = fragment_view.findViewById(R.id.business_description_edit);
-                bo_name_edit.setText(bo_name.getText());
-                bo_desc_edit.setText(bo_desc.getText());
-                bo_name_edit.setVisibility(View.VISIBLE);
-                bo_desc_edit.setVisibility(View.VISIBLE);
-                mode = BOBusinessHomePage.Mode.EDIT;
-                break;
-            case EDIT:
-                loader.uploadBusinessFromFB();
-                findViewById(R.id.image_upload).setVisibility(View.INVISIBLE);
-                fragment_view.findViewById(R.id.business_name).setVisibility(View.VISIBLE);
-                fragment_view.findViewById(R.id.business_description).setVisibility(View.VISIBLE);
-                fragment_view.findViewById(R.id.business_name_edit).setVisibility(View.INVISIBLE);
-                fragment_view.findViewById(R.id.business_description_edit).setVisibility(View.INVISIBLE);
-                mode = BOBusinessHomePage.Mode.READ;
-                break;
-        }
+        // TODO: change this back, and move this code section to a different method
+        final Intent intent = new Intent(getBaseContext(),BusinessSchedule.class);
+        startActivity(intent);
+
+//        switch (mode) {
+//            case READ:
+//                findViewById(R.id.image_upload).setVisibility(View.VISIBLE);
+//                final TextView bo_name = fragment_view.findViewById(R.id.business_name);
+//                final TextView bo_desc = fragment_view.findViewById(R.id.business_description);
+//                bo_name.setVisibility(View.INVISIBLE);
+//                bo_desc.setVisibility(View.INVISIBLE);
+//                final EditText bo_name_edit = fragment_view.findViewById(R.id.business_name_edit);
+//                final EditText bo_desc_edit = fragment_view.findViewById(R.id.business_description_edit);
+//                bo_name_edit.setText(bo_name.getText());
+//                bo_desc_edit.setText(bo_desc.getText());
+//                bo_name_edit.setVisibility(View.VISIBLE);
+//                bo_desc_edit.setVisibility(View.VISIBLE);
+//                mode = BOBusinessHomePage.Mode.EDIT;
+//                break;
+//            case EDIT:
+//                loader.uploadBusinessFromFB();
+//                findViewById(R.id.image_upload).setVisibility(View.INVISIBLE);
+//                fragment_view.findViewById(R.id.business_name).setVisibility(View.VISIBLE);
+//                fragment_view.findViewById(R.id.business_description).setVisibility(View.VISIBLE);
+//                fragment_view.findViewById(R.id.business_name_edit).setVisibility(View.INVISIBLE);
+//                fragment_view.findViewById(R.id.business_description_edit).setVisibility(View.INVISIBLE);
+//                mode = BOBusinessHomePage.Mode.READ;
+//                break;
+//        }
     }
 
     /**
