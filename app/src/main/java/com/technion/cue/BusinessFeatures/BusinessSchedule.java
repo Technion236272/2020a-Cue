@@ -7,9 +7,7 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.widget.CalendarView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.technion.cue.R;

@@ -48,11 +48,13 @@ public class BusinessScheduleMonth extends Fragment {
 //                    BusinessSchedule.class);
 //            intent.putExtras(b);
 //            getActivity().startActivity(intent);
-//            getActivity().getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.business_schedule, bsd)
-//                    .addToBackStack(null)
-//                    .commit();
+            getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.INVISIBLE);
+            getActivity().getSupportFragmentManager()
+                    .beginTransaction()
+                    .remove(this)
+                    .replace(R.id.business_schedule, bsd)
+                    .addToBackStack(null)
+                    .commit();
         });
     }
 }

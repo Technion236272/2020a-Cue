@@ -104,6 +104,7 @@ public class BusinessScheduleDay extends Fragment {
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
+        getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.VISIBLE);
     }
 
     private class DailyAppointmentListAdapter extends
@@ -161,6 +162,6 @@ public class BusinessScheduleDay extends Fragment {
                 type = itemView.findViewById(R.id.BO_list_appointment_type);
             }
         }
-}
+    }
 }
 
