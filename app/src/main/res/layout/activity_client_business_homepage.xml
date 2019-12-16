@@ -6,9 +6,19 @@
     android:layout_height="match_parent"
     tools:context=".ClientFeatures.ClientBusinessHomepage">
 
-    <fragment android:name="com.technion.cue.BusinessFeatures.BusinessInfoFragment"
-        android:id="@+id/business_info"
+    <FrameLayout
+        android:id="@+id/fragment_holder_business_client"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/switch_to_date_time_fragments"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:contentDescription="Schedule an appointment"
+        android:text="Schedule an appointment"
+        android:layout_below="@id/fragment_holder_business_client"
+        android:layout_margin="20dp"
+        android:layout_centerHorizontal="true"/>
 
 </RelativeLayout>

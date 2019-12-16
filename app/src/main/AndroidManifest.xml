@@ -9,7 +9,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BusinessFeatures.BusinessScheduleDay"></activity>
+        <activity android:name=".ClientFeatures.ClientChooseTimeFragment"></activity>
+        <activity android:name=".ClientFeatures.ClientChooseDateFragment" />
+        <activity android:name=".BusinessFeatures.BusinessScheduleDay" />
         <activity android:name=".BusinessFeatures.BusinessSchedule" />
         <activity android:name=".ClientFeatures.ClientBusinessHomepage" />
         <activity android:name=".SignInActivity">

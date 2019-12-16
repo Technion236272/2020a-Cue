@@ -2,7 +2,9 @@ package com.technion.cue.ClientFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +43,8 @@ public class ClientHomePage extends AppCompatActivity {
     private void setUpRecycleAppointmentAView() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         Query query = db.collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("client_id", currentUser.getUid());
+                .whereEqualTo("client_id", currentUser.getUid())
+                .orderBy("date");
         FirestoreRecyclerOptions<Appointment> options =
                 new FirestoreRecyclerOptions.Builder<Appointment>()
                         .setQuery(query, Appointment.class)
@@ -85,5 +88,14 @@ public class ClientHomePage extends AppCompatActivity {
         super.onStop();
         appointmentAdapter.stopListening();
         favoriteAdapter.stopListening();
+    }
+
+    public void goToBusiness(View view) {
+        String business = "IfEInm3cpkcfYe9JQXZgvXWKJ5B2";
+        Bundle b = new Bundle();
+        b.putString("business", business);
+        Intent intent = new Intent(getBaseContext(), ClientBusinessHomepage.class);
+        intent.putExtras(b);
+        startActivity(intent);
     }
 }

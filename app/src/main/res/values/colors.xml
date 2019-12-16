@@ -7,7 +7,7 @@
     <color name="ColorSecondaryLight">#ffc4ff</color>
     <color name="ColorSecondaryDark">#9c64a6</color>
     <color name="TextColorPrimary">#000000</color>
-    <color name="TextColorSecondary">#000000</color>
+    <color name="TextColorSecondary">#99000000</color>
 </resources>
 
 
