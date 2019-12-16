@@ -36,14 +36,23 @@ public class MyAppointmentListAdapter extends
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
         holder.date.setText(sdf.format(appointment.date));
         FirebaseFirestore.getInstance()
-                .collection(BUSINESSES_COLLECTION)
+                .collection(BUSINESSES_COLLECTION)g
                 .document(appointment.business_id)
                 .get()
                 .addOnSuccessListener(l -> {
                     holder.business.setText(l.getString("business_name"));
                 });
+        FirebaseFirestore.getInstance()
+                .collection(BUSINESSES_COLLECTION)
+                .document(appointment.business_id)
+                .collection(TYPES_COLLECTION)
+                .document(appointment.type)
+                .get()
+                .addOnSuccessListener(l -> {
+                    holder.type.setText(l.getString("name"));
+                });
             holder.notes.setText(appointment.notes);
-            holder.type.setText(appointment.type);
+
     }
 
     @NonNull
