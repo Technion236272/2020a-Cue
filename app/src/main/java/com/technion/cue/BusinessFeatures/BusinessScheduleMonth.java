@@ -44,10 +44,6 @@ public class BusinessScheduleMonth extends Fragment {
             b.putInt("day", day);
             Fragment bsd = new BusinessScheduleDay();
             bsd.setArguments(b);
-//            Intent intent = new Intent(getActivity().getBaseContext(),
-//                    BusinessSchedule.class);
-//            intent.putExtras(b);
-//            getActivity().startActivity(intent);
             getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.INVISIBLE);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
