@@ -18,4 +18,12 @@ public class Appointment {
         this.notes = notes;
         this.date = ts.toDate();
     }
+
+    public Appointment(String business_id, String client_id,
+                       String type, Date d) {
+        this.business_id = business_id;
+        this.client_id = client_id;
+        this.type = type;
+        this.date = d;
+    }
 }

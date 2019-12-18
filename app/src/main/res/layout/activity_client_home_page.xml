@@ -19,6 +19,15 @@
 
 
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/business_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="25dp"
+        app:srcCompat="@drawable/ic_person_outline_black_24dp"
+        android:onClick="goToBusiness" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myFavoriteList"
         android:layout_width="match_parent"

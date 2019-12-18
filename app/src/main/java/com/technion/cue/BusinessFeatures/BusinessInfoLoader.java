@@ -31,15 +31,15 @@ class BusinessInfoLoader {
     private View view;
     private FirebaseFirestore db;
     private Business business;
-    private FirebaseUser currentUser;
     private Task businessLoadTask;
+    private String business_id;
 
-    BusinessInfoLoader(View view, FirebaseFirestore db, FirebaseUser currentUser) {
+    BusinessInfoLoader(View view, FirebaseFirestore db, String business_to_fetch) {
         this.view = view;
         this.db = db;
-        this.currentUser = currentUser;
+        this.business_id = business_to_fetch;
         businessLoadTask = db.collection(BUSINESSES_COLLECTION)
-                .document(currentUser.getUid())
+                .document(business_id)
                 .get()
                 .addOnSuccessListener(documentSnapshot ->
                         business = documentSnapshot.toObject(Business.class));
@@ -61,7 +61,7 @@ class BusinessInfoLoader {
 
         Tasks.whenAll(businessLoadTask).addOnCompleteListener(task -> {
             final StorageReference logosRef = FirebaseStorage.getInstance().getReference()
-                    .child("business_logos/" + currentUser.getUid() + new Random().nextInt());
+                    .child("business_logos/" + business_id + new Random().nextInt());
             UploadTask uploadTask = logosRef.putFile(Objects.requireNonNull(data.getData()));
 
             // Register observers to listen for when the download is done or if it fails
@@ -86,7 +86,7 @@ class BusinessInfoLoader {
 
     private void updateBusiness() {
         final DocumentReference bo_doc =
-                db.collection(BUSINESSES_COLLECTION).document(currentUser.getUid());
+                db.collection(BUSINESSES_COLLECTION).document(business_id);
         bo_doc.get().addOnSuccessListener(documentSnapshot -> bo_doc.set(business));
     }
 
@@ -135,9 +135,9 @@ class BusinessInfoLoader {
      * uploads business data (after changes) to Firebase database
      */
     @ModuleAuthor("Ophir Eyal")
-    void uploadBusinessFromFB() {
+    void downloadBusinessFromFB() {
         DocumentReference bo_doc =
-                db.collection(BUSINESSES_COLLECTION).document(currentUser.getUid());
+                db.collection(BUSINESSES_COLLECTION).document(business_id);
         bo_doc.get().addOnSuccessListener(documentSnapshot -> {
             final EditText name_edit = view.findViewById(R.id.business_name_edit);
             final EditText desc_edit = view.findViewById(R.id.business_description_edit);

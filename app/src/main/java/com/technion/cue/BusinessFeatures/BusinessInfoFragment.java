@@ -32,9 +32,15 @@ public class BusinessInfoFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        String business_to_fetch;
+        if (getArguments() != null) {
+            business_to_fetch = getArguments().getString("business");
+        } else {
+            business_to_fetch = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        }
         loader = new BusinessInfoLoader(view,
                 FirebaseFirestore.getInstance(),
-                FirebaseAuth.getInstance().getCurrentUser());
+                business_to_fetch);
         loader.loadDataFromFB();
     }
 }
