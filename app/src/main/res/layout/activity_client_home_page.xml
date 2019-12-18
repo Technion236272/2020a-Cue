@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,30 +7,46 @@
     tools:context=".ClientFeatures.ClientHomePage"
     android:orientation="vertical">
 
+
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/my_toolbar"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_alignParentTop="true"
         app:title="My Appointments"
-
         android:background="@color/colorPrimaryDark"
-        android:elevation="4dp"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" />
+        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myFavoriteList"
         android:layout_width="match_parent"
-        android:layout_height="125dp"
-        android:background="@color/ColorSecondaryLight"
+        android:layout_height="wrap_content"
+        android:background="@color/colorPrimaryLight"
         android:scrollbars="horizontal"
-        />
+        android:layout_below="@id/my_toolbar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myAppointmentList"
         android:scrollbars="vertical"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/colorPrimary"/>
+        android:layout_height="wrap_content"
+        android:layout_below="@id/myFavoriteList"
+        android:background="@color/colorPrimary"
+      />
 
 
-</LinearLayout>
+
+
+    <com.google.android.material.bottomnavigation.BottomNavigationView
+        android:id="@+id/bottom_navigation"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="34dp"
+        app:menu="@menu/client_main_menu"
+        app:itemBackground="@color/colorPrimaryLight"
+        app:labelVisibilityMode="unlabeled"
+        app:itemIconTint="@color/secondaryColor" />
+
+</RelativeLayout>

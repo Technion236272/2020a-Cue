@@ -1,13 +1,20 @@
 package com.technion.cue.ClientFeatures;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.os.Bundle;
 
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
+
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.auth.FirebaseAuth;
@@ -15,6 +22,13 @@ import com.google.firebase.auth.FirebaseUser;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Client;
+
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.content.Intent;
+import android.widget.Toast;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 
@@ -31,6 +45,33 @@ public class ClientHomePage extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home_page);
+
+    //     Menu listener
+        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                switch (item.getItemId()) {
+                    case R.id.action_recents:
+                        Toast.makeText(ClientHomePage.this, "Recents", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_favorites:
+                        Toast.makeText(ClientHomePage.this, "Favorites", Toast.LENGTH_SHORT).show();
+                        break;
+                    case R.id.action_nearby:
+                        Toast.makeText(ClientHomePage.this, "Nearby", Toast.LENGTH_SHORT).show();
+                        break;
+                }
+                return true;
+            }
+        });
+        // --
+        BottomNavigationItemView currentButton = findViewById(R.id.action_recents);
+        currentButton.setClickable(false);
+        currentButton.setItemBackground(R.color.ColorSecondaryDark);
+
+
+
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
 
@@ -76,8 +117,9 @@ public class ClientHomePage extends AppCompatActivity {
 
     protected void onStart() {
         super.onStart();
-        appointmentAdapter.startListening();
         favoriteAdapter.startListening();
+        appointmentAdapter.startListening();
+
     }
 
     @Override
@@ -85,5 +127,26 @@ public class ClientHomePage extends AppCompatActivity {
         super.onStop();
         appointmentAdapter.stopListening();
         favoriteAdapter.stopListening();
+    }
+
+    public void moveToBOPage(View view) {
+        Intent getIntentBOPage = new Intent(this, ClientBusinessHomepage.class);
+        getIntentBOPage.putExtra("business_id",(String)view.findViewById(R.id.businessName).getTag());
+        startActivity(getIntentBOPage);
+    }
+
+    public void appoitmentEdit(View view) {
+        Intent getIntentBOPage = new Intent(this, ClientAppointmentPage.class);
+        // TODO: CHECK IF getTag is null
+        getIntentBOPage.putExtra("appointment_id",(String)view.findViewById(R.id.business).getTag());
+        startActivity(getIntentBOPage);
+    }
+
+    // - menu - ben 17.12
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.client_main_menu, menu);
+        return true;
     }
 }

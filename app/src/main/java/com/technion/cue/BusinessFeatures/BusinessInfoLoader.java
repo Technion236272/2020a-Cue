@@ -101,10 +101,12 @@ class BusinessInfoLoader {
     private void loadInfoFromFB() {
 
         Tasks.whenAll(businessLoadTask).addOnCompleteListener(task -> {
-            TextView name = view.findViewById(R.id.business_name);
-            TextView desc = view.findViewById(R.id.business_description);
-            name.setText(business.business_name);
-            desc.setText(business.description);
+            if (task.getResult()!=null) { // ben - 17/12
+                TextView name = view.findViewById(R.id.business_name);
+                TextView desc = view.findViewById(R.id.business_description);
+                name.setText(business.business_name);
+                desc.setText(business.description);
+            }
         });
 
     }
@@ -119,7 +121,7 @@ class BusinessInfoLoader {
         Tasks.whenAll(businessLoadTask).addOnCompleteListener(task -> {
             CircularImageView logo = view.findViewById(R.id.business_logo);
             StorageReference logoRef = null;
-            if (!business.logo_path.equals("")) {
+            if (business!=null && !business.logo_path.equals("")) { // ben - adding checking if null
                 logoRef = FirebaseStorage.getInstance().getReference().child(getLogoPath());
             }
             Glide.with(logo.getContext())

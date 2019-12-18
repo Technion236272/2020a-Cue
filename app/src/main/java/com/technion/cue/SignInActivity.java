@@ -110,6 +110,7 @@ public class SignInActivity extends AppCompatActivity {
     private void startClientHomepage() {
         // open up client homepage, if he was found
         startActivity(new Intent(getBaseContext(), ClientHomePage.class));
+
         finish();
     }
 
@@ -119,8 +120,14 @@ public class SignInActivity extends AppCompatActivity {
                     .document(uid)
                     .get()
                     .addOnSuccessListener(l -> {
-                        startActivity(new Intent(getBaseContext(), BOBusinessHomePage.class));
-                        finish();
+                        if (l.exists()) {
+                            startActivity(new Intent(getBaseContext(), BOBusinessHomePage.class));
+                            finish();
+                        } else {
+                            Toast.makeText(SignInActivity.this,
+                                    "Authentication failed : Email us your username.##", // - ben - 17/12 - when user is not client and not bo
+                                    Toast.LENGTH_LONG).show();
+                        }
                     }).addOnFailureListener(l ->
                     Toast.makeText(SignInActivity.this,
                             "Authentication failed.##",

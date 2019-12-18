@@ -29,6 +29,7 @@ public class MyAppointmentListAdapter extends
             holder.date.setText(model.date.toString());
             holder.notes.setText(model.notes);
             holder.type.setText(model.type);
+            holder.business.setTag(model.business_id); // -- ben - 18.12
     }
 
     @NonNull

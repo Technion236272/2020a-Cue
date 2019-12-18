@@ -1,5 +1,6 @@
 package com.technion.cue.ClientFeatures;
 
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,15 +45,18 @@ public class MyFavoriteListAdapter extends
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
                             holder.businessName.setText(document.getString("business_name"));
+                            holder.businessName.setTag(model.business_id);// ben - 18.12
                             StorageReference sRef = FirebaseStorage.getInstance()
                                     .getReference()
                                     .child((Objects.requireNonNull(document.getString("logo_path"))));
                             Glide.with(holder.logo.getContext())
                                     .load(sRef)
                                     .into(holder.logo);
+                            holder.itemView.setTag(model.business_id);
                         }
                     }
                 });
+
     }
 
     @NonNull
@@ -73,5 +77,8 @@ public class MyFavoriteListAdapter extends
             businessName = itemView.findViewById(R.id.businessName);
             logo = itemView.findViewById(R.id.businessLogo);
         }
+
     }
+
+
 }
