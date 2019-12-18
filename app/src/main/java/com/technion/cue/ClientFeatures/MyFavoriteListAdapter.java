@@ -68,6 +68,8 @@ public class MyFavoriteListAdapter extends
         return new itemHolder(v);
     }
 
+
+
     class itemHolder extends RecyclerView.ViewHolder {
         TextView businessName;
         CircularImageView logo;

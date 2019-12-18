@@ -34,15 +34,13 @@ public class MyAppointmentListAdapter extends
     protected void onBindViewHolder(@NonNull itemHolder holder, int position, @NonNull Appointment appointment) {
             // TODO: the texts should be the business & type names. currently, their document ids will be displayed
 
-            holder.business.setText(model.business_id);
-            holder.date.setText(model.date.toString());
-            holder.notes.setText(model.notes);
-            holder.type.setText(model.type);
-            holder.business.setTag(model.business_id); // -- ben - 18.12
+
+        holder.business.setTag(appointment.business_id);
+
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
         holder.date.setText(sdf.format(appointment.date));
         FirebaseFirestore.getInstance()
-                .collection(BUSINESSES_COLLECTION)g
+                .collection(BUSINESSES_COLLECTION)
                 .document(appointment.business_id)
                 .get()
                 .addOnSuccessListener(l -> {

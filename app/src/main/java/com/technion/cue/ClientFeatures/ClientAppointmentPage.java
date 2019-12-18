@@ -13,6 +13,6 @@ public class ClientAppointmentPage extends AppCompatActivity {
         setContentView(R.layout.activity_client_appointment_page);
         Intent intent = getIntent();
         String a_id = intent.getExtras().getString("appointment_id"); //  appointment id
-        System.out.println("------- test " + a_id +  "---------------------" );
+        //System.out.println("------- test " + a_id +  "---------------------" );
     }
 }

@@ -14,6 +14,7 @@
         <activity android:name=".BusinessFeatures.BusinessScheduleDay" />
         <activity android:name=".BusinessFeatures.BusinessSchedule" />
         <activity android:name=".ClientFeatures.ClientBusinessHomepage" />
+        <activity android:name=".ClientFeatures.ClientAppointmentPage" />
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

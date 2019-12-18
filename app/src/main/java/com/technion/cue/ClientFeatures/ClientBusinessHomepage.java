@@ -18,17 +18,15 @@ import com.technion.cue.annotations.ModuleAuthor;
 
 @ModuleAuthor("Ben")
 public class ClientBusinessHomepage extends AppCompatActivity {
-
-    private String business_to_display;
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_business_homepage);
-        Intent intent = getIntent();
-        String b_id = intent.getExtras().getString("business_id"); //  business id
+        // getting the b_id from client home page
+
         findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
-        business_to_display = getIntent().getExtras().getString("business");
         Bundle b = getIntent().getExtras();
         Fragment f = new BusinessInfoFragment();
         f.setArguments(b);

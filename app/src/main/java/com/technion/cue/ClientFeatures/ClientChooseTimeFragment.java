@@ -49,7 +49,7 @@ public class ClientChooseTimeFragment extends Fragment {
         int mMinute = mcurrentDate.get(Calendar.MINUTE);
         TimePickerDialog tpd = new TimePickerDialog(getContext(), (view, hourOfDay, minute) -> {
             Bundle b = getArguments();
-            business_id = b.getString("business");
+            business_id = b.getString("business_id");
 
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             try {

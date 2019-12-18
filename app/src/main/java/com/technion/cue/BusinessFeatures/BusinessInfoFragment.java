@@ -34,7 +34,7 @@ public class BusinessInfoFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         String business_to_fetch;
         if (getArguments() != null) {
-            business_to_fetch = getArguments().getString("business");
+            business_to_fetch = getArguments().getString("business_id");
         } else {
             business_to_fetch = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }

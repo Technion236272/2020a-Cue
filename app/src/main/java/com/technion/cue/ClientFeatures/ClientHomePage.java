@@ -3,16 +3,11 @@ package com.technion.cue.ClientFeatures;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-<<<<<<< HEAD
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-=======
+
 import android.content.Intent;
->>>>>>> 09a1c1c91242141adb5a5a269f7860c8a48b1356
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -31,8 +26,7 @@ import com.technion.cue.data_classes.Client;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.content.Intent;
+
 import android.widget.Toast;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
@@ -139,6 +133,7 @@ public class ClientHomePage extends AppCompatActivity {
     public void moveToBOPage(View view) {
         Intent getIntentBOPage = new Intent(this, ClientBusinessHomepage.class);
         getIntentBOPage.putExtra("business_id",(String)view.findViewById(R.id.businessName).getTag());
+     //   System.out.println("--------------------------------  "+view.findViewById(R.id.businessName).getTag()+" -----------------------");
         startActivity(getIntentBOPage);
     }
 
@@ -149,6 +144,7 @@ public class ClientHomePage extends AppCompatActivity {
         startActivity(getIntentBOPage);
     }
 
+
     // - menu - ben 17.12
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -156,14 +152,4 @@ public class ClientHomePage extends AppCompatActivity {
         inflater.inflate(R.menu.client_main_menu, menu);
         return true;
     }
-//=======
-//    public void goToBusiness(View view) {
-//        String business = "IfEInm3cpkcfYe9JQXZgvXWKJ5B2";
-//        Bundle b = new Bundle();
-//        b.putString("business", business);
-//        Intent intent = new Intent(getBaseContext(), ClientBusinessHomepage.class);
-//        intent.putExtras(b);
-//        startActivity(intent);
-//>>>>>>> 09a1c1c91242141adb5a5a269f7860c8a48b1356
-//    }
 }
