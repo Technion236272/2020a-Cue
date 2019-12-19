@@ -14,6 +14,15 @@
     <string name="button_signup">SIGN UP</string>
     <string name="bo_sign_up_text">Join Our Community</string>
     <string name="business_name">Business Name</string>
+    <string name="default_num">10</string>
+    <string name="minutes">Minutes before</string>
+    <string name="hours">Hours before</string>
+    <string name="days">Days before</string>
+    <string name="weeks">Weeks before</string>
+    <string name="button_save">Save</string>
+    <string name="fake_settings_button">Fake Settings</string>
+    <string name="save_settings">Save</string>
+    <string name="cancel_settings">Cancel</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

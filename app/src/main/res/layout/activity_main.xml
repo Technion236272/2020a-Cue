@@ -65,5 +65,11 @@
         android:text="@string/business_join"
         android:layout_gravity="center"/>
 
+    <Button
+        android:id="@+id/fake_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/fake_settings_button" />
 
 </LinearLayout>

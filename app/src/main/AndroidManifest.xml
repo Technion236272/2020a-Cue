@@ -15,6 +15,7 @@
         <activity android:name=".BusinessFeatures.BusinessSchedule" />
         <activity android:name=".ClientFeatures.ClientBusinessHomepage" />
         <activity android:name=".ClientFeatures.ClientAppointmentPage" />
+        <activity android:name=".Settings"/>
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -26,6 +27,7 @@
         <activity android:name=".BusinessFeatures.BusinessSignUp" />
         <activity android:name=".ClientFeatures.ClientSignUp" />
         <activity android:name=".ClientFeatures.ClientHomePage" />
+
     </application>
 
 </manifest>

@@ -86,5 +86,8 @@ dependencies {
     implementation 'de.hdodenhof:circleimageview:3.0.1'
     implementation 'com.google.android.material:material:1.2.0-alpha02'
 
+    implementation "androidx.legacy:legacy-preference-v14:1.0.0"
+    implementation "androidx.preference:preference:1.0.0"
+
 }
 apply plugin: 'com.google.gms.google-services'
