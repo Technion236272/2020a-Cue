@@ -13,10 +13,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Client;
 
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
+@ModuleAuthor("Topaz")
 public class ClientSignUp extends AppCompatActivity {
     FirebaseAuth mAuth;
     private static final String TAG = "ClientSignUpActivity";

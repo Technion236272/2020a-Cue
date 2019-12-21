@@ -12,10 +12,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
 import static com.technion.cue.FirebaseCollections.*;
 
+@ModuleAuthor("Topaz")
 public class BusinessSignUp extends AppCompatActivity {
 
     FirebaseAuth mAuth;

@@ -24,5 +24,11 @@
         android:summary="How much time to remind client before a meeting"
         android:icon="@drawable/send_reminder" />
 
+    <Preference
+        android:id="@+id/credits"
+        android:key="credits"
+        android:title="Credits"
+        android:icon="@drawable/ic_help" />
+
 
 </PreferenceScreen>

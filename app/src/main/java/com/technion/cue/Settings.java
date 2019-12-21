@@ -8,6 +8,7 @@ import androidx.preference.PreferenceFragmentCompat;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.LayoutInflater;
@@ -22,9 +23,11 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.technion.cue.annotations.ModuleAuthor;
 
 import java.util.Set;
 
+@ModuleAuthor("Topaz")
 public class Settings extends AppCompatActivity {
     private RadioGroup radioGroup;
 
@@ -65,7 +68,7 @@ public class Settings extends AppCompatActivity {
 
                 //for sprint2
 
-                return true;
+
             }
 
             if (p.getKey().equals("time frame")) {
@@ -95,7 +98,7 @@ public class Settings extends AppCompatActivity {
 
                                     Toast t = Toast.makeText(MySettingsFragment.super.getContext(), "Please enter a number and choose", Toast.LENGTH_LONG);
                                     t.show();
-                                    //Todo: how to block people from not choose and press save?9
+                                    //Todo: how to block people from not choose and press save?
                                 } else {
                                     //Todo: put the values inside the settings map.
 
@@ -166,6 +169,14 @@ public class Settings extends AppCompatActivity {
                         });
                 AlertDialog dialog = builder.create();
                 dialog.show();
+            }
+
+            if (p.getKey().equals("credits")) {
+
+                final Intent intent = new Intent(MySettingsFragment.super.getContext(), Credits.class);
+                startActivity(intent);
+
+
             }
             return true;
         }
