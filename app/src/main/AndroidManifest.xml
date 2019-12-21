@@ -9,13 +9,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ClientFeatures.ClientChooseTimeFragment"></activity>
+        <activity android:name=".BusinessFeatures.BusinessScheduleWeek"></activity>
+        <activity android:name=".ClientFeatures.ClientChooseTimeFragment" />
         <activity android:name=".ClientFeatures.ClientChooseDateFragment" />
         <activity android:name=".BusinessFeatures.BusinessScheduleDay" />
         <activity android:name=".BusinessFeatures.BusinessSchedule" />
         <activity android:name=".ClientFeatures.ClientBusinessHomepage" />
         <activity android:name=".ClientFeatures.ClientAppointmentPage" />
-        <activity android:name=".Settings"/>
+        <activity android:name=".Settings" />
         <activity android:name=".SignInActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -27,7 +28,6 @@
         <activity android:name=".BusinessFeatures.BusinessSignUp" />
         <activity android:name=".ClientFeatures.ClientSignUp" />
         <activity android:name=".ClientFeatures.ClientHomePage" />
-
     </application>
 
 </manifest>

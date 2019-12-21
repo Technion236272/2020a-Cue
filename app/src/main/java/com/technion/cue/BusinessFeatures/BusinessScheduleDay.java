@@ -107,7 +107,7 @@ public class BusinessScheduleDay extends Fragment {
         getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.VISIBLE);
     }
 
-    private class DailyAppointmentListAdapter extends
+    static class DailyAppointmentListAdapter extends
             FirestoreRecyclerAdapter<Appointment, DailyAppointmentListAdapter.itemHolder> {
 
 
