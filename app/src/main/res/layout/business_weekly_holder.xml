@@ -3,19 +3,38 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="15dp">
+    android:layout_margin="15dp" >
 
-    <TextView
-        android:id="@+id/day_of_the_week"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/appointment_list_for_day"
-        android:scrollbars="vertical"
+    <RelativeLayout
+        android:id="@+id/week_day_item"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/day_of_the_week">
-    </androidx.recyclerview.widget.RecyclerView>
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp" >
+        <TextView
+            android:id="@+id/day_of_the_week"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="24sp"
+            android:layout_marginTop="6dp"
+            android:textColor="@color/TextOnBackground" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/appointment_list_for_day"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@id/day_of_the_week">
+        </androidx.recyclerview.widget.RecyclerView>
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/week_day_divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@drawable/week_list_divider"
+        android:layout_below="@id/week_day_item" />
 
 </RelativeLayout>

@@ -10,6 +10,7 @@
     <color name="TextColorSecondary">#ffffff</color>
     <color name="TextOnBackground">#000000</color>
     <color name="TextOnBackgroundDim">#aa000000</color>
+    <color name="TextOnBackgroundTransparent">#55000000</color>
 </resources>
 
 
