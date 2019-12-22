@@ -44,7 +44,7 @@ public class DailyAppointmentListAdapter extends
                                 boolean useDivider) {
         super(options);
         this.context = context;
-        this.useDivider = false;
+        this.useDivider = useDivider;
     }
 
     class itemHolder extends RecyclerView.ViewHolder {

@@ -11,6 +11,8 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -79,9 +81,6 @@ public class BusinessScheduleWeek extends Fragment {
             week_days.add(c.getTime());
         }
 
-        List<Task> task_list = new ArrayList<>();
-        List<Query> query_list = new ArrayList<>();
-        AtomicInteger size = new AtomicInteger();
         for (Date date : week_days) {
             c.setTime(date);
             c.set(Calendar.HOUR_OF_DAY, 0);
@@ -98,12 +97,6 @@ public class BusinessScheduleWeek extends Fragment {
                     .whereGreaterThanOrEqualTo("date", today)
                     .whereLessThan("date", nextDay)
                     .orderBy("date");
-            query_list.add(query);
-            task_list.add(query.get().addOnSuccessListener(l -> {
-                if (!l.isEmpty()) {
-                    size.getAndIncrement();
-                }
-            }));
             FirestoreRecyclerOptions<Appointment> options =
                     new FirestoreRecyclerOptions.Builder<Appointment>()
                             .setQuery(query, Appointment.class)
@@ -113,17 +106,9 @@ public class BusinessScheduleWeek extends Fragment {
             daily_adapters.put(date, daily_appointments_adapter);
         }
 
-        AtomicInteger completed = new AtomicInteger();
-        for (Task t : task_list) {
-            Tasks.whenAll(t).addOnSuccessListener(l -> {
-                completed.getAndIncrement();
-                if (completed.intValue() == NUMBER_OF_DAYS_IN_WEEK) {
-                    WeeklyAppointmentListAdapter mAdapter =
-                            new WeeklyAppointmentListAdapter(query_list, size.intValue());
-                    week_days_list.setAdapter(mAdapter);
-                }
-            });
-        }
+        WeeklyAppointmentListAdapter mAdapter =
+                new WeeklyAppointmentListAdapter();
+        week_days_list.setAdapter(mAdapter);
     }
 
     @Override
@@ -145,9 +130,6 @@ public class BusinessScheduleWeek extends Fragment {
     private class WeeklyAppointmentListAdapter extends
             RecyclerView.Adapter<WeeklyAppointmentListAdapter.ItemHolder> {
 
-        private final List<Query> queryList;
-        private List<Task> waitingTasks = new ArrayList<>();
-        int size;
 
         class ItemHolder extends RecyclerView.ViewHolder {
             TextView day_of_the_week;
@@ -156,13 +138,19 @@ public class BusinessScheduleWeek extends Fragment {
                 super(itemView);
                 this.day_of_the_week = itemView.findViewById(R.id.day_of_the_week);
                 this.item_view = itemView;
+                ImageView list_arrow = itemView.findViewById(R.id.list_arrow);
+                View week_day_header = itemView.findViewById(R.id.week_day_header);
+                week_day_header.setOnClickListener(l -> {
+                    View list = itemView.findViewById(R.id.appointment_list_for_day);
+                    if (list.getVisibility() == View.VISIBLE) {
+                        list.setVisibility(View.GONE);
+                        list_arrow.setImageResource(R.drawable.list_move_up);
+                    } else {
+                        list.setVisibility(View.VISIBLE);
+                        list_arrow.setImageResource(R.drawable.list_drop_down);
+                    }
+                });
             }
-        }
-
-        WeeklyAppointmentListAdapter(List<Query> queryList, int size) {
-            super();
-            this.size = size;
-            this.queryList = queryList;
         }
 
         @NonNull
@@ -176,33 +164,26 @@ public class BusinessScheduleWeek extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
 
-            queryList.get(position)
-                    .get()
-                    .addOnSuccessListener(queryDocumentSnapshots -> {
-                            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                            Date position_date = week_days.get(position);
-                            holder.day_of_the_week.setText(sdf.format(position_date));
-                            if (DateUtils.isToday(position_date.getTime())) {
-                                holder.day_of_the_week.setTextColor(getResources()
-                                        .getColor(R.color.ColorSecondaryLight));
-                            }
+            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/yyyy");
+            Date position_date = week_days.get(position);
+            if (DateUtils.isToday(position_date.getTime())) {
+                holder.day_of_the_week.setText("Today");
+                holder.day_of_the_week.setTextColor(getResources()
+                        .getColor(R.color.ColorSecondaryDark));
+            } else {
+                holder.day_of_the_week.setText(sdf.format(position_date));
+            }
 
-                            RecyclerView appointments_list =
-                                    holder.item_view.findViewById(R.id.appointment_list_for_day);
-                            layoutManager = new LinearLayoutManager(getContext());
-                            appointments_list.setLayoutManager(layoutManager);
-                            appointments_list.setAdapter(daily_adapters.get(position_date));
-                            if (queryDocumentSnapshots.isEmpty()) {
-                                holder.item_view
-                                        .findViewById(R.id.week_day_divider)
-                                        .setVisibility(View.GONE);
-                            }
-                        });
+            RecyclerView appointments_list =
+                    holder.item_view.findViewById(R.id.appointment_list_for_day);
+            layoutManager = new LinearLayoutManager(getContext());
+            appointments_list.setLayoutManager(layoutManager);
+            appointments_list.setAdapter(daily_adapters.get(position_date));
         }
 
         @Override
         public int getItemCount() {
-            return size;
+            return NUMBER_OF_DAYS_IN_WEEK;
         }
     }
 }
