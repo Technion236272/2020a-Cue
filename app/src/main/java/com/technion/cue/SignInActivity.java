@@ -45,12 +45,9 @@ public class SignInActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
 
         //delete when there will be a connection to the settings
-        button_fake_settings.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final Intent intent = new Intent(getBaseContext(), Settings.class);
-                startActivity(intent);
-            }
+        button_fake_settings.setOnClickListener(v -> {
+            final Intent intent = new Intent(getBaseContext(), Settings.class);
+            startActivity(intent);
         });
 
         // open up sign up activity for clients

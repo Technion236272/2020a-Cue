@@ -26,4 +26,17 @@ public class Appointment {
         this.type = type;
         this.date = d;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof Appointment) {
+            Appointment other = (Appointment)obj;
+            return (other.date == this.date || other.date.equals(this.date))
+                    && ((other.notes == this.notes) || other.notes.equals(this.notes))
+                    && (other.client_id == this.client_id || other.client_id.equals(this.client_id))
+                    && (other.business_id == this.business_id || other.business_id.equals(this.business_id))
+                    && (other.type == this.type || other.type.equals(this.type));
+        }
+        return false;
+    }
 }

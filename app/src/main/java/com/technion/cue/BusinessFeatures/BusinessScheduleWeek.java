@@ -42,6 +42,8 @@ import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
  */
 public class BusinessScheduleWeek extends Fragment {
 
+    private static int NUMBER_OF_DAYS_IN_WEEK = 7;
+
     private RecyclerView week_days_list;
     private RecyclerView.LayoutManager layoutManager;
 
@@ -84,14 +86,14 @@ public class BusinessScheduleWeek extends Fragment {
 
         for (Date date : week_days) {
             c.setTime(date);
-            c.add(Calendar.DATE, -1);
-            Date prevDate = c.getTime();
+            c.add(Calendar.DATE, 1);
+            Date nextDay = c.getTime();
 
             Query query = FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
                     .whereEqualTo("business_id",
                             FirebaseAuth.getInstance().getCurrentUser().getUid())
-                    .whereGreaterThanOrEqualTo("date", prevDate)
-                    .whereLessThan("date", date)
+                    .whereGreaterThanOrEqualTo("date", date)
+                    .whereLessThan("date", nextDay)
                     .orderBy("date");
             FirestoreRecyclerOptions<Appointment> options =
                     new FirestoreRecyclerOptions.Builder<Appointment>()
@@ -161,7 +163,7 @@ public class BusinessScheduleWeek extends Fragment {
 
         @Override
         public int getItemCount() {
-            return 7;
+            return NUMBER_OF_DAYS_IN_WEEK;
         }
     }
 }
