@@ -27,6 +27,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import android.widget.TextView;
 import android.widget.Toast;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
@@ -139,8 +140,18 @@ public class ClientHomePage extends AppCompatActivity {
 
     public void appoitmentEdit(View view) {
         Intent getIntentBOPage = new Intent(this, ClientAppointmentPage.class);
-        // TODO: CHECK IF getTag is null
+        // TODO: start using appointmet object !!! - refactoring later.
         getIntentBOPage.putExtra("appointment_id",(String)view.findViewById(R.id.business).getTag());
+        TextView tv = view.findViewById(R.id.business);
+        TextView typeView = view.findViewById(R.id.type);
+        TextView dateView = view.findViewById(R.id.date);
+        TextView notesView = view.findViewById(R.id.notes);
+        getIntentBOPage.putExtra("business_name",tv.getText());
+        getIntentBOPage.putExtra("appointment_type",typeView.getText());
+        getIntentBOPage.putExtra("appointment_date",dateView.getText());
+        getIntentBOPage.putExtra("appointment_notes",notesView.getText());
+
+
         startActivity(getIntentBOPage);
     }
 
