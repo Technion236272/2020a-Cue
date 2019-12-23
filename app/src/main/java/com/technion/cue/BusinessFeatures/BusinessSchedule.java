@@ -66,9 +66,9 @@ public class BusinessSchedule extends FragmentActivity {
                 case "This Month":
                     return new BusinessScheduleMonth();
                 case "Recent Changes":
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleFragmentPlaceholder();
                 default:
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleFragmentPlaceholder();
             }
         }
 

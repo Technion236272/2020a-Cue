@@ -18,7 +18,9 @@ import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -59,7 +61,7 @@ public class DailyAppointmentListAdapter extends
             date = itemView.findViewById(R.id.BO_list_date);
             type = itemView.findViewById(R.id.BO_list_appointment_type);
             flag = itemView.findViewById(R.id.current_appointment_flag);
-            if (getItemCount() == 1 || !useDivider) {
+            if (getItemCount() <= 1 || !useDivider) {
                 itemView.findViewById(R.id.divider).setVisibility(View.GONE);
             }
         }
@@ -95,10 +97,6 @@ public class DailyAppointmentListAdapter extends
                     holder.client.setText(l.getString("name"));
                 });
 
-        // TODO: make it so the flag appear near the current appointment -
-        //  currently, it appears near the closest (last) appointment, which is not necessarily
-        //  the current appointment.
-        //  This should be corrected with a setting declaring how long the appointment is
         Date currentTime = new Date(System.currentTimeMillis());
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
@@ -110,7 +108,31 @@ public class DailyAppointmentListAdapter extends
                     if (!l.isEmpty()) {
                         Appointment a = l.getDocuments().get(0).toObject(Appointment.class);
                         if (a.equals(appointment)) {
-                            holder.flag.setVisibility(View.VISIBLE);
+                            FirebaseFirestore.getInstance()
+                                    .collection(BUSINESSES_COLLECTION)
+                                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .collection(TYPES_COLLECTION)
+                                    .document(appointment.type)
+                                    .get()
+                                    .addOnSuccessListener(documentSnapshot -> {
+                                        Map<String, String> attributes =
+                                                (Map<String, String>)documentSnapshot
+                                                        .get("attributes");
+                                        Calendar c = Calendar.getInstance();
+                                        c.setTime(a.date);
+                                        c.add(Calendar.MINUTE,
+                                                Integer.valueOf(attributes.get("duration")));
+                                        if (c.getTime().getTime() >= currentTime.getTime())
+                                            holder.flag.setVisibility(View.VISIBLE);
+                                        else {
+                                            holder.type.setTextColor(context.getResources()
+                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                            holder.client.setTextColor(context.getResources()
+                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                            holder.date.setTextColor(context.getResources()
+                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                        }
+                                    });
                         } else if (appointment.date.getTime() < currentTime.getTime()) {
                             holder.type.setTextColor(context.getResources()
                                     .getColor(R.color.TextOnBackgroundTransparent));

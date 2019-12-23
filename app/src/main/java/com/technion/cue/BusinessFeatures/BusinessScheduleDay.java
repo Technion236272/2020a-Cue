@@ -75,7 +75,8 @@ public class BusinessScheduleDay extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         appointments_list.setLayoutManager(layoutManager);
 
-        Query query = FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
+        Query query = FirebaseFirestore.getInstance()
+                .collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("business_id",
                         FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .whereGreaterThanOrEqualTo("date", currentDay)

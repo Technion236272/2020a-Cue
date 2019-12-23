@@ -3,10 +3,15 @@
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/colorSecondary</item>
+        <item name="colorSecondary">@color/ColorSecondary</item>
         <item name="colorOnBackground">@color/TextOnBackground</item>
         <item name="colorOnPrimary">@color/TextColorPrimary</item>
         <item name="colorOnSecondary">@color/TextColorSecondary</item>
+    </style>
+
+    <style name="calendarText" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:textColor">@color/TextOnBackground</item>
+        <item name="android:textSize">18sp</item>
     </style>
 
 </resources>
