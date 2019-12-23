@@ -23,12 +23,14 @@
     <string name="fake_settings_button">Fake Settings</string>
     <string name="save_settings">Save</string>
     <string name="cancel_settings">Cancel</string>
+    <string name="no_appointments_today_message">You have no appointments today.\nGo and have fun!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="credits">Credits</string>
     <string name="credit_lopez_mikhael">LOPEZ Mikhael</string>
     <string name="credit_icon1">Icon made by Freepik from www.flaticon.com</string>
+    <string name="current_appointment_flag">current appointment flag</string>
 
 
 </resources>

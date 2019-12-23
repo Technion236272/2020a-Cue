@@ -3,8 +3,19 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".BusinessFeatures.BusinessScheduleDay">
+    tools:context=".BusinessFeatures.BusinessScheduleDay"
+    android:id="@+id/business_schedule_day">
+
+    <TextView
+        android:id="@+id/no_appointments_message"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="35sp"
+        android:layout_centerInParent="true"
+        android:textColor="@color/TextOnBackgroundDim"
+        android:visibility="gone"
+        android:text="@string/no_appointments_today_message"
+        android:textAlignment="center"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/daily_appointments_list"

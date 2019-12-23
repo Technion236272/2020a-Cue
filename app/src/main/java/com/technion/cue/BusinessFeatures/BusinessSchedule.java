@@ -36,17 +36,6 @@ public class BusinessSchedule extends FragmentActivity {
 
         TabLayout tabs = findViewById(R.id.business_schedule_tabs);
         tabs.setupWithViewPager(pager);
-
-//        Bundle b = getIntent().getExtras();
-//        if (b != null && b.getInt("day") != 0) {
-//            BusinessScheduleDay bsd = new BusinessScheduleDay();
-//            bsd.setArguments(b);
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.business_schedule, bsd)
-//                    .addToBackStack(null)
-//                    .commit();
-//        }
     }
 
 
@@ -73,13 +62,13 @@ public class BusinessSchedule extends FragmentActivity {
                     bsd.setArguments(b);
                     return bsd;
                 case "This Week":
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleWeek();
                 case "This Month":
                     return new BusinessScheduleMonth();
                 case "Recent Changes":
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleFragmentPlaceholder();
                 default:
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleFragmentPlaceholder();
             }
         }
 

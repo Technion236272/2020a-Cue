@@ -14,7 +14,12 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/business_schedule_tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:tabBackground="@color/colorPrimaryLight"
+            app:tabTextColor="@color/TextColorPrimary"
+            app:tabRippleColor="@color/colorPrimary"
+            app:tabIndicatorColor="@color/ColorSecondaryLight"
+            app:tabIndicatorHeight="3dp">
 
         </com.google.android.material.tabs.TabLayout>
     </androidx.viewpager.widget.ViewPager>
