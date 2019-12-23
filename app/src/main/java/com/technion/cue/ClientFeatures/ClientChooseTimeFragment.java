@@ -33,10 +33,12 @@ import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
+
 public class ClientChooseTimeFragment extends Fragment {
 
     private Date date = null;
     private String business_id = null;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -71,6 +73,8 @@ public class ClientChooseTimeFragment extends Fragment {
                     if (l.isEmpty()) {
                         addAppointmentToBusiness();
                         switchBackToBusinessInfo();
+
+
                     } else {
                         FirebaseFirestore.getInstance()
                                 .collection(BUSINESSES_COLLECTION)
@@ -134,6 +138,7 @@ public class ClientChooseTimeFragment extends Fragment {
 
     private void addAppointmentToBusiness() {
         // TODO: will change to a chosen type in Sprint #2
+        Timestamp timestampConvertFrom = new Timestamp(date);
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
                 .document(business_id)
@@ -143,7 +148,7 @@ public class ClientChooseTimeFragment extends Fragment {
                 .addOnSuccessListener(l -> {
                     Appointment appointment = new Appointment(business_id,
                             FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            l.getDocuments().get(0).getId(), date);
+                            l.getDocuments().get(0).getId(), "BO notes per appointment type" ,timestampConvertFrom);
                     FirebaseFirestore.getInstance()
                             .collection(APPOINTMENTS_COLLECTION)
                             .document()

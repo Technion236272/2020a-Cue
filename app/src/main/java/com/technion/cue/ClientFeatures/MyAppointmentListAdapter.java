@@ -33,8 +33,6 @@ public class MyAppointmentListAdapter extends
     @Override
     protected void onBindViewHolder(@NonNull itemHolder holder, int position, @NonNull Appointment appointment) {
             // TODO: the texts should be the business & type names. currently, their document ids will be displayed
-
-
         holder.business.setTag(appointment.business_id);
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");

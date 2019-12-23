@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreSettings;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -83,16 +84,19 @@ public class ClientHomePage extends AppCompatActivity {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         Query query = db.collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("client_id", currentUser.getUid())
-                .orderBy("date");
+                .orderBy("date", Query.Direction.DESCENDING);
         FirestoreRecyclerOptions<Appointment> options =
                 new FirestoreRecyclerOptions.Builder<Appointment>()
                         .setQuery(query, Appointment.class)
                         .build();
         appointmentAdapter = new MyAppointmentListAdapter(options);
+
         RecyclerView recyclerView = findViewById(R.id.myAppointmentList);
+
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         recyclerView.setAdapter(appointmentAdapter);
+
     }
 
     private void setUpRecyclerFavoriteView() {
@@ -107,26 +111,31 @@ public class ClientHomePage extends AppCompatActivity {
                 .setQuery(query, Client.Favorite.class)
                 .build();
         favoriteAdapter = new MyFavoriteListAdapter(options);
+
         RecyclerView recyclerView = findViewById(R.id.myFavoriteList);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager
                 (new LinearLayoutManager(
                         this, LinearLayoutManager.HORIZONTAL,false));
+
         recyclerView.setAdapter(favoriteAdapter);
+
     }
 
-
+    @Override
     protected void onStart() {
         super.onStart();
-        favoriteAdapter.startListening();
         appointmentAdapter.startListening();
-
+        favoriteAdapter.startListening();
     }
 
     @Override
     protected void onStop() {
         super.onStop();
+        RecyclerView recyclerView =  findViewById(R.id.myAppointmentList);
+        recyclerView.getRecycledViewPool().clear();
         appointmentAdapter.stopListening();
+
         favoriteAdapter.stopListening();
     }
 
@@ -134,7 +143,6 @@ public class ClientHomePage extends AppCompatActivity {
     public void moveToBOPage(View view) {
         Intent getIntentBOPage = new Intent(this, ClientBusinessHomepage.class);
         getIntentBOPage.putExtra("business_id",(String)view.findViewById(R.id.businessName).getTag());
-     //   System.out.println("--------------------------------  "+view.findViewById(R.id.businessName).getTag()+" -----------------------");
         startActivity(getIntentBOPage);
     }
 
