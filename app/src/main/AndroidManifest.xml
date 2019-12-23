@@ -33,6 +33,11 @@
         <activity android:name=".BusinessFeatures.BusinessSignUp" />
         <activity android:name=".ClientFeatures.ClientSignUp" />
         <activity android:name=".ClientFeatures.ClientHomePage" />
+
     </application>
+
+
+
+
 
 </manifest>
