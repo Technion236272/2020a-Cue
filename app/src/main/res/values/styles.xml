@@ -14,4 +14,9 @@
         <item name="android:textSize">18sp</item>
     </style>
 
+
+    <style name="openHoursTextStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:background">@color/fui_transparent</item>
+    </style>
+
 </resources>

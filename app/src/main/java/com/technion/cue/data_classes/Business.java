@@ -9,10 +9,11 @@ import java.util.Map;
 public class Business {
 
     public String phone_number = "", business_name = "", name = "",
-            description = "", logo_path = "", location = "";
+            description = "", logo_path = "";
 
     // the supported key values are { SUN, MOD, TUE, WED, THU, FRI, SAT }
     public Map<String, String> open_hours = new HashMap<>();
+    public Map<String, String> location = new HashMap<>();
     public Map<String,String> attributes = new HashMap<>();
 
     public static class ClienteleMember {
@@ -49,6 +50,9 @@ public class Business {
         this.business_name = business_name;
         this.name = name;
         this.phone_number = phone_number;
+        for (String day : new String[]{"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"}) {
+            this.open_hours.put(day, "");
+        }
     }
 
 }

@@ -40,6 +40,14 @@
     <string name="street">Street</string>
     <string name="state">State</string>
     <string name="the_address_of_your_business">The Address of your business</string>
+    <string name="business_address_fill">Fill in the address of your business.</string>
+    <string name="business_operating_hours_fill">
+        Fill in when your business is operating.
+    </string>
+    <string name="opening_hour">opening hour</string>
+    <string name="closing_hour">closing hour</string>
+    <string name="day_of_the_week">choose a day</string>
+    <string name="business_phone_number">The phone number of your business</string>
 
 
 </resources>

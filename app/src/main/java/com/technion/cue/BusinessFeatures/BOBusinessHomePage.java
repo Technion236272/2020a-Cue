@@ -49,14 +49,15 @@ public class BOBusinessHomePage extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == EDIT) {
             if (resultCode == RESULT_OK) {
-
-                try {
-                    InputStream imageStream = getContentResolver().openInputStream(data.getData());
-                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                    CircularImageView logo = fragment_view.findViewById(R.id.business_logo);
-                    logo.setImageBitmap(selectedImage);
-                } catch (FileNotFoundException e) {
-                    e.printStackTrace();
+                if (data.getData() != null) {
+                    try {
+                        InputStream imageStream = getContentResolver().openInputStream(data.getData());
+                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        CircularImageView logo = fragment_view.findViewById(R.id.business_logo);
+                        logo.setImageBitmap(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
                 }
                 TextView businessName =
                         fragment_view.findViewById(R.id.homepageBusinessName);
