@@ -116,14 +116,21 @@ public class DailyAppointmentListAdapter extends
                                     .get()
                                     .addOnSuccessListener(documentSnapshot -> {
                                         Map<String, String> attributes =
-                                                (Map<String, String>)documentSnapshot
+                                                (Map<String, String>) documentSnapshot
                                                         .get("attributes");
                                         Calendar c = Calendar.getInstance();
                                         c.setTime(a.date);
                                         c.add(Calendar.MINUTE,
                                                 Integer.valueOf(attributes.get("duration")));
-                                        if (c.getTime().getTime() >= currentTime.getTime())
+                                        if (c.getTime().getTime() >= currentTime.getTime()){
                                             holder.flag.setVisibility(View.VISIBLE);
+                                            holder.type.setTextColor(context.getResources()
+                                                    .getColor(R.color.TextOnBackground));
+                                            holder.client.setTextColor(context.getResources()
+                                                    .getColor(R.color.TextOnBackground));
+                                            holder.date.setTextColor(context.getResources()
+                                                    .getColor(R.color.TextOnBackground));
+                                        }
                                         else {
                                             holder.type.setTextColor(context.getResources()
                                                     .getColor(R.color.TextOnBackgroundTransparent));

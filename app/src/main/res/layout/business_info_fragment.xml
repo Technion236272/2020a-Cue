@@ -4,54 +4,60 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/business_logo"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        app:srcCompat="@drawable/ic_person_outline_black_24dp"
-        app:civ_border_color="#EEEEEE"
-        app:civ_border_width="4dp"
-        app:civ_shadow="true"
-        app:civ_shadow_radius="10"
-        app:civ_shadow_color="#8BC34A"/>
-
-    <EditText
-        android:id="@+id/business_name_edit"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/business_logo_wrapper"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_toRightOf="@id/business_logo"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="26dp"
-        android:visibility="invisible" />
+        android:layout_width="wrap_content">
 
-    <EditText
-        android:id="@+id/business_description_edit"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="15sp"
-        android:layout_below="@id/business_name"
-        android:layout_toRightOf="@id/business_logo"
-        android:layout_marginTop="0dp"
-        android:layout_marginLeft="26dp"
-        android:visibility="invisible" />
+        <com.mikhaellopez.circularimageview.CircularImageView
+            android:id="@+id/business_logo"
+            android:layout_width="150dp"
+            android:layout_height="150dp"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/ic_person_outline_black_24dp"
+            app:civ_border_color="@color/ColorSecondary"
+            app:civ_border_width="4dp"
+            android:clickable="false"
+            android:onClick="uploadLogoToFireBase" />
+
+        <TextView
+            android:id="@+id/upload_image_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@id/business_logo"
+            android:layout_alignTop="@id/business_logo"
+            android:layout_alignRight="@id/business_logo"
+            android:layout_alignBottom="@id/business_logo"
+            android:layout_margin="1dp"
+            android:gravity="center"
+            android:text="@string/upload_image"
+            android:textColor="@color/TextOnBackground"
+            android:layout_alignEnd="@id/business_logo"
+            android:layout_alignStart="@id/business_logo"
+            android:visibility="gone"
+            android:textStyle="bold"
+            android:textSize="22sp"/>
+
+    </RelativeLayout>
 
     <TextView
-        android:id="@+id/business_name"
-        android:layout_width="wrap_content"
+        android:id="@+id/homepageBusinessName"
+        android:textColor="@color/TextOnBackground"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="30sp"
-        android:layout_toRightOf="@id/business_logo"
+        android:layout_toRightOf="@id/business_logo_wrapper"
         android:layout_marginTop="15dp"
         android:layout_marginLeft="30dp" />
 
     <TextView
-        android:id="@+id/business_description"
-        android:layout_width="wrap_content"
+        android:id="@+id/homepageBusinessDescription"
+        android:textColor="@color/TextOnBackground"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="15sp"
-        android:layout_below="@id/business_name"
-        android:layout_toRightOf="@id/business_logo"
+        android:layout_below="@id/homepageBusinessName"
+        android:layout_toRightOf="@id/business_logo_wrapper"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="30dp" />
 
@@ -59,7 +65,7 @@
         android:id="@+id/opening_hours"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/business_logo"
+        android:layout_below="@id/business_logo_wrapper"
         android:textSize="15sp"
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
@@ -74,13 +80,5 @@
         android:layout_marginLeft="20dp"
         android:layout_marginTop="15dp"
         android:text="@string/address" />
-
-    <View
-        android:id="@+id/separation_line"
-        android:layout_width="fill_parent"
-        android:layout_below="@id/address"
-        android:layout_height="2dip"
-        android:layout_marginTop="15dp"
-        android:background="#44000000" />
 
 </RelativeLayout>

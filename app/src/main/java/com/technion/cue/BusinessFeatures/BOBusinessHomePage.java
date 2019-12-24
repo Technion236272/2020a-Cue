@@ -1,34 +1,37 @@
 package com.technion.cue.BusinessFeatures;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
 public class BOBusinessHomePage extends AppCompatActivity {
+
+    private static final int EDIT = 1;
 
     public void openBusinessCalendar(View view) {
         final Intent intent = new Intent(getBaseContext(),BusinessSchedule.class);
         startActivity(intent);
     }
 
-    // inner enum, designating current mode of the activity
-    private enum Mode { EDIT, READ }
-    private Mode mode = Mode.READ;
-    private static final int GET_LOGO = 0;
-
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser() ;
-    private BusinessInfoLoader loader;
+    private BusinessLoader loader;
 
     private View fragment_view;
 
@@ -37,66 +40,50 @@ public class BOBusinessHomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bohome_page);
         fragment_view = findViewById(R.id.business_info);
-        loader = new BusinessInfoLoader(fragment_view, db, currentUser.getUid());
-        loader.loadDataFromFB();
+        loader = new BusinessLoader(fragment_view, db, currentUser.getUid());
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT) {
+            if (resultCode == RESULT_OK) {
+
+                try {
+                    InputStream imageStream = getContentResolver().openInputStream(data.getData());
+                    final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                    CircularImageView logo = fragment_view.findViewById(R.id.business_logo);
+                    logo.setImageBitmap(selectedImage);
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+                TextView businessName =
+                        fragment_view.findViewById(R.id.homepageBusinessName);
+                TextView businessDescription =
+                        fragment_view.findViewById(R.id.homepageBusinessDescription);
+                businessName.setText(data.getStringExtra("businessName"));
+                businessDescription.setText(data.getStringExtra("businessDescription"));
+            }
+        }
+    }
 
     /**
      * onClick method for the edit button.
      * change BOBusinessHomePage into / from "edit mode",
-     * where the BO will able to change his business's profile
-     * @param view
+     * where the BO will able to change the profile of his business
      */
     @ModuleAuthor("Ophir Eyal")
     public void editBOHomePage(View view) {
 
-        switch (mode) {
-            case READ:
-                findViewById(R.id.image_upload).setVisibility(View.VISIBLE);
-                final TextView bo_name = fragment_view.findViewById(R.id.business_name);
-                final TextView bo_desc = fragment_view.findViewById(R.id.business_description);
-                bo_name.setVisibility(View.INVISIBLE);
-                bo_desc.setVisibility(View.INVISIBLE);
-                final EditText bo_name_edit = fragment_view.findViewById(R.id.business_name_edit);
-                final EditText bo_desc_edit = fragment_view.findViewById(R.id.business_description_edit);
-                bo_name_edit.setText(bo_name.getText());
-                bo_desc_edit.setText(bo_desc.getText());
-                bo_name_edit.setVisibility(View.VISIBLE);
-                bo_desc_edit.setVisibility(View.VISIBLE);
-                mode = BOBusinessHomePage.Mode.EDIT;
-                break;
-            case EDIT:
-                loader.downloadBusinessFromFB();
-                findViewById(R.id.image_upload).setVisibility(View.INVISIBLE);
-                fragment_view.findViewById(R.id.business_name).setVisibility(View.VISIBLE);
-                fragment_view.findViewById(R.id.business_description).setVisibility(View.VISIBLE);
-                fragment_view.findViewById(R.id.business_name_edit).setVisibility(View.INVISIBLE);
-                fragment_view.findViewById(R.id.business_description_edit).setVisibility(View.INVISIBLE);
-                mode = BOBusinessHomePage.Mode.READ;
-                break;
-        }
+        Bundle bundle = new Bundle();
+        // TODO: add data to bundle
+        Intent i = new Intent(this, BusinessProfileEdit.class);
+        i.putExtras(bundle);
+        startActivityForResult(i, EDIT);
+
     }
 
-    /**
-     * opens up the phone's gallery for picture upload
-     * TODO: consider moving this into it's own class
-     * @param view
-     */
-    @ModuleAuthor("Ophir Eyal")
-    public void uploadLogoToFireBase(View view) {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, GET_LOGO);
-    }
 
-    @Override
-    @ModuleAuthor("Ophir Eyal")
-    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-        if (reqCode == GET_LOGO) {
-            loader.uploadLogoToFB(data);
-        }
-    }
 }
 

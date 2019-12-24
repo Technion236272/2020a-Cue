@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".BusinessFeatures.BusinessProfileEdit">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/material_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:layout_margin="8dp"
+        android:text="@string/save"
+        android:textSize="16sp"
+        android:onClick="saveChanges" />
+
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/businessLogoEdit"
+        android:layout_marginTop="96dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        app:srcCompat="@drawable/ic_person_outline_black_24dp"
+        app:civ_border_color="@color/ColorSecondary"
+        app:civ_border_width="4dp"
+        android:clickable="false"
+        android:onClick="uploadLogoToFireBase"
+        android:layout_centerHorizontal="true" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessNameEdit"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="48dp"
+        android:layout_below="@id/businessLogoEdit"
+        android:hint="@string/business_name_hint"
+        app:counterEnabled="true"
+        app:endIconMode="clear_text"
+        app:counterMaxLength="30" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessNameEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessDescriptionEdit"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_below="@id/businessNameEdit"
+        android:hint="@string/business_description_hint"
+        app:counterEnabled="true"
+        app:endIconMode="clear_text"
+        app:counterMaxLength="200" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessStateEdit"
+        android:layout_width="118dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_below="@id/businessDescriptionEdit"
+        android:hint="@string/state" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessStateEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessCityEdit"
+        android:layout_width="226dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_below="@id/businessDescriptionEdit"
+        android:layout_toRightOf="@id/businessStateEdit"
+        android:layout_toEndOf="@id/businessStateEdit"
+        android:hint="@string/city" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessCityEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessAddressEdit"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_below="@id/businessCityEdit"
+        android:hint="@string/the_address_of_your_business"
+        app:helperTextEnabled="true"
+        app:helperText="please enter address in the form [number] [street]" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessAddressEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+
+
+</RelativeLayout>

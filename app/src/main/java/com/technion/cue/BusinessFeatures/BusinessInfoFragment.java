@@ -14,7 +14,7 @@ import com.technion.cue.R;
 
 public class BusinessInfoFragment extends Fragment {
 
-    BusinessInfoLoader loader;
+    BusinessLoader loader;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,9 +38,9 @@ public class BusinessInfoFragment extends Fragment {
         } else {
             business_to_fetch = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
-        loader = new BusinessInfoLoader(view,
+        loader = new BusinessLoader(view,
                 FirebaseFirestore.getInstance(),
                 business_to_fetch);
-        loader.loadDataFromFB();
+        loader.load();
     }
 }
