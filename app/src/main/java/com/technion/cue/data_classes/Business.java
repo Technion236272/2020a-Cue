@@ -9,7 +9,8 @@ import java.util.Map;
 public class Business {
 
     public String phone_number = "", business_name = "", name = "",
-            description = "", logo_path = "", location = "";
+            description = "", logo_path = "";
+    Map<String, String> location;
 
     // the supported key values are { SUN, MOD, TUE, WED, THU, FRI, SAT }
     public Map<String, String> open_hours = new HashMap<>();

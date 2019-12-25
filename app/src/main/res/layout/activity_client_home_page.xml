@@ -5,17 +5,21 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ClientFeatures.ClientHomePage"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryLight">
 
 
     <androidx.appcompat.widget.Toolbar
-        android:id="@+id/my_toolbar"
+        android:id="@+id/my_toolbar_HO"
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_alignParentTop="true"
         app:title="My Appointments"
-        android:background="@color/colorPrimaryDark"
+        android:textStyle="bold"
+        app:titleTextAppearance="@style/Toolbar.TitleText"
+        android:background="@color/ColorSecondaryDark"
         android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myFavoriteList"
@@ -23,7 +27,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
         android:scrollbars="horizontal"
-        android:layout_below="@id/my_toolbar"/>
+        android:layout_below="@id/my_toolbar_HO"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myAppointmentList"
@@ -31,7 +35,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/myFavoriteList"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryLight"
       />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView

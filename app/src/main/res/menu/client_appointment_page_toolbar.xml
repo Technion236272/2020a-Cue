@@ -6,11 +6,13 @@
         android:id="@+id/client_appointment_toolbar_edit"
         android:orderInCategory="100"
         android:title="Edit Appointment"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:onClick="reschedThisAppointment"/>
     <item
         android:id="@+id/client_appointment_toolbar_abort"
         android:orderInCategory="100"
         android:title="Cancel Appointment"
-        app:showAsAction="never" />
+        app:showAsAction="never"
+        android:onClick="abortAppointment"/>
 
 </menu>

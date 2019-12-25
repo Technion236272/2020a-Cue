@@ -17,6 +17,7 @@ import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
 import com.technion.cue.BusinessFeatures.BusinessSignUp;
 import com.technion.cue.ClientFeatures.ClientHomePage;
 import com.technion.cue.ClientFeatures.ClientSignUp;
+import com.technion.cue.annotations.ModuleAuthor;
 
 import android.util.Log;
 
@@ -36,11 +37,19 @@ public class SignInActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        mAuth = FirebaseAuth.getInstance();
+        // checking if already sign in - ben
+        if (mAuth.getCurrentUser()!= null)  {
+            startClientHomepage();
+        }
+
         final Button button_sign_in = findViewById(R.id.button_signin);
         final TextView client_sign_up = findViewById(R.id.client_join);
         final TextView bo_sign_up = findViewById(R.id.business_join);
 
-        mAuth = FirebaseAuth.getInstance();
+
+
+
 
         // open up sign up activity for clients
         client_sign_up.setOnClickListener(v -> {
