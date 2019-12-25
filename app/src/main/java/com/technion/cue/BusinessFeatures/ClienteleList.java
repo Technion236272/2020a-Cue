@@ -2,10 +2,10 @@ package com.technion.cue.BusinessFeatures;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +18,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.R;
-import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -82,6 +81,7 @@ public class ClienteleList extends AppCompatActivity {
                 super(itemView);
                 client = itemView.findViewById(R.id.client_entry);
                 firstLetter = itemView.findViewById(R.id.first_letter);
+
             }
         }
 
@@ -119,6 +119,12 @@ public class ClienteleList extends AppCompatActivity {
                         }
                         holder.client.setText(cm.name);
                     });
+
+            holder.client.setOnClickListener(cl -> {
+                DialogFragment client_information = new ClientInformationDialog(cm.client_id);
+                client_information.show(getSupportFragmentManager(), null);
+            });
+
         }
 
         @NonNull
