@@ -146,7 +146,9 @@ public class BusinessProfileEdit extends AppCompatActivity {
                     (timePicker, selectedHour, selectedMinute) -> {
                         String selectedMinuteFormatted =
                                 selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
-                        String value_to_put = selectedHour + ":" + selectedMinuteFormatted;
+                        String  selectedHourFormatted =
+                                selectedHour <= 9 ? "0" + selectedHour : String.valueOf(selectedHour);
+                        String value_to_put = selectedHourFormatted + ":" + selectedMinuteFormatted;
                         openHours.setText(value_to_put);
                         if (lastUsedKey == null)
                             return;
@@ -179,7 +181,9 @@ public class BusinessProfileEdit extends AppCompatActivity {
                     (timePicker, selectedHour, selectedMinute) -> {
                         String selectedMinuteFormatted =
                                 selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
-                        String value_to_put = selectedHour + ":" + selectedMinuteFormatted;
+                        String  selectedHourFormatted =
+                                selectedHour <= 9 ? "0" + selectedHour : String.valueOf(selectedHour);
+                        String value_to_put = selectedHourFormatted + ":" + selectedMinuteFormatted;
                         closeHours.setText(value_to_put);
                         if (lastUsedKey == null)
                             return;
@@ -226,6 +230,7 @@ public class BusinessProfileEdit extends AppCompatActivity {
     }
 
     public void saveChanges(View view) {
+        Intent intent = new Intent();
         TextInputEditText businessName = findViewById(R.id.businessNameEditText);
         TextInputEditText businessDescription = findViewById(R.id.businessDescriptionEditText);
         TextInputEditText phone = findViewById(R.id.businessPhoneEditText);
@@ -241,14 +246,22 @@ public class BusinessProfileEdit extends AppCompatActivity {
         uploader.business.open_hours = open_hours;
         uploader.uploadLogo(logoData);
         uploader.updateBusiness();
-        Intent data = new Intent();
-        data.setData(logoData);
-        setResult(RESULT_OK, data);
-        data.putExtra("businessName", businessName.getText().toString());
-        data.putExtra("businessDescription", businessDescription.getText().toString());
-        data.putExtra("state", state.getText().toString());
-        data.putExtra("city", city.getText().toString());
-        data.putExtra("address", address.getText().toString());
+        intent.setData(logoData);
+        setResult(RESULT_OK, intent);
+        intent.putExtra("businessName", businessName.getText().toString());
+        intent.putExtra("businessDescription", businessDescription.getText().toString());
+        intent.putExtra("phone", phone.getText().toString());
+        intent.putExtra("state", state.getText().toString());
+        intent.putExtra("city", city.getText().toString());
+        intent.putExtra("address", address.getText().toString());
+        intent.putExtra("Sunday", open_hours.get("Sunday"));
+        intent.putExtra("Monday", open_hours.get("Monday"));
+        intent.putExtra("Tuesday", open_hours.get("Tuesday"));
+        intent.putExtra("Wednesday", open_hours.get("Wednesday"));
+        intent.putExtra("Thursday", open_hours.get("Thursday"));
+        intent.putExtra("Friday", open_hours.get("Friday"));
+        intent.putExtra("Saturday", open_hours.get("Saturday"));
+
         finish();
     }
 }

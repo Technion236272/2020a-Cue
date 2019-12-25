@@ -110,7 +110,8 @@ public class DailyAppointmentListAdapter extends
                         if (a.equals(appointment)) {
                             FirebaseFirestore.getInstance()
                                     .collection(BUSINESSES_COLLECTION)
-                                    .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                                    .document(FirebaseAuth.getInstance()
+                                            .getCurrentUser().getUid())
                                     .collection(TYPES_COLLECTION)
                                     .document(appointment.type)
                                     .get()

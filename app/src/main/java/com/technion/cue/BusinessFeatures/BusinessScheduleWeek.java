@@ -11,13 +11,10 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -31,8 +28,6 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 
@@ -102,7 +97,7 @@ public class BusinessScheduleWeek extends Fragment {
                             .setQuery(query, Appointment.class)
                             .build();
             DailyAppointmentListAdapter daily_appointments_adapter =
-                    new DailyAppointmentListAdapter(getContext(), options, false);
+                    new  DailyAppointmentListAdapter(getContext(), options, false);
             daily_adapters.put(date, daily_appointments_adapter);
         }
 
@@ -114,7 +109,7 @@ public class BusinessScheduleWeek extends Fragment {
     @Override
     public void onStart() {
         super.onStart();
-        for (DailyAppointmentListAdapter adapter : daily_adapters.values()) {
+        for ( DailyAppointmentListAdapter adapter : daily_adapters.values()) {
             adapter.startListening();
         }
     }
@@ -122,7 +117,7 @@ public class BusinessScheduleWeek extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        for (DailyAppointmentListAdapter adapter : daily_adapters.values()) {
+        for ( DailyAppointmentListAdapter adapter : daily_adapters.values()) {
             adapter.stopListening();
         }
     }

@@ -17,10 +17,14 @@ public class Business {
     public Map<String,String> attributes = new HashMap<>();
 
     public static class ClienteleMember {
-        public String client_id = "";
+        public String client_id = "", name = "";
         public ClienteleMember() { }
         public ClienteleMember(String client_id) {
             this.client_id = client_id;
+        }
+        public ClienteleMember(String client_id, String name) {
+            this.client_id = client_id;
+            this.name = name;
         }
     }
 

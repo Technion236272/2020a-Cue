@@ -9,7 +9,7 @@
 
     <fragment android:name="com.technion.cue.BusinessFeatures.BusinessInfoFragment"
         android:id="@+id/business_info"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -30,9 +30,19 @@
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:layout_alignParentRight="true"
-        app:srcCompat="@drawable/ic_perm_contact_calendar_black_24dp"
+        app:srcCompat="@drawable/clock_icon"
         android:layout_above="@id/edit_button"
         android:onClick="openBusinessCalendar" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/clientele_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_perm_contact_calendar_black_24dp"
+        android:layout_above="@id/business_calendar_button"
+        android:onClick="openClientele" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/my_recycler_view"

@@ -4,81 +4,309 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <RelativeLayout
-        android:id="@+id/business_logo_wrapper"
-        android:layout_height="wrap_content"
-        android:layout_width="wrap_content">
-
-        <com.mikhaellopez.circularimageview.CircularImageView
-            android:id="@+id/business_logo"
-            android:layout_width="150dp"
-            android:layout_height="150dp"
-            android:layout_margin="10dp"
-            app:srcCompat="@drawable/ic_person_outline_black_24dp"
-            app:civ_border_color="@color/ColorSecondary"
-            app:civ_border_width="4dp"
-            android:clickable="false"
-            android:onClick="uploadLogoToFireBase" />
-
-        <TextView
-            android:id="@+id/upload_image_text"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@id/business_logo"
-            android:layout_alignTop="@id/business_logo"
-            android:layout_alignRight="@id/business_logo"
-            android:layout_alignBottom="@id/business_logo"
-            android:layout_margin="1dp"
-            android:gravity="center"
-            android:text="@string/upload_image"
-            android:textColor="@color/TextOnBackground"
-            android:layout_alignEnd="@id/business_logo"
-            android:layout_alignStart="@id/business_logo"
-            android:visibility="gone"
-            android:textStyle="bold"
-            android:textSize="22sp"/>
-
-    </RelativeLayout>
+  <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/business_logo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
+        app:srcCompat="@drawable/ic_person_outline_black_24dp"
+        app:civ_border_color="@color/ColorSecondary"
+        app:civ_border_width="4dp"
+        android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/homepageBusinessName"
         android:textColor="@color/TextOnBackground"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_toRightOf="@id/business_logo_wrapper"
-        android:layout_marginTop="15dp"
-        android:layout_marginLeft="30dp" />
+        android:textSize="22sp"
+        android:layout_below="@id/business_logo"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/homepageBusinessDescription"
         android:textColor="@color/TextOnBackground"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="15sp"
+        android:textSize="16sp"
         android:layout_below="@id/homepageBusinessName"
-        android:layout_toRightOf="@id/business_logo_wrapper"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="30dp" />
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true" />
+
+  <LinearLayout
+      android:id="@+id/address"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_below="@id/homepageBusinessDescription"
+      android:layout_marginLeft="24dp"
+      android:layout_marginTop="48dp"
+      android:layout_marginStart="24dp">
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="2.5dp"
+        app:srcCompat="@drawable/location_icon"
+        android:contentDescription="location icon" />
 
     <TextView
-        android:id="@+id/opening_hours"
-        android:layout_width="match_parent"
+        android:id="@+id/address_text"
+        android:textColor="@color/TextOnBackground"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/business_logo_wrapper"
-        android:textSize="15sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/opening_hours" />
+        android:layout_marginLeft="12dp"
+        android:textSize="16sp" />
+
+<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
+<!--        android:id="@+id/google_maps_link"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_marginLeft="24dp"-->
+<!--        app:srcCompat="@drawable/navigation_icon" />-->
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/phone"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_below="@id/address"
+      android:layout_marginLeft="24dp"
+      android:layout_marginTop="24dp"
+      android:layout_marginStart="24dp">
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="2.5dp"
+        app:srcCompat="@drawable/phone_icon"
+        android:contentDescription="phone icon" />
 
     <TextView
-        android:id="@+id/address"
+        android:id="@+id/phone_text"
+        android:textColor="@color/TextOnBackground"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="12dp"
+        android:textSize="16sp" />
+
+  </LinearLayout>
+
+  <LinearLayout
+      android:id="@+id/open_hours"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal"
+      android:layout_below="@id/phone"
+      android:layout_marginLeft="24dp"
+      android:layout_marginTop="24dp"
+      android:layout_marginStart="24dp">
+
+    <ImageView
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginTop="2.5dp"
+        app:srcCompat="@drawable/clock_icon"
+        android:contentDescription="clock icon" />
+
+    <TextView
+        android:id="@+id/current_day_hours"
+        android:textColor="@color/TextOnBackground"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/opening_hours"
-        android:textSize="15sp"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:text="@string/address" />
+        android:layout_marginLeft="12dp"
+        android:textSize="16sp" />
+
+    <LinearLayout
+        android:id="@+id/open_hours_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="12dp"
+        android:visibility="gone" >
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/sunday_text"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textSize="16sp"
+            android:text="@string/sunday_text"/>
+
+        <TextView
+            android:id="@+id/sunday"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/monday_text"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textSize="16sp"
+            android:text="@string/monday_text"/>
+
+        <TextView
+            android:id="@+id/monday"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/tuesday_text"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textSize="16sp"
+            android:text="@string/tuesday_text"/>
+
+        <TextView
+            android:id="@+id/tuesday"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/wednesday_text"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textSize="16sp"
+            android:text="@string/wednesday_text"/>
+
+        <TextView
+            android:id="@+id/wednesday"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/thursday_text"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textSize="16sp"
+            android:text="@string/thursday_text"/>
+
+        <TextView
+            android:id="@+id/thursday"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/friday_text"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textSize="16sp"
+            android:text="@string/friday_text"/>
+
+        <TextView
+            android:id="@+id/friday"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp" />
+
+      </LinearLayout>
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="horizontal"
+          android:layout_marginTop="8dp">
+
+        <TextView
+            android:id="@+id/saturday_text"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="96dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="12dp"
+            android:textSize="16sp"
+            android:text="@string/saturday_text"/>
+
+        <TextView
+            android:id="@+id/saturday"
+            android:textColor="@color/TextOnBackground"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="24dp"
+            android:textSize="16sp" />
+
+      </LinearLayout>
+
+    </LinearLayout>
+
+
+  </LinearLayout>
+
+
 
 </RelativeLayout>

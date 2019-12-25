@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BusinessFeatures.BusinessProfileEdit"></activity>
+        <activity android:name=".BusinessFeatures.ClienteleList"></activity>
+        <activity android:name=".BusinessFeatures.BusinessProfileEdit" />
         <activity android:name=".Credits" />
         <activity android:name=".BusinessFeatures.BusinessScheduleWeek" />
         <activity android:name=".ClientFeatures.ClientChooseTimeFragment" />

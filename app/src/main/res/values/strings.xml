@@ -48,6 +48,13 @@
     <string name="closing_hour">closing hour</string>
     <string name="day_of_the_week">choose a day</string>
     <string name="business_phone_number">The phone number of your business</string>
+    <string name="sunday_text">Sunday:</string>
+    <string name="monday_text">Monday:</string>
+    <string name="tuesday_text">Tuesday:</string>
+    <string name="wednesday_text">Wednesday:</string>
+    <string name="thursday_text">Thursday:</string>
+    <string name="friday_text">Friday:</string>
+    <string name="saturday_text">Saturday:</string>
 
 
 </resources>

@@ -16,6 +16,12 @@ import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
 class BusinessLoader {
@@ -70,6 +76,76 @@ class BusinessLoader {
         TextView desc = view.findViewById(R.id.homepageBusinessDescription);
         name.setText(business.business_name);
         desc.setText(business.description);
+
+        TextView location = view.findViewById(R.id.address_text);
+        String full_address = business.location.get("address") + ", "
+                + business.location.get("city") + ", "
+                + business.location.get("state");
+        location.setText(full_address);
+
+        TextView phone = view.findViewById(R.id.phone_text);
+        phone.setText(business.phone_number);
+
+        TextView current_day_hours = view.findViewById(R.id.current_day_hours);
+        Calendar c = Calendar.getInstance();
+        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+        String open_hours_today = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+        c.add(Calendar.DAY_OF_WEEK, 1);
+
+        String open_hours_tomorrow = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+
+        // TODO: create code to handle cases where this assertion doesn't hold
+        assert open_hours_tomorrow.contains("-");
+
+        if (!open_hours_today.contains("-"))
+            current_day_hours.setText("Close.");
+        else {
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                Date when_opens = sdf.parse(open_hours_today.split("-")[0]);
+                Date when_closes = sdf.parse(open_hours_today.split("-")[1]);
+                Date currentDate = new Date();
+                Calendar currentTimeCalendar = Calendar.getInstance();
+                Calendar calendarCloseHour = Calendar.getInstance();
+                Calendar calendarOpenHour = Calendar.getInstance();
+                calendarOpenHour.setTime(when_opens);
+                calendarOpenHour.set(currentTimeCalendar.get(Calendar.YEAR),
+                        currentTimeCalendar.get(Calendar.MONTH),
+                        currentTimeCalendar.get(Calendar.DAY_OF_MONTH));
+                calendarCloseHour.setTime(when_closes);
+                calendarCloseHour.set(currentTimeCalendar.get(Calendar.YEAR),
+                        currentTimeCalendar.get(Calendar.MONTH),
+                        currentTimeCalendar.get(Calendar.DAY_OF_MONTH));
+                long open_time_millis = calendarOpenHour.getTimeInMillis();
+                long close_time_millis = calendarCloseHour.getTimeInMillis();
+                long currentTime = currentDate.getTime();
+
+                if (open_time_millis <= currentTime && currentTime <= close_time_millis)
+                    current_day_hours.setText("Open. Closes " + open_hours_today.split("-")[1]);
+                else if (currentTime < open_time_millis)
+                    current_day_hours.setText("Close. Opens " + open_hours_today.split("-")[0]);
+                else
+                    current_day_hours.setText("Close. Opens " + open_hours_tomorrow.split("-")[0]);
+
+                ((TextView) view.findViewById(R.id.sunday))
+                        .setText(business.open_hours.get("Sunday"));
+                ((TextView) view.findViewById(R.id.monday))
+                        .setText(business.open_hours.get("Monday"));
+                ((TextView) view.findViewById(R.id.tuesday))
+                        .setText(business.open_hours.get("Tuesday"));
+                ((TextView) view.findViewById(R.id.wednesday))
+                        .setText(business.open_hours.get("Wednesday"));
+                ((TextView) view.findViewById(R.id.thursday))
+                        .setText(business.open_hours.get("Thursday"));
+                ((TextView) view.findViewById(R.id.friday))
+                        .setText(business.open_hours.get("Friday"));
+                ((TextView) view.findViewById(R.id.saturday))
+                        .setText(business.open_hours.get("Saturday"));
+
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     /**
