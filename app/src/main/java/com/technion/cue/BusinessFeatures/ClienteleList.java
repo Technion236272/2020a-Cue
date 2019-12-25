@@ -50,40 +50,38 @@ public class ClienteleList extends AppCompatActivity {
                         .setQuery(query, Business.ClienteleMember.class)
                         .build();
 
-        mAdapter = new ClienteleListAdapter(this, options);
+        mAdapter = new ClienteleListAdapter(options);
         clientele.setAdapter(mAdapter);
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
 
     class ClienteleListAdapter extends
             FirestoreRecyclerAdapter<Business.ClienteleMember, ClienteleListAdapter.itemHolder> {
 
-        private final Context context;
-        private ViewGroup parentView = null;
-        private boolean useDivider = true;
-
-        ClienteleListAdapter(Context context,
-                             FirestoreRecyclerOptions<Business.ClienteleMember> options) {
+        ClienteleListAdapter(FirestoreRecyclerOptions<Business.ClienteleMember> options) {
             super(options);
-            this.context = context;
         }
 
 
         class itemHolder extends RecyclerView.ViewHolder {
-            View flag;
             TextView client;
-            TextView date;
-            TextView type;
+            TextView firstLetter;
 
             itemHolder(@NonNull View itemView) {
                 super(itemView);
-                client = itemView.findViewById(R.id.BO_list_client_name);
-                date = itemView.findViewById(R.id.BO_list_date);
-                type = itemView.findViewById(R.id.BO_list_appointment_type);
-                flag = itemView.findViewById(R.id.current_appointment_flag);
-                if (getItemCount() <= 1 || !useDivider) {
-                    itemView.findViewById(R.id.divider).setVisibility(View.GONE);
-                }
+                client = itemView.findViewById(R.id.client_entry);
+                firstLetter = itemView.findViewById(R.id.first_letter);
             }
         }
 
@@ -99,6 +97,28 @@ public class ClienteleList extends AppCompatActivity {
                                         int position,
                                         @NonNull Business.ClienteleMember cm) {
 
+            char cflTemp = cm.name.charAt(0);
+            char currentFirstLetter = cflTemp;
+            cflTemp++;
+            char nextFirstLetter = cflTemp;
+            FirebaseFirestore.getInstance()
+                    .collection(BUSINESSES_COLLECTION)
+                    .document(FirebaseAuth.getInstance().getUid())
+                    .collection(CLIENTELE_COLLECTION)
+                    .whereGreaterThanOrEqualTo("name", String.valueOf(currentFirstLetter))
+                    .whereLessThan("name", String.valueOf(nextFirstLetter))
+                    .orderBy("name")
+                    .limit(1)
+                    .get()
+                    .addOnSuccessListener(documentSnapshots -> {
+                        if (!documentSnapshots.isEmpty() &&
+                                documentSnapshots.getDocuments()
+                                        .get(0).getString("client_id").equals(cm.client_id)) {
+                            holder.firstLetter.setText(String.valueOf(cm.name.charAt(0)));
+                            holder.firstLetter.setVisibility(View.VISIBLE);
+                        }
+                        holder.client.setText(cm.name);
+                    });
         }
 
         @NonNull
@@ -107,26 +127,6 @@ public class ClienteleList extends AppCompatActivity {
             View v = LayoutInflater.from(parent.getContext())
                     .inflate(R.layout.clientele_row, parent, false);
             return new ClienteleListAdapter.itemHolder(v);
-        }
-
-        /**
-         * checks whether there are items in the list.
-         * If there are none, display the "no_appointments_message"
-         * If there are at least one, remove the message from the view
-         */
-        @Override
-        public void onDataChanged() {
-            super.onDataChanged();
-            if (parentView != null) {
-                if (getItemCount() == 0) {
-                    parentView.findViewById(R.id.no_appointments_message).setVisibility(View.VISIBLE);
-                } else {
-                    parentView.findViewById(R.id.no_appointments_message).setVisibility(View.GONE);
-                    // TODO: check if the flag needs to be moved
-                    //  to a different meeting / assigned to a meeting
-                    // TODO: check if need to change color of text inside items
-                }
-            }
         }
     }
 }

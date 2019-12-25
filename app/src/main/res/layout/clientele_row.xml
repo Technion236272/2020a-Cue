@@ -1,7 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="24dp"
+    android:layout_marginTop="24dp">
+
+    <TextView
+        android:id="@+id/first_letter"
+        android:layout_width="48dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/TextOnBackground"
+        android:textSize="36sp"
+        android:textStyle="bold"
+        android:visibility="invisible"
+        android:layout_marginTop="4dp" />
+
+    <TextView
+        android:id="@+id/client_entry"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/TextOnBackground"
+        android:textSize="22sp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp" />
 
 
-</RelativeLayout>
+</LinearLayout>
