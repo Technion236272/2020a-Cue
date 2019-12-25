@@ -9,6 +9,7 @@
         android:calendarViewShown="true"
         android:spinnersShown="false"
         android:layout_margin="30dp"
-        android:layout_centerHorizontal="true"/>
+        android:layout_centerHorizontal="true"
+        />
 
 </RelativeLayout>

@@ -97,7 +97,7 @@ class BusinessLoader {
         // TODO: create code to handle cases where this assertion doesn't hold
         assert open_hours_tomorrow.contains("-");
 
-        if (!open_hours_today.contains("-"))
+        if ((open_hours_today==null) || (!open_hours_today.contains("-")))
             current_day_hours.setText("Close.");
         else {
             try {

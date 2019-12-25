@@ -5,17 +5,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ClientFeatures.ClientHomePage"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="@color/colorPrimaryLight">
 
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/my_toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
-        android:layout_alignParentTop="true"
-        app:title="My Appointments"
-        android:background="@color/colorPrimaryDark"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myFavoriteList"
@@ -23,7 +15,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
         android:scrollbars="horizontal"
-        android:layout_below="@id/my_toolbar"/>
+        />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/myAppointmentList"
@@ -31,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/myFavoriteList"
-        android:background="@color/colorPrimary"
+        android:background="@color/colorPrimaryLight"
       />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
@@ -40,8 +32,8 @@
         android:layout_width="match_parent"
         android:layout_height="34dp"
         app:menu="@menu/client_main_menu"
-        app:itemBackground="@color/colorPrimaryLight"
+        app:itemBackground="@color/ColorSecondaryLight"
         app:labelVisibilityMode="unlabeled"
-        app:itemIconTint="@color/ColorSecondary" />
+        app:itemIconTint="@color/TextColorSecondary" />
 
 </RelativeLayout>

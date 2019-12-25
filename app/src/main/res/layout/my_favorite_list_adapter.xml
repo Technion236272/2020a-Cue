@@ -7,12 +7,13 @@
 
     <androidx.cardview.widget.CardView
         android:layout_width="90dp"
-        android:layout_height="120dp"
+        android:layout_height="140dp"
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp"
         android:layout_centerInParent="true"
         android:onClick="moveToBOPage"
-        app:cardBackgroundColor="@color/colorPrimaryLight">
+        app:cardBackgroundColor="@color/colorPrimaryLight"
+        android:layout_marginTop="30dp">
 
 
         <RelativeLayout
@@ -21,18 +22,19 @@
 
 
             <com.mikhaellopez.circularimageview.CircularImageView
-                android:layout_width="93dp"
-                android:layout_height="93dp"
+                android:layout_width="90dp"
+                android:layout_height="90dp"
                 android:scaleType="centerCrop"
                 android:layout_centerHorizontal="true"
-                app:civ_border_color="@color/ColorSecondaryDark"
+                app:civ_border_color="@color/TextColorSecondary"
                 app:civ_border_width="4dp"
                 android:layout_marginTop="5dp"
                 android:id="@+id/businessLogo"/>
 
             <TextView
+                android:maxLines="1"
                 android:layout_width="wrap_content"
-                android:layout_height="17dp"
+                android:layout_height="50dp"
                 android:text="Loading.."
                 android:layout_below="@+id/businessLogo"
                 android:id="@+id/businessName"
@@ -41,8 +43,8 @@
                 android:textColor="@color/TextColorPrimary"
                 android:layout_marginBottom="2dp"
                 android:autoSizeTextType="uniform"
-                android:autoSizeMinTextSize="15sp"
-                android:autoSizeMaxTextSize="18sp"/>
+                android:autoSizeMinTextSize="20sp"
+                android:autoSizeMaxTextSize="24sp"/>
 
         </RelativeLayout>
 

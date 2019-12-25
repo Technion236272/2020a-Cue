@@ -9,6 +9,7 @@
         <item name="colorOnSecondary">@color/TextColorSecondary</item>
     </style>
 
+
     <style name="calendarText" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="android:textColor">@color/TextOnBackground</item>
         <item name="android:textSize">18sp</item>
@@ -35,5 +36,10 @@
         <item name="android:windowBackground">#FFFFFF</item>
 
     </style>
+
+
+<!--    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">-->
+<!--        <item name="android:textSize">23sp</item>-->
+<!--    </style>-->
 
 </resources>

@@ -17,6 +17,7 @@ import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
 
+import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
@@ -34,9 +35,7 @@ public class MyAppointmentListAdapter extends
     protected void onBindViewHolder(@NonNull itemHolder holder, int position, @NonNull Appointment appointment) {
             // TODO: the texts should be the business & type names. currently, their document ids will be displayed
 
-
-        holder.business.setTag(appointment.business_id);
-
+        holder.business.setTag(R.id.business_info,appointment.business_id);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
         holder.date.setText(sdf.format(appointment.date));
         FirebaseFirestore.getInstance()
@@ -55,9 +54,23 @@ public class MyAppointmentListAdapter extends
                 .addOnSuccessListener(l -> {
                     holder.type.setText(l.getString("name"));
                 });
+        FirebaseFirestore.getInstance()
+                .collection(APPOINTMENTS_COLLECTION)
+                .whereEqualTo("client_id",appointment.client_id)
+                .whereEqualTo("business_id",appointment.business_id)
+                .limit(1)
+                .get()
+                .addOnSuccessListener(l -> {
+                    holder.appointment_id = l.getDocuments().get(0).getId();
+                    holder.business.setTag(R.id.myAppointmentList,holder.appointment_id); // need to change - ben
+                });
             holder.notes.setText(appointment.notes);
 
+
     }
+
+
+
 
     @NonNull
     @Override
@@ -72,6 +85,7 @@ public class MyAppointmentListAdapter extends
         TextView date;
         TextView notes;
         TextView type;
+        String appointment_id;
 
         public itemHolder(@NonNull View itemView) {
             super(itemView);
@@ -79,6 +93,7 @@ public class MyAppointmentListAdapter extends
             date = itemView.findViewById(R.id.date);
             notes = itemView.findViewById(R.id.notes);
             type = itemView.findViewById(R.id.type);
+            appointment_id ="";
 
         }
     }
