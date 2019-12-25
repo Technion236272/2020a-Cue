@@ -33,16 +33,37 @@ public class SignInActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private static final String TAG = "SignInActivity";
 
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+//      check if already signup
 
         mAuth = FirebaseAuth.getInstance();
         // checking if already sign in - ben
         if (mAuth.getCurrentUser()!= null)  {
-            startClientHomepage();
+            findViewById(R.id.loadingPanelSignin).setVisibility(View.VISIBLE);
+            FirebaseFirestore.getInstance()
+                    .collection(CLIENTS_COLLECTION)
+                    .document(mAuth.getCurrentUser().getUid())
+                    .get()
+                    .addOnCompleteListener(task -> {
+                        if (task.isSuccessful()) {
+                            if (task.getResult().exists()) {
+                                startClientHomepage();
+                            } else {
+                                searchForBO(mAuth.getCurrentUser().getUid());
+                            }
+                        } else {
+                            Toast.makeText(SignInActivity.this,
+                                    "Authentication failed.##",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                    });
         }
+
 
         final Button button_sign_in = findViewById(R.id.button_signin);
         final TextView client_sign_up = findViewById(R.id.client_join);
@@ -105,6 +126,7 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void updateUI(@NonNull String uid) {
+        findViewById(R.id.loadingPanelSignin).setVisibility(View.VISIBLE);
         FirebaseFirestore.getInstance()
                 .collection(CLIENTS_COLLECTION)
                 .document(uid)
@@ -120,6 +142,7 @@ public class SignInActivity extends AppCompatActivity {
                             Toast.makeText(SignInActivity.this,
                                     "Authentication failed.##",
                                     Toast.LENGTH_LONG).show();
+                                     findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                     }
                 });
     }
@@ -127,11 +150,12 @@ public class SignInActivity extends AppCompatActivity {
     private void startClientHomepage() {
         // open up client homepage, if he was found
         startActivity(new Intent(getBaseContext(), ClientHomePage.class));
-
+        findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
         finish();
     }
 
     private void searchForBO(String uid) {
+            findViewById(R.id.loadingPanelSignin).setVisibility(View.VISIBLE);
             FirebaseFirestore.getInstance()
                     .collection(BUSINESSES_COLLECTION)
                     .document(uid)
@@ -144,10 +168,12 @@ public class SignInActivity extends AppCompatActivity {
                             Toast.makeText(SignInActivity.this,
                                     "Authentication failed : Email us your username.##", // - ben - 17/12 - when user is not client and not bo
                                     Toast.LENGTH_LONG).show();
+                                    findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                         }
                     }).addOnFailureListener(l ->
                     Toast.makeText(SignInActivity.this,
                             "Authentication failed.##",
                             Toast.LENGTH_LONG).show());
+                            findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
     }
 }

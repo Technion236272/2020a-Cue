@@ -16,7 +16,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".BusinessFeatures.ClienteleList"></activity>
+        <activity android:name=".SignInActivity"></activity>
+        <activity android:name=".BusinessFeatures.ClienteleList" />
         <activity android:name=".BusinessFeatures.BusinessProfileEdit" />
         <activity android:name=".Credits" />
         <activity android:name=".BusinessFeatures.BusinessScheduleWeek" />
@@ -27,11 +28,10 @@
         <activity android:name=".ClientFeatures.ClientBusinessHomepage" />
         <activity android:name=".ClientFeatures.ClientAppointmentPage" />
         <activity android:name=".Settings" />
-        <activity android:name=".SignInActivity">
+        <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
