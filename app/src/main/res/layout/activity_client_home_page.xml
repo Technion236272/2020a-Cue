@@ -15,6 +15,7 @@
         android:layout_height="wrap_content"
         android:background="@color/colorPrimaryLight"
         android:scrollbars="horizontal"
+        android:layout_marginLeft="10dp"
         />
 
     <androidx.recyclerview.widget.RecyclerView
@@ -24,6 +25,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/myFavoriteList"
         android:background="@color/colorPrimaryLight"
+
+
       />
 
     <com.google.android.material.bottomnavigation.BottomNavigationView
