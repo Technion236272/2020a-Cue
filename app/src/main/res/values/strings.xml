@@ -58,6 +58,9 @@
     <string name="settings">Settings</string>
     <string name="generate_a_link_to_the_business">Generate a link to the business</string>
     <string name="edit_your_profile">Edit your profile</string>
+    <string name="business_bottom_menu_schedule">Schedule</string>
+    <string name="business_bottom_menu_homepage">Homepage</string>
+    <string name="business_bottom_menu_clientele">Clientele</string>
 
 
 </resources>

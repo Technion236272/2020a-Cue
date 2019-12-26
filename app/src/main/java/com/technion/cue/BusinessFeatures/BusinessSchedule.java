@@ -7,8 +7,11 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.technion.cue.R;
 
@@ -20,7 +23,7 @@ import java.util.List;
 /**
  * top activity for viewing the schedule of the business
  */
-public class BusinessSchedule extends FragmentActivity {
+public class BusinessSchedule extends FragmentActivity implements BusinessBottomMenu {
 
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
@@ -36,8 +39,10 @@ public class BusinessSchedule extends FragmentActivity {
 
         TabLayout tabs = findViewById(R.id.business_schedule_tabs);
         tabs.setupWithViewPager(pager);
-    }
 
+        BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        bnv.getMenu().getItem(0).setChecked(true);
+    }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -45,7 +50,7 @@ public class BusinessSchedule extends FragmentActivity {
                 Arrays.asList("Today", "This Week", "This Month", "Recent Changes")
         );
 
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
@@ -81,5 +86,21 @@ public class BusinessSchedule extends FragmentActivity {
         public CharSequence getPageTitle(int position) {
             return titleList.get(position);
         }
+    }
+
+    public void openBusinessSchedule(MenuItem item) { }
+
+    public void openBusinessHomepage(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(), BOBusinessHomePage.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+    public void openBusinessClientele(MenuItem item) {
+        Intent intent = new Intent(this, ClienteleList.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
     }
 }

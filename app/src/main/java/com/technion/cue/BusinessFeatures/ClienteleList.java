@@ -6,14 +6,17 @@ import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -23,7 +26,7 @@ import com.technion.cue.data_classes.Business;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTELE_COLLECTION;
 
-public class ClienteleList extends AppCompatActivity {
+public class ClienteleList extends AppCompatActivity implements BusinessBottomMenu {
 
 
     ClienteleListAdapter mAdapter;
@@ -51,6 +54,9 @@ public class ClienteleList extends AppCompatActivity {
 
         mAdapter = new ClienteleListAdapter(options);
         clientele.setAdapter(mAdapter);
+
+        BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        bnv.getMenu().getItem(2).setChecked(true);
     }
 
     @Override
@@ -135,4 +141,20 @@ public class ClienteleList extends AppCompatActivity {
             return new ClienteleListAdapter.itemHolder(v);
         }
     }
+
+    public void openBusinessSchedule(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(),BusinessSchedule.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+    public void openBusinessHomepage(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(), BOBusinessHomePage.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+    public void openBusinessClientele(MenuItem item) { }
 }

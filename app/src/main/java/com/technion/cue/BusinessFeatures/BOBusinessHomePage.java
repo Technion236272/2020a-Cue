@@ -13,10 +13,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.material.bottomnavigation.BottomNavigationMenu;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
@@ -30,14 +33,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class BOBusinessHomePage extends AppCompatActivity {
+public class BOBusinessHomePage extends AppCompatActivity implements BusinessBottomMenu {
 
     private static final int EDIT = 1;
 
-    public void openBusinessCalendar(View view) {
-        final Intent intent = new Intent(getBaseContext(),BusinessSchedule.class);
-        startActivity(intent);
-    }
 
     private View fragment_view;
 
@@ -46,6 +45,8 @@ public class BOBusinessHomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bohome_page);
         fragment_view = findViewById(R.id.business_info);
+        BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        bnv.getMenu().getItem(1).setChecked(true);
     }
 
     @Override
@@ -66,11 +67,9 @@ public class BOBusinessHomePage extends AppCompatActivity {
                     .addOnSuccessListener(this, shortLink -> {
                         // Short link created
                         ClipboardManager clipboard = (ClipboardManager)
-                                getBaseContext()
-                                        .getSystemService(Context.CLIPBOARD_SERVICE);
-                        ClipData clip =
-                                ClipData.newPlainText("copied to clipboard",
-                                        shortLink.getShortLink().toString());
+                                getBaseContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip = ClipData.newPlainText("copied to clipboard",
+                                shortLink.getShortLink().toString());
                         Toast.makeText(getBaseContext(), "copied link to clipboard",
                                 Toast.LENGTH_SHORT).show();
                         clipboard.setPrimaryClip(clip);
@@ -189,12 +188,20 @@ public class BOBusinessHomePage extends AppCompatActivity {
         }
     }
 
-
-    public void openClientele(View view) {
-        Intent i = new Intent(this, ClienteleList.class);
-        startActivity(i);
+    public void openBusinessSchedule(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(),BusinessSchedule.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
     }
 
-    public void generateDynamicLink(View view) { }
+    public void openBusinessHomepage(MenuItem item) { }
+
+    public void openBusinessClientele(MenuItem item) {
+        Intent intent = new Intent(this, ClienteleList.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
 }
 

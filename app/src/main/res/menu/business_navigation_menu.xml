@@ -1,4 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-
+    <item android:id="@+id/business_schedule_entry"
+        android:icon="@drawable/clock_icon"
+        android:title="@string/business_bottom_menu_schedule"
+        android:onClick="openBusinessSchedule"
+        android:checked="false" />
+    <item android:id="@+id/business_homepage_entry"
+        android:title="@string/business_bottom_menu_homepage"
+        android:icon="@drawable/home_icon"
+        android:onClick="openBusinessHomepage"
+        android:checked="true" />
+    <item android:id="@+id/business_clientele_entry"
+        android:title="@string/business_bottom_menu_clientele"
+        android:icon="@drawable/schedule_icon"
+        android:onClick="openBusinessClientele"
+        android:checked="false" />
 </menu>

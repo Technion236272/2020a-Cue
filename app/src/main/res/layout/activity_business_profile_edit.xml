@@ -50,12 +50,14 @@
             android:hint="@string/business_name_hint"
             app:counterEnabled="true"
             app:endIconMode="clear_text"
-            app:counterMaxLength="30" >
+            app:counterMaxLength="30"
+            app:errorEnabled="true" >
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/businessNameEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLength="30"/>
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -78,7 +80,8 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/businessDescriptionEditText"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:maxLength="200" />
 
         </com.google.android.material.textfield.TextInputLayout>
 
@@ -102,7 +105,8 @@
                 android:id="@+id/businessPhoneEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="phone" />
+                android:inputType="phone"
+                android:maxLength="10" />
 
         </com.google.android.material.textfield.TextInputLayout>
 

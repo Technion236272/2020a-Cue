@@ -24,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -56,18 +57,18 @@ public class BusinessProfileEdit extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_profile_edit);
+        TextInputEditText businessName = findViewById(R.id.businessNameEditText);
+        TextInputEditText businessDescription = findViewById(R.id.businessDescriptionEditText);
+        TextInputEditText phone = findViewById(R.id.businessPhoneEditText);
+        TextInputEditText state = findViewById(R.id.businessStateEditText);
+        TextInputEditText city = findViewById(R.id.businessCityEditText);
+        TextInputEditText address = findViewById(R.id.businessAddressEditText);
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(ds -> {
                     Business business = ds.toObject(Business.class);
-                    TextInputEditText businessName = findViewById(R.id.businessNameEditText);
-                    TextInputEditText businessDescription = findViewById(R.id.businessDescriptionEditText);
-                    TextInputEditText phone = findViewById(R.id.businessPhoneEditText);
-                    TextInputEditText state = findViewById(R.id.businessStateEditText);
-                    TextInputEditText city = findViewById(R.id.businessCityEditText);
-                    TextInputEditText address = findViewById(R.id.businessAddressEditText);
                     open_hours = business.open_hours;
                     businessName.setText(business.business_name);
                     businessDescription.setText(business.description);
@@ -144,21 +145,37 @@ public class BusinessProfileEdit extends AppCompatActivity {
 
             TimePickerDialog mTimePicker = new TimePickerDialog(this,
                     (timePicker, selectedHour, selectedMinute) -> {
-                        String selectedMinuteFormatted =
-                                selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
-                        String  selectedHourFormatted =
-                                selectedHour <= 9 ? "0" + selectedHour : String.valueOf(selectedHour);
-                        String value_to_put = selectedHourFormatted + ":" + selectedMinuteFormatted;
-                        openHours.setText(value_to_put);
-                        if (lastUsedKey == null)
-                            return;
-                        if (open_hours.get(lastUsedKey).contains("-")) {
-                            open_hours.put(lastUsedKey, value_to_put + "-" +
-                                    open_hours.get(lastUsedKey).split("-")[1]);
-                        } else {
-                            open_hours.put(lastUsedKey, value_to_put+ "-");
-                        }
-                    }, hour, minute, true);
+
+                String closeHoursText = closeHours.getText().toString();
+                if (closeHoursText.contains(":")) {
+                    String closeHour = closeHoursText.split(":")[0];
+                    String closeMinute = closeHoursText.split(":")[1];
+                    if ((selectedHour > Integer.valueOf(closeHour)) ||
+                            (selectedHour == Integer.valueOf(closeHour)
+                                    && selectedMinute >= Integer.valueOf(closeMinute))) {
+                        Toast.makeText(this,
+                                "Opening time must precede closing time. Please refill the form.",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                String selectedMinuteFormatted =
+                        selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
+                String  selectedHourFormatted =
+                        selectedHour <= 9 ? "0" + selectedHour : String.valueOf(selectedHour);
+                String value_to_put = selectedHourFormatted + ":" + selectedMinuteFormatted;
+
+                openHours.setText(value_to_put);
+                if (lastUsedKey == null)
+                    return;
+                if (open_hours.get(lastUsedKey).contains("-")) {
+                    open_hours.put(lastUsedKey, value_to_put + "-" +
+                            open_hours.get(lastUsedKey).split("-")[1]);
+                } else {
+                    open_hours.put(lastUsedKey, value_to_put + "-");
+                }
+                }, hour, minute, true);
             mTimePicker.setTitle("Select opening hour");
             mTimePicker.show();
         });
@@ -179,24 +196,36 @@ public class BusinessProfileEdit extends AppCompatActivity {
 
             TimePickerDialog mTimePicker = new TimePickerDialog(this,
                     (timePicker, selectedHour, selectedMinute) -> {
-                        String selectedMinuteFormatted =
-                                selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
-                        String  selectedHourFormatted =
-                                selectedHour <= 9 ? "0" + selectedHour : String.valueOf(selectedHour);
-                        String value_to_put = selectedHourFormatted + ":" + selectedMinuteFormatted;
-                        closeHours.setText(value_to_put);
-                        if (lastUsedKey == null)
-                            return;
-                        if (open_hours.get(lastUsedKey).contains("-")) {
-                            open_hours.put(lastUsedKey,
-                                    open_hours.get(lastUsedKey).split("-")[0]
-                                            + "-" + value_to_put);
-                        } else {
-                            open_hours.put(lastUsedKey, "-" + value_to_put);
-                        }
-                    }
 
-                    , hour, minute, true);
+                String openHoursText = openHours.getText().toString();
+                if (openHoursText.contains(":")) {
+                    String openHour = openHoursText.split(":")[0];
+                    String openMinute = openHoursText.split(":")[1];
+                    if ((selectedHour < Integer.valueOf(openHour)) ||
+                            (selectedHour == Integer.valueOf(openHour)
+                                    && selectedMinute <= Integer.valueOf(openMinute))) {
+                        Toast.makeText(this,
+                                "Opening time must precede closing time. Please refill the form.",
+                                Toast.LENGTH_SHORT).show();
+                        return;
+                    }
+                }
+
+                String selectedMinuteFormatted =
+                        selectedMinute == 0 ? "00" : String.valueOf(selectedMinute);
+                String  selectedHourFormatted =
+                        selectedHour <= 9 ? "0" + selectedHour : String.valueOf(selectedHour);
+                String value_to_put = selectedHourFormatted + ":" + selectedMinuteFormatted;
+                closeHours.setText(value_to_put);
+                if (lastUsedKey == null)
+                    return;
+                if (open_hours.get(lastUsedKey).contains("-")) {
+                    open_hours.put(lastUsedKey,
+                            open_hours.get(lastUsedKey).split("-")[0] + "-" + value_to_put);
+                } else {
+                    open_hours.put(lastUsedKey, "-" + value_to_put);
+                }
+                }, hour, minute, true);
             mTimePicker.setTitle("Select closing hour");
             mTimePicker.show();
         });

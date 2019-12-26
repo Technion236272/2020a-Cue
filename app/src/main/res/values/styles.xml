@@ -7,6 +7,7 @@
         <item name="colorOnBackground">@color/TextOnBackground</item>
         <item name="colorOnPrimary">@color/TextColorPrimary</item>
         <item name="colorOnSecondary">@color/TextColorSecondary</item>
+        <item name="android:textColor">@color/TextOnBackground</item>
     </style>
 
 
@@ -36,10 +37,5 @@
         <item name="android:windowBackground">#FFFFFF</item>
 
     </style>
-
-
-<!--    <style name="Toolbar.TitleText" parent="TextAppearance.Widget.AppCompat.Toolbar.Title">-->
-<!--        <item name="android:textSize">23sp</item>-->
-<!--    </style>-->
 
 </resources>
