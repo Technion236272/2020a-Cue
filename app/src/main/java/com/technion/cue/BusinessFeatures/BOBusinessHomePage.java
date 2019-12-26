@@ -18,7 +18,6 @@ import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.bottomnavigation.BottomNavigationMenu;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
@@ -43,7 +42,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bohome_page);
+        setContentView(R.layout.activity_bo_homepage);
         fragment_view = findViewById(R.id.business_info);
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
         bnv.getMenu().getItem(1).setChecked(true);

@@ -32,7 +32,9 @@
         android:textSize="16sp"
         android:layout_below="@id/homepageBusinessName"
         android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_centerHorizontal="true"
+        android:maxWidth="300dip"
+        android:singleLine="false"/>
 
   <LinearLayout
       android:id="@+id/address"

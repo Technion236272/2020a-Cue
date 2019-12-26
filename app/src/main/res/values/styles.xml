@@ -12,7 +12,7 @@
 
 
     <style name="calendarText" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:textColor">@color/TextOnBackground</item>
+        <item name="android:textColor">@color/TextColorPrimary</item>
         <item name="android:textSize">18sp</item>
     </style>
 
@@ -22,20 +22,10 @@
     </style>
 
     <style name="FullScreenDialogStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
-<!--        <item name="android:windowNoTitle">true</item>-->
-<!--        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>-->
-<!--        <item name="colorPrimary">@color/colorPrimary</item>-->
-
         <item name="android:textColor">@color/TextOnBackground</item>
-
-        <!-- Set this to true if you want Full Screen without status bar -->
         <item name="android:windowFullscreen">false</item>
-
         <item name="android:windowIsFloating">false</item>
-
-        <!-- This is important! Don't forget to set window background -->
         <item name="android:windowBackground">#FFFFFF</item>
-
     </style>
 
 </resources>

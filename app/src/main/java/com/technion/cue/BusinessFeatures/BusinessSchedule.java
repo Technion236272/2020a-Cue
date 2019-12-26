@@ -1,5 +1,6 @@
 package com.technion.cue.BusinessFeatures;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
@@ -23,7 +24,7 @@ import java.util.List;
 /**
  * top activity for viewing the schedule of the business
  */
-public class BusinessSchedule extends FragmentActivity implements BusinessBottomMenu {
+public class BusinessSchedule extends AppCompatActivity implements BusinessBottomMenu {
 
     private ViewPager pager;
     private PagerAdapter pagerAdapter;

@@ -4,8 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BusinessFeatures.BOBusinessHomePage"
-    android:background="@color/colorPrimaryLight">
+    tools:context=".BusinessFeatures.BOBusinessHomePage">
 
     <fragment android:name="com.technion.cue.BusinessFeatures.BusinessInfoFragment"
         android:id="@+id/business_info"
