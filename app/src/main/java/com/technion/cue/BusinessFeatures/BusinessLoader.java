@@ -28,17 +28,13 @@ class BusinessLoader {
 
     private View view;
     private FirebaseFirestore db;
-    private Business business;
     private String business_id;
+
+    public Business business;
 
     BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
         this.db = db;
         this.business_id = business_to_fetch;
-//        businessLoadTask = db.collection(BUSINESSES_COLLECTION)
-//                .document(business_id)
-//                .get()
-//                .addOnSuccessListener(documentSnapshot ->
-//                        business = documentSnapshot.toObject(Business.class));
     }
 
     BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {

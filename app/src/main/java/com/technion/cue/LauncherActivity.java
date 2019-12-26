@@ -55,7 +55,7 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void searchForBO(String uid) {
-        findViewById(R.id.loadingPanelSignin).setVisibility(View.VISIBLE);
+        findViewById(R.id.loadingPanelLauncher).setVisibility(View.VISIBLE);
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
                 .document(uid)

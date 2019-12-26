@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "341669905580-qr5q9vgh80om556sbrpg5b1r314b41v0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.technion.cue",
+            "certificate_hash": "a8732b7934520a4e2269aaf541097d9c2e95ee5f"
+          }
+        },
+        {
           "client_id": "341669905580-htp0tgtgdbq7itoo2t7uq55hoj7pmn29.apps.googleusercontent.com",
           "client_type": 3
         }

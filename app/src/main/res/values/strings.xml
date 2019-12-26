@@ -55,6 +55,9 @@
     <string name="thursday_text">Thursday:</string>
     <string name="friday_text">Friday:</string>
     <string name="saturday_text">Saturday:</string>
+    <string name="settings">Settings</string>
+    <string name="generate_a_link_to_the_business">Generate a link to the business</string>
+    <string name="edit_your_profile">Edit your profile</string>
 
 
 </resources>

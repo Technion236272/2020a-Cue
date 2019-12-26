@@ -3,19 +3,25 @@ package com.technion.cue.BusinessFeatures;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
-import com.technion.cue.annotations.ModuleAuthor;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -33,10 +39,6 @@ public class BOBusinessHomePage extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser() ;
-    private BusinessLoader loader;
-
     private View fragment_view;
 
     @Override
@@ -44,8 +46,47 @@ public class BOBusinessHomePage extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bohome_page);
         fragment_view = findViewById(R.id.business_info);
-        loader = new BusinessLoader(fragment_view, db, currentUser.getUid());
+    }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.business_menu, menu);
+        menu.getItem(0).setOnMenuItemClickListener(cl -> {
+            FirebaseDynamicLinks.getInstance()
+                    .createDynamicLink()
+                    .setLink(Uri.parse("https://cueapp.com/?name=" +
+                            FirebaseAuth.getInstance().getUid()))
+                    .setDomainUriPrefix("https://cueapp.page.link")
+                    .setAndroidParameters(
+                            new DynamicLink.AndroidParameters
+                                    .Builder("com.technion.cue")
+                                    .build())
+                    .buildShortDynamicLink()
+                    .addOnSuccessListener(this, shortLink -> {
+                        // Short link created
+                        ClipboardManager clipboard = (ClipboardManager)
+                                getBaseContext()
+                                        .getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip =
+                                ClipData.newPlainText("copied to clipboard",
+                                        shortLink.getShortLink().toString());
+                        Toast.makeText(getBaseContext(), "copied link to clipboard",
+                                Toast.LENGTH_SHORT).show();
+                        clipboard.setPrimaryClip(clip);
+                    });
+            return true;
+        });
+
+        menu.getItem(2).setOnMenuItemClickListener(cl -> {
+            Bundle bundle = new Bundle();
+            Intent i = new Intent(this, BusinessProfileEdit.class);
+            i.putExtras(bundle);
+            startActivityForResult(i, EDIT);
+            return true;
+        });
+
+        return true;
     }
 
     @Override
@@ -148,26 +189,12 @@ public class BOBusinessHomePage extends AppCompatActivity {
         }
     }
 
-    /**
-     * onClick method for the edit button.
-     * change BOBusinessHomePage into / from "edit mode",
-     * where the BO will able to change the profile of his business
-     */
-    @ModuleAuthor("Ophir Eyal")
-    public void editBOHomePage(View view) {
-
-        Bundle bundle = new Bundle();
-        // TODO: add data to bundle
-        Intent i = new Intent(this, BusinessProfileEdit.class);
-        i.putExtras(bundle);
-        startActivityForResult(i, EDIT);
-
-    }
-
 
     public void openClientele(View view) {
         Intent i = new Intent(this, ClienteleList.class);
         startActivity(i);
     }
+
+    public void generateDynamicLink(View view) { }
 }
 

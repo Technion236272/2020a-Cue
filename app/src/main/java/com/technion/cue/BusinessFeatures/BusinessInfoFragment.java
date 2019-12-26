@@ -16,9 +16,6 @@ import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.R;
-import com.technion.cue.data_classes.Business;
-
-import org.w3c.dom.Text;
 
 import java.util.Calendar;
 import java.util.Map;
@@ -112,5 +109,6 @@ public class BusinessInfoFragment extends Fragment {
                         startActivity(mapIntent);
                     });
         });
+
     }
 }

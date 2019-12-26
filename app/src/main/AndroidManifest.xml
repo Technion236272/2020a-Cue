@@ -25,7 +25,20 @@
         <activity android:name=".ClientFeatures.ClientChooseDateFragment" />
         <activity android:name=".BusinessFeatures.BusinessScheduleDay" />
         <activity android:name=".BusinessFeatures.BusinessSchedule" />
-        <activity android:name=".ClientFeatures.ClientBusinessHomepage" />
+        <activity android:name=".ClientFeatures.ClientBusinessHomepage">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="cueapp.com"
+                    android:scheme="https" />
+
+                <data
+                    android:host="cueapp.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ClientFeatures.ClientAppointmentPage" />
         <activity android:name=".Settings" />
         <activity android:name=".LauncherActivity">
@@ -35,7 +48,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".BusinessFeatures.BOBusinessHomePage" />
+        <activity android:name=".BusinessFeatures.BOBusinessHomePage"/>
         <activity android:name=".BusinessFeatures.BusinessSignUp" />
         <activity android:name=".ClientFeatures.ClientSignUp" />
         <activity android:name=".ClientFeatures.ClientHomePage" />

@@ -28,10 +28,12 @@
         android:id="@+id/business_calendar_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom|right"
         android:layout_margin="10dp"
         android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         app:srcCompat="@drawable/clock_icon"
-        android:layout_above="@id/edit_button"
         android:onClick="openBusinessCalendar" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
