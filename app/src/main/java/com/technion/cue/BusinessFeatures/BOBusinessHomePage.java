@@ -23,6 +23,7 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mikhaellopez.circularimageview.CircularImageView;
+import com.technion.cue.FirebaseCollections;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
@@ -33,6 +34,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+
+import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
 @ModuleAuthor("Ophir Eyal")
 public class BOBusinessHomePage extends AppCompatActivity implements BusinessBottomMenu {
@@ -55,13 +58,12 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
         // check the homepage item in the bottom menu
         bnv.getMenu().getItem(1).setChecked(true);
-        // load business data from firebase, that will be used with the profile edit activity
+        // load business data from Firebase Firestore, that will be used with the profile edit activity
         FirebaseFirestore.getInstance()
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .collection(BUSINESSES_COLLECTION)
+                .document(FirebaseAuth.getInstance().getUid())
                 .get()
-                .addOnSuccessListener(ds -> {
-                    business = ds.toObject(Business.class);
-                });
+                .addOnSuccessListener(ds -> business = ds.toObject(Business.class));
     }
 
     @Override

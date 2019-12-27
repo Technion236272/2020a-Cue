@@ -15,7 +15,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.technion.cue.BusinessFeatures.SupportingModules.BusinessLoader;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
