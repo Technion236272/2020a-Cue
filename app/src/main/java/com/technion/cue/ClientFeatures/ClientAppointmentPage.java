@@ -27,9 +27,12 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+
+
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.BusinessFeatures.BusinessInfoFragment;
+import com.technion.cue.data_classes.Business;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -39,11 +42,16 @@ import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
-public class ClientAppointmentPage extends AppCompatActivity  implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-// TODO: CHECK AVIBILITY OF THE EDITED APPOINTMENT
+public class ClientAppointmentPage extends AppCompatActivity  {
+
     Intent intent;
     Calendar c;
     String b_name,a_type,a_notes,a_date,a_id,b_id;
+    FirebaseFirestore db;
+    Business business;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,7 +62,13 @@ public class ClientAppointmentPage extends AppCompatActivity  implements DatePic
         a_notes = intent.getExtras().getString("appointment_notes");
         a_date = intent.getExtras().getString("appointment_date");
         a_id = intent.getExtras().getString("appointment_id");
+        //System.out.println("----------------------" + a_id);
+
         b_id = intent.getExtras().getString("business_id");
+        db = FirebaseFirestore.getInstance();
+        loadBusinessData(b_id);
+
+
         // toolbar
        // Toolbar toolbar = (Toolbar) findViewById(R.id.appointment_page_toolbar);
        // setSupportActionBar(toolbar);
@@ -65,11 +79,13 @@ public class ClientAppointmentPage extends AppCompatActivity  implements DatePic
             getSupportActionBar().setTitle(b_name);
 
         }
-        TextView type = findViewById(R.id.client_appointment_page_type);
+        //TextView business_name = findViewById(R.id.client_appointment_business_Name);
+        //business_name.setText(b_name);
+        TextView type = findViewById(R.id.client_appointment_business_type);
         type.setText(a_type);
-        TextView notes = findViewById(R.id.client_appointment_page_notes);
+        TextView notes = findViewById(R.id.client_appointment_page_notes_text);
         notes.setText(a_notes);
-        TextView date = findViewById(R.id.client_appointment_page_date);
+        TextView date = findViewById(R.id.client_appointment_time_text);
         date.setText(a_date);
 
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
@@ -83,11 +99,13 @@ public class ClientAppointmentPage extends AppCompatActivity  implements DatePic
     public boolean onOptionsItemSelected(MenuItem item) {
         // handle arrow click here
         if (item.getItemId() == android.R.id.home) {
-            finish(); // close this activity and return to preview activity
+            onBackPressed();
+            return true;// close this activity and return to preview activity
         }
 
         return super.onOptionsItemSelected(item);
     }
+
 
     // - menu - ben 17.12
     @Override
@@ -97,12 +115,36 @@ public class ClientAppointmentPage extends AppCompatActivity  implements DatePic
         return true;
     }
 
+    private void loadBusinessData(String business_id) {
+        db.collection(BUSINESSES_COLLECTION)
+                .document(business_id)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    business = documentSnapshot.toObject(Business.class);
+                    if (business!=null) {
+                        TextView phoneView = (TextView) findViewById(R.id.client_appointment_phone_text);
+                        phoneView.setText(business.phone_number);
+                        TextView locationView = (TextView) findViewById(R.id.client_appointment_address_text);
+                        locationView.setText(business.location.get("city") + "," +
+                                business.location.get("state") + "," +
+                                business.location.get("street") + "," +
+                                business.location.get("number") + ".");
+                    }
+
+
+                });
+    }
+
 
     // attach to an onclick handler to show the date picker
     public void reschedThisAppointment(MenuItem v) {
-        ClientChooseDateFragment newFragment = new ClientChooseDateFragment();
+        //System.out.println("----------------------" + a_id);
+        Intent intent = new Intent(this, EditAppointmentActivity.class);
+        intent.putExtra("appointment_id",a_id);
+        intent.putExtra("business_id",b_id);
+        startActivity(intent);
+        finish();
 
-        newFragment.show(getSupportFragmentManager(), "datePicker");
 
     }
 
@@ -126,59 +168,5 @@ public class ClientAppointmentPage extends AppCompatActivity  implements DatePic
     }
 
 
-
-
-    // handle the date selected
-    @Override
-    public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
-        // store the values selected into a Calendar instance
-        c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, monthOfYear);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-
-        ClientChooseTimeFragment newFragment = new ClientChooseTimeFragment();
-        newFragment.show(getSupportFragmentManager(), "timePicker");
-
-    }
-
-    // handle the time selected
-    @Override
-    public void onTimeSet(TimePicker view, int hour, int minute) {
-        // store the values selected into a Calendar instance
-        c = Calendar.getInstance();
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        c.set(Calendar.MINUTE, minute);
-        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-        // TODO: will change to a chosen type in Sprint #2
-        Timestamp timestampConvertFrom = new Timestamp(c.getTime());
-        FirebaseFirestore.getInstance()
-                .collection(BUSINESSES_COLLECTION)
-                .document(b_id)
-                .collection(TYPES_COLLECTION)
-                .whereEqualTo("name", "type_0")
-                .get()
-                .addOnSuccessListener(l -> {
-                    Appointment appointment = new Appointment(b_id,
-                            FirebaseAuth.getInstance().getCurrentUser().getUid(),
-                            l.getDocuments().get(0).getId(), "BO notes per appointment type" ,timestampConvertFrom,a_id);
-                    FirebaseFirestore.getInstance()
-                            .collection(APPOINTMENTS_COLLECTION)
-                            .document()
-                            .set(appointment).addOnCompleteListener(task -> {
-
-                        FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-                                .document(a_id).delete().addOnSuccessListener(result ->{
-                                    findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                                    Toast.makeText(getApplicationContext(),"Appointment Reschedualed Successfully ",Toast.LENGTH_LONG).show();
-                                    finish();
-                        });
-
-
-                    });
-                });
-
-
-    }
 
 }

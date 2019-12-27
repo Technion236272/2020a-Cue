@@ -51,6 +51,10 @@ public class LauncherActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
                         }
                     });
+        } else {
+            startActivity(new Intent(getBaseContext(), SignInActivity.class));
+            findViewById(R.id.loadingPanelLauncher).setVisibility(View.GONE);
+            finish();
         }
     }
 

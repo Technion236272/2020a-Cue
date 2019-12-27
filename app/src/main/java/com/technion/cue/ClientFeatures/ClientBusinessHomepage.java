@@ -45,16 +45,16 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                 .replace(R.id.fragment_holder_business_client, f)
                 .commit();
 
-        Fragment cdf = new ClientChooseDateFragment();
-        cdf.setArguments(b);
+
         findViewById(R.id.switch_to_date_time_fragments).setOnClickListener(l -> {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_holder_business_client, cdf)
-                    .addToBackStack(null)
-                    .commit();
+            Intent intent = new Intent(this, EditAppointmentActivity.class);
+            intent.putExtras(b);
+            startActivity(intent);
             findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
         });
+
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

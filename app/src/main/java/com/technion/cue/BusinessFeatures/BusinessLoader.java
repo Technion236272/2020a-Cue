@@ -24,14 +24,14 @@ import java.util.Locale;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
-class BusinessLoader {
+ class BusinessLoader {
 
     private View view;
     private FirebaseFirestore db;
     private Business business;
     private String business_id;
 
-    BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
+     BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
         this.db = db;
         this.business_id = business_to_fetch;
 //        businessLoadTask = db.collection(BUSINESSES_COLLECTION)
@@ -50,7 +50,7 @@ class BusinessLoader {
      * loads data from Firebase into matching fields in the BO homepage activity
      */
     @ModuleAuthor("Ophir Eyal")
-    void load() {
+     void load() {
         db.collection(BUSINESSES_COLLECTION)
                 .document(business_id)
                 .get()

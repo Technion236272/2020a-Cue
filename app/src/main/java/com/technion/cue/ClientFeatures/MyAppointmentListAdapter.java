@@ -1,5 +1,7 @@
 package com.technion.cue.ClientFeatures;
 
+import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.R;
@@ -31,6 +34,7 @@ public class MyAppointmentListAdapter extends
         super(options);
     }
 
+
     @Override
     protected void onBindViewHolder(@NonNull itemHolder holder, int position, @NonNull Appointment appointment) {
             // TODO: the texts should be the business & type names. currently, their document ids will be displayed
@@ -44,6 +48,7 @@ public class MyAppointmentListAdapter extends
                 .get()
                 .addOnSuccessListener(l -> {
                     holder.business.setText(l.getString("business_name"));
+                    holder.business_id = (appointment.business_id);
                 });
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
@@ -58,11 +63,12 @@ public class MyAppointmentListAdapter extends
                 .collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("client_id",appointment.client_id)
                 .whereEqualTo("business_id",appointment.business_id)
+                .whereEqualTo("date", new Timestamp(appointment.date))
                 .limit(1)
                 .get()
                 .addOnSuccessListener(l -> {
                     holder.appointment_id = l.getDocuments().get(0).getId();
-                    holder.business.setTag(R.id.myAppointmentList,holder.appointment_id); // need to change - ben
+//                    holder.business.setTag(R.id.myAppointmentList,holder.appointment_id); // need to change - ben
                 });
             holder.notes.setText(appointment.notes);
 
@@ -77,7 +83,23 @@ public class MyAppointmentListAdapter extends
     public itemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.my_appointment_list_adapter, parent,false);
-        return new itemHolder(v);
+        itemHolder holder = new itemHolder(v);
+
+        v.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent getIntentBOPage = new Intent(parent.getContext(), ClientAppointmentPage.class);
+                // TODO: start using appointmet object !!! - refactoring later.
+                getIntentBOPage.putExtra("business_name",holder.business.getText());
+                getIntentBOPage.putExtra("appointment_type",holder.type.getText());
+                getIntentBOPage.putExtra("appointment_date",holder.date.getText());
+                getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
+                getIntentBOPage.putExtra("business_id",holder.business_id);
+                getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
+                parent.getContext().startActivity(getIntentBOPage);
+            }
+        });
+        return holder;
     }
 
     class itemHolder extends RecyclerView.ViewHolder {
@@ -86,6 +108,7 @@ public class MyAppointmentListAdapter extends
         TextView notes;
         TextView type;
         String appointment_id;
+        String business_id;
 
         public itemHolder(@NonNull View itemView) {
             super(itemView);
@@ -94,6 +117,7 @@ public class MyAppointmentListAdapter extends
             notes = itemView.findViewById(R.id.notes);
             type = itemView.findViewById(R.id.type);
             appointment_id ="";
+            business_id ="";
 
         }
     }

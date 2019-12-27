@@ -3,12 +3,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/lotout"
-        android:orderInCategory="1"
-        android:title=""
-        app:showAsAction="ifRoom"
-        android:onClick="reschedThisAppointment"
-        android:icon="@drawable/ic_face_black_24dp"/>
+        android:id="@+id/client_appointment_toolbar_edit"
+        android:orderInCategory="100"
+        android:title="Logout"
+        app:showAsAction="never"
+        android:onClick="logout"/>
+    <item
+        android:id="@+id/client_appointment_toolbar_abort"
+        android:orderInCategory="100"
+        android:title="About"
+        app:showAsAction="never"
+        />
 
 
 </menu>
