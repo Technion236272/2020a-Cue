@@ -12,7 +12,7 @@
         app:cardElevation="0dp"
         android:layout_centerInParent="true"
         android:onClick="moveToBOPage"
-        app:cardBackgroundColor="@color/colorPrimaryLight"
+        app:cardBackgroundColor="#ffffff"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="5dp">
 
@@ -25,7 +25,11 @@
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:layout_width="130dp"
                     android:layout_height="130dp"
-                    app:civ_border_color="@color/TextColorSecondary"
+                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_shadow="true"
+                    app:civ_shadow_color="#000000"
+                    app:civ_shadow_gravity="center"
+                    app:civ_border="true"
                     app:civ_border_width="4dp"
                     android:layout_marginTop="0dp"
                     android:id="@+id/businessLogo"

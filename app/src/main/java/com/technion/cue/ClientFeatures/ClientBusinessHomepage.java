@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -67,16 +68,16 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                 });
 
 
-        Fragment cdf = new ClientChooseDateFragment();
-        cdf.setArguments(bundle);
+
         findViewById(R.id.switch_to_date_time_fragments).setOnClickListener(l -> {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_holder_business_client, cdf)
-                    .addToBackStack(null)
-                    .commit();
+            Intent intent = new Intent(this, EditAppointmentActivity.class);
+            intent.putExtras(this.bundle);
+            startActivity(intent);
             findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
         });
+
+
+
     }
     @Override
     public boolean onOptionsItemSelected(MenuItem item){

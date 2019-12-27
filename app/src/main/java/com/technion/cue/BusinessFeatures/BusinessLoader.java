@@ -19,6 +19,7 @@ import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
+
 /**
  * This class is used to load data about the business from Firestore
  */
@@ -28,6 +29,7 @@ class BusinessLoader {
     private View view;
     private FirebaseFirestore db;
     private String business_id;
+
 
     public Business business;
 
@@ -45,7 +47,7 @@ class BusinessLoader {
      * loads data from Firebase into matching fields in the BO homepage activity
      */
     @ModuleAuthor("Ophir Eyal")
-    void load() {
+     void load() {
         db.collection(BUSINESSES_COLLECTION)
                 .document(business_id)
                 .get()
