@@ -2,11 +2,12 @@ package com.technion.cue.data_classes;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Business {
+public class Business implements Serializable {
 
     public String phone_number = "", business_name = "", name = "",
             description = "", logo_path = "";

@@ -1,9 +1,7 @@
 package com.technion.cue.BusinessFeatures;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
+
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -11,20 +9,13 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mikhaellopez.circularimageview.CircularImageView;
@@ -34,13 +25,13 @@ import com.technion.cue.data_classes.Business;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
@@ -49,9 +40,11 @@ public class BusinessProfileEdit extends AppCompatActivity {
 
     private static final int GET_LOGO = 0;
     private BusinessUploader uploader;
-    Uri logoData;
-    Map<String, String> open_hours = new HashMap<>();
-    String lastUsedKey;
+    private Uri logoData;
+    private Map<String, String> open_hours = new HashMap<>();
+    private String[] days =
+            {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private String lastUsedKey;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,26 +56,19 @@ public class BusinessProfileEdit extends AppCompatActivity {
         TextInputEditText state = findViewById(R.id.businessStateEditText);
         TextInputEditText city = findViewById(R.id.businessCityEditText);
         TextInputEditText address = findViewById(R.id.businessAddressEditText);
-        FirebaseFirestore.getInstance()
-                .collection(BUSINESSES_COLLECTION)
-                .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                .get()
-                .addOnSuccessListener(ds -> {
-                    Business business = ds.toObject(Business.class);
-                    open_hours = business.open_hours;
-                    businessName.setText(business.business_name);
-                    businessDescription.setText(business.description);
-                    phone.setText(business.phone_number);
-                    state.setText(business.location.get("state"));
-                    city.setText(business.location.get("city"));
-                    address.setText(business.location.get("address"));
-                    uploader = new BusinessUploader(business,
-                            findViewById(R.id.businessLogoEdit));
-                    uploader.loadLogo();
-                });
+        Business business = (Business) getIntent().getSerializableExtra("business");
+        Uri logoData = getIntent().getData();
+        open_hours = business.open_hours;
+        businessName.setText(business.business_name);
+        businessDescription.setText(business.description);
+        phone.setText(business.phone_number);
+        state.setText(business.location.get("state"));
+        city.setText(business.location.get("city"));
+        address.setText(business.location.get("address"));
+        uploader = new BusinessUploader(business, logoData, findViewById(R.id.businessLogoEdit));
+        uploader.loadLogo();
 
         AutoCompleteTextView openHoursDays = findViewById(R.id.days_filled_exposed_dropdown);
-        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         openHoursDays.setAdapter(new ArrayAdapter<>(this,
                 R.layout.dropdown_menu_popup_item, days));
 
@@ -110,8 +96,8 @@ public class BusinessProfileEdit extends AppCompatActivity {
                         .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                         .get()
                         .addOnSuccessListener(ds -> {
-                            Business business = ds.toObject(Business.class);
-                            String hours = business.open_hours.get(key);
+                            Business b = ds.toObject(Business.class);
+                            String hours = b.open_hours.get(key);
                             open_hours.put(key, hours);
                             String open_hour = "", close_hour = "";
                             if (hours.contains("-")) {
@@ -276,21 +262,8 @@ public class BusinessProfileEdit extends AppCompatActivity {
         uploader.uploadLogo(logoData);
         uploader.updateBusiness();
         intent.setData(logoData);
+        intent.putExtra("business", uploader.business);
         setResult(RESULT_OK, intent);
-        intent.putExtra("businessName", businessName.getText().toString());
-        intent.putExtra("businessDescription", businessDescription.getText().toString());
-        intent.putExtra("phone", phone.getText().toString());
-        intent.putExtra("state", state.getText().toString());
-        intent.putExtra("city", city.getText().toString());
-        intent.putExtra("address", address.getText().toString());
-        intent.putExtra("Sunday", open_hours.get("Sunday"));
-        intent.putExtra("Monday", open_hours.get("Monday"));
-        intent.putExtra("Tuesday", open_hours.get("Tuesday"));
-        intent.putExtra("Wednesday", open_hours.get("Wednesday"));
-        intent.putExtra("Thursday", open_hours.get("Thursday"));
-        intent.putExtra("Friday", open_hours.get("Friday"));
-        intent.putExtra("Saturday", open_hours.get("Saturday"));
-
         finish();
     }
 }

@@ -2,6 +2,7 @@ package com.technion.cue.BusinessFeatures;
 
 import android.net.Uri;
 import android.util.Log;
+import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Task;
@@ -39,6 +40,15 @@ class BusinessUploader {
         this.business = business;
         this.logoResource = logoResource;
         loadLogo();
+    }
+
+    BusinessUploader(Business business, Uri logoRef, CircularImageView logoResource) {
+        this.business = business;
+        this.logoResource = logoResource;
+        Glide.with(logoResource.getContext())
+                .load(logoRef)
+                .error(R.drawable.ic_person_outline_black_24dp)
+                .into(logoResource);
     }
 
     private String getLogoPath() {

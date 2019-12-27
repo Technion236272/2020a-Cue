@@ -61,6 +61,7 @@
     <string name="business_bottom_menu_schedule">Schedule</string>
     <string name="business_bottom_menu_homepage">Homepage</string>
     <string name="business_bottom_menu_clientele">Clientele</string>
+    <string name="closed_business_message">Close.</string>
 
 
 </resources>
