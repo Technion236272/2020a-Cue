@@ -15,13 +15,20 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.technion.cue.BusinessFeatures.SupportingModules.BusinessLoader;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 
 import java.util.Calendar;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
+/**
+ * This fragment display information about the business
+ * such as it's logo, location and opening hours
+ */
+@ModuleAuthor("Ophir Eyal")
 public class BusinessInfoFragment extends Fragment {
 
     BusinessLoader loader;
@@ -56,6 +63,7 @@ public class BusinessInfoFragment extends Fragment {
         String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         Calendar c = Calendar.getInstance();
         String day = days[c.get(Calendar.DAY_OF_WEEK) - 1];
+        // make it so the current day's text is bold
         switch (day) {
             case "Sunday":
                 ((TextView) view.findViewById(R.id.sunday_text)).setTypeface(null, Typeface.BOLD);
@@ -84,6 +92,9 @@ public class BusinessInfoFragment extends Fragment {
 
         TextView currentDayHours = view.findViewById(R.id.current_day_hours);
         LinearLayout openingHoursList = view.findViewById(R.id.open_hours_list);
+
+        // switch between a compact view of the opening hours (only for today)
+        // and an extended view (of the all week)
         currentDayHours.setOnClickListener(cl -> {
             currentDayHours.setVisibility(View.GONE);
             openingHoursList.setVisibility(View.VISIBLE);
@@ -94,6 +105,7 @@ public class BusinessInfoFragment extends Fragment {
             currentDayHours.setVisibility(View.VISIBLE);
         });
 
+        // set up a link to Google Maps
         (view.findViewById(R.id.address)).setOnClickListener(cl -> {
             FirebaseFirestore.getInstance()
                     .collection(BUSINESSES_COLLECTION)

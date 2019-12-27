@@ -1,6 +1,8 @@
 package com.technion.cue.data_classes;
 
-public class Client {
+import java.io.Serializable;
+
+public class Client implements Serializable {
 
     public String email, name, phone_number;
 

@@ -17,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.ParseException;
@@ -31,6 +32,7 @@ import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
  * this activity will display a list of appointments for a given day
  * for the business owner
  */
+@ModuleAuthor("Ophir Eyal")
 public class BusinessScheduleDay extends Fragment {
 
     private Date currentDay;
@@ -38,11 +40,6 @@ public class BusinessScheduleDay extends Fragment {
     private RecyclerView appointments_list;
     private DailyAppointmentListAdapter mAdapter;
     private RecyclerView.LayoutManager layoutManager;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
 
     @Nullable
     @Override
@@ -75,6 +72,7 @@ public class BusinessScheduleDay extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         appointments_list.setLayoutManager(layoutManager);
 
+        // a query to get all the appointments today for the current business
         Query query = FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("business_id",
@@ -101,9 +99,7 @@ public class BusinessScheduleDay extends Fragment {
     public void onStop() {
         super.onStop();
         mAdapter.stopListening();
-        Objects.requireNonNull(getActivity())
-                .findViewById(R.id.business_schedule_tabs)
-                .setVisibility(View.VISIBLE);
+        getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.VISIBLE);
     }
 }
 

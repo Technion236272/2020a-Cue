@@ -2,7 +2,6 @@ package com.technion.cue.BusinessFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,8 +15,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
@@ -25,7 +22,6 @@ import com.technion.cue.data_classes.Business;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -33,8 +29,10 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
-
+/**
+ * This this the activity in which the business owner can change the details of his business
+ * such as it's logo, name, location and opening hours
+ */
 @ModuleAuthor("Ophir Eyal")
 public class BusinessProfileEdit extends AppCompatActivity {
 
@@ -47,7 +45,7 @@ public class BusinessProfileEdit extends AppCompatActivity {
     private String lastUsedKey;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_profile_edit);
         TextInputEditText businessName = findViewById(R.id.businessNameEditText);
@@ -65,6 +63,7 @@ public class BusinessProfileEdit extends AppCompatActivity {
         state.setText(business.location.get("state"));
         city.setText(business.location.get("city"));
         address.setText(business.location.get("address"));
+
         uploader = new BusinessUploader(business, logoData, findViewById(R.id.businessLogoEdit));
         uploader.loadLogo();
 
@@ -79,6 +78,10 @@ public class BusinessProfileEdit extends AppCompatActivity {
 
         openHoursDays.setOnItemClickListener((parent, view, position, id) -> {
 
+            // we use the map open_hours in order to store the operating hours of the business
+            // we check if the chosen day's operating hours are already stored in the map
+            // if they aren't, we store them. Regardless, we set the opening hour and closing hour
+            // text fields content according to this day's stored values.
             String key = parent.getItemAtPosition(position).toString();
             if (open_hours.containsKey(key)) {
                 String open_hour = "", close_hour = "";
@@ -91,23 +94,16 @@ public class BusinessProfileEdit extends AppCompatActivity {
                 closeHours.setText(close_hour);
                 lastUsedKey = key;
             } else {
-                FirebaseFirestore.getInstance()
-                        .collection(BUSINESSES_COLLECTION)
-                        .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .get()
-                        .addOnSuccessListener(ds -> {
-                            Business b = ds.toObject(Business.class);
-                            String hours = b.open_hours.get(key);
-                            open_hours.put(key, hours);
-                            String open_hour = "", close_hour = "";
-                            if (hours.contains("-")) {
-                                open_hour = hours.split("-")[0];
-                                close_hour = hours.split("-")[1];
-                            }
-                            openHours.setText(open_hour);
-                            closeHours.setText(close_hour);
-                            lastUsedKey = key;
-                        });
+                String hours = uploader.business.open_hours.get(key);
+                open_hours.put(key, hours);
+                String open_hour = "", close_hour = "";
+                if (hours.contains("-")) {
+                    open_hour = hours.split("-")[0];
+                    close_hour = hours.split("-")[1];
+                }
+                openHours.setText(open_hour);
+                closeHours.setText(close_hour);
+                lastUsedKey = key;
             }
 
             openHours.setClickable(true);
@@ -115,6 +111,10 @@ public class BusinessProfileEdit extends AppCompatActivity {
 
         });
 
+        // setting the opening hours of the business. we use a TimePickerDialog to let
+        // the business owner to choose a new opening time, which will be displayed in the
+        // opening hour text field.
+        // Additionally, we make sure that the chosen opening time precedes the chosen closing time.
         openHours.setOnClickListener(cl -> {
             int hour, minute;
             Calendar c = Calendar.getInstance();
@@ -166,6 +166,7 @@ public class BusinessProfileEdit extends AppCompatActivity {
             mTimePicker.show();
         });
 
+        // same as above, but for the closing time
         closeHours.setOnClickListener(cl -> {
             int hour, minute;
             Calendar c = Calendar.getInstance();
@@ -220,12 +221,19 @@ public class BusinessProfileEdit extends AppCompatActivity {
     /**
      * opens up the phone's gallery for picture upload
      */
-    public void uploadLogoToFireBase(View view) {
+    public void openImageGallery(View view) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
         startActivityForResult(photoPickerIntent, GET_LOGO);
     }
 
+    /**
+     * Set the displayed logo to the one chosen from the image gallery in
+     * {@link #openImageGallery(View view)}
+     * @param reqCode
+     * @param resultCode
+     * @param data
+     */
     @Override
     public void onActivityResult(int reqCode, int resultCode, Intent data) {
         super.onActivityResult(reqCode, resultCode, data);
@@ -244,6 +252,11 @@ public class BusinessProfileEdit extends AppCompatActivity {
         }
     }
 
+    /**
+     * Save all content that has changed, and upload it to Firestore.
+     * Finally, finish this activity, and return to the homepage activity
+     * @param view
+     */
     public void saveChanges(View view) {
         Intent intent = new Intent();
         TextInputEditText businessName = findViewById(R.id.businessNameEditText);

@@ -2,14 +2,11 @@ package com.technion.cue.BusinessFeatures;
 
 import android.net.Uri;
 import android.util.Log;
-import android.view.View;
 
 import com.bumptech.glide.Glide;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -19,12 +16,13 @@ import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Random;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
+/**
+ * This class is used to upload data about the business to Firestore
+ */
 @ModuleAuthor("Ophir Eyal")
 class BusinessUploader {
 
@@ -34,13 +32,6 @@ class BusinessUploader {
     private Task uploadTask;
 
     Business business;
-
-
-    BusinessUploader(Business business, CircularImageView logoResource) {
-        this.business = business;
-        this.logoResource = logoResource;
-        loadLogo();
-    }
 
     BusinessUploader(Business business, Uri logoRef, CircularImageView logoResource) {
         this.business = business;
@@ -55,6 +46,9 @@ class BusinessUploader {
         return business.logo_path.substring(business.logo_path.indexOf("business_logos"));
     }
 
+    /**
+     * Updates business data on Firestore
+     */
     void updateBusiness() {
         if (uploadTask == null) {
             db.collection(BUSINESSES_COLLECTION)
@@ -69,6 +63,10 @@ class BusinessUploader {
         }
     }
 
+    /**
+     * Uploads business logo to Firebase Storage
+     * @param data: the uri of the business'es logo
+     */
     void uploadLogo(Uri data) {
 
         if (data == null)
@@ -93,6 +91,9 @@ class BusinessUploader {
         });
     }
 
+    /**
+     * supporting method for loading business logo from Firebase Storage
+     */
     void loadLogo() {
         StorageReference logoRef = null;
         if (business != null && !business.logo_path.equals("")) {

@@ -19,10 +19,15 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Client;
 
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
+/**
+ * A dialog displaying additional details about a certain client
+ */
+@ModuleAuthor("Ophir Eyal")
 public class ClientInformationDialog extends DialogFragment {
 
     String client_id;
@@ -63,6 +68,7 @@ public class ClientInformationDialog extends DialogFragment {
                     client_email.setClickable(true);
                 });
 
+        // clicking on the displayed email copied it to the clipboard
         client_email.setOnClickListener(cl -> {
             ClipboardManager clipboard = (ClipboardManager)
                     getContext().getSystemService(Context.CLIPBOARD_SERVICE);
@@ -71,6 +77,7 @@ public class ClientInformationDialog extends DialogFragment {
             clipboard.setPrimaryClip(clip);
         });
 
+        // same as above, but for the phone number
         client_phone.setOnClickListener(cl -> {
             ClipboardManager clipboard = (ClipboardManager)
                     getContext().getSystemService(Context.CLIPBOARD_SERVICE);

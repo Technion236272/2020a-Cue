@@ -1,8 +1,5 @@
 package com.technion.cue.BusinessFeatures;
 
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
@@ -16,6 +13,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -33,8 +33,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
-import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
 @ModuleAuthor("Ophir Eyal")
 public class BOBusinessHomePage extends AppCompatActivity implements BusinessBottomMenu {
@@ -55,9 +53,10 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
         setContentView(R.layout.activity_bo_homepage);
         business_info_fragment = findViewById(R.id.business_info);
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        // check the homepage item in the bottom menu
         bnv.getMenu().getItem(1).setChecked(true);
+        // load business data from firebase, that will be used with the profile edit activity
         FirebaseFirestore.getInstance()
-                .collection(BUSINESSES_COLLECTION)
                 .document(FirebaseAuth.getInstance().getCurrentUser().getUid())
                 .get()
                 .addOnSuccessListener(ds -> {
@@ -107,15 +106,11 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 TextView businessName = business_info_fragment.findViewById(R.id.homepageBusinessName);
                 TextView businessDescription = business_info_fragment
                         .findViewById(R.id.homepageBusinessDescription);
-//                business.business_name = data.getStringExtra("businessName");
-//                business.description = data.getStringExtra("businessDescription");
                 businessName.setText(business.business_name);
                 businessDescription.setText(business.description);
 
                 TextView location = business_info_fragment.findViewById(R.id.address_text);
-//                business.location.put("address", data.getStringExtra("address") );
-//                business.location.put("city", data.getStringExtra("city") );
-//                business.location.put("state", data.getStringExtra("state"));
+
 
                 String full_address = business.location.get("address") + ", "
                         + business.location.get("city") + ", "
@@ -123,7 +118,6 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 location.setText(full_address);
 
                 TextView phone = business_info_fragment.findViewById(R.id.phone_text);
-//                business.phone_number = data.getStringExtra("phone");
                 phone.setText(business.phone_number);
 
                 TextView current_day_hours = business_info_fragment.findViewById(R.id.current_day_hours);
@@ -187,7 +181,6 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                                 R.id.thursday, R.id.friday, R.id.saturday};
 
                 for (int i = 0; i < 7; i++) {
-//                    business.open_hours.put(days[i], data.getStringExtra(days[i]));
                     ((TextView) business_info_fragment.findViewById(res_days[i]))
                             .setText(business.open_hours.get(days[i]));
                 }
@@ -223,7 +216,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                                 .build())
                 .buildShortDynamicLink()
                 .addOnSuccessListener(this, shortLink -> {
-                    // Short link created
+                    // Short link was created, and will be copied to the clipboard
                     ClipboardManager clipboard = (ClipboardManager)
                             getBaseContext().getSystemService(Context.CLIPBOARD_SERVICE);
                     ClipData clip = ClipData.newPlainText("copied to clipboard",

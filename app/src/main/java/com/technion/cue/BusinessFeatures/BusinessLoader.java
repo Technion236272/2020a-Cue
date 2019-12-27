@@ -4,10 +4,6 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -20,10 +16,13 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Locale;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
+/**
+ * This class is used to load data about the business from Firestore
+ */
+@ModuleAuthor("Ophir Eyal")
 class BusinessLoader {
 
     private View view;
@@ -65,7 +64,6 @@ class BusinessLoader {
     /**
      * loads fields from Firebase into BO object
      */
-    @ModuleAuthor("Ophir Eyal")
     private void loadBusinessData() {
 
         TextView name = view.findViewById(R.id.homepageBusinessName);
@@ -89,9 +87,6 @@ class BusinessLoader {
         c.add(Calendar.DAY_OF_WEEK, 1);
 
         String open_hours_tomorrow = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
-
-        // TODO: create code to handle cases where this assertion doesn't hold
-        assert open_hours_tomorrow.contains("-");
 
         if ((open_hours_today==null) || (!open_hours_today.contains("-")))
             current_day_hours.setText("Close.");
@@ -148,7 +143,6 @@ class BusinessLoader {
      * loads logo from fireBase into the "business_logo" ImageView
      * uses the Glide framework for image download & processing
      */
-    @ModuleAuthor("Ophir Eyal")
     private void loadLogoFromFireBase()
     {
         CircularImageView logo = view.findViewById(R.id.business_logo);

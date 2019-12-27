@@ -15,6 +15,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
@@ -27,6 +28,11 @@ import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
+/**
+ * A FirestoreRecyclerAdapter for displaying all appointments today.
+ * This is used by the fragment which display the daily and weekly appointments
+ */
+@ModuleAuthor("Ophir Eyal")
 public class DailyAppointmentListAdapter extends
         FirestoreRecyclerAdapter<Appointment, DailyAppointmentListAdapter.itemHolder> {
 
@@ -61,6 +67,8 @@ public class DailyAppointmentListAdapter extends
             date = itemView.findViewById(R.id.BO_list_date);
             type = itemView.findViewById(R.id.BO_list_appointment_type);
             flag = itemView.findViewById(R.id.current_appointment_flag);
+            // if there is no more than one item, or if it was stated explicitly,
+            // a divider will not be used
             if (getItemCount() <= 1 || !useDivider) {
                 itemView.findViewById(R.id.divider).setVisibility(View.GONE);
             }
@@ -123,6 +131,9 @@ public class DailyAppointmentListAdapter extends
                                         c.setTime(a.date);
                                         c.add(Calendar.MINUTE,
                                                 Integer.valueOf(attributes.get("duration")));
+                                        // checks whether the bound appointment is the
+                                        // current appointment as well.
+                                        // If so, display a flag icon next to it
                                         if (c.getTime().getTime() >= currentTime.getTime()){
                                             holder.flag.setVisibility(View.VISIBLE);
                                             holder.type.setTextColor(context.getResources()
@@ -141,6 +152,8 @@ public class DailyAppointmentListAdapter extends
                                                     .getColor(R.color.TextOnBackgroundTransparent));
                                         }
                                     });
+                            // if the appointment's time has passed, display it
+                            // with a grey color
                         } else if (appointment.date.getTime() < currentTime.getTime()) {
                             holder.type.setTextColor(context.getResources()
                                     .getColor(R.color.TextOnBackgroundTransparent));

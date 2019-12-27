@@ -33,7 +33,7 @@
             app:civ_border_color="@color/ColorSecondary"
             app:civ_border_width="4dp"
             android:clickable="false"
-            android:onClick="uploadLogoToFireBase"
+            android:onClick="openImageGallery"
             android:layout_centerHorizontal="true" />
 
         <com.google.android.material.textfield.TextInputLayout

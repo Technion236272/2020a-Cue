@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
@@ -35,6 +36,7 @@ import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
  * this activity will display a list of appointments for a given day
  * for the business owner
  */
+@ModuleAuthor("Ophir Eyal")
 public class BusinessScheduleWeek extends Fragment {
 
     private static int NUMBER_OF_DAYS_IN_WEEK = 7;
@@ -69,8 +71,8 @@ public class BusinessScheduleWeek extends Fragment {
         week_days_list.setLayoutManager(layoutManager);
         week_days_list.setHasFixedSize(true);
 
+        // TODO: possibly allow business owners to choose which the day in which the week begins
         Calendar c = Calendar.getInstance();
-        // TODO: allow business owners to choose which day the week begins
         for (int i = 1 ; i <= 7 ; i++) {
             c.set(Calendar.DAY_OF_WEEK, i);
             week_days.add(c.getTime());
@@ -122,9 +124,13 @@ public class BusinessScheduleWeek extends Fragment {
         }
     }
 
+    /**
+     * A RecyclerView adapter to display all appointment for the current week
+     * The list items display ONLY this week's days, and begin from the first
+     * day of the week (i.e, Sunday - but it might become configurable later on)
+     */
     private class WeeklyAppointmentListAdapter extends
             RecyclerView.Adapter<WeeklyAppointmentListAdapter.ItemHolder> {
-
 
         class ItemHolder extends RecyclerView.ViewHolder {
             TextView day_of_the_week;

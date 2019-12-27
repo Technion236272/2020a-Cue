@@ -21,11 +21,18 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTELE_COLLECTION;
 
+/**
+ * This activity display a list filled with the business'es clientele
+ * The client are sorted alphabetically (in an ascending order).
+ * Clicking on each client item pops up a dialog with additional details about the client
+ */
+@ModuleAuthor("Ophir Eyal")
 public class ClienteleList extends AppCompatActivity implements BusinessBottomMenu {
 
 
@@ -107,6 +114,8 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
             char currentFirstLetter = cflTemp;
             cflTemp++;
             char nextFirstLetter = cflTemp;
+            // If the client item is the first item (alphabetically) that begins
+            // with a certain letter, display a large icon of that letter next to the item
             FirebaseFirestore.getInstance()
                     .collection(BUSINESSES_COLLECTION)
                     .document(FirebaseAuth.getInstance().getUid())

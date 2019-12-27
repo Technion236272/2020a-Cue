@@ -2,9 +2,10 @@ package com.technion.cue.data_classes;
 
 import com.google.firebase.Timestamp;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Appointment {
+public class Appointment implements Serializable {
     public String business_id, client_id, type, notes,appointment_id;
     public Date date;
 
@@ -41,4 +42,6 @@ public class Appointment {
         }
         return false;
     }
+
+    // TODO: consider overriding hashCode
 }

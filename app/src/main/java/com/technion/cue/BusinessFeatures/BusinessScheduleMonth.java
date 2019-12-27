@@ -1,8 +1,6 @@
 package com.technion.cue.BusinessFeatures;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +11,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 
+/**
+ * This fragment displays a calendar, from which the business owner
+ * can access all of his appointments
+ */
+@ModuleAuthor("Ophir Eyal")
 public class BusinessScheduleMonth extends Fragment {
 
     @Override

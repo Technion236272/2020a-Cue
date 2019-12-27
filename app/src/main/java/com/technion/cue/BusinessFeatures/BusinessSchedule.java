@@ -2,7 +2,6 @@ package com.technion.cue.BusinessFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
@@ -15,6 +14,7 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -24,6 +24,7 @@ import java.util.List;
 /**
  * top activity for viewing the schedule of the business
  */
+@ModuleAuthor("Ophir Eyal")
 public class BusinessSchedule extends AppCompatActivity implements BusinessBottomMenu {
 
     private ViewPager pager;
@@ -45,6 +46,22 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         bnv.getMenu().getItem(0).setChecked(true);
     }
 
+    public void openBusinessSchedule(MenuItem item) { }
+
+    public void openBusinessHomepage(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(), BOBusinessHomePage.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+    public void openBusinessClientele(MenuItem item) {
+        Intent intent = new Intent(this, ClienteleList.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
         List<String> titleList = new ArrayList<>(
@@ -55,6 +72,11 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
+        /**
+         * open appropriate fragment when a tab is clicked
+         * @param position the position of the tab inside the Viewpager
+         * @return the fragment that should be opened
+         */
         @Override
         public Fragment getItem(int position) {
             switch (titleList.get(position)) {
@@ -89,19 +111,4 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         }
     }
 
-    public void openBusinessSchedule(MenuItem item) { }
-
-    public void openBusinessHomepage(MenuItem item) {
-        Intent intent = new Intent(getBaseContext(), BOBusinessHomePage.class);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        finish();
-    }
-
-    public void openBusinessClientele(MenuItem item) {
-        Intent intent = new Intent(this, ClienteleList.class);
-        startActivity(intent);
-        overridePendingTransition(0, 0);
-        finish();
-    }
 }
