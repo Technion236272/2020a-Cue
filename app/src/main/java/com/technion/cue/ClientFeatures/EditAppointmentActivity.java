@@ -1,24 +1,14 @@
 package com.technion.cue.ClientFeatures;
 
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
-import androidx.fragment.app.DialogFragment;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ParseException;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
@@ -27,34 +17,29 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
+
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
 
 
-import com.google.firebase.firestore.QuerySnapshot;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
-import com.technion.cue.BusinessFeatures.BusinessInfoFragment;
 import com.technion.cue.data_classes.Business;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Map;
-import java.util.concurrent.TimeUnit;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 
-public class EditAppointmentActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
+public class EditAppointmentActivity extends AppCompatActivity
+        implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
     String b_id;
     String a_id;
@@ -66,17 +51,18 @@ public class EditAppointmentActivity extends AppCompatActivity implements DatePi
     Appointment appointment;
     FirebaseAuth mAuth;
     String radioButton_id;
+
     /**
     *
      * Business Owner that want to create an NEW appointment*
-     * should add boundle with "business_id" and "client_id"*
+     * should add bundle with "business_id" and "client_id"*
      * Business Owner that want to create an EDIT appointment
-     * should add boundle with "appointment_id" and "business_id"*
+     * should add bundle with "appointment_id" and "business_id"*
      *
      * Client  that want to create an NEW appointment*
-     * should add boundle with "business_id" *
+     * should add bundle with "business_id" *
      * Client that want to create an EDIT appointment
-     * should add boundle with "appointment_id" and "business_id"*
+     * should add bundle with "appointment_id" and "business_id"*
     * **/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -101,7 +87,7 @@ public class EditAppointmentActivity extends AppCompatActivity implements DatePi
                 a_id ="";
                 a_type="";
                 appointment = new Appointment();
-                appointment.appointment_id="";
+                appointment.id="";
                 appointment.business_id=b_id;
                 appointment.client_id = intent.getExtras().getString("client_id");
                 loadNewAppointment();
@@ -112,7 +98,7 @@ public class EditAppointmentActivity extends AppCompatActivity implements DatePi
                 a_type="";
                 // -- setting appointment object
                 appointment = new Appointment();
-                appointment.appointment_id="";
+                appointment.id="";
                 appointment.business_id=b_id;
                 appointment.client_id = mAuth.getCurrentUser().getUid();
                 loadNewAppointment();
@@ -136,7 +122,7 @@ public class EditAppointmentActivity extends AppCompatActivity implements DatePi
                 .addOnSuccessListener(documentSnapshot -> {
                     business = documentSnapshot.toObject(Business.class);
                     if (business!=null) {
-                        TextView locationView = (TextView) findViewById(R.id.edit_appointment_address_text);
+                        TextView locationView = findViewById(R.id.edit_appointment_address_text);
                         locationView.setText(business.location.get("city") + "," +
                                 business.location.get("state") + "," +
                                 business.location.get("street") + "," +
@@ -204,10 +190,10 @@ public class EditAppointmentActivity extends AppCompatActivity implements DatePi
                 .addOnSuccessListener(documentSnapshot -> {
                     appointment = documentSnapshot.toObject(Appointment.class);
                     if (appointment!=null) {
-                        appointment.appointment_id = documentSnapshot.getId();
-                        TextView notes = (TextView) findViewById(R.id.edit_appointment_notes_text);
+                        appointment.id = documentSnapshot.getId();
+                        TextView notes = findViewById(R.id.edit_appointment_notes_text);
                         notes.setText(appointment.notes);
-                        TextView date = (TextView) findViewById(R.id.edit_appointment_time_text);
+                        TextView date = findViewById(R.id.edit_appointment_time_text);
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
                         date.setText(sdf.format(appointment.date ));
                         a_type = appointment.type;
@@ -250,24 +236,22 @@ public class EditAppointmentActivity extends AppCompatActivity implements DatePi
                     .show();
 
         } else {
-            if (appointment.appointment_id != "")  {// reschedule  appointment
+            if (appointment.id != "")  {// reschedule  appointment
                 appointment.type = radioButton_id;
                 appointment.notes ="notes about the appointments - per type";
-                appointment.appointment_id="";// avoid adding old appointmet_id to  firestore
+                appointment.id="";// avoid adding old appointmet_id to  firestore
                       FirebaseFirestore.getInstance()
                             .collection(APPOINTMENTS_COLLECTION)
                             .document()
-                            .set(appointment).addOnCompleteListener(task -> {
-
-                          FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-                                  .document(a_id).delete().addOnSuccessListener(result -> { // deleting old appointment
-                              findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
-                              Toast.makeText(getApplicationContext(), "Appointment Rescheduled Successfully ", Toast.LENGTH_LONG).show();
-                              // --
-                              finish();
-                              //--
-                          });
-                      });
+                            .set(appointment).addOnCompleteListener(task ->
+                              FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
+                                      .document(a_id).delete().addOnSuccessListener(result -> { // deleting old appointment
+                                findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                                Toast.makeText(getApplicationContext(), "Appointment Rescheduled Successfully ", Toast.LENGTH_LONG).show();
+                                // --
+                                finish();
+                                //--
+                            }));
 
 
             } else {                                // new appointment
@@ -293,8 +277,7 @@ public class EditAppointmentActivity extends AppCompatActivity implements DatePi
     @SuppressLint("ResourceType")
     public Boolean didChooseType() {
         RadioGroup rg = findViewById(R.id.edit_appoinment_radiogroup);
-        if (radioButton_id != "") return true;
-        return false;
+        return !radioButton_id.equals("");
     }
 
     // handle the date selected

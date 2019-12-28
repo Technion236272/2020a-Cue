@@ -20,6 +20,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.technion.cue.ClientFeatures.EditAppointmentActivity;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
@@ -136,8 +137,14 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     });
 
             holder.client.setOnClickListener(cl -> {
-                DialogFragment client_information = new ClientInformationDialog(cm.client_id);
-                client_information.show(getSupportFragmentManager(), null);
+//                DialogFragment client_information = new ClientInformationDialog(cm.client_id);
+//                client_information.show(getSupportFragmentManager(), null);
+                Bundle bundle = new Bundle();
+                bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
+                bundle.putString("client_id", cm.client_id);
+                Intent intent = new Intent(getBaseContext(), EditAppointmentActivity.class);
+                intent.putExtras(bundle);
+                startActivity(intent);
             });
 
         }

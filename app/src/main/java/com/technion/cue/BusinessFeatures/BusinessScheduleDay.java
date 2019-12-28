@@ -72,11 +72,10 @@ public class BusinessScheduleDay extends Fragment {
         layoutManager = new LinearLayoutManager(getContext());
         appointments_list.setLayoutManager(layoutManager);
 
-        // a query to get all the appointments today for the current business
+        // a query to get all the appointments which occur today, for the current business
         Query query = FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("business_id",
-                        FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .whereEqualTo("business_id", FirebaseAuth.getInstance().getUid())
                 .whereGreaterThanOrEqualTo("date", currentDay)
                 .whereLessThan("date", nextDay)
                 .orderBy("date");
@@ -85,7 +84,8 @@ public class BusinessScheduleDay extends Fragment {
                 new FirestoreRecyclerOptions.Builder<Appointment>()
                         .setQuery(query, Appointment.class)
                         .build();
-        mAdapter = new DailyAppointmentListAdapter((ViewGroup)view, getContext(), options);
+
+        mAdapter = new DailyAppointmentListAdapter(getActivity(), (ViewGroup)view, getContext(), options);
         appointments_list.setAdapter(mAdapter);
     }
 

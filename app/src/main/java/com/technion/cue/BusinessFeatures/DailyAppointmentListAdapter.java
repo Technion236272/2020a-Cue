@@ -1,12 +1,16 @@
 package com.technion.cue.BusinessFeatures;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -14,6 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.technion.cue.ClientFeatures.EditAppointmentActivity;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Appointment;
@@ -37,22 +42,26 @@ public class DailyAppointmentListAdapter extends
         FirestoreRecyclerAdapter<Appointment, DailyAppointmentListAdapter.itemHolder> {
 
     private final Context context;
+    private final FragmentActivity activity;
     private ViewGroup parentView = null;
     private boolean useDivider = true;
 
-    DailyAppointmentListAdapter(ViewGroup view, Context context,
+    DailyAppointmentListAdapter(FragmentActivity activity, ViewGroup view,
+                                Context context,
                                 FirestoreRecyclerOptions<Appointment> options) {
         super(options);
         this.parentView = view;
         this.context = context;
+        this.activity = activity;
     }
 
-    DailyAppointmentListAdapter(Context context,
+    DailyAppointmentListAdapter(FragmentActivity activity, Context context,
                                 @NonNull FirestoreRecyclerOptions<Appointment> options,
                                 boolean useDivider) {
         super(options);
         this.context = context;
         this.useDivider = useDivider;
+        this.activity = activity;
     }
 
     class itemHolder extends RecyclerView.ViewHolder {
@@ -85,6 +94,15 @@ public class DailyAppointmentListAdapter extends
     protected void onBindViewHolder(@NonNull itemHolder holder,
                                     int position,
                                     @NonNull Appointment appointment) {
+
+        holder.itemView.findViewById(R.id.appointment_item).setOnClickListener(cl -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
+            bundle.putString("appointment_id", appointment.id);
+            Intent intent = new Intent(context, EditAppointmentActivity.class);
+            intent.putExtras(bundle);
+            activity.startActivity(intent);
+        });
 
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         holder.date.setText(sdf.format(appointment.date));
@@ -153,7 +171,7 @@ public class DailyAppointmentListAdapter extends
                                         }
                                     });
                             // if the appointment's time has passed, display it
-                            // with a grey color
+                            // with a gray color
                         } else if (appointment.date.getTime() < currentTime.getTime()) {
                             holder.type.setTextColor(context.getResources()
                                     .getColor(R.color.TextOnBackgroundTransparent));
