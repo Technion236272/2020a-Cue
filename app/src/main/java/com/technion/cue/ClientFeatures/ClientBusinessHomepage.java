@@ -19,9 +19,13 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.BusinessFeatures.BusinessInfoFragment;
+import com.technion.cue.FirebaseCollections;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
+
+import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
 /*
         Still need to set all up
@@ -42,15 +46,43 @@ public class ClientBusinessHomepage extends AppCompatActivity {
             actionBar.setTitle("Favorite");
             actionBar.setDisplayHomeAsUpEnabled(true);
         }
-        // getting the b_id from client home page
 
-        bundle =  getIntent().getExtras();
-        Fragment f = new BusinessInfoFragment();
-        f.setArguments(bundle);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_holder_business_client, f)
-                .commit();
+        // getting the b_id from client home page
+        this.bundle = getIntent().getExtras();
+        FirebaseDynamicLinks.getInstance()
+                .getDynamicLink(getIntent())
+                .addOnSuccessListener(this, pendingDynamicLinkData -> {
+                    // Get deep link from result (may be null if no link is found)
+                    if (pendingDynamicLinkData != null) {
+                        FirebaseFirestore.getInstance()
+                                .collection(CLIENTS_COLLECTION)
+                                .document(FirebaseAuth.getInstance().getUid())
+                                .get()
+                                .addOnSuccessListener(documentSnapshot -> {
+                                    if (documentSnapshot.exists()) {
+                                        Uri deepLink = pendingDynamicLinkData.getLink();
+                                        String formattedDeepLink = deepLink.toString()
+                                                .substring(deepLink.toString().indexOf('=') + 1)
+                                                .replace('+', ' ');
+                                        findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
+                                        Fragment f = new BusinessInfoFragment();
+                                        bundle.putString("business_id", formattedDeepLink);
+                                        f.setArguments(bundle);
+                                        getSupportFragmentManager()
+                                                .beginTransaction()
+                                                .replace(R.id.fragment_holder_business_client, f)
+                                                .commit();
+                                    } else {
+                                        Toast.makeText(getBaseContext(),
+                                                "You are not a client. " +
+                                                        "Please log in from a client account.",
+                                                Toast.LENGTH_SHORT)
+                                                .show();
+                                        finish();
+                                    }
+                                });
+                    }
+        });
 
 
         findViewById(R.id.switch_to_date_time_fragments).setOnClickListener(l -> {
@@ -63,6 +95,7 @@ public class ClientBusinessHomepage extends AppCompatActivity {
 
 
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
@@ -73,43 +106,39 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        //MenuInflater inflater = getMenuInflater();
-//        //inflater.inflate(R.menu.client_business_menu, menu);
-//        menu.getItem(1).setVisible(false);
-//        menu.getItem(2).setVisible(false);
-//        menu.getItem(3).setVisible(false);
-//        menu
-////        System.out.println("------------ b_id "+  bundle.getString("business_id")+"----------");
-////        menu.getItem(0).setOnMenuItemClickListener(cl -> {
-////            FirebaseDynamicLinks.getInstance()
-////                    .createDynamicLink()
-////                    .setLink(Uri.parse("https://cueapp.com/?name=" +
-////                            bundle.getString("business_id")))
-////                    .setDomainUriPrefix("https://cueapp.page.link")
-////                    .setAndroidParameters(
-////                            new DynamicLink.AndroidParameters
-////                                    .Builder("com.technion.cue")
-////                                    .build())
-////                    .buildShortDynamicLink()
-////                    .addOnSuccessListener(this, shortLink -> {
-////                        // Short link created
-////                        ClipboardManager clipboard = (ClipboardManager)
-////                                getBaseContext()
-////                                        .getSystemService(Context.CLIPBOARD_SERVICE);
-////                        ClipData clip =
-////                                ClipData.newPlainText("copied to clipboard",
-////                                        shortLink.getShortLink().toString());
-////                        Toast.makeText(getBaseContext(), "copied link to clipboard",
-////                                Toast.LENGTH_SHORT).show();
-////                        clipboard.setPrimaryClip(clip);
-////                    });
-////            return true;
-////        });
-//        return true;
-//    }
-
-
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.business_menu, menu);
+        menu.getItem(1).setVisible(false);
+        menu.getItem(2).setVisible(false);
+        menu.getItem(3).setVisible(false);
+        menu.getItem(0).setOnMenuItemClickListener(cl -> {
+            FirebaseDynamicLinks.getInstance()
+                    .createDynamicLink()
+                    .setLink(Uri.parse("https://cueapp.com/?name=" +
+                            bundle.getString("business_id")))
+                    .setDomainUriPrefix("https://cueapp.page.link")
+                    .setAndroidParameters(
+                            new DynamicLink.AndroidParameters
+                                    .Builder("com.technion.cue")
+                                    .build())
+                    .buildShortDynamicLink()
+                    .addOnSuccessListener(this, shortLink -> {
+                        // Short link created
+                        ClipboardManager clipboard = (ClipboardManager)
+                                getBaseContext()
+                                        .getSystemService(Context.CLIPBOARD_SERVICE);
+                        ClipData clip =
+                                ClipData.newPlainText("copied to clipboard",
+                                        shortLink.getShortLink().toString());
+                        Toast.makeText(getBaseContext(), "copied link to clipboard",
+                                Toast.LENGTH_SHORT).show();
+                        clipboard.setPrimaryClip(clip);
+                    });
+            return true;
+        });
+        return true;
+    }
 
 }

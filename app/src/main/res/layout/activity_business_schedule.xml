@@ -24,19 +24,6 @@
         </com.google.android.material.tabs.TabLayout>
     </androidx.viewpager.widget.ViewPager>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_appointment_manual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_marginRight="8dp"
-        android:layout_marginBottom="64dp"
-        app:srcCompat="@drawable/ic_add_black_24dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_above="@id/bottom_navigation_wrapper"/>
-
     <FrameLayout
         android:id="@+id/bottom_navigation_wrapper"
         android:layout_width="match_parent"

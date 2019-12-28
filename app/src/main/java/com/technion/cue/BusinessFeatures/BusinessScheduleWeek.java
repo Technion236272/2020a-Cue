@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -99,7 +100,7 @@ public class BusinessScheduleWeek extends Fragment {
                             .setQuery(query, Appointment.class)
                             .build();
             DailyAppointmentListAdapter daily_appointments_adapter =
-                    new  DailyAppointmentListAdapter(getContext(), options, false);
+                    new  DailyAppointmentListAdapter(getActivity(), getContext(), options, false);
             daily_adapters.put(date, daily_appointments_adapter);
         }
 
@@ -134,11 +135,9 @@ public class BusinessScheduleWeek extends Fragment {
 
         class ItemHolder extends RecyclerView.ViewHolder {
             TextView day_of_the_week;
-            View item_view;
             ItemHolder(@NonNull View itemView) {
                 super(itemView);
                 this.day_of_the_week = itemView.findViewById(R.id.day_of_the_week);
-                this.item_view = itemView;
                 ImageView list_arrow = itemView.findViewById(R.id.list_arrow);
                 View week_day_header = itemView.findViewById(R.id.week_day_header);
                 week_day_header.setOnClickListener(l -> {
@@ -176,10 +175,19 @@ public class BusinessScheduleWeek extends Fragment {
             }
 
             RecyclerView appointments_list =
-                    holder.item_view.findViewById(R.id.appointment_list_for_day);
+                    holder.itemView.findViewById(R.id.appointment_list_for_day);
             layoutManager = new LinearLayoutManager(getContext());
             appointments_list.setLayoutManager(layoutManager);
             appointments_list.setAdapter(daily_adapters.get(position_date));
+
+            if (position == NUMBER_OF_DAYS_IN_WEEK - 1) {
+                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
+                        RelativeLayout.LayoutParams.MATCH_PARENT,
+                        RelativeLayout.LayoutParams.MATCH_PARENT
+                );
+                params.setMargins(0, 80, 0, 72);
+                appointments_list.setLayoutParams(params);
+            }
         }
 
         @Override

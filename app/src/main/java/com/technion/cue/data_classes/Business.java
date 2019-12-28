@@ -1,6 +1,7 @@
 package com.technion.cue.data_classes;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentId;
 
 import java.io.Serializable;
 import java.util.Date;
@@ -12,12 +13,18 @@ public class Business implements Serializable {
     public String phone_number = "", business_name = "", name = "",
             description = "", logo_path = "";
 
+    @DocumentId
+    public String id;
+
     // the supported key values are { SUN, MOD, TUE, WED, THU, FRI, SAT }
     public Map<String, String> open_hours = new HashMap<>();
     public Map<String, String> location = new HashMap<>();
     public Map<String,String> attributes = new HashMap<>();
 
     public static class ClienteleMember {
+        @DocumentId
+        public String id;
+
         public String client_id = "", name = "";
         public ClienteleMember() { }
         public ClienteleMember(String client_id) {
@@ -30,6 +37,9 @@ public class Business implements Serializable {
     }
 
     public static class Review {
+        @DocumentId
+        public String id;
+
         public String client_id, content;
         public Date date;
         public Review() { }
@@ -41,6 +51,9 @@ public class Business implements Serializable {
     }
 
     public static class AppointmentType {
+        @DocumentId
+        public String id;
+
         public String name;
         public Map<String, String> attributes = new HashMap<>();
         public AppointmentType() { }

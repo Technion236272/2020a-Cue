@@ -1,12 +1,17 @@
 package com.technion.cue.data_classes;
 
 import com.google.firebase.Timestamp;
+import com.google.firebase.firestore.DocumentId;
 
 import java.io.Serializable;
 import java.util.Date;
 
 public class Appointment implements Serializable {
-    public String business_id, client_id, type, notes,appointment_id;
+    public String business_id, client_id, type, notes;
+
+    @DocumentId
+    public String id;
+
     public Date date;
 
     public Appointment() { }
@@ -18,7 +23,7 @@ public class Appointment implements Serializable {
         this.type = type;
         this.notes = notes;
         this.date = ts.toDate();
-        this.appointment_id = appointment_id;
+//        this.appointment_id = appointment_id;
     }
 
     public Appointment(String business_id, String client_id,
@@ -27,7 +32,7 @@ public class Appointment implements Serializable {
         this.client_id = client_id;
         this.type = type;
         this.date = d;
-        this.appointment_id = appointment_id;
+//        this.appointment_id = appointment_id;
     }
 
     @Override

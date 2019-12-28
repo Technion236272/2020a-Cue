@@ -70,6 +70,16 @@
 
     </LinearLayout>
 
-
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/manual_schedule"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Schedule appointment"
+        app:icon="@drawable/clock_icon"
+        android:contentDescription="@string/schedule_an_appointment_manual"
+        android:layout_below="@id/client_email"
+        android:layout_marginTop="24dp"
+        android:layout_marginBottom="24dp"
+        android:layout_centerHorizontal="true" />
 
 </RelativeLayout>

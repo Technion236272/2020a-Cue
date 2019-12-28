@@ -6,4 +6,6 @@
         android:title="@string/edit_your_profile" />
     <item android:id="@+id/business_settings"
         android:title="@string/settings" />
+    <item android:id="@+id/business_logout"
+        android:title="@string/business_logout" />
 </menu>

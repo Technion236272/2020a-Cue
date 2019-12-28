@@ -25,6 +25,7 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.FirebaseCollections;
 import com.technion.cue.R;
+import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
@@ -82,6 +83,14 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
         menu.getItem(2).setOnMenuItemClickListener(cl -> {
             return true;
         });
+
+        menu.getItem(3).setOnMenuItemClickListener(cl -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return true;
+        });
+
         return true;
     }
 
