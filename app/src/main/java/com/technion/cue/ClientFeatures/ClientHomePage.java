@@ -102,12 +102,7 @@ public class ClientHomePage extends AppCompatActivity  {
         finish();
 
     }
-    public void moveToBOPage(View view) {
-        Intent getIntentBOPage = new Intent(this, ClientBusinessHomepage.class);
-        getIntentBOPage.putExtra("business_id",(String)view.findViewById(R.id.businessName).getTag());
 
-        startActivity(getIntentBOPage);
-    }
 
 
 }

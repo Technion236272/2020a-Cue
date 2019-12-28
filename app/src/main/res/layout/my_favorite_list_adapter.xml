@@ -11,7 +11,6 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp"
         android:layout_centerInParent="true"
-        android:onClick="moveToBOPage"
         app:cardBackgroundColor="#ffffff"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="5dp">

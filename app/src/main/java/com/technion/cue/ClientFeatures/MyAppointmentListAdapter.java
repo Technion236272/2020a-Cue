@@ -96,7 +96,9 @@ public class MyAppointmentListAdapter extends
                 getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
                 getIntentBOPage.putExtra("business_id",holder.business_id);
                 getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
+                System.out.println(" - load appointment number -------");
                 parent.getContext().startActivity(getIntentBOPage);
+
             }
         });
         return holder;

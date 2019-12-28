@@ -32,13 +32,14 @@ public class LauncherActivity extends AppCompatActivity {
         //   check if already signup
 
         mAuth = FirebaseAuth.getInstance();
-
+        
         // checking if already sign in - ben
         if (mAuth.getCurrentUser()!= null)  {
+
             SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
             if (pref.contains(mAuth.getCurrentUser().getUid())) {
                 // all ready signin before - searching for local
-                if (pref.getString(mAuth.getCurrentUser().getUid(), null) == "Client") {
+                if (pref.getString(mAuth.getCurrentUser().getUid(), null).equals("Client")) {
                     startClientHomepage();
                 } else {
                     searchForBO(mAuth.getCurrentUser().getUid());
