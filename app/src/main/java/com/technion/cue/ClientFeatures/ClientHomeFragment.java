@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -95,7 +96,9 @@ public class ClientHomeFragment extends Fragment {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         Query query = db.collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("client_id", currentUser.getUid())
-                .orderBy("date", Query.Direction.DESCENDING);
+                .whereGreaterThanOrEqualTo("date", Timestamp.now())
+                .orderBy("date", Query.Direction.ASCENDING)
+                .limit(3);
         FirestoreRecyclerOptions<Appointment> options =
                 new FirestoreRecyclerOptions.Builder<Appointment>()
                         .setQuery(query, Appointment.class)
