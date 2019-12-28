@@ -3,6 +3,7 @@ package com.technion.cue;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -33,29 +34,46 @@ public class LauncherActivity extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         // checking if already sign in - ben
         if (mAuth.getCurrentUser()!= null)  {
-            findViewById(R.id.loadingPanelLauncher).setVisibility(View.VISIBLE);
-            FirebaseFirestore.getInstance()
-                    .collection(CLIENTS_COLLECTION)
-                    .document(mAuth.getCurrentUser().getUid())
-                    .get()
-                    .addOnCompleteListener(task -> {
-                        if (task.isSuccessful()) {
-                            if (task.getResult().exists()) {
-                                startClientHomepage();
+            SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+            if (pref.contains(mAuth.getCurrentUser().getUid())) {
+                // all ready signin before - searching for local
+                if (pref.getString(mAuth.getCurrentUser().getUid(), null) == "Client") {
+                    startClientHomepage();
+                } else {
+                    searchForBO(mAuth.getCurrentUser().getUid());
+                }
+            } else {
+                findViewById(R.id.loadingPanelLauncher).setVisibility(View.VISIBLE);
+                FirebaseFirestore.getInstance()
+                        .collection(CLIENTS_COLLECTION)
+                        .document(mAuth.getCurrentUser().getUid())
+                        .get()
+                        .addOnCompleteListener(task -> {
+                            if (task.isSuccessful()) {
+                                if (task.getResult().exists()) {
+                                    updateLocalSettings("Client");
+                                    startClientHomepage();
+                                } else {
+                                    updateLocalSettings("Business");
+                                    searchForBO(mAuth.getCurrentUser().getUid());
+
+                                }
                             } else {
-                                searchForBO(mAuth.getCurrentUser().getUid());
+                                Toast.makeText(LauncherActivity.this,
+                                        "Authentication failed.##",
+                                        Toast.LENGTH_LONG).show();
                             }
-                        } else {
-                            Toast.makeText(LauncherActivity.this,
-                                    "Authentication failed.##",
-                                    Toast.LENGTH_LONG).show();
-                        }
-                    });
+                        });
+            }
         } else {
             startActivity(new Intent(getBaseContext(), SignInActivity.class));
             findViewById(R.id.loadingPanelLauncher).setVisibility(View.GONE);
             finish();
+
         }
+
+
+
     }
 
     private void searchForBO(String uid) {
@@ -86,5 +104,13 @@ public class LauncherActivity extends AppCompatActivity {
         startActivity(new Intent(getBaseContext(), ClientHomePage.class));
         findViewById(R.id.loadingPanelLauncher).setVisibility(View.GONE);
         finish();
+    }
+
+    // Remember localy if a user is a client or business owner
+    private void updateLocalSettings(String state) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("MyPref", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(mAuth.getCurrentUser().getUid(),state);
+        editor.commit();
     }
 }
