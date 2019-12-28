@@ -63,6 +63,7 @@
     <string name="business_bottom_menu_clientele">Clientele</string>
     <string name="closed_business_message">Close.</string>
     <string name="business_logout">Logout</string>
+    <string name="schedule_an_appointment_manual">Schedule an appointment</string>
 
 
 </resources>

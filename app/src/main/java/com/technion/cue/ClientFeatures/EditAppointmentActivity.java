@@ -18,6 +18,8 @@ import android.widget.TimePicker;
 import android.widget.Toast;
 
 
+import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -29,9 +31,14 @@ import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -123,10 +130,11 @@ public class EditAppointmentActivity extends AppCompatActivity
                     business = documentSnapshot.toObject(Business.class);
                     if (business!=null) {
                         TextView locationView = findViewById(R.id.edit_appointment_address_text);
-                        locationView.setText(business.location.get("city") + "," +
-                                business.location.get("state") + "," +
-                                business.location.get("street") + "," +
-                                business.location.get("number") + ".");
+                        locationView.setText(
+                                business.location.get("address") +
+                                        ", " + business.location.get("city") +
+                                        ", " + business.location.get("state")
+                        );
                     }
 
 
@@ -142,19 +150,16 @@ public class EditAppointmentActivity extends AppCompatActivity
                 .addOnSuccessListener(l -> {
                     RadioGroup rg = findViewById(R.id.edit_appoinment_radiogroup);
                     // add a listener to check button
-                    rg.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener()
-                    {
-                        public void onCheckedChanged(RadioGroup group, int checkedId)
+                    rg.setOnCheckedChangeListener((group, checkedId) -> {
+                        // This will get the radiobutton that has changed in its check state
+                        RadioButton checkedRadioButton = group.findViewById(checkedId);
+                        // This puts the value (true/false) into the variable
+                        boolean isChecked = checkedRadioButton.isChecked();
+                        // If the radiobutton that has changed in check state is now checked...
+                        if (isChecked)
                         {
-                            // This will get the radiobutton that has changed in its check state
-                            RadioButton checkedRadioButton = (RadioButton)group.findViewById(checkedId);
-                            // This puts the value (true/false) into the variable
-                            boolean isChecked = checkedRadioButton.isChecked();
-                            // If the radiobutton that has changed in check state is now checked...
-                            if (isChecked)
-                            {
-                                radioButton_id = l.getDocuments().get(checkedId).getId();
-                            }
+                            a_type = l.getDocuments().get(checkedId).getId();
+                            radioButton_id = l.getDocuments().get(checkedId).getId();
                         }
                     });
                     // ----
@@ -174,13 +179,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                         }
 
                     }
-
-
-
-
                 });
-
-
     }
 
     private void loadAppointmentData() {
@@ -202,18 +201,23 @@ public class EditAppointmentActivity extends AppCompatActivity
 
                 });
     }
+
     public void loadNewAppointment() {
         // load business details
         loadBusinessData();
         loadTypes();
         ((TextView)findViewById(R.id.edit_appointment_time_text)).setText("Choose a time");
-
-
     }
 
     public void changeDate(View view) {
-        ClientChooseDateFragment newFragment = new ClientChooseDateFragment();
-        newFragment.show(getSupportFragmentManager(), "datePicker");
+        if (didChooseType()) {
+            ClientChooseDateFragment newFragment = new ClientChooseDateFragment();
+            newFragment.show(getSupportFragmentManager(), "datePicker");
+        } else {
+            Toast.makeText(getBaseContext(),
+                    "please choose an appointment type first",
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void exitEditAppointment(View view) {
@@ -236,7 +240,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                     .show();
 
         } else {
-            if (appointment.id != "")  {// reschedule  appointment
+            if (!appointment.id.equals(""))  {// reschedule  appointment
                 appointment.type = radioButton_id;
                 appointment.notes ="notes about the appointments - per type";
                 appointment.id="";// avoid adding old appointmet_id to  firestore
@@ -300,56 +304,135 @@ public class EditAppointmentActivity extends AppCompatActivity
         c.set(Calendar.HOUR_OF_DAY, hour);
         c.set(Calendar.MINUTE, minute);
         // TODO: will change to a chosen type in Sprint #2
-        Timestamp timestampConvertFrom = new Timestamp(c.getTime());
+        Date start = c.getTime();
         String oldDate =  ((TextView)findViewById(R.id.edit_appointment_time_text)).getText().toString();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
         ((TextView)findViewById(R.id.edit_appointment_time_text)).setText(sdf.format(c.getTime()));
-        c.add(Calendar.HOUR,1);       // adding time of type_0
-        Timestamp end = new Timestamp(c.getTime());
-        checkIfDateAviable(timestampConvertFrom,end,oldDate);
-
+        FirebaseFirestore.getInstance()
+                .collection(BUSINESSES_COLLECTION)
+                .document(business.id)
+                .collection(TYPES_COLLECTION)
+                .document(a_type)
+                .get()
+                .addOnSuccessListener(ds -> {
+                    c.add(Calendar.MINUTE, Integer.valueOf(
+                            ((Map<String, String>)ds.get("attributes")).get("duration"))
+                    );
+                    Date end = c.getTime();
+                    appointment.date = start;
+                    checkIfDateAvailable(start, end, oldDate);
+                });
     }
 
 
-    public void checkIfDateAviable(Timestamp start,Timestamp end,String oldDate) {
-            // TODO : WE NEED TO CHECK TIME PER OPEN HOURS !!
+    public void checkIfDateAvailable(Date start, Date end, String oldDate) {
+        // TODO : WE NEED TO CHECK TIME PER OPEN HOURS !!
+
+        Map<String, Integer> atm = new HashMap<>();
+        Task t = db.collection(BUSINESSES_COLLECTION)
+                .document(business.id)
+                .collection(TYPES_COLLECTION)
+                .get()
+                .addOnSuccessListener(qs -> {
+                    for (DocumentSnapshot d : qs.getDocuments()) {
+                        atm.put(d.getId(), Integer.valueOf(
+                                ((Map<String, String>)d.get("attributes")).get("duration"))
+                        );
+                    }
+                });
+
         findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.VISIBLE);
         // setting up appointment object
         Date old = appointment.date;
-        appointment.date = c.getTime();
-       db.collection(APPOINTMENTS_COLLECTION)
-               .whereEqualTo("business_id",b_id)
-               .whereGreaterThanOrEqualTo("date",start)
-               .whereLessThanOrEqualTo("date",end)
-               .get().addOnCompleteListener(l -> {
-                    findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
-                    for (DocumentSnapshot document : l.getResult().getDocuments()) {
-                        if ((document.exists()) && (document.getId() != a_id)) {
-                            // return to old date in textview
-                            ((TextView)findViewById(R.id.edit_appointment_time_text)).setText(oldDate);
-                            appointment.date = old;
-                            //--
 
-                            new MaterialAlertDialogBuilder(this)
-                                    .setTitle("Date is not available ")
-                                    .setMessage("Please Choose another one. ")
-                                    .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                                        public void onClick(DialogInterface dialog, int id) {
+        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
-                                            ClientChooseDateFragment newFragment = new ClientChooseDateFragment();
-                                            newFragment.show(getSupportFragmentManager(), "datePicker");
-
-
-                                        }
-                                    })
-                                    .setNegativeButton("Nevermind", null)
-                                    .show();
+        db.collection(BUSINESSES_COLLECTION)
+                .document(business.id)
+                .get()
+                .addOnSuccessListener(documentSnapshot -> {
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                    Calendar c = Calendar.getInstance();
+                    c.setTime(start);
+                    Map<String, String> open_hours = (Map<String, String>)documentSnapshot.get("open_hours");
+                    String currentDayOpenHours = open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+                    try {
+                        Date openingHour = sdf.parse(currentDayOpenHours.split("-")[0]);
+                        Calendar opening_c = Calendar.getInstance();
+                        opening_c.setTime(openingHour);
+                        opening_c.set(c.get(Calendar.YEAR),
+                                c.get(Calendar.MONTH),
+                                c.get(Calendar.DAY_OF_MONTH),
+                                opening_c.get(Calendar.HOUR_OF_DAY),
+                                opening_c.get(Calendar.MINUTE));
+                        Date closingHour = sdf.parse(currentDayOpenHours.split("-")[1]);
+                        Calendar closing_c = Calendar.getInstance();
+                        closing_c.setTime(closingHour);
+                        closing_c.set(c.get(Calendar.YEAR),
+                                c.get(Calendar.MONTH),
+                                c.get(Calendar.DAY_OF_MONTH),
+                                closing_c.get(Calendar.HOUR_OF_DAY),
+                                closing_c.get(Calendar.MINUTE));
+                        if (end.getTime() > closing_c.getTimeInMillis() ||
+                                start.getTime() < opening_c.getTimeInMillis()) {
+                            onUnavailableAppointment(oldDate, old);
                         }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
 
-       });
+                });
 
+        Tasks.whenAll(t).addOnSuccessListener(sl ->
+                db.collection(APPOINTMENTS_COLLECTION)
+                        .whereEqualTo("business_id",b_id)
+                        .orderBy("date")
+                        .get().addOnCompleteListener(l -> {
+                            findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                            for (DocumentSnapshot document : l.getResult().getDocuments()) {
+                                if ((document.exists()) && (document.getId() != a_id)) {
+                                    Date appointmentDate = ((Timestamp)document.get("date")).toDate();
+                                    int duration = atm.get(document.getString("type"));
+                                    Calendar c = Calendar.getInstance();
+                                    c.setTime(appointmentDate);
+                                    c.add(Calendar.MINUTE, duration);
 
+                                    /*
+                                    cases where scheduling is impossible:
+                                    1) appointment starts in the middle of another appointment
+                                    2) appointment ends in the middle of another appointment
+                                    3) appointment is scheduled when the business is closed (checked above)
+                                     */
+                                    if ((start.getTime() > appointmentDate.getTime()
+                                            && start.getTime() < c.getTimeInMillis()) ||
+                                            ((end.getTime() < c.getTimeInMillis())
+                                            && end.getTime() > appointmentDate.getTime())) {
+                                        onUnavailableAppointment(oldDate, old);
+                                        break;
+                                    }
+                        }
+                    }
+                }));
     }
 
+    private void onUnavailableAppointment(String oldDate, Date old) {
+        // return to old date in textview
+        ((TextView) findViewById(R.id.edit_appointment_time_text))
+                .setText(oldDate);
+        appointment.date = old;
+        //--
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Date is not available ")
+                .setMessage("Please Choose another one. ")
+                .setPositiveButton("Ok", (dialog, id) -> {
+                    ClientChooseDateFragment newFragment =
+                            new ClientChooseDateFragment();
+                    newFragment.show(getSupportFragmentManager(),
+                            "datePicker");
+                })
+                .setNegativeButton("Nevermind", null)
+                .show();
+        return;
+    }
 }

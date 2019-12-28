@@ -4,6 +4,7 @@ import android.app.Dialog;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -17,7 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.DialogFragment;
 
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.technion.cue.ClientFeatures.EditAppointmentActivity;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Client;
@@ -55,6 +59,7 @@ public class ClientInformationDialog extends DialogFragment {
         TextView client_name = view.findViewById(R.id.client_name);
         TextView client_phone = view.findViewById(R.id.client_phone_text);
         TextView client_email = view.findViewById(R.id.client_email_text);
+        ExtendedFloatingActionButton manual_schedule = view.findViewById(R.id.manual_schedule);
         FirebaseFirestore.getInstance()
                 .collection(CLIENTS_COLLECTION)
                 .document(this.client_id)
@@ -85,6 +90,17 @@ public class ClientInformationDialog extends DialogFragment {
             Toast.makeText(getContext(), "copied phone to clipboard", Toast.LENGTH_SHORT).show();
             clipboard.setPrimaryClip(clip);
         });
+
+        manual_schedule.setOnClickListener(cl -> {
+            Bundle bundle = new Bundle();
+            bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
+            bundle.putString("client_id", client_id);
+            Intent intent = new Intent(getContext(), EditAppointmentActivity.class);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        });
+
+
 
     }
 

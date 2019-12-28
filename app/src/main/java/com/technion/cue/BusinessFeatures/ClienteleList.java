@@ -136,17 +136,9 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                         holder.client.setText(cm.name);
                     });
 
-            holder.client.setOnClickListener(cl -> {
-//                DialogFragment client_information = new ClientInformationDialog(cm.client_id);
-//                client_information.show(getSupportFragmentManager(), null);
-                Bundle bundle = new Bundle();
-                bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
-                bundle.putString("client_id", cm.client_id);
-                Intent intent = new Intent(getBaseContext(), EditAppointmentActivity.class);
-                intent.putExtras(bundle);
-                startActivity(intent);
-            });
-
+            holder.client.setOnClickListener(cl ->
+                    new ClientInformationDialog(cm.client_id)
+                            .show(getSupportFragmentManager(), null));
         }
 
         @NonNull
