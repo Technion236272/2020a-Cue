@@ -2,33 +2,33 @@
 <PreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <EditTextPreference
-        android:key="appointment type"
-        android:title="Set appointment types"
-        android:icon="@drawable/appoitment_type"
-        />
+  <Preference
+      android:key="appointment type"
+      android:title="Set appointment types"
+      android:icon="@drawable/appoitment_type"
+      />
 
-    <Preference
-        android:id="@+id/timeFrame"
-        android:key="time frame"
-        android:title="Allow change meeting"
-        android:summary="Time frame where clients can't change a meeting"
-        android:onClick = "popUpWindow"
-        android:icon="@drawable/no_meetings_changes"
-        />
+  <Preference
+      android:id="@+id/timeFrame"
+      android:key="time frame"
+      android:title="Allow change meeting"
+      android:summary="Time frame where clients can't change a meeting"
+      android:onClick = "popUpWindow"
+      android:icon="@drawable/no_meetings_changes"
+      />
 
-    <Preference
-        android:id="@+id/remindTime"
-        android:key="remind time"
-        android:title="Meetings reminder"
-        android:summary="How much time to remind client before a meeting"
-        android:icon="@drawable/send_reminder" />
+  <Preference
+      android:id="@+id/remindTime"
+      android:key="remind time"
+      android:title="Meetings reminder"
+      android:summary="How much time to remind client before a meeting"
+      android:icon="@drawable/send_reminder" />
 
-    <Preference
-        android:id="@+id/credits"
-        android:key="credits"
-        android:title="Credits"
-        android:icon="@drawable/ic_help" />
+  <Preference
+      android:id="@+id/credits"
+      android:key="credits"
+      android:title="Credits"
+      android:icon="@drawable/ic_help" />
 
 
 </PreferenceScreen>

@@ -63,7 +63,7 @@ public class BOSignUp2 extends AppCompatActivity {
                     in.putExtra("email",email);
                     in.putExtra("password",password);
                     in.putExtra("boName",bo_name);
-                    in.putExtra("logoData",logoData);
+                    //in.putExtra("logoData",logoData);
                     startActivity(in);
                     btn_next.setEnabled(true);
                     finish();
@@ -81,12 +81,13 @@ public class BOSignUp2 extends AppCompatActivity {
         String bDesc = business_desc.getText().toString();
         String bPhone = business_phone.getText().toString();
         if (inputNotEmpty(bName, bDesc, bPhone)) {
-            if (logoData == null) {
-                Toast.makeText(this, "please upload logo", Toast.LENGTH_SHORT).show();
-                return false;
-            }
+//            if (logoData == null) {
+//                Toast.makeText(this, "please upload logo", Toast.LENGTH_SHORT).show();
+//                return false;
+//            }
+            return true;
         }
-        return true;
+        return false;
     }
 
     private boolean inputNotEmpty(String bName, String bDesc, String bPhone){
@@ -114,28 +115,28 @@ public class BOSignUp2 extends AppCompatActivity {
      * @param resultCode
      * @param data
      */
-    @Override
-    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-        if (reqCode == GET_LOGO && data != null) {
-            logoData = data.getData();
-            final InputStream imageStream;
-            try {
-                imageStream = getContentResolver().openInputStream(logoData);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                CircularImageView logo = findViewById(R.id.businessLogoEdit);
-                logo.setImageBitmap(selectedImage);
-                FileOutputStream outStream = new FileOutputStream(new File(getCacheDir(), "tempBMP"));
-                selectedImage.compress(Bitmap.CompressFormat.JPEG, 75, outStream);
-                outStream.close();
-            } catch (FileNotFoundException e) {
-                Toast.makeText(this, "image not found", Toast.LENGTH_SHORT).show();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-        }
-    }
+//    @Override
+//    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+//        super.onActivityResult(reqCode, resultCode, data);
+//        if (reqCode == GET_LOGO && data != null) {
+//            logoData = data.getData();
+//            final InputStream imageStream;
+//            try {
+//                imageStream = getContentResolver().openInputStream(logoData);
+//                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+//                CircularImageView logo = findViewById(R.id.businessLogoEdit);
+//                logo.setImageBitmap(selectedImage);
+//                FileOutputStream outStream = new FileOutputStream(new File(getCacheDir(), "tempBMP"));
+//                selectedImage.compress(Bitmap.CompressFormat.JPEG, 75, outStream);
+//                outStream.close();
+//            } catch (FileNotFoundException e) {
+//                Toast.makeText(this, "image not found", Toast.LENGTH_SHORT).show();
+//            } catch (IOException e) {
+//                e.printStackTrace();
+//            }
+//
+//        }
+//    }
 
 
 }
