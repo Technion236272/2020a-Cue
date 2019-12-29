@@ -2,99 +2,102 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".BusinessFeatures.BOSignUp1"
-    android:id="@+id/business_sign_up1">
+    android:id="@+id/business_sign_up2">
 
-    <TextView
-        android:id="@+id/bo_join_community"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center_horizontal"
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/businessLogoEdit"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="70dp"
+        android:clickable="false"
+        android:onClick="openImageGallery"
         android:layout_centerHorizontal="true"
-        android:text="@string/bo_sign_up_text"
-        android:textColor="@color/colorPrimaryDark"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display1" />
+        android:padding="5dp"
+        app:civ_border_color="@color/ColorSecondary"
+        app:civ_border_width="4dp"
+        app:srcCompat="@drawable/ic_person_outline_black_24dp" />
 
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/b_email_address"
+        android:id="@+id/businessNameEdit"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
+        android:layout_below="@id/businessLogoEdit"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:layout_below="@id/bo_join_community"
-        android:hint="@string/email_hint"
+        android:hint="@string/business_name_hint"
         android:textSize="14sp"
         app:counterEnabled="true"
-        app:counterMaxLength="30">
+        app:counterMaxLength="30"
+        app:endIconMode="clear_text">
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/businessEmailEditText"
+            android:id="@+id/businessNameEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textEmailAddress"/>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-
     <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/b_password"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessDescriptionEdit"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
+        android:textSize="14sp"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
-        android:hint="@string/password_hint"
-        android:textSize="14sp"
+        android:layout_below="@id/businessNameEdit"
+        android:hint="@string/business_description_hint"
         app:counterEnabled="true"
-        android:layout_below="@id/b_email_address"
-        app:counterMaxLength="30">
-
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/businessPasswordEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"/>
-
-</com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/b_full_name"
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-        android:layout_width="360dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="24dp"
-        android:layout_marginRight="24dp"
-        android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_below="@id/b_password"
-        android:hint="@string/full_name_hint"
-        android:textSize="14sp"
-        app:counterEnabled="true"
-        app:counterMaxLength="30">
+        app:endIconMode="clear_text"
+        app:counterMaxLength="200" >
 
         <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/businessFullNameEditText"
+            android:id="@+id/businessDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessPhoneEdit"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_below="@id/businessDescriptionEdit"
+        android:hint="@string/business_phone_number"
+        app:counterEnabled="true"
+        app:endIconMode="clear_text"
+        app:counterMaxLength="10" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessPhoneEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:inputType="textPersonName"/>
+            android:inputType="phone" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
     <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_next1"
+        android:id="@+id/btn_next2"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
         android:text="@string/next"/>
+
 
 </RelativeLayout>

@@ -13,9 +13,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
-import com.technion.cue.BusinessFeatures.BusinessSignUp;
+import com.technion.cue.BusinessFeatures.BOSignUp1;
 import com.technion.cue.ClientFeatures.ClientHomePage;
 import com.technion.cue.ClientFeatures.ClientSignUp;
 
@@ -64,7 +65,7 @@ public class SignInActivity extends AppCompatActivity {
         // open up sign up activity for business owners
         bo_sign_up.setOnClickListener(v -> {
             bo_sign_up.setEnabled(false);
-            final Intent intent1 = new Intent(getBaseContext(), BusinessSignUp.class);
+            final Intent intent1 = new Intent(getBaseContext(), BOSignUp1.class);
             bo_sign_up.setEnabled(true);
             startActivity(intent1);
         });
@@ -80,6 +81,7 @@ public class SignInActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email.getText().toString(),
                         user_password.getText().toString())
                         .addOnSuccessListener(l -> {
+                            checkIfEmailVerified();
                             Log.d(TAG, "signInWithEmail:success");
                             updateUI(mAuth.getCurrentUser().getUid());
                         }).addOnFailureListener(l -> {
@@ -141,7 +143,27 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     }).addOnFailureListener(l ->
                     Toast.makeText(SignInActivity.this,
-                            "Authentication failed.##",
+                            "Authentication failed",
                             Toast.LENGTH_LONG).show());
+    }
+    private void checkIfEmailVerified()
+    {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        if (user.isEmailVerified())
+        {
+            // user is verified, so you can finish this activity or send user to activity which you want.
+            finish();
+            Toast.makeText(SignInActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+        }
+        else
+        {
+            // email is not verified, so just prompt the message to the user and restart this activity.
+            // NOTE: don't forget to log out the user.
+            FirebaseAuth.getInstance().signOut();
+
+            //restart this activity
+
+        }
     }
 }
