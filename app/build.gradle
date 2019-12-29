@@ -32,6 +32,7 @@ android {
 repositories {
     mavenCentral()
     google()
+
 }
 
 dependencies {
@@ -98,9 +99,9 @@ dependencies {
 
     implementation 'com.google.firebase:firebase-dynamic-links:19.0.0'
 
-
     def lifecycle_version = "2.1.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+
 
 }
 apply plugin: 'com.google.gms.google-services'

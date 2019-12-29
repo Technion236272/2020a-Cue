@@ -18,44 +18,47 @@
         android:layout_marginLeft="10dp"
 
         card_view:cardUseCompatPadding="true"
-        android:minHeight="150dp">
+        android:minHeight="140dp">
 
-        <LinearLayout
+        <RelativeLayout
+
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
-        <LinearLayout
+        <RelativeLayout
+            android:id="@+id/appointment_box_business"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal">
 
             <TextView
-                android:id="@+id/business"
+                android:id="@+id/appointment_box_business_name"
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="testt"
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
+                android:layout_marginTop="2dp"
                 android:textSize="25sp"
                 android:layout_gravity="center_vertical"
                 android:textColor="@color/TextColorPrimary" />
 
             <TextView
-                android:id="@+id/date"
-
+                android:id="@+id/appointment_box_business_date"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="5dp"
-                android:textSize="18sp"
+                android:textSize="17sp"
+                android:layout_marginTop="8dp"
                 android:textColor="@color/TextColorSecondary"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
 
             <TextView
@@ -67,20 +70,27 @@
                 android:textSize="20sp"
                 android:textColor="@color/TextColorSecondary"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentBottom="true"
-                android:layout_below="@+id/date"/>
-
+                android:layout_below="@+id/appointment_box_business"
+                android:layout_marginHorizontal="10dp"/>
             <TextView
                 android:id="@+id/type"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="7dp"
                 android:layout_marginLeft="5dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textSize="20sp"
+                android:textSize="18sp"
+                android:layout_below="@+id/notes"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"
+                android:background="@color/colorAccent"
+                android:padding="2dp"
+                android:textStyle="bold"
                 android:textColor="@color/TextColorSecondary"/>
-        </LinearLayout>
+
+
+        </RelativeLayout>
+
 
     </androidx.cardview.widget.CardView>
+
 </LinearLayout>
