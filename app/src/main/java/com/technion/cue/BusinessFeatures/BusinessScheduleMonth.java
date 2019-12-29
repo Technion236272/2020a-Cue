@@ -44,6 +44,7 @@ public class BusinessScheduleMonth extends Fragment {
             b.putInt("year", year);
             b.putInt("month", month);
             b.putInt("day", day);
+            b.putBoolean("returnToTabs", false);
             Fragment bsd = new BusinessScheduleDay();
             bsd.setArguments(b);
             getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.INVISIBLE);

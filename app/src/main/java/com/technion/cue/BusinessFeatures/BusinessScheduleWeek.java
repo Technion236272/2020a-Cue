@@ -34,7 +34,7 @@ import java.util.Map;
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 
 /**
- * this activity will display a list of appointments for a given day
+ * this activity will display a list of appointments for a given week
  * for the business owner
  */
 @ModuleAuthor("Ophir Eyal")
@@ -72,9 +72,9 @@ public class BusinessScheduleWeek extends Fragment {
         week_days_list.setLayoutManager(layoutManager);
         week_days_list.setHasFixedSize(true);
 
-        // TODO: possibly allow business owners to choose which the day in which the week begins
+        // TODO: possibly allow business owners to choose the day in which the week begins
         Calendar c = Calendar.getInstance();
-        for (int i = 1 ; i <= 7 ; i++) {
+        for (int i = 1 ; i <= NUMBER_OF_DAYS_IN_WEEK ; i++) {
             c.set(Calendar.DAY_OF_WEEK, i);
             week_days.add(c.getTime());
         }
@@ -89,9 +89,9 @@ public class BusinessScheduleWeek extends Fragment {
             c.add(Calendar.DATE, 1);
             Date nextDay = c.getTime();
 
-            Query query = FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-                    .whereEqualTo("business_id",
-                            FirebaseAuth.getInstance().getCurrentUser().getUid())
+            Query query = FirebaseFirestore.getInstance()
+                    .collection(APPOINTMENTS_COLLECTION)
+                    .whereEqualTo("business_id", FirebaseAuth.getInstance().getUid())
                     .whereGreaterThanOrEqualTo("date", today)
                     .whereLessThan("date", nextDay)
                     .orderBy("date");
@@ -100,19 +100,19 @@ public class BusinessScheduleWeek extends Fragment {
                             .setQuery(query, Appointment.class)
                             .build();
             DailyAppointmentListAdapter daily_appointments_adapter =
-                    new  DailyAppointmentListAdapter(getActivity(), getContext(), options, false);
+                    new  DailyAppointmentListAdapter(getActivity(),
+                            getContext(), options, false);
             daily_adapters.put(date, daily_appointments_adapter);
         }
 
-        WeeklyAppointmentListAdapter mAdapter =
-                new WeeklyAppointmentListAdapter();
+        WeeklyAppointmentListAdapter mAdapter = new WeeklyAppointmentListAdapter();
         week_days_list.setAdapter(mAdapter);
     }
 
     @Override
     public void onStart() {
         super.onStart();
-        for ( DailyAppointmentListAdapter adapter : daily_adapters.values()) {
+        for (DailyAppointmentListAdapter adapter : daily_adapters.values()) {
             adapter.startListening();
         }
     }
@@ -120,7 +120,7 @@ public class BusinessScheduleWeek extends Fragment {
     @Override
     public void onStop() {
         super.onStop();
-        for ( DailyAppointmentListAdapter adapter : daily_adapters.values()) {
+        for (DailyAppointmentListAdapter adapter : daily_adapters.values()) {
             adapter.stopListening();
         }
     }
@@ -164,7 +164,7 @@ public class BusinessScheduleWeek extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull ItemHolder holder, int position) {
 
-            SimpleDateFormat sdf = new SimpleDateFormat("EEE, dd/MM/yyyy");
+            SimpleDateFormat sdf = new SimpleDateFormat("EEEE, dd/MM/yyyy");
             Date position_date = week_days.get(position);
             if (DateUtils.isToday(position_date.getTime())) {
                 holder.day_of_the_week.setText("Today");
@@ -180,14 +180,6 @@ public class BusinessScheduleWeek extends Fragment {
             appointments_list.setLayoutManager(layoutManager);
             appointments_list.setAdapter(daily_adapters.get(position_date));
 
-            if (position == NUMBER_OF_DAYS_IN_WEEK - 1) {
-                RelativeLayout.LayoutParams params = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.MATCH_PARENT
-                );
-                params.setMargins(0, 80, 0, 72);
-                appointments_list.setLayoutParams(params);
-            }
         }
 
         @Override
