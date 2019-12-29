@@ -2,10 +2,10 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/business_schedule"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BusinessFeatures.BusinessSchedule"
-    android:id="@+id/business_schedule">
+    tools:context=".BusinessFeatures.BusinessSchedule">
 
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/business_schedule_pager"
@@ -14,20 +14,31 @@
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/business_schedule_tabs"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:tabBackground="@color/colorPrimary"
+            app:tabTextColor="@color/TextColorPrimary"
+            app:tabRippleColor="@color/colorPrimaryLight"
+            app:tabIndicatorColor="@color/ColorSecondaryLight"
+            app:tabIndicatorHeight="3dp">
 
         </com.google.android.material.tabs.TabLayout>
     </androidx.viewpager.widget.ViewPager>
 
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/add_appointment_manual"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="bottom|end"
-        android:layout_margin="25dp"
-        app:srcCompat="@drawable/ic_add_black_24dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true" />
+    <FrameLayout
+        android:id="@+id/bottom_navigation_wrapper"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <com.google.android.material.bottomnavigation.BottomNavigationView
+            android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:background="@color/colorPrimary"
+            app:itemIconTint="@drawable/bottom_navigation_colors"
+            app:itemTextColor="@drawable/bottom_navigation_colors"
+            app:menu="@menu/business_navigation_menu" />
+
+    </FrameLayout>
 
 </RelativeLayout>

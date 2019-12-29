@@ -1,11 +1,21 @@
 package com.technion.cue.data_classes;
 
-public class Client {
+import com.google.firebase.firestore.DocumentId;
+
+import java.io.Serializable;
+
+public class Client implements Serializable {
+
+    @DocumentId
+    public String id;
 
     public String email, name, phone_number;
 
 
     public static class Favorite {
+        @DocumentId
+        public String id;
+
         public String business_id;
         public Favorite() { }
         public Favorite(String business_id) {

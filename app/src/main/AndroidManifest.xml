@@ -2,7 +2,14 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.technion.cue">
 
+
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <uses-feature
+        android:name="android.hardware.camera"
+        android:required="true" />
+
 
     <application
         android:allowBackup="true"
@@ -11,22 +18,45 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".Credits"></activity>
+        <activity android:name=".ClientFeatures.EditAppointmentActivity"></activity>
+        <activity android:name=".SignInActivity" />
+        <activity android:name=".BusinessFeatures.ClienteleList" />
+        <activity android:name=".BusinessFeatures.BusinessProfileEdit" />
+        <activity android:name=".Credits" />
+        <activity android:name=".BusinessFeatures.BusinessScheduleWeek" />
         <activity android:name=".ClientFeatures.ClientChooseTimeFragment" />
         <activity android:name=".ClientFeatures.ClientChooseDateFragment" />
         <activity android:name=".BusinessFeatures.BusinessScheduleDay" />
         <activity android:name=".BusinessFeatures.BusinessSchedule" />
-        <activity android:name=".ClientFeatures.ClientBusinessHomepage" />
+        <activity android:name=".ClientFeatures.ClientBusinessHomepage">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="cueapp.com"
+                    android:scheme="https" />
+
+                <data
+                    android:host="cueapp.page.link"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
         <activity android:name=".ClientFeatures.ClientAppointmentPage" />
         <activity android:name=".Settings" />
-        <activity android:name=".SignInActivity">
+        <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <action android:name="android.intent.action.VIEW" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".BusinessFeatures.BOBusinessHomePage" />
+
+
+
+
         <activity android:name=".ClientFeatures.ClientSignUp" />
         <activity android:name=".ClientFeatures.ClientHomePage" />
         <activity android:name=".BusinessFeatures.BOSignUp1" />
@@ -34,9 +64,5 @@
         <activity android:name=".BusinessFeatures.BOSignUp3" />
 
     </application>
-
-
-
-
 
 </manifest>

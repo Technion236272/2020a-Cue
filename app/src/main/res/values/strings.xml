@@ -23,18 +23,24 @@
     <string name="fake_settings_button">Fake Settings</string>
     <string name="save_settings">Save</string>
     <string name="cancel_settings">Cancel</string>
+    <string name="no_appointments_today_message">You have no appointments today.\nGo and have fun!</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+
     <string name="credits">Credits</string>
     <string name="credit_lopez_mikhael">LOPEZ Mikhael</string>
     <string name="credit_icon1">Icon made by Freepik from www.flaticon.com</string>
+
     <string name="next">next</string>
     <string name="skip">skip</string>
     <string name="done">Done</string>
     <string name="previous">previous</string>
     <string name="business_desc">Write business description</string>
 
+
+
+    <string name="current_appointment_flag">current appointment flag</string>
 
     <string name="upload_image">UPLOAD IMAGE</string>
     <string name="business_description_hint">Description of your business</string>
@@ -45,9 +51,7 @@
     <string name="state">State</string>
     <string name="the_address_of_your_business">The Address of your business</string>
     <string name="business_address_fill">Fill in the address of your business.</string>
-    <string name="business_operating_hours_fill">
-        Fill in when your business is operating.
-    </string>
+    <string name="business_operating_hours_fill">Fill in when your business is operating.</string>
     <string name="opening_hour">opening hour</string>
     <string name="closing_hour">closing hour</string>
     <string name="day_of_the_week">choose a day</string>
@@ -59,6 +63,16 @@
     <string name="thursday_text">Thursday:</string>
     <string name="friday_text">Friday:</string>
     <string name="saturday_text">Saturday:</string>
+
+    <string name="settings">Settings</string>
+    <string name="generate_a_link_to_the_business">Generate a link to the business</string>
+    <string name="edit_your_profile">Edit your profile</string>
+    <string name="business_bottom_menu_schedule">Schedule</string>
+    <string name="business_bottom_menu_homepage">Homepage</string>
+    <string name="business_bottom_menu_clientele">Clientele</string>
+    <string name="closed_business_message">Close.</string>
+    <string name="business_logout">Logout</string>
+    <string name="schedule_an_appointment_manual">Schedule an appointment</string>
 
 
 </resources>

@@ -33,7 +33,6 @@ public class Settings extends AppCompatActivity {
 
     private FirebaseUser currentUser;
 
-
     AlertDialog.Builder builder;
 
     @Override
@@ -78,45 +77,34 @@ public class Settings extends AppCompatActivity {
                 View dialogView = inflater.inflate(R.layout.set_time, null);
 
                 builder.setView(dialogView).
-                        setPositiveButton(R.string.save_settings, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        setPositiveButton(R.string.save_settings, (dialog, which) -> {
 
+                            // take the value from selected radio button
+                            RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_group);
+                            int selectedId = radioGroup.getCheckedRadioButtonId();
 
-                                // take the value from selected radio button
-                                RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_group);
-                                int selectedId = radioGroup.getCheckedRadioButtonId();
+                            // find the radiobutton by returned id
+                            RadioButton radioButton = (RadioButton) dialogView.findViewById(selectedId);
 
-                                // find the radiobutton by returned id
-                                RadioButton radioButton = (RadioButton) dialogView.findViewById(selectedId);
+                            // get edittext value
+                            EditText edit_text = (EditText) dialogView.findViewById(R.id.num_input);
+                            String edit_text_value = edit_text.getText().toString();
 
-                                // get edittext value
-                                EditText edit_text = (EditText) dialogView.findViewById(R.id.num_input);
-                                String edit_text_value = edit_text.getText().toString();
-
-                                if (edit_text_value.isEmpty() || radioButton == null) {
-
-                                    Toast t = Toast.makeText(MySettingsFragment.super.getContext(), "Please enter a number and choose", Toast.LENGTH_LONG);
+                            if (edit_text_value.isEmpty() || radioButton == null) {
+                                 Toast t = Toast.makeText(MySettingsFragment.super.getContext(), "Please enter a number and choose", Toast.LENGTH_LONG);
                                     t.show();
                                     //Todo: how to block people from not choose and press save?
                                 } else {
                                     //Todo: put the values inside the settings map.
-
 //                                    db = FirebaseFirestore.getInstance();
 //                                    StorageReference ref = storageRef.child("Businesses").child("attributes");
 
 
-                                }
+                            }
 
-                                //Todo: old settings (number and units) need to be performed
-                            }
+                            //Todo: old settings (number and units) need to be performed
                         })
-                        .setNegativeButton(R.string.cancel_settings, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
+                        .setNegativeButton(R.string.cancel_settings, (dialog, which) -> dialog.cancel());
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }
@@ -128,45 +116,38 @@ public class Settings extends AppCompatActivity {
                 View dialogView = inflater.inflate(R.layout.set_time, null);
 
                 builder.setView(dialogView).
-                        setPositiveButton(R.string.save_settings, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
+                        setPositiveButton(R.string.save_settings, (dialog, which) -> {
 
 
-                                // take the value from selected radio button
-                                RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_group);
-                                int selectedId = radioGroup.getCheckedRadioButtonId();
+                            // take the value from selected radio button
+                            RadioGroup radioGroup = dialogView.findViewById(R.id.radio_group);
+                            int selectedId = radioGroup.getCheckedRadioButtonId();
 
-                                // find the radiobutton by returned id
-                                RadioButton radioButton = (RadioButton) dialogView.findViewById(selectedId);
+                            // find the radiobutton by returned id
+                            RadioButton radioButton = dialogView.findViewById(selectedId);
 
-                                // get edittext value
-                                EditText edit_text = (EditText) dialogView.findViewById(R.id.num_input);
-                                String edit_text_value = edit_text.getText().toString();
+                            // get edittext value
+                            EditText edit_text = dialogView.findViewById(R.id.num_input);
+                            String edit_text_value = edit_text.getText().toString();
 
-                                if (edit_text_value.isEmpty() || radioButton == null) {
+                            if (edit_text_value.isEmpty() || radioButton == null) {
 
-                                    Toast t = Toast.makeText(MySettingsFragment.super.getContext(), "Please enter a number and choose", Toast.LENGTH_LONG);
-                                    t.show();
-                                    //Todo: how to block people from not choose and press save?9
-                                } else {
-                                    //Todo: put the values inside the settings map.
+                                Toast t = Toast.makeText(MySettingsFragment.super.getContext(),
+                                        "Please enter a number and choose", Toast.LENGTH_LONG);
+                                t.show();
+                                //Todo: how to block people from not choose and press save?9
+                            } else {
+                                //Todo: put the values inside the settings map.
 
 //                                    db = FirebaseFirestore.getInstance();
 //                                    StorageReference ref = storageRef.child("Businesses").child("attributes");
 
 
-                                }
+                            }
 
-                                //Todo: old settings (number and units) need to be performed
-                            }
+                            //Todo: old settings (number and units) need to be performed
                         })
-                        .setNegativeButton(R.string.cancel_settings, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                dialog.cancel();
-                            }
-                        });
+                        .setNegativeButton(R.string.cancel_settings, (dialog, which) -> dialog.cancel());
                 AlertDialog dialog = builder.create();
                 dialog.show();
             }

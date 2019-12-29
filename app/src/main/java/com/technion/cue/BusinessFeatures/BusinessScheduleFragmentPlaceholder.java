@@ -16,7 +16,7 @@ import com.technion.cue.R;
  * this is a dummy fragment class for all business schedule views that have not been implemented as of yet.
  * once all of them have been implemented, this fragment class, as well as it's accompanying layout file will be terminated
  */
-public class BusinessScheduleFragment extends Fragment {
+public class BusinessScheduleFragmentPlaceholder extends Fragment {
 
 
         @Override

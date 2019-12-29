@@ -1,102 +1,245 @@
 package com.technion.cue.BusinessFeatures;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.dynamiclinks.DynamicLink;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.mikhaellopez.circularimageview.CircularImageView;
+import com.technion.cue.FirebaseCollections;
 import com.technion.cue.R;
+import com.technion.cue.Settings;
+import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
+import com.technion.cue.data_classes.Business;
 
-public class BOBusinessHomePage extends AppCompatActivity {
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 
-    public void openBusinessCalendar(View view) {
-        final Intent intent = new Intent(getBaseContext(),BusinessSchedule.class);
-        startActivity(intent);
-    }
+import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
-    // inner enum, designating current mode of the activity
-    private enum Mode { EDIT, READ }
-    private Mode mode = Mode.READ;
-    private static final int GET_LOGO = 0;
+@ModuleAuthor("Ophir Eyal")
+public class BOBusinessHomePage extends AppCompatActivity implements BusinessBottomMenu {
 
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private FirebaseUser currentUser = FirebaseAuth.getInstance().getCurrentUser() ;
-    private BusinessInfoLoader loader;
+    private static final int EDIT_RESULT = 1;
 
-    private View fragment_view;
+    private View business_info_fragment;
+    private String[] days =
+            {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
+    private SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+    private Uri logoData;
+
+    Business business;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_bohome_page);
-        fragment_view = findViewById(R.id.business_info);
-        loader = new BusinessInfoLoader(fragment_view, db, currentUser.getUid());
-        loader.loadDataFromFB();
-    }
-
-
-    /**
-     * onClick method for the edit button.
-     * change BOBusinessHomePage into / from "edit mode",
-     * where the BO will able to change his business's profile
-     * @param view
-     */
-    @ModuleAuthor("Ophir Eyal")
-    public void editBOHomePage(View view) {
-
-        switch (mode) {
-            case READ:
-                findViewById(R.id.image_upload).setVisibility(View.VISIBLE);
-                final TextView bo_name = fragment_view.findViewById(R.id.business_name);
-                final TextView bo_desc = fragment_view.findViewById(R.id.business_description);
-                bo_name.setVisibility(View.INVISIBLE);
-                bo_desc.setVisibility(View.INVISIBLE);
-                final EditText bo_name_edit = fragment_view.findViewById(R.id.business_name_edit);
-                final EditText bo_desc_edit = fragment_view.findViewById(R.id.business_description_edit);
-                bo_name_edit.setText(bo_name.getText());
-                bo_desc_edit.setText(bo_desc.getText());
-                bo_name_edit.setVisibility(View.VISIBLE);
-                bo_desc_edit.setVisibility(View.VISIBLE);
-                mode = BOBusinessHomePage.Mode.EDIT;
-                break;
-            case EDIT:
-                loader.downloadBusinessFromFB();
-                findViewById(R.id.image_upload).setVisibility(View.INVISIBLE);
-                fragment_view.findViewById(R.id.business_name).setVisibility(View.VISIBLE);
-                fragment_view.findViewById(R.id.business_description).setVisibility(View.VISIBLE);
-                fragment_view.findViewById(R.id.business_name_edit).setVisibility(View.INVISIBLE);
-                fragment_view.findViewById(R.id.business_description_edit).setVisibility(View.INVISIBLE);
-                mode = BOBusinessHomePage.Mode.READ;
-                break;
-        }
-    }
-
-    /**
-     * opens up the phone's gallery for picture upload
-     * TODO: consider moving this into it's own class
-     * @param view
-     */
-    @ModuleAuthor("Ophir Eyal")
-    public void uploadLogoToFireBase(View view) {
-        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
-        photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, GET_LOGO);
+        setContentView(R.layout.activity_bo_homepage);
+        business_info_fragment = findViewById(R.id.business_info);
+        BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        // check the homepage item in the bottom menu
+        bnv.getMenu().getItem(1).setChecked(true);
+        // load business data from Firebase Firestore, that will be used with the profile edit activity
+        FirebaseFirestore.getInstance()
+                .collection(BUSINESSES_COLLECTION)
+                .document(FirebaseAuth.getInstance().getUid())
+                .get()
+                .addOnSuccessListener(ds -> business = ds.toObject(Business.class));
     }
 
     @Override
-    @ModuleAuthor("Ophir Eyal")
-    public void onActivityResult(int reqCode, int resultCode, Intent data) {
-        super.onActivityResult(reqCode, resultCode, data);
-        if (reqCode == GET_LOGO) {
-            loader.uploadLogoToFB(data);
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.business_menu, menu);
+        menu.getItem(0).setOnMenuItemClickListener(cl -> generateDynamicLink());
+        // go the profile edit activity
+        menu.getItem(1).setOnMenuItemClickListener(cl -> {
+            Intent intent = new Intent(this, BusinessProfileEdit.class);
+            intent.putExtra("business", business);
+            intent.putExtra("logo", logoData);
+            startActivityForResult(intent, EDIT_RESULT);
+            return true;
+        });
+
+        // TODO: create listener for item 2 (settings)
+        menu.getItem(2).setOnMenuItemClickListener(cl -> {
+            startActivityForResult(new Intent(this, Settings.class), EDIT_RESULT);
+            return true;
+        });
+
+        menu.getItem(3).setOnMenuItemClickListener(cl -> {
+            FirebaseAuth.getInstance().signOut();
+            startActivity(new Intent(this, SignInActivity.class));
+            finish();
+            return true;
+        });
+
+        return true;
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == EDIT_RESULT) {
+
+            if (resultCode == RESULT_OK) {
+                business = (Business) data.getSerializableExtra("business");
+                logoData = data.getData();
+                if (logoData != null) {
+                    try {
+                        InputStream imageStream = getContentResolver().openInputStream(logoData);
+                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        CircularImageView logo = business_info_fragment.findViewById(R.id.business_logo);
+                        logo.setImageBitmap(selectedImage);
+                    } catch (FileNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
+
+                TextView businessName = business_info_fragment.findViewById(R.id.homepageBusinessName);
+                TextView businessDescription = business_info_fragment
+                        .findViewById(R.id.homepageBusinessDescription);
+                businessName.setText(business.business_name);
+                businessDescription.setText(business.description);
+
+                TextView location = business_info_fragment.findViewById(R.id.address_text);
+
+
+                String full_address = business.location.get("address") + ", "
+                        + business.location.get("city") + ", "
+                        + business.location.get("state");
+                location.setText(full_address);
+
+                TextView phone = business_info_fragment.findViewById(R.id.phone_text);
+                phone.setText(business.phone_number);
+
+                TextView current_day_hours = business_info_fragment.findViewById(R.id.current_day_hours);
+                Calendar c = Calendar.getInstance();
+
+                // operation hours of the business in the current day
+                String open_hours_today = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+                c.add(Calendar.DAY_OF_WEEK, 1);
+                // operation hours of the business in the the following day
+                String open_hours_tomorrow = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+
+                // if the business isn't operating today (no opening hours are found),
+                // then we assume it's closed for the day
+                if (!open_hours_today.contains("-"))
+                    current_day_hours.setText(R.string.closed_business_message);
+                else {
+                    Date when_opens = null, when_closes = null;
+                    try {
+                        when_opens = sdf.parse(open_hours_today.split("-")[0]);
+                        when_closes = sdf.parse(open_hours_today.split("-")[1]);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+
+                    // TODO: watch for potential issues here
+                    if (when_opens == null || when_closes == null)
+                        return;
+
+                    Calendar currentTimeCalendar = Calendar.getInstance();
+                    Calendar calendarCloseHour = Calendar.getInstance();
+                    Calendar calendarOpenHour = Calendar.getInstance();
+                    calendarOpenHour.setTime(when_opens);
+                    calendarOpenHour.set(currentTimeCalendar.get(Calendar.YEAR),
+                            currentTimeCalendar.get(Calendar.MONTH),
+                            currentTimeCalendar.get(Calendar.DAY_OF_MONTH));
+                    calendarCloseHour.setTime(when_closes);
+                    calendarCloseHour.set(currentTimeCalendar.get(Calendar.YEAR),
+                            currentTimeCalendar.get(Calendar.MONTH),
+                            currentTimeCalendar.get(Calendar.DAY_OF_MONTH));
+                    long open_time_millis = calendarOpenHour.getTimeInMillis();
+                    long close_time_millis = calendarCloseHour.getTimeInMillis();
+                    long currentTime = new Date().getTime();
+
+                    // check whether the business is currently open, and display a message accordingly
+                    if (open_time_millis <= currentTime && currentTime <= close_time_millis)
+                        //  business is open
+                        current_day_hours
+                                .setText("Open. Closes " + open_hours_today.split("-")[1]);
+                    else if (currentTime < open_time_millis)
+                        // business is closed and will reopen later on today
+                        current_day_hours
+                                .setText("Closed. Opens " + open_hours_today.split("-")[0]);
+                    else
+                        // business is closed and will reopen tomorrow
+                        current_day_hours
+                                .setText("Closed. Opens " + open_hours_tomorrow.split("-")[0]);
+                }
+
+                int[] res_days =
+                        {R.id.sunday, R.id.monday, R.id.tuesday, R.id.wednesday,
+                                R.id.thursday, R.id.friday, R.id.saturday};
+
+                for (int i = 0; i < 7; i++) {
+                    ((TextView) business_info_fragment.findViewById(res_days[i]))
+                            .setText(business.open_hours.get(days[i]));
+                }
+            }
         }
+    }
+
+    public void openBusinessSchedule(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(),BusinessSchedule.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+    public void openBusinessHomepage(MenuItem item) { }
+
+    public void openBusinessClientele(MenuItem item) {
+        Intent intent = new Intent(this, ClienteleList.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+    private boolean generateDynamicLink() {
+        FirebaseDynamicLinks.getInstance()
+                .createDynamicLink()
+                .setLink(Uri.parse("https://cueapp.com/?name=" +
+                        FirebaseAuth.getInstance().getUid()))
+                .setDomainUriPrefix("https://cueapp.page.link")
+                .setAndroidParameters(
+                        new DynamicLink.AndroidParameters
+                                .Builder("com.technion.cue")
+                                .build())
+                .buildShortDynamicLink()
+                .addOnSuccessListener(this, shortLink -> {
+                    // Short link was created, and will be copied to the clipboard
+                    ClipboardManager clipboard = (ClipboardManager)
+                            getBaseContext().getSystemService(Context.CLIPBOARD_SERVICE);
+                    ClipData clip = ClipData.newPlainText("copied to clipboard",
+                            shortLink.getShortLink().toString());
+                    Toast.makeText(getBaseContext(), "copied link to clipboard",
+                            Toast.LENGTH_SHORT).show();
+                    clipboard.setPrimaryClip(clip);
+                });
+        return true;
     }
 }
 

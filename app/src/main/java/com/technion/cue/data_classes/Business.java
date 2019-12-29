@@ -70,6 +70,7 @@ public class Business implements Serializable {
         this.business_name = business_name;
         this.name = name;
         this.phone_number = phone_number;
+
         this.description=description;
         location.put("state",state);
         location.put("city",city);
@@ -78,4 +79,5 @@ public class Business implements Serializable {
         open_hours_map.keySet().removeAll(open_hours.keySet());
         open_hours.putAll(open_hours_map);
         }
+
 }

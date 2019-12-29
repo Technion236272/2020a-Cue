@@ -1,147 +1,89 @@
 package com.technion.cue.ClientFeatures;
 
-import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
-import android.view.View;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationItemView;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
-
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.Query;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.technion.cue.R;
-import com.technion.cue.data_classes.Appointment;
-import com.technion.cue.data_classes.Client;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 
-import android.widget.Toast;
-
-import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
+import androidx.viewpager.widget.ViewPager;
 
 
-public class ClientHomePage extends AppCompatActivity {
+import com.google.android.material.tabs.TabLayout;
 
-    private MyAppointmentListAdapter appointmentAdapter;
-    private MyFavoriteListAdapter favoriteAdapter;
+import com.google.firebase.auth.FirebaseAuth;
+import com.technion.cue.LauncherActivity;
+import com.technion.cue.R;
 
-    private FirebaseFirestore db;
-    private FirebaseAuth mAuth;
 
+
+public class ClientHomePage extends AppCompatActivity  {
+
+
+
+    FirebaseAuth mAuth;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home_page);
 
-    //     Menu listener
-        BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.bottom_navigation);
-        bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_recents:
-                        Toast.makeText(ClientHomePage.this, "Recents", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.action_favorites:
-                        Toast.makeText(ClientHomePage.this, "Favorites", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.action_nearby:
-                        Toast.makeText(ClientHomePage.this, "Nearby", Toast.LENGTH_SHORT).show();
-                        break;
-                }
-                return true;
-            }
-        });
-        // --
-        BottomNavigationItemView currentButton = findViewById(R.id.action_recents);
-        currentButton.setClickable(false);
-        currentButton.setItemBackground(R.color.ColorSecondaryDark);
-
-
-
-        db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
+        tabLayout.addTab(tabLayout.newTab().setText("Home"));
+        tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
+        tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
-        setUpRecyclerFavoriteView();
-        setUpRecycleAppointmentAView();
+        ViewPager viewPager = findViewById(R.id.pagerww);
+        ClientPagerAdapter adapter = new ClientPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
+        viewPager.setAdapter(adapter);
+        viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
+
+
+            @Override
+            public void onTabReselected(TabLayout.Tab tab) {
+
+            }
+
+            @Override
+            public void onTabSelected(TabLayout.Tab tab) {
+                viewPager.setCurrentItem(tab.getPosition());
+
+            }
+
+            @Override
+            public void onTabUnselected(TabLayout.Tab tab) {
+
+            }
+
+
+        });
+
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setTitle("My Appointments");
+
+//        if (actionBar != null) {
+//            actionBar.hide();
+//        }
     }
 
-    private void setUpRecycleAppointmentAView() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("client_id", currentUser.getUid())
-                .orderBy("date");
-        FirestoreRecyclerOptions<Appointment> options =
-                new FirestoreRecyclerOptions.Builder<Appointment>()
-                        .setQuery(query, Appointment.class)
-                        .build();
-        appointmentAdapter = new MyAppointmentListAdapter(options);
-        RecyclerView recyclerView = findViewById(R.id.myAppointmentList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(appointmentAdapter);
-    }
-
-    private void setUpRecyclerFavoriteView() {
-
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection("Clients")
-                .document(currentUser.getUid())
-                .collection("Favorites");
-
-        FirestoreRecyclerOptions<Client.Favorite> options =
-                new FirestoreRecyclerOptions.Builder<Client.Favorite>()
-                .setQuery(query, Client.Favorite.class)
-                .build();
-        favoriteAdapter = new MyFavoriteListAdapter(options);
-        RecyclerView recyclerView = findViewById(R.id.myFavoriteList);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager
-                (new LinearLayoutManager(
-                        this, LinearLayoutManager.HORIZONTAL,false));
-        recyclerView.setAdapter(favoriteAdapter);
-    }
-
-
-    protected void onStart() {
-        super.onStart();
-        favoriteAdapter.startListening();
-        appointmentAdapter.startListening();
-
-    }
 
     @Override
-    protected void onStop() {
-        super.onStop();
-        appointmentAdapter.stopListening();
-        favoriteAdapter.stopListening();
-    }
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // handle arrow click here
 
-
-    public void moveToBOPage(View view) {
-        Intent getIntentBOPage = new Intent(this, ClientBusinessHomepage.class);
-        getIntentBOPage.putExtra("business_id",(String)view.findViewById(R.id.businessName).getTag());
-     //   System.out.println("--------------------------------  "+view.findViewById(R.id.businessName).getTag()+" -----------------------");
-        startActivity(getIntentBOPage);
-    }
-
-    public void appoitmentEdit(View view) {
-        Intent getIntentBOPage = new Intent(this, ClientAppointmentPage.class);
-        // TODO: CHECK IF getTag is null
-        getIntentBOPage.putExtra("appointment_id",(String)view.findViewById(R.id.business).getTag());
-        startActivity(getIntentBOPage);
+        return super.onOptionsItemSelected(item);
     }
 
 
@@ -149,7 +91,18 @@ public class ClientHomePage extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.client_main_menu, menu);
+        inflater.inflate(R.menu.client_homepage_top_menu, menu);
         return true;
     }
+
+    public void logout(MenuItem view) {
+        mAuth.signOut();
+        Intent getIntentBOPage = new Intent(this, LauncherActivity.class);
+        startActivity(getIntentBOPage);
+        finish();
+
+    }
+
+
+
 }

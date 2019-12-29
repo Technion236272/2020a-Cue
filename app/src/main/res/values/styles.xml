@@ -1,15 +1,31 @@
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <!-- Customize your theme here. -->
+    <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/secondaryColor</item>
-        <item name="android:textColor">@color/TextColorPrimary</item>
-        <item name="android:textColorPrimary">@color/TextColorPrimary</item>
+        <item name="colorSecondary">@color/ColorSecondary</item>
+        <item name="colorOnBackground">@color/TextOnBackground</item>
         <item name="colorOnPrimary">@color/TextColorPrimary</item>
         <item name="colorOnSecondary">@color/TextColorSecondary</item>
+        <item name="android:textColor">@color/TextOnBackground</item>
+    </style>
+
+
+    <style name="calendarText" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:textColor">@color/TextColorPrimary</item>
+        <item name="android:textSize">18sp</item>
+    </style>
+
+
+    <style name="openHoursTextStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:background">@color/fui_transparent</item>
+    </style>
+
+    <style name="FullScreenDialogStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="android:textColor">@color/TextOnBackground</item>
+        <item name="android:windowFullscreen">false</item>
+        <item name="android:windowIsFloating">false</item>
+        <item name="android:windowBackground">#FFFFFF</item>
     </style>
 
 </resources>

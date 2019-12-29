@@ -1,16 +1,20 @@
 package com.technion.cue.BusinessFeatures;
 
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
 import com.technion.cue.R;
+import com.technion.cue.annotations.ModuleAuthor;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,7 +24,8 @@ import java.util.List;
 /**
  * top activity for viewing the schedule of the business
  */
-public class BusinessSchedule extends FragmentActivity {
+@ModuleAuthor("Ophir Eyal")
+public class BusinessSchedule extends AppCompatActivity implements BusinessBottomMenu {
 
     private ViewPager pager;
     private PagerAdapter pagerAdapter;
@@ -37,18 +42,25 @@ public class BusinessSchedule extends FragmentActivity {
         TabLayout tabs = findViewById(R.id.business_schedule_tabs);
         tabs.setupWithViewPager(pager);
 
-//        Bundle b = getIntent().getExtras();
-//        if (b != null && b.getInt("day") != 0) {
-//            BusinessScheduleDay bsd = new BusinessScheduleDay();
-//            bsd.setArguments(b);
-//            getSupportFragmentManager()
-//                    .beginTransaction()
-//                    .replace(R.id.business_schedule, bsd)
-//                    .addToBackStack(null)
-//                    .commit();
-//        }
+        BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
+        bnv.getMenu().getItem(0).setChecked(true);
     }
 
+    public void openBusinessSchedule(MenuItem item) { }
+
+    public void openBusinessHomepage(MenuItem item) {
+        Intent intent = new Intent(getBaseContext(), BOBusinessHomePage.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
+
+    public void openBusinessClientele(MenuItem item) {
+        Intent intent = new Intent(this, ClienteleList.class);
+        startActivity(intent);
+        overridePendingTransition(0, 0);
+        finish();
+    }
 
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
@@ -56,10 +68,15 @@ public class BusinessSchedule extends FragmentActivity {
                 Arrays.asList("Today", "This Week", "This Month", "Recent Changes")
         );
 
-        public ScreenSlidePagerAdapter(FragmentManager fm) {
+        ScreenSlidePagerAdapter(FragmentManager fm) {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
+        /**
+         * open appropriate fragment when a tab is clicked
+         * @param position the position of the tab inside the Viewpager
+         * @return the fragment that should be opened
+         */
         @Override
         public Fragment getItem(int position) {
             switch (titleList.get(position)) {
@@ -73,13 +90,13 @@ public class BusinessSchedule extends FragmentActivity {
                     bsd.setArguments(b);
                     return bsd;
                 case "This Week":
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleWeek();
                 case "This Month":
                     return new BusinessScheduleMonth();
                 case "Recent Changes":
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleFragmentPlaceholder();
                 default:
-                    return new BusinessScheduleFragment();
+                    return new BusinessScheduleFragmentPlaceholder();
             }
         }
 
@@ -93,4 +110,5 @@ public class BusinessSchedule extends FragmentActivity {
             return titleList.get(position);
         }
     }
+
 }

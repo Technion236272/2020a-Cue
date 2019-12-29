@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/dayText"
+        android:layout_width="96dp"
+        android:layout_height="wrap_content"
+        android:textColor="@color/TextOnBackground"
+        android:layout_marginTop="24dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/openingHourEdit"
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:hint="@string/opening_hour"
+        android:layout_toRightOf="@id/dayText"
+        android:layout_toEndOf="@id/dayText" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessOpeningHourEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/closingHourEdit"
+        android:layout_width="144dp"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginStart="16dp"
+        android:hint="@string/closing_hour"
+        android:layout_below="@id/openingHourEdit"
+        android:layout_toRightOf="@id/dayText"
+        android:layout_toEndOf="@id/dayText">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessClosingHourEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+</RelativeLayout>
