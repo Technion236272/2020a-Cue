@@ -292,17 +292,15 @@ public class BOSignUp3 extends AppCompatActivity {
     }
 
     private boolean inputNotEmpty(){
-        ViewGroup vg = findViewById(R.id.business_sign_up3);
-        for (int i = 0; i < vg.getChildCount(); i++) {
-            if (vg.getChildAt(i) instanceof TextInputEditText) {
-                if (((EditText) vg.getChildAt(i)).getText().toString().isEmpty()){
-                    Toast.makeText(this, "There is empty Fields", Toast.LENGTH_SHORT).show();
-                    return false;
+        TextInputEditText state = findViewById(R.id.businessStateEditText);
+        TextInputEditText city = findViewById(R.id.businessCityEditText);
+        TextInputEditText address = findViewById(R.id.businessAddressEditText);
 
-                }
-            }
+        if(state.getText().toString().isEmpty() || city.getText().toString().isEmpty() ||
+        address.getText().toString().isEmpty()){
+            return false;
         }
-        return true;
+       return true;
     }
 
     public void sendVerificationEmail() {

@@ -47,36 +47,33 @@ public class BOSignUp1 extends AppCompatActivity {
     }
 
     private boolean inputIsValid() {
-        if (inputNotEmpty()) {
+
             TextInputEditText email = findViewById(R.id.businessEmailEditText);
             TextInputEditText password = findViewById(R.id.businessPasswordEditText);
             TextInputEditText boFullName = findViewById(R.id.businessFullNameEditText);
-            if(!isEmailValid(email.getText().toString())){
-                return false;
-            }
-            if(password.getText().toString().length() < 6){
-                Toast.makeText(this, "Password should be at least six characters", Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            if(!boFullName.getText().toString().contains(" ")){
-                Toast.makeText(this, "Full name should be at least two words", Toast.LENGTH_SHORT).show();
-                return false;
-            }
+            String bEmail = email.getText().toString();
+            String bPassword = password.getText().toString();
+            String bName = boFullName.getText().toString();
+            if (inputNotEmpty(bEmail,bPassword,bName)){
+                if(!isEmailValid(bEmail)){
+                    return false;
+                }
+                if(bPassword.length() < 6){
+                    Toast.makeText(this, "Password should be at least six characters", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
+                if(!bName.contains(" ")){
+                    Toast.makeText(this, "Full name should be at least two words", Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             return true;
         }
         return false;
     }
 
-    private boolean inputNotEmpty(){
-        ViewGroup vg = findViewById(R.id.business_sign_up1);
-        for (int i = 0; i < vg.getChildCount(); i++) {
-            if (vg.getChildAt(i) instanceof TextInputEditText) {
-                if (((EditText) vg.getChildAt(i)).getText().toString().isEmpty()){
-                    Toast.makeText(this, "There is empty Fields", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-
-            }
+    private boolean inputNotEmpty(String email, String password, String full_name){
+        if(email.isEmpty() || password.isEmpty() || full_name.isEmpty()){
+            return false;
         }
         return true;
     }

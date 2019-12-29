@@ -74,7 +74,13 @@ public class BOSignUp2 extends AppCompatActivity {
     }
 
     private boolean inputIsValid() {
-        if (inputNotEmpty()) {
+        TextInputEditText business_name = findViewById(R.id.businessNameEditText);
+        TextInputEditText business_desc = findViewById(R.id.businessDescriptionEditText);
+        TextInputEditText business_phone = findViewById(R.id.businessPhoneEditText);
+        String bName = business_name.getText().toString();
+        String bDesc = business_desc.getText().toString();
+        String bPhone = business_phone.getText().toString();
+        if (inputNotEmpty(bName, bDesc, bPhone)) {
             if (logoData == null) {
                 Toast.makeText(this, "please upload logo", Toast.LENGTH_SHORT).show();
                 return false;
@@ -83,16 +89,9 @@ public class BOSignUp2 extends AppCompatActivity {
         return true;
     }
 
-    private boolean inputNotEmpty(){
-        ViewGroup vg = findViewById(R.id.business_sign_up2);
-        for (int i = 0; i < vg.getChildCount(); i++) {
-            if (vg.getChildAt(i) instanceof TextInputEditText) {
-                if (((EditText) vg.getChildAt(i)).getText().toString().isEmpty()){
-                    Toast.makeText(this, "There is empty Fields", Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-
-            }
+    private boolean inputNotEmpty(String bName, String bDesc, String bPhone){
+        if(bName.isEmpty() || bDesc.isEmpty() || bPhone.isEmpty()){
+            return false;
         }
         return true;
     }
