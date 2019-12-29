@@ -101,7 +101,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/edit_appointment_address"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="20dp"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true">
 
@@ -168,7 +168,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_below="@+id/edit_appointment_time"
-            android:layout_marginTop="48dp"
+            android:layout_marginTop="20dp"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true">
 
@@ -218,11 +218,11 @@
 
     <RelativeLayout
         android:id="@+id/edit_appointment_types"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/edit_appointment_notes"
-        android:layout_marginTop="48dp"
+        android:layout_marginTop="20dp"
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true">
 
