@@ -1,5 +1,7 @@
 package com.technion.cue.BusinessFeatures;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -18,8 +20,15 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.List;
+
+import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
+import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 
 @ModuleAuthor("Topaz")
 public class BOSignUp2 extends AppCompatActivity {
@@ -92,7 +101,11 @@ public class BOSignUp2 extends AppCompatActivity {
     public void openImageGallery(View view) {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, GET_LOGO);
+        if (photoPickerIntent.resolveActivity(getPackageManager()) != null) {
+            startActivityForResult(Intent.createChooser(photoPickerIntent, "Select File"), GET_LOGO);
+        }
+
+//        startActivityForResult(photoPickerIntent, GET_LOGO);
     }
 
     /**
@@ -113,8 +126,13 @@ public class BOSignUp2 extends AppCompatActivity {
                 final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
                 CircularImageView logo = findViewById(R.id.businessLogoEdit);
                 logo.setImageBitmap(selectedImage);
+                FileOutputStream outStream = new FileOutputStream(new File(getCacheDir(), "tempBMP"));
+                selectedImage.compress(Bitmap.CompressFormat.JPEG, 75, outStream);
+                outStream.close();
             } catch (FileNotFoundException e) {
                 Toast.makeText(this, "image not found", Toast.LENGTH_SHORT).show();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
 
         }

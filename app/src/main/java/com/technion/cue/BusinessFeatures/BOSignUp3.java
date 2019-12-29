@@ -29,6 +29,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -74,39 +75,15 @@ public class BOSignUp3 extends AppCompatActivity {
             this.open_hours.put(day, "");
         }
 
+        askPermission();
+
         String email = getIntent().getExtras().getString("email");
         String password = getIntent().getExtras().getString("password");
         String bo_name = getIntent().getExtras().getString("boName");
         String b_name = getIntent().getExtras().getString("bName");
         String b_desc =getIntent().getExtras().getString("bDesc");
         String b_phone = getIntent().getExtras().getString("bPhone");
-        logo = (Uri)getIntent().getExtras().get("logoData");
-
-//        // Here, thisActivity is the current activity
-//        if (ContextCompat.checkSelfPermission(this,
-//                Manifest.permission.READ_EXTERNAL_STORAGE)
-//                != PackageManager.PERMISSION_GRANTED) {
-//
-//            // Permission is not granted
-//            // Should we show an explanation?
-//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-//                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-//                // Show an explanation to the user *asynchronously* -- don't block
-//                // this thread waiting for the user's response! After the user
-//                // sees the explanation, try again to request the permission.
-//            } else {
-//                // No explanation needed; request the permission
-//                ActivityCompat.requestPermissions(this,
-//                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-//                        MY_PERMISSIONS_REQUEST_READ_MEDIA);
-//
-//                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-//                // app-defined int constant. The callback method gets the
-//                // result of the request.
-//            }
-//        } else {
-//            // Permission has already been granted
-//        }
+        logo = (Uri) getIntent().getExtras().get("logoData");
 
         Button done_btn = findViewById(R.id.btn_done1);
         TextInputEditText state = findViewById(R.id.businessStateEditText);
@@ -119,29 +96,31 @@ public class BOSignUp3 extends AppCompatActivity {
                 done_btn.setEnabled(false);
                 boolean res = inputIsValid();
                 if (res) {
-                    askPermission();
-                    mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-                        @Override
-                        public void onSuccess(AuthResult authResult) {
-                            sendVerificationEmail();
-                            //System.out.println("==========sign success============");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //system.out.println("==========get current user============");
-                            Business business = new Business(b_name, bo_name, b_phone, b_desc,
-                                    state.getText().toString(), city.getText().toString(),
-                                    address.getText().toString(),open_hours);
-                            //System.out.println("==========created business============");
-                            db.collection(BUSINESSES_COLLECTION).document(user.getUid()).set(business);
 
-                            //uploadLogo(logo);
-                            //Todo: upload the logo!
-                            Toast.makeText(BOSignUp3.this, "Sign up done!", Toast.LENGTH_LONG).show();
+                    mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
+                        sendVerificationEmail();
+                        //System.out.println("==========sign success============");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        //system.out.println("==========get current user============");
+                        Business business = new Business(b_name, bo_name, b_phone, b_desc,
+                                state.getText().toString(), city.getText().toString(),
+                                address.getText().toString(),open_hours);
+                        //System.out.println("==========created business============");
+                       Task t =  db.collection(BUSINESSES_COLLECTION).document(user.getUid()).set(business);
 
-                            Intent in = new Intent(getBaseContext(), SignInActivity.class);
-                            startActivity(in);
-                            done_btn.setEnabled(true);
-                            finish();
-                        }
+                       Tasks.whenAll(t).addOnSuccessListener(l -> {
+                           uploadLogo(logo);
+                           Tasks.whenAll(uploadTask).addOnSuccessListener(sl -> {
+                               Toast.makeText(BOSignUp3.this, "Sign up done!", Toast.LENGTH_LONG).show();
+
+                               Intent in = new Intent(getBaseContext(), SignInActivity.class);
+                               startActivity(in);
+                               done_btn.setEnabled(true);
+                               finish();
+                           });
+                       });
+
+
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
@@ -350,17 +329,18 @@ public class BOSignUp3 extends AppCompatActivity {
         if (data == null)
             return;
 
-        final String business_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+        final String business_id = FirebaseAuth.getInstance().getUid();
         final StorageReference logosRef = FirebaseStorage.getInstance().getReference()
                 .child("business_logos/" + business_id + new Random().nextInt());
+
+        String actualData = RemoveUnwantedString(data.toString());
 
         UploadTask uploadTask = logosRef.putFile(data);
         //Todo: the line above is crashing
 
         // Register observers to listen for when the download is done or if it fails
-        this.uploadTask = uploadTask.addOnSuccessListener(taskSnapshot ->  {
-            Log.d(this.toString(), "succeeded to upload business logo");
-        });
+        this.uploadTask = uploadTask.addOnSuccessListener(taskSnapshot ->
+                Log.d(this.toString(), "succeeded to upload business logo"));
     }
 
     @Override
@@ -368,7 +348,7 @@ public class BOSignUp3 extends AppCompatActivity {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_READ_MEDIA:
                 if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    uploadLogo(logo);
+                    //uploadLogo(logo);
                 }
                 break;
 
@@ -384,24 +364,40 @@ public class BOSignUp3 extends AppCompatActivity {
 
             // Permission is not granted
             // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-            } else {
-                // No explanation needed; request the permission
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
-                        MY_PERMISSIONS_REQUEST_READ_MEDIA);
 
-                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
-                // app-defined int constant. The callback method gets the
-                // result of the request.
+            // No explanation needed; request the permission
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                    MY_PERMISSIONS_REQUEST_READ_MEDIA);
+
+            // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+            // app-defined int constant. The callback method gets the
+            // result of the request.
             }
-        } else {
-            // Permission has already been granted
+        else{
+
         }
+        }
+
+    public String RemoveUnwantedString(String pathUri){
+        //pathUri = "content://com.google.android.apps.photos.contentprovider/-1/2/content://media/external/video/media/5213/ORIGINAL/NONE/2106970034"
+        String[] d1 = pathUri.split("content://");
+        for (String item1:d1) {
+            if (item1.contains("media/")) {
+                String[] d2 = item1.split("/ORIGINAL/");
+                for (String item2:d2) {
+                    if (item2.contains("media/")) {
+                        pathUri = "content://" + item2;
+                        break;
+                    }
+                }
+                break;
+            }
+        }
+        //pathUri = "content://media/external/video/media/5213"
+        return pathUri;
     }
 
-}
+    }
+
+
