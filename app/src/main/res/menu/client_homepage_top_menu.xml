@@ -8,12 +8,12 @@
         android:title="Logout"
         app:showAsAction="never"
         android:onClick="logout"/>
-    <item
-        android:id="@+id/client_appointment_toolbar_abort"
-        android:orderInCategory="100"
-        android:title="About"
-        app:showAsAction="never"
-        />
+<!--    <item-->
+<!--        android:id="@+id/client_appointment_toolbar_abort"-->
+<!--        android:orderInCategory="100"-->
+<!--        android:title="About"-->
+<!--        app:showAsAction="never"-->
+<!--        />-->
 
 
 </menu>
