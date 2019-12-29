@@ -218,7 +218,7 @@
 
     <RelativeLayout
         android:id="@+id/edit_appointment_types"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_below="@+id/edit_appointment_notes"
@@ -244,7 +244,7 @@
         />
         <RadioGroup
             android:id="@+id/edit_appoinment_radiogroup"
-            android:layout_width="wrap_content"
+            android:layout_width="150dp"
             android:layout_height="wrap_content"
             android:checkedButton="@+id/appointment_edit_radio_first"
             android:orientation="horizontal"
