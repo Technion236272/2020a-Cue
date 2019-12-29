@@ -106,7 +106,7 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
 
                            getParentFragment().getChildFragmentManager()
                                    .beginTransaction()
-                                   .setCustomAnimations(R.anim.animation_slidein_replace_fragment, 0)
+                                   .setCustomAnimations(R.anim.animation_slideout_replace_fragment, 0)
                                    .replace(R.id.client_calendar_fragment_container, bsd)
                                    .commit();
 

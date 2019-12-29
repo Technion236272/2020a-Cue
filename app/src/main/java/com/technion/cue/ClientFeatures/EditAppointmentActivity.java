@@ -6,7 +6,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -33,11 +32,9 @@ import com.technion.cue.data_classes.Business;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
@@ -48,13 +45,13 @@ import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 public class EditAppointmentActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
-    String b_id;
-    String a_id;
+    String business_id;
+    String appointment_id;
     FirebaseFirestore db;
     Business business;
     Intent intent;
-    String a_type;
-    Calendar c;
+    String appointment_type;
+    Calendar calendar;
     Appointment appointment;
     FirebaseAuth mAuth;
     String radioButton_id;
@@ -84,29 +81,29 @@ public class EditAppointmentActivity extends AppCompatActivity
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.containsKey("appointment_id") && extras.containsKey("business_id")) { // you are in edit appointment
-                a_id = intent.getExtras().getString("appointment_id");
-                b_id = intent.getExtras().getString("business_id");
+                appointment_id = intent.getExtras().getString("appointment_id");
+                business_id = intent.getExtras().getString("business_id");
 
                 loadAppointmentDetails();
             } else if (extras.containsKey("business_id") && extras.containsKey("client_id")){ // newAppointment as business owner
 
-                b_id = intent.getExtras().getString("business_id");
-                a_id ="";
-                a_type="";
+                business_id = intent.getExtras().getString("business_id");
+                appointment_id ="";
+                appointment_type ="";
                 appointment = new Appointment();
                 appointment.id="";
-                appointment.business_id=b_id;
+                appointment.business_id=business_id;
                 appointment.client_id = intent.getExtras().getString("client_id");
                 loadNewAppointment();
 
             } else if (extras.containsKey("business_id")){ // newAppointment as client
-                b_id = intent.getExtras().getString("business_id");
-                a_id ="";
-                a_type="";
+                business_id = intent.getExtras().getString("business_id");
+                appointment_id ="";
+                appointment_type ="";
                 // -- setting appointment object
                 appointment = new Appointment();
                 appointment.id="";
-                appointment.business_id=b_id;
+                appointment.business_id=business_id;
                 appointment.client_id = mAuth.getCurrentUser().getUid();
                 loadNewAppointment();
 
@@ -124,7 +121,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     private void loadBusinessData() {
         db.collection(BUSINESSES_COLLECTION)
-                .document(b_id)
+                .document(business_id)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     business = documentSnapshot.toObject(Business.class);
@@ -144,7 +141,7 @@ public class EditAppointmentActivity extends AppCompatActivity
     private void loadTypes() {
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
-                .document(b_id)
+                .document(business_id)
                 .collection(TYPES_COLLECTION)
                 .get()
                 .addOnSuccessListener(l -> {
@@ -158,7 +155,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                         // If the radiobutton that has changed in check state is now checked...
                         if (isChecked)
                         {
-                            a_type = l.getDocuments().get(checkedId).getId();
+                            appointment_type = l.getDocuments().get(checkedId).getId();
                             radioButton_id = l.getDocuments().get(checkedId).getId();
                         }
                     });
@@ -172,7 +169,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             rb[i].setText(document.getString("name"));
                             // ---
                             rb[i].setId(i);
-                            if (document.getId().equals(a_type) ) {
+                            if (document.getId().equals(appointment_type) ) {
                                 rb[i].setChecked(true);
                                 radioButton_id = document.getId();
                             }
@@ -184,7 +181,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     private void loadAppointmentData() {
         db.collection(APPOINTMENTS_COLLECTION)
-                .document(a_id)
+                .document(appointment_id)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     appointment = documentSnapshot.toObject(Appointment.class);
@@ -195,7 +192,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                         TextView date = findViewById(R.id.edit_appointment_time_text);
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
                         date.setText(sdf.format(appointment.date ));
-                        a_type = appointment.type;
+                        appointment_type = appointment.type;
                     }
                     loadTypes(); // load appointments type
 
@@ -249,7 +246,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .document()
                             .set(appointment).addOnCompleteListener(task ->
                               FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-                                      .document(a_id).delete().addOnSuccessListener(result -> { // deleting old appointment
+                                      .document(appointment_id).delete().addOnSuccessListener(result -> { // deleting old appointment
                                 findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(), "Appointment Rescheduled Successfully ", Toast.LENGTH_LONG).show();
                                 // --
@@ -280,7 +277,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     @SuppressLint("ResourceType")
     public Boolean didChooseType() {
-        RadioGroup rg = findViewById(R.id.edit_appoinment_radiogroup);
+        RadioGroup radioGroup = findViewById(R.id.edit_appoinment_radiogroup);
         return !radioButton_id.equals("");
     }
 
@@ -288,10 +285,10 @@ public class EditAppointmentActivity extends AppCompatActivity
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // store the values selected into a Calendar instance
-        c = Calendar.getInstance();
-        c.set(Calendar.YEAR, year);
-        c.set(Calendar.MONTH, monthOfYear);
-        c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+        calendar = Calendar.getInstance();
+        calendar.set(Calendar.YEAR, year);
+        calendar.set(Calendar.MONTH, monthOfYear);
+        calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
         ClientChooseTimeFragment newFragment = new ClientChooseTimeFragment();
         newFragment.show(getSupportFragmentManager(), "timePicker");
 
@@ -301,24 +298,24 @@ public class EditAppointmentActivity extends AppCompatActivity
     @Override
     public void onTimeSet(TimePicker view, int hour, int minute) {
         // store the values selected into a Calendar instance
-        c.set(Calendar.HOUR_OF_DAY, hour);
-        c.set(Calendar.MINUTE, minute);
+        calendar.set(Calendar.HOUR_OF_DAY, hour);
+        calendar.set(Calendar.MINUTE, minute);
         // TODO: will change to a chosen type in Sprint #2
-        Date start = c.getTime();
+        Date start = calendar.getTime();
         String oldDate =  ((TextView)findViewById(R.id.edit_appointment_time_text)).getText().toString();
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
-        ((TextView)findViewById(R.id.edit_appointment_time_text)).setText(sdf.format(c.getTime()));
+        ((TextView)findViewById(R.id.edit_appointment_time_text)).setText(sdf.format(calendar.getTime()));
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
                 .document(business.id)
                 .collection(TYPES_COLLECTION)
-                .document(a_type)
+                .document(appointment_type)
                 .get()
                 .addOnSuccessListener(ds -> {
-                    c.add(Calendar.MINUTE, Integer.valueOf(
+                    calendar.add(Calendar.MINUTE, Integer.valueOf(
                             ((Map<String, String>)ds.get("attributes")).get("duration"))
                     );
-                    Date end = c.getTime();
+                    Date end = calendar.getTime();
                     appointment.date = start;
                     checkIfDateAvailable(start, end, oldDate);
                 });
@@ -385,12 +382,12 @@ public class EditAppointmentActivity extends AppCompatActivity
 
         Tasks.whenAll(t).addOnSuccessListener(sl ->
                 db.collection(APPOINTMENTS_COLLECTION)
-                        .whereEqualTo("business_id",b_id)
+                        .whereEqualTo("business_id",business_id)
                         .orderBy("date")
                         .get().addOnCompleteListener(l -> {
                             findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
                             for (DocumentSnapshot document : l.getResult().getDocuments()) {
-                                if ((document.exists()) && (document.getId() != a_id)) {
+                                if ((document.exists()) && (document.getId() != appointment_id)) {
                                     Date appointmentDate = ((Timestamp)document.get("date")).toDate();
                                     int duration = atm.get(document.getString("type"));
                                     Calendar c = Calendar.getInstance();

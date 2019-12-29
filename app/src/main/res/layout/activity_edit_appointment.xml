@@ -26,23 +26,21 @@
             android:onClick="saveChanges"
             />
 
-        <Button
+        <ImageButton
             android:id="@+id/edit_appointment_exit_button"
-            android:layout_width="50dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_margin="8dp"
-            android:text="X"
-            android:textColor="#000000"
-            android:backgroundTint="#FFFFFF"
-            android:shadowColor="#FFFFFF"
-            android:textSize="25sp"
+            android:layout_marginTop="20dp"
             android:onClick="exitEditAppointment"
+            android:background="#ffffff"
+            app:srcCompat="@drawable/ic_close_black_30dp"
             />
 
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/edit_appointment_address"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -50,17 +48,34 @@
             android:layout_below="@id/edit_appointment_save_button"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="100dp"
+
             android:layout_centerInParent="true">
 
             <ImageView
+                android:id="@+id/phone_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
                 android:layout_marginTop="1.0dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginLeft="-5dp"
                 app:srcCompat="@drawable/ic_place_black_30dp"
                 android:contentDescription="phone icon"
                 />
-
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextOnBackgroundDim"
+                android:textSize="17sp"
+                android:layout_marginLeft="0dp"
+                android:background="@color/TextColorSecondary"
+                android:layout_gravity="center"
+                android:shadowColor="@color/colorPrimary"
+                android:shadowRadius="3"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="10dp"
+                android:text="Location"
+                android:layout_toRightOf="@+id/phone_icon"
+                />
 
             <TextView
                 android:id="@+id/edit_appointment_address_text"
@@ -72,134 +87,174 @@
                 android:layout_gravity="center"
                 android:shadowColor="@color/colorPrimary"
                 android:shadowRadius="3"
-                android:layout_marginBottom="0dp"
-                android:text="Location location"
+                android:layout_marginTop="10dp"
+                android:layout_below="@+id/phone_icon"
+
+                android:text=""
                 />
 
+        </RelativeLayout>
 
-        </LinearLayout>
-
-    <View
-        android:id="@+id/edit_appointment_devider1"
-        android:layout_width="300dp"
-        android:layout_height="1dp"
-        android:background="@color/ColorSecondaryLight"
-        android:layout_margin="10dp"
-        android:layout_below="@id/edit_appointment_address"
-        android:layout_centerInParent="true"/>
-
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/edit_appointment_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/edit_appointment_devider1"
+            android:layout_below="@+id/edit_appointment_address"
             android:layout_marginTop="48dp"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true">
 
             <ImageView
+                android:id="@+id/date_icon"
                 android:layout_width="30dp"
                 android:layout_height="30dp"
-                android:layout_marginTop="7dp"
-                android:layout_marginRight="5dp"
+                android:layout_marginTop="1.0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginLeft="-3dp"
                 app:srcCompat="@drawable/ic_access_time_black_24dp"
                 android:contentDescription="time icon"
                 />
+            <TextView
 
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextOnBackgroundDim"
+                android:textSize="17sp"
+                android:layout_marginLeft="2dp"
+                android:background="@color/TextColorSecondary"
+                android:layout_gravity="center"
+                android:shadowColor="@color/colorPrimary"
+                android:shadowRadius="3"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="10dp"
+                android:text="Date"
+                android:layout_toRightOf="@+id/date_icon"
+                />
 
             <TextView
                 android:id="@+id/edit_appointment_time_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="10dp"
                 android:textColor="#283593"
                 android:textSize="20sp"
                 android:background="@color/TextColorSecondary"
                 android:layout_gravity="center"
                 android:shadowColor="@color/colorPrimary"
                 android:shadowRadius="3"
-                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
                 android:text=""
+                android:layout_below="@+id/date_icon"
 
                 />
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/edit_appointment_change_button"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="13dp"
-                android:text="Change"
+                android:layout_marginBottom="0dp"
+                android:layout_toEndOf="@+id/edit_appointment_time_text"
+                android:layout_toRightOf="@+id/edit_appointment_time_text"
+                android:text="CHANGE"
                 android:textSize="12sp"
                 android:onClick="changeDate"
                 />
 
-        </LinearLayout>
+        </RelativeLayout>
 
-    <View
-        android:id="@+id/edit_appointment_devider2"
-        android:layout_width="300dp"
-        android:layout_height="1dp"
-        android:background="@color/ColorSecondaryLight"
-        android:layout_margin="10dp"
-        android:layout_below="@id/edit_appointment_time"
-        android:layout_centerInParent="true"/>
 
-        <LinearLayout
+        <RelativeLayout
             android:id="@+id/edit_appointment_notes"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:layout_below="@id/edit_appointment_devider2"
+            android:layout_below="@+id/edit_appointment_time"
             android:layout_marginTop="48dp"
             android:layout_centerInParent="true"
             android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/notes_icon"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_marginTop="1.0dp"
+                android:layout_marginRight="0dp"
+                android:layout_marginLeft="-3dp"
+                app:srcCompat="@drawable/ic_note_black_30dp"
+                android:contentDescription="time icon"
+                />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/TextOnBackgroundDim"
+                android:textSize="17sp"
+                android:layout_marginLeft="2dp"
+                android:background="@color/TextColorSecondary"
+                android:layout_gravity="center"
+                android:shadowColor="@color/colorPrimary"
+                android:shadowRadius="3"
+                android:layout_marginBottom="0dp"
+                android:layout_marginTop="10dp"
+                android:text="Notes"
+                android:layout_toRightOf="@+id/notes_icon"
+                />
 
             <TextView
                 android:id="@+id/edit_appointment_notes_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
                 android:textColor="#283593"
                 android:textSize="20sp"
                 android:background="@color/TextColorSecondary"
                 android:layout_gravity="center"
                 android:shadowColor="@color/colorPrimary"
                 android:shadowRadius="3"
-                android:layout_marginTop="1dp"
-                android:text="test notes"
+                android:layout_marginTop="10dp"
+                android:text=""
+                android:layout_below="@+id/notes_icon"
                 />
 
 
-        </LinearLayout>
+        </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/edit_appointment_types"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_below="@+id/edit_appointment_notes"
+        android:layout_marginTop="48dp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true">
 
-
-
-    <View
-        android:id="@+id/edit_appointment_devider3"
-        android:layout_width="300dp"
-        android:layout_height="1dp"
-        android:background="@color/ColorSecondaryLight"
+    <TextView
+        android:id="@+id/radio_types"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/TextOnBackgroundDim"
+        android:textSize="17sp"
+        android:layout_marginLeft="2dp"
+        android:background="@color/TextColorSecondary"
+        android:layout_gravity="center"
+        android:shadowColor="@color/colorPrimary"
+        android:shadowRadius="3"
+        android:layout_marginBottom="0dp"
         android:layout_marginTop="10dp"
-        android:layout_below="@id/edit_appointment_notes"
-        android:layout_centerInParent="true"/>
+        android:text="Types"
 
+        />
         <RadioGroup
             android:id="@+id/edit_appoinment_radiogroup"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:checkedButton="@+id/appointment_edit_radio_first"
             android:orientation="horizontal"
-            android:layout_below="@+id/edit_appointment_devider3"
+            android:layout_below="@+id/radio_types"
             android:layout_centerInParent="true"
             android:layout_marginTop="10dp"
             >
 
-
-
-
         </RadioGroup>
+    </RelativeLayout>
 
 
 </RelativeLayout>
