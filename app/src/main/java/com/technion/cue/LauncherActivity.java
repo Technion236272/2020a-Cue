@@ -10,7 +10,6 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
-import com.technion.cue.BusinessFeatures.BusinessSignUp;
 import com.technion.cue.ClientFeatures.ClientHomePage;
 import com.technion.cue.ClientFeatures.ClientSignUp;
 import com.technion.cue.annotations.ModuleAuthor;
