@@ -30,3 +30,11 @@ As a client of a small business, *Cue* will grant you the following abilities:
 * Be notified on anything important before an appointment by the business
 * Post reviews for businesses in which you have visited
 
+## Meta
+
+Topaz Shemesh - topaz@campus.technion.ac.il
+Ben Siso - sbens92@campus.technion.ac.il
+Ophir Eyal - ophirey@campus.technion.ac.il
+
+
+
