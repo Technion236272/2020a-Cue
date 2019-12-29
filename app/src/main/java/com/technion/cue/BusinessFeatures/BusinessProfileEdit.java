@@ -4,8 +4,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
@@ -14,14 +12,13 @@ import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -55,7 +52,7 @@ public class BusinessProfileEdit extends AppCompatActivity {
         TextInputEditText city = findViewById(R.id.businessCityEditText);
         TextInputEditText address = findViewById(R.id.businessAddressEditText);
         Business business = (Business) getIntent().getSerializableExtra("business");
-        Uri logoData = getIntent().getData();
+        Uri logoData = (Uri) getIntent().getExtras().get("logo");
         open_hours = business.open_hours;
         businessName.setText(business.business_name);
         businessDescription.setText(business.description);
@@ -239,16 +236,12 @@ public class BusinessProfileEdit extends AppCompatActivity {
         super.onActivityResult(reqCode, resultCode, data);
         if (reqCode == GET_LOGO && data != null) {
             logoData = data.getData();
-            final InputStream imageStream;
-            try {
-                imageStream = getContentResolver().openInputStream(logoData);
-                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                CircularImageView logo = findViewById(R.id.businessLogoEdit);
-                logo.setImageBitmap(selectedImage);
-            } catch (FileNotFoundException e) {
-                Toast.makeText(this, "image not found", Toast.LENGTH_SHORT).show();
-            }
-
+            CircularImageView logo = findViewById(R.id.businessLogoEdit);
+            Glide.with(logo.getContext())
+                    .load(logoData)
+                    .error(R.drawable.ic_person_outline_black_24dp)
+                    .into(logo);
+//            logo.setImageURI(logoData);
         }
     }
 

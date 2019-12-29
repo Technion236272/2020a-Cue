@@ -1,7 +1,5 @@
 package com.technion.cue.BusinessFeatures;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
@@ -25,10 +23,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.List;
-
-import static android.content.Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION;
-import static android.content.Intent.FLAG_GRANT_READ_URI_PERMISSION;
 
 @ModuleAuthor("Topaz")
 public class BOSignUp2 extends AppCompatActivity {

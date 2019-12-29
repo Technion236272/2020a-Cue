@@ -17,6 +17,7 @@ import android.widget.Toast;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.bumptech.glide.Glide;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
@@ -107,14 +108,11 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 business = (Business) data.getSerializableExtra("business");
                 logoData = data.getData();
                 if (logoData != null) {
-                    try {
-                        InputStream imageStream = getContentResolver().openInputStream(logoData);
-                        final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
-                        CircularImageView logo = business_info_fragment.findViewById(R.id.business_logo);
-                        logo.setImageBitmap(selectedImage);
-                    } catch (FileNotFoundException e) {
-                        e.printStackTrace();
-                    }
+                    CircularImageView logo = business_info_fragment.findViewById(R.id.business_logo);
+                    Glide.with(logo.getContext())
+                            .load(logoData)
+                            .error(R.drawable.ic_person_outline_black_24dp)
+                            .into(logo);
                 }
 
                 TextView businessName = business_info_fragment.findViewById(R.id.homepageBusinessName);

@@ -27,6 +27,7 @@ import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 class BusinessUploader {
 
     private final String business_id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    private final Uri logoRefUri;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private CircularImageView logoResource;
     private Task uploadTask;
@@ -36,6 +37,7 @@ class BusinessUploader {
     BusinessUploader(Business business, Uri logoRef, CircularImageView logoResource) {
         this.business = business;
         this.logoResource = logoResource;
+        this.logoRefUri = logoRef;
         Glide.with(logoResource.getContext())
                 .load(logoRef)
                 .error(R.drawable.ic_person_outline_black_24dp)
@@ -81,11 +83,13 @@ class BusinessUploader {
             Log.d(this.toString(), "succeeded to upload business logo");
 
             // deleting previous logo
-            FirebaseStorage.getInstance()
-                    .getReference()
-                    .child(getLogoPath())
-                    .delete().addOnSuccessListener(l ->
-                    Log.d(this.toString(), "succeeded to delete previous logo"));
+            if (business.logo_path.contains("business_logos")) {
+                FirebaseStorage.getInstance()
+                        .getReference()
+                        .child(getLogoPath())
+                        .delete().addOnSuccessListener(l ->
+                        Log.d(this.toString(), "succeeded to delete previous logo"));
+            }
 
             business.logo_path = logosRef.getPath();
         });
@@ -95,6 +99,10 @@ class BusinessUploader {
      * supporting method for loading business logo from Firebase Storage
      */
     void loadLogo() {
+
+        if (logoRefUri != null)
+            return;
+
         StorageReference logoRef = null;
         if (business != null && !business.logo_path.equals("")) {
             logoRef = FirebaseStorage.getInstance().getReference().child(getLogoPath());
