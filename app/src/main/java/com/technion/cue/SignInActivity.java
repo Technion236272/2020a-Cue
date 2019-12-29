@@ -81,9 +81,16 @@ public class SignInActivity extends AppCompatActivity {
                 mAuth.signInWithEmailAndPassword(email.getText().toString(),
                         user_password.getText().toString())
                         .addOnSuccessListener(l -> {
-                            checkIfEmailVerified();
-                            Log.d(TAG, "signInWithEmail:success");
-                            updateUI(mAuth.getCurrentUser().getUid());
+                            boolean res = checkIfEmailVerified();
+                            if(res) {
+                                Log.d(TAG, "signInWithEmail:success");
+                                updateUI(mAuth.getCurrentUser().getUid());
+                            }
+                            else {
+                                Toast.makeText(SignInActivity.this,
+                                        "Please verify your email!",
+                                        Toast.LENGTH_LONG).show();
+                            }
                         }).addOnFailureListener(l -> {
                             Log.w(TAG, "signInWithEmail:failure");
                             Toast.makeText(SignInActivity.this,
@@ -146,21 +153,22 @@ public class SignInActivity extends AppCompatActivity {
                             "Authentication failed",
                             Toast.LENGTH_LONG).show());
     }
-    private void checkIfEmailVerified()
+    private boolean checkIfEmailVerified()
     {
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
         if (user.isEmailVerified())
         {
             // user is verified, so you can finish this activity or send user to activity which you want.
-            finish();
             Toast.makeText(SignInActivity.this, "Successfully logged in", Toast.LENGTH_SHORT).show();
+            return true;
         }
         else
         {
             // email is not verified, so just prompt the message to the user and restart this activity.
             // NOTE: don't forget to log out the user.
             FirebaseAuth.getInstance().signOut();
+            return false;
 
             //restart this activity
 

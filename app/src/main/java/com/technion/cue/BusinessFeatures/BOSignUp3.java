@@ -22,6 +22,8 @@ import java.text.SimpleDateFormat;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -47,6 +49,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.ConstantCollection.MY_PERMISSIONS_REQUEST_READ_MEDIA;
 
 @ModuleAuthor("Topaz")
 public class BOSignUp3 extends AppCompatActivity {
@@ -57,6 +60,7 @@ public class BOSignUp3 extends AppCompatActivity {
     FirebaseAuth mAuth;
     FirebaseFirestore db;
     private Task uploadTask;
+    Uri logo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -70,15 +74,39 @@ public class BOSignUp3 extends AppCompatActivity {
             this.open_hours.put(day, "");
         }
 
-
         String email = getIntent().getExtras().getString("email");
         String password = getIntent().getExtras().getString("password");
         String bo_name = getIntent().getExtras().getString("boName");
         String b_name = getIntent().getExtras().getString("bName");
         String b_desc =getIntent().getExtras().getString("bDesc");
         String b_phone = getIntent().getExtras().getString("bPhone");
-        Uri logo = (Uri)getIntent().getExtras().get("logoData");
+        logo = (Uri)getIntent().getExtras().get("logoData");
 
+//        // Here, thisActivity is the current activity
+//        if (ContextCompat.checkSelfPermission(this,
+//                Manifest.permission.READ_EXTERNAL_STORAGE)
+//                != PackageManager.PERMISSION_GRANTED) {
+//
+//            // Permission is not granted
+//            // Should we show an explanation?
+//            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+//                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+//                // Show an explanation to the user *asynchronously* -- don't block
+//                // this thread waiting for the user's response! After the user
+//                // sees the explanation, try again to request the permission.
+//            } else {
+//                // No explanation needed; request the permission
+//                ActivityCompat.requestPermissions(this,
+//                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+//                        MY_PERMISSIONS_REQUEST_READ_MEDIA);
+//
+//                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+//                // app-defined int constant. The callback method gets the
+//                // result of the request.
+//            }
+//        } else {
+//            // Permission has already been granted
+//        }
 
         Button done_btn = findViewById(R.id.btn_done1);
         TextInputEditText state = findViewById(R.id.businessStateEditText);
@@ -91,8 +119,8 @@ public class BOSignUp3 extends AppCompatActivity {
                 done_btn.setEnabled(false);
                 boolean res = inputIsValid();
                 if (res) {
+                    askPermission();
                     mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(new OnSuccessListener<AuthResult>() {
-
                         @Override
                         public void onSuccess(AuthResult authResult) {
                             sendVerificationEmail();
@@ -104,8 +132,11 @@ public class BOSignUp3 extends AppCompatActivity {
                                     address.getText().toString(),open_hours);
                             //System.out.println("==========created business============");
                             db.collection(BUSINESSES_COLLECTION).document(user.getUid()).set(business);
-                            uploadLogo(logo);
+
+                            //uploadLogo(logo);
+                            //Todo: upload the logo!
                             Toast.makeText(BOSignUp3.this, "Sign up done!", Toast.LENGTH_LONG).show();
+
                             Intent in = new Intent(getBaseContext(), SignInActivity.class);
                             startActivity(in);
                             done_btn.setEnabled(true);
@@ -324,11 +355,53 @@ public class BOSignUp3 extends AppCompatActivity {
                 .child("business_logos/" + business_id + new Random().nextInt());
 
         UploadTask uploadTask = logosRef.putFile(data);
+        //Todo: the line above is crashing
 
         // Register observers to listen for when the download is done or if it fails
         this.uploadTask = uploadTask.addOnSuccessListener(taskSnapshot ->  {
             Log.d(this.toString(), "succeeded to upload business logo");
         });
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_READ_MEDIA:
+                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+                    uploadLogo(logo);
+                }
+                break;
+
+            default:
+                break;
+        }
+    }
+    void askPermission() {
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Permission is not granted
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.READ_EXTERNAL_STORAGE)) {
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+            } else {
+                // No explanation needed; request the permission
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},
+                        MY_PERMISSIONS_REQUEST_READ_MEDIA);
+
+                // MY_PERMISSIONS_REQUEST_READ_CONTACTS is an
+                // app-defined int constant. The callback method gets the
+                // result of the request.
+            }
+        } else {
+            // Permission has already been granted
+        }
     }
 
 }
