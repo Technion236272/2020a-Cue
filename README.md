@@ -33,7 +33,9 @@ As a client of a small business, *Cue* will grant you the following abilities:
 ## Meta
 
 Topaz Shemesh - topaz@campus.technion.ac.il
+
 Ben Siso - sbens92@campus.technion.ac.il
+
 Ophir Eyal - ophirey@campus.technion.ac.il
 
 
