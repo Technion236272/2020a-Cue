@@ -73,6 +73,7 @@
     <string name="closed_business_message">Close.</string>
     <string name="business_logout">Logout</string>
     <string name="schedule_an_appointment_manual">Schedule an appointment</string>
+    <string name="client_phone_number">Phone number</string>
 
 
 </resources>
