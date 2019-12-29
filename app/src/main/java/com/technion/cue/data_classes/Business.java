@@ -58,7 +58,8 @@ public class Business implements Serializable {
         public String name;
         public Map<String, String> attributes = new HashMap<>();
         public AppointmentType() { }
-        public AppointmentType(String name) {
+        public AppointmentType(String name, Map<String, String> attributes) {
+            this.attributes = attributes;
             this.name = name;
         }
     }

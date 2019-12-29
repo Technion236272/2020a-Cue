@@ -51,6 +51,7 @@ import java.util.Random;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.ConstantCollection.MY_PERMISSIONS_REQUEST_READ_MEDIA;
+import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 @ModuleAuthor("Topaz")
 public class BOSignUp3 extends AppCompatActivity {
@@ -103,7 +104,22 @@ public class BOSignUp3 extends AppCompatActivity {
                         Business business = new Business(b_name, bo_name, b_phone, b_desc,
                                 state.getText().toString(), city.getText().toString(),
                                 address.getText().toString(),open_hours);
-                        Task t =  db.collection(BUSINESSES_COLLECTION).document(user.getUid()).set(business);
+                        Map<String, String> m = new HashMap<>();
+                        m.put("duration", "30");
+                        Business.AppointmentType at = new Business.AppointmentType("type_0", m);
+                        Task t =  db.collection(BUSINESSES_COLLECTION).document(user.getUid())
+                                .set(business)
+                                .addOnSuccessListener(sl -> {
+                            FirebaseFirestore.getInstance()
+                                    .collection(BUSINESSES_COLLECTION)
+                                    .document(user.getUid())
+                                    .collection(TYPES_COLLECTION)
+                                    .document()
+                                    .set(at)
+                                    .addOnCompleteListener(l -> {
+
+                            });
+                        });
                         Toast.makeText(BOSignUp3.this, "Sign up done!", Toast.LENGTH_LONG).show();
                         Intent in = new Intent(getBaseContext(), SignInActivity.class);
                         startActivity(in);
