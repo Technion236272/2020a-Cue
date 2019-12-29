@@ -75,7 +75,7 @@ public class BOSignUp3 extends AppCompatActivity {
             this.open_hours.put(day, "");
         }
 
-        askPermission();
+        //askPermission();
 
         String email = getIntent().getExtras().getString("email");
         String password = getIntent().getExtras().getString("password");
@@ -99,36 +99,32 @@ public class BOSignUp3 extends AppCompatActivity {
 
                     mAuth.createUserWithEmailAndPassword(email, password).addOnSuccessListener(authResult -> {
                         sendVerificationEmail();
-                        //System.out.println("==========sign success============");
                         FirebaseUser user = mAuth.getCurrentUser();
-                        //system.out.println("==========get current user============");
                         Business business = new Business(b_name, bo_name, b_phone, b_desc,
                                 state.getText().toString(), city.getText().toString(),
                                 address.getText().toString(),open_hours);
-                        //System.out.println("==========created business============");
-                       Task t =  db.collection(BUSINESSES_COLLECTION).document(user.getUid()).set(business);
+                        Task t =  db.collection(BUSINESSES_COLLECTION).document(user.getUid()).set(business);
+                        Toast.makeText(BOSignUp3.this, "Sign up done!", Toast.LENGTH_LONG).show();
+                        Intent in = new Intent(getBaseContext(), SignInActivity.class);
+                        startActivity(in);
+                        done_btn.setEnabled(true);
+                        finish();
 
-                       Tasks.whenAll(t).addOnSuccessListener(l -> {
-                           uploadLogo(logo);
-                           Tasks.whenAll(uploadTask).addOnSuccessListener(sl -> {
-                               Toast.makeText(BOSignUp3.this, "Sign up done!", Toast.LENGTH_LONG).show();
+//                       Tasks.whenAll(t).addOnSuccessListener(l -> {
+//                           uploadLogo(logo);
+//                           Tasks.whenAll(uploadTask).addOnSuccessListener(sl -> {
+//                               Toast.makeText(BOSignUp3.this, "Sign up done!", Toast.LENGTH_LONG).show();
+//
+//                               Intent in = new Intent(getBaseContext(), SignInActivity.class);
+//                               startActivity(in);
+//                               done_btn.setEnabled(true);
+//                               finish();
+//                           });
 
-                               Intent in = new Intent(getBaseContext(), SignInActivity.class);
-                               startActivity(in);
-                               done_btn.setEnabled(true);
-                               finish();
-                           });
-                       });
-
-
-                    }).addOnFailureListener(new OnFailureListener() {
+                       }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             // If sign in fails, display a message to the user.
-                            //System.out.println("===this is e =======");
-                            //System.out.println("===start =======");
-                            //System.out.println(e);
-                            //System.out.println("===finish =======");
                             if(e.equals("The email address is already in use by another account.")){
                                 Toast.makeText(BOSignUp3.this,
                                         "email is already in use, please sign in", Toast.LENGTH_LONG).show();
@@ -292,17 +288,15 @@ public class BOSignUp3 extends AppCompatActivity {
     }
 
     private boolean inputNotEmpty(){
-        ViewGroup vg = findViewById(R.id.business_sign_up3);
-        for (int i = 0; i < vg.getChildCount(); i++) {
-            if (vg.getChildAt(i) instanceof TextInputEditText) {
-                if (((EditText) vg.getChildAt(i)).getText().toString().isEmpty()){
-                    Toast.makeText(this, "There is empty Fields", Toast.LENGTH_SHORT).show();
-                    return false;
+        TextInputEditText state = findViewById(R.id.businessStateEditText);
+        TextInputEditText city = findViewById(R.id.businessCityEditText);
+        TextInputEditText address = findViewById(R.id.businessAddressEditText);
 
-                }
-            }
+        if(state.getText().toString().isEmpty() || city.getText().toString().isEmpty() ||
+        address.getText().toString().isEmpty()){
+            return false;
         }
-        return true;
+       return true;
     }
 
     public void sendVerificationEmail() {
@@ -336,26 +330,25 @@ public class BOSignUp3 extends AppCompatActivity {
         String actualData = RemoveUnwantedString(data.toString());
 
         UploadTask uploadTask = logosRef.putFile(data);
-        //Todo: the line above is crashing
 
         // Register observers to listen for when the download is done or if it fails
         this.uploadTask = uploadTask.addOnSuccessListener(taskSnapshot ->
                 Log.d(this.toString(), "succeeded to upload business logo"));
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_READ_MEDIA:
-                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
-                    //uploadLogo(logo);
-                }
-                break;
-
-            default:
-                break;
-        }
-    }
+//    @Override
+//    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+//        switch (requestCode) {
+//            case MY_PERMISSIONS_REQUEST_READ_MEDIA:
+//                if ((grantResults.length > 0) && (grantResults[0] == PackageManager.PERMISSION_GRANTED)) {
+//                    //uploadLogo(logo);
+//                }
+//                break;
+//
+//            default:
+//                break;
+//        }
+//    }
     void askPermission() {
         // Here, thisActivity is the current activity
         if (ContextCompat.checkSelfPermission(this,

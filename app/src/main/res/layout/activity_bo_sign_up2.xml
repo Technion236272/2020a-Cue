@@ -7,25 +7,24 @@
     android:layout_height="match_parent"
     android:id="@+id/business_sign_up2">
 
-    <com.mikhaellopez.circularimageview.CircularImageView
-        android:id="@+id/businessLogoEdit"
-        android:layout_width="150dp"
-        android:layout_height="150dp"
-        android:layout_marginTop="70dp"
-        android:clickable="false"
-        android:onClick="openImageGallery"
-        android:layout_centerHorizontal="true"
-        android:padding="5dp"
-        app:civ_border_color="@color/ColorSecondary"
-        app:civ_border_width="4dp"
-        app:srcCompat="@drawable/ic_person_outline_black_24dp" />
+<!--    <com.mikhaellopez.circularimageview.CircularImageView-->
+<!--        android:id="@+id/businessLogoEdit"-->
+<!--        android:layout_width="150dp"-->
+<!--        android:layout_height="150dp"-->
+<!--        android:layout_marginTop="70dp"-->
+<!--        android:clickable="false"-->
+<!--        android:onClick="openImageGallery"-->
+<!--        android:layout_centerHorizontal="true"-->
+<!--        android:padding="5dp"-->
+<!--        app:civ_border_color="@color/ColorSecondary"-->
+<!--        app:civ_border_width="4dp"-->
+<!--        app:srcCompat="@drawable/ic_person_outline_black_24dp" />-->
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/businessNameEdit"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/businessLogoEdit"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
