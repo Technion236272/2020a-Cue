@@ -29,16 +29,23 @@ import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 public class MyAppointmentListAdapter extends
         FirestoreRecyclerAdapter<Appointment, MyAppointmentListAdapter.itemHolder>  {
 
+    private ViewGroup parentView;
 
+    MyAppointmentListAdapter(ViewGroup view, Context context,
+                                FirestoreRecyclerOptions<Appointment> options) {
+        super(options);
+        this.parentView = view;
+
+    }
     public MyAppointmentListAdapter(@NonNull FirestoreRecyclerOptions<Appointment> options) {
         super(options);
     }
 
 
+
     @Override
     protected void onBindViewHolder(@NonNull itemHolder holder, int position, @NonNull Appointment appointment) {
             // TODO: the texts should be the business & type names. currently, their document ids will be displayed
-
         holder.business.setTag(R.id.business_info,appointment.business_id);
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
         holder.date.setText(sdf.format(appointment.date));
@@ -96,7 +103,7 @@ public class MyAppointmentListAdapter extends
                 getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
                 getIntentBOPage.putExtra("business_id",holder.business_id);
                 getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
-                System.out.println(" - load appointment number -------");
+
                 parent.getContext().startActivity(getIntentBOPage);
 
             }
@@ -114,13 +121,27 @@ public class MyAppointmentListAdapter extends
 
         public itemHolder(@NonNull View itemView) {
             super(itemView);
-            business = itemView.findViewById(R.id.business);
-            date = itemView.findViewById(R.id.date);
+            business = itemView.findViewById(R.id.appointment_box_business_name);
+            date = itemView.findViewById(R.id.appointment_box_business_date);
             notes = itemView.findViewById(R.id.notes);
             type = itemView.findViewById(R.id.type);
             appointment_id ="";
             business_id ="";
 
+        }
+    }
+
+    public void onDataChanged() {
+        super.onDataChanged();
+        if ( parentView!= null) {
+            if (getItemCount() == 0) {
+                parentView.findViewById(R.id.no_appointments_message).setVisibility(View.VISIBLE);
+            } else {
+                parentView.findViewById(R.id.no_appointments_message).setVisibility(View.GONE);
+                // TODO: check if the flag needs to be moved
+                //  to a different meeting / assigned to a meeting
+                // TODO: check if need to change color of text inside items
+            }
         }
     }
 }

@@ -32,7 +32,7 @@ public class LauncherActivity extends AppCompatActivity {
         //   check if already signup
 
         mAuth = FirebaseAuth.getInstance();
-        
+
         // checking if already sign in - ben
         if (mAuth.getCurrentUser()!= null)  {
 

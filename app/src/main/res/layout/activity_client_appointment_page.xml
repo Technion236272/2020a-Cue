@@ -151,7 +151,7 @@
             />
 
     </LinearLayout>
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/client_appointment_page_notes"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -163,6 +163,7 @@
 
 
         <ImageView
+            android:id="@+id/notes_icon"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginTop="1.0dp"
@@ -183,15 +184,12 @@
                 android:layout_gravity="center"
                 android:shadowColor="@color/colorPrimary"
                 android:shadowRadius="3"
+                android:layout_toRightOf="@+id/notes_icon"
                 android:layout_marginTop="1dp"/>
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <FrameLayout
-        android:id="@+id/testme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:id="@+id/loadingPanel"
