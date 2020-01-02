@@ -1,53 +1,34 @@
 {
   "project_info": {
-    "project_number": "341669905580",
-    "firebase_url": "https://cue-app-technion.firebaseio.com",
-    "project_id": "cue-app-technion",
-    "storage_bucket": "cue-app-technion.appspot.com"
+    "project_number": "388941086238",
+    "firebase_url": "https://cue-app-sprint-2.firebaseio.com",
+    "project_id": "cue-app-sprint-2",
+    "storage_bucket": "cue-app-sprint-2.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:341669905580:android:34f56c2c76b907688f0b09",
+        "mobilesdk_app_id": "1:388941086238:android:efe675fe6160b37d76b80f",
         "android_client_info": {
           "package_name": "com.technion.cue"
         }
       },
       "oauth_client": [
         {
-<<<<<<< HEAD
-          "client_id": "341669905580-d9453f12lfh8p7m8c8mq2gefpr2e4vgn.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.technion.cue",
-            "certificate_hash": "6fb12309fad5bdb6d4db3a609e5f04beabc624ce"
-          }
-        },
-        {
-=======
->>>>>>> 9c86731a2a67697d815990a9dedf45802c507932
-          "client_id": "341669905580-qr5q9vgh80om556sbrpg5b1r314b41v0.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "com.technion.cue",
-            "certificate_hash": "a8732b7934520a4e2269aaf541097d9c2e95ee5f"
-          }
-        },
-        {
-          "client_id": "341669905580-htp0tgtgdbq7itoo2t7uq55hoj7pmn29.apps.googleusercontent.com",
+          "client_id": "388941086238-49hvkt5v3inocurk5vek4v3nh0baugpj.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDyX3LRURF7YWBHs613aXITGpeA2Gnq3jc"
+          "current_key": "AIzaSyBvdBDrz_59vHZGWp_i3fbkCxm-eK2PWO4"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "341669905580-htp0tgtgdbq7itoo2t7uq55hoj7pmn29.apps.googleusercontent.com",
+              "client_id": "388941086238-49hvkt5v3inocurk5vek4v3nh0baugpj.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
