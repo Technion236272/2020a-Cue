@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <ImageButton
+        android:id="@+id/client_homepage_setting"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        app:srcCompat="@drawable/ic_settings_black_24dp"
+        android:tint="@color/TextColorSecondary"
+        android:background="@color/colorPrimary"
+        android:onClick="Settings"
+        />
+    <TextView
+        android:id="@+id/actionbarr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="My Appointments"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/TextColorSecondary"
+        android:textStyle="bold"
+        android:textSize="21dp"/>
+    <ImageButton
+        android:id="@+id/client_homepage_businesses"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        app:srcCompat="@drawable/ic_business_black_24dp"
+        android:onClick="showBusinesses"
+        android:layout_alignParentEnd="true"
+        android:tint="@color/TextColorSecondary"
+        android:background="@color/colorPrimary"/>
+
+</RelativeLayout>

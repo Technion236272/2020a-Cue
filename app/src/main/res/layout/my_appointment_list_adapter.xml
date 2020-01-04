@@ -11,7 +11,7 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="@color/ColorSecondary"
+        card_view:cardBackgroundColor="@color/colorPrimaryLight"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="3dp"
         android:layout_marginRight="10dp"
@@ -36,13 +36,15 @@
                 android:textStyle="bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="testt"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text="...."
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
                 android:layout_marginTop="2dp"
                 android:textSize="25sp"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/TextColorPrimary" />
+                android:textColor="@color/TextColorSecondary" />
 
             <TextView
                 android:id="@+id/appointment_box_business_date"
@@ -82,10 +84,10 @@
                 android:layout_below="@+id/notes"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:background="@color/colorAccent"
-                android:padding="2dp"
+                android:background="@color/TextColorPrimary"
+                android:padding="6dp"
                 android:textStyle="bold"
-                android:textColor="@color/TextColorSecondary"/>
+                android:textColor="@color/colorPrimaryDark" />
 
 
         </RelativeLayout>

@@ -15,13 +15,15 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager.widget.ViewPager;
 
 
 import com.google.android.material.tabs.TabLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.technion.cue.LauncherActivity;
+
 import com.technion.cue.R;
 
 
@@ -42,10 +44,29 @@ public class ClientHomePage extends AppCompatActivity  {
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
+
+
+        /** Set Action Bar */
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.client_homepage_action_bar);
+
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+//        actionBar.setDisplayShowHomeEnabled(false);
+        //actionBar.setTitle("My Appointments");
+
+
+        /** ----- */
+
+
+
+
         ViewPager viewPager = findViewById(R.id.pagerww);
         ClientPagerAdapter adapter = new ClientPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+
 
         tabLayout.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
 
@@ -70,14 +91,18 @@ public class ClientHomePage extends AppCompatActivity  {
         });
 
 
-        ActionBar actionBar = getSupportActionBar();
-        actionBar.setTitle("My Appointments");
-
-//        if (actionBar != null) {
-//            actionBar.hide();
-//        }
     }
 
+
+    public void Settings(View v) {
+        Intent getIntentBOPage = new Intent(getBaseContext(), ClientSettingsActivity.class);
+       startActivity(getIntentBOPage);
+        overridePendingTransition(R.anim.animation_left_to_right,0);
+    }
+
+    public void showBusinesses(View v) {
+
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -95,13 +120,7 @@ public class ClientHomePage extends AppCompatActivity  {
         return true;
     }
 
-    public void logout(MenuItem view) {
-        mAuth.signOut();
-        Intent getIntentBOPage = new Intent(this, LauncherActivity.class);
-        startActivity(getIntentBOPage);
-        finish();
 
-    }
 
 
 

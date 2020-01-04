@@ -9,6 +9,8 @@
     android:background="@color/TextColorSecondary"
     android:id="@+id/client_tabs_container">
 
+
+
 <!--    <androidx.appcompat.widget.Toolbar-->
 <!--        android:id="@+id/mainToolBar"-->
 <!--        android:layout_width="match_parent"-->
