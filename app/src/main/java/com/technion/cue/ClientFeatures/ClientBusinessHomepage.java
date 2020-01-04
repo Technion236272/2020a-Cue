@@ -64,7 +64,8 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                                         String formattedDeepLink = deepLink.toString()
                                                 .substring(deepLink.toString().indexOf('=') + 1)
                                                 .replace('+', ' ');
-                                        findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
+                                        findViewById(R.id.switch_to_date_time_fragments)
+                                                .setVisibility(View.VISIBLE);
                                         Fragment f = new BusinessInfoFragment();
                                         bundle.putString("business_id", formattedDeepLink);
                                         f.setArguments(bundle);
@@ -116,9 +117,9 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         menu.getItem(0).setOnMenuItemClickListener(cl -> {
             FirebaseDynamicLinks.getInstance()
                     .createDynamicLink()
-                    .setLink(Uri.parse("https://cueapp.com/?name=" +
+                    .setLink(Uri.parse("https://cueapp2.com/?name=" +
                             bundle.getString("business_id")))
-                    .setDomainUriPrefix("https://cueapp.page.link")
+                    .setDomainUriPrefix("https://cueapp2.page.link")
                     .setAndroidParameters(
                             new DynamicLink.AndroidParameters
                                     .Builder("com.technion.cue")

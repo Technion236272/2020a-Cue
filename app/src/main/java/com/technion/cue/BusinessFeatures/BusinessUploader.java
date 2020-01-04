@@ -40,7 +40,7 @@ class BusinessUploader {
         this.logoRefUri = logoRef;
         Glide.with(logoResource.getContext())
                 .load(logoRef)
-                .error(R.drawable.ic_person_outline_black_24dp)
+                .error(R.drawable.person_icon)
                 .into(logoResource);
     }
 
@@ -109,7 +109,7 @@ class BusinessUploader {
         }
         Glide.with(logoResource.getContext())
                 .load(logoRef)
-                .error(R.drawable.ic_person_outline_black_24dp)
+                .error(R.drawable.person_icon)
                 .into(logoResource);
     }
 

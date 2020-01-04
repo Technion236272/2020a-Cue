@@ -239,7 +239,7 @@ public class BusinessProfileEdit extends AppCompatActivity {
             CircularImageView logo = findViewById(R.id.businessLogoEdit);
             Glide.with(logo.getContext())
                     .load(logoData)
-                    .error(R.drawable.ic_person_outline_black_24dp)
+                    .error(R.drawable.person_icon)
                     .into(logo);
 //            logo.setImageURI(logoData);
         }

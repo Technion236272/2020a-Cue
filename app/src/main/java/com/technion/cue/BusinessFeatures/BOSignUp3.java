@@ -10,11 +10,9 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 import java.text.SimpleDateFormat;
@@ -27,11 +25,8 @@ import androidx.core.content.ContextCompat;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -50,7 +45,7 @@ import java.util.Map;
 import java.util.Random;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
-import static com.technion.cue.ConstantCollection.MY_PERMISSIONS_REQUEST_READ_MEDIA;
+import static com.technion.cue.ConstantsCollection.MY_PERMISSIONS_REQUEST_READ_MEDIA;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 @ModuleAuthor("Topaz")

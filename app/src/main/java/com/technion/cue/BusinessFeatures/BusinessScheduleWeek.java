@@ -143,10 +143,10 @@ public class BusinessScheduleWeek extends Fragment {
                     View list = itemView.findViewById(R.id.appointment_list_for_day);
                     if (list.getVisibility() == View.VISIBLE) {
                         list.setVisibility(View.GONE);
-                        list_arrow.setImageResource(R.drawable.list_drop_down);
+                        list_arrow.setImageResource(R.drawable.list_drop_down_icon);
                     } else {
                         list.setVisibility(View.VISIBLE);
-                        list_arrow.setImageResource(R.drawable.list_move_up);
+                        list_arrow.setImageResource(R.drawable.list_move_up_icon);
                     }
                 });
             }

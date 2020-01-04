@@ -36,16 +36,16 @@
                 <category android:name="android.intent.category.DEFAULT"/>
                 <category android:name="android.intent.category.BROWSABLE"/>
                 <data
-                    android:host="cueapp.com"
+                    android:host="cueapp2.com"
                     android:scheme="https" />
 
                 <data
-                    android:host="cueapp.page.link"
+                    android:host="cueapp2.page.link"
                     android:scheme="https" />
             </intent-filter>
         </activity>
         <activity android:name=".ClientFeatures.ClientAppointmentPage" />
-        <activity android:name=".Settings" />
+        <activity android:name=".BusinessFeatures.BusinessSettings" />
         <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
