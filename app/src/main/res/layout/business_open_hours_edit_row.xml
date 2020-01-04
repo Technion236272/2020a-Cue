@@ -7,7 +7,7 @@
         android:id="@+id/dayText"
         android:layout_width="96dp"
         android:layout_height="wrap_content"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_marginTop="24dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"

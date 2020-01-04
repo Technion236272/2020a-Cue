@@ -16,7 +16,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="24dp"
         android:layout_marginStart="24dp"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="16sp"
         android:textStyle="bold" />
 
@@ -30,14 +30,14 @@
         android:layout_marginLeft="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginBottom="24dp"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:hint="@string/day_of_the_week">
 
         <AutoCompleteTextView
             android:id="@+id/days_filled_exposed_dropdown"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:textColor="@color/secondaryTextColor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -52,7 +52,7 @@
         android:layout_toRightOf="@id/openHoursEditSpinner"
         android:layout_toEndOf="@id/openHoursEditSpinner"
         android:layout_below="@id/businessOpenHoursEditInstructions"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:hint="@string/opening_hour" />
 
 
@@ -67,7 +67,7 @@
         android:layout_toRightOf="@id/openHoursEditSpinner"
         android:layout_toEndOf="@id/openHoursEditSpinner"
         android:layout_below="@id/openingHoursEditText"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_marginBottom="24dp"
         android:hint="@string/closing_hour" />
 
@@ -88,7 +88,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="24dp"
         android:layout_marginStart="24dp"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
@@ -108,7 +108,7 @@
             android:id="@+id/businessStateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:textColor="@color/secondaryTextColor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,7 +132,7 @@
             android:id="@+id/businessCityEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:textColor="@color/secondaryTextColor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,7 +154,7 @@
             android:id="@+id/businessAddressEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:textColor="@color/secondaryTextColor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 

@@ -11,8 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         app:srcCompat="@drawable/ic_settings_black_24dp"
-        android:tint="@color/TextColorSecondary"
-        android:background="@color/colorPrimary"
+        android:tint="@color/primaryTextColor"
+        android:background="@color/primaryColor"
         android:onClick="Settings"
         />
     <TextView
@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:text="My Appointments"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/TextColorSecondary"
+        android:textColor="@color/primaryTextColor"
         android:textStyle="bold"
         android:textSize="21dp"/>
     <ImageButton
@@ -32,7 +32,7 @@
         app:srcCompat="@drawable/ic_business_black_24dp"
         android:onClick="showBusinesses"
         android:layout_alignParentEnd="true"
-        android:tint="@color/TextColorSecondary"
-        android:background="@color/colorPrimary"/>
+        android:tint="@color/primaryTextColor"
+        android:background="@color/primaryColor"/>
 
 </RelativeLayout>

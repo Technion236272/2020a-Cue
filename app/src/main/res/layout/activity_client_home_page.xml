@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ClientFeatures.ClientHomePage"
     android:orientation="vertical"
-    android:background="@color/TextColorSecondary"
+    android:background="@color/primaryTextColor"
     android:id="@+id/client_tabs_container">
 
 
@@ -34,7 +34,7 @@
     android:id="@+id/tabLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/TextColorSecondary"
+    android:background="@color/primaryTextColor"
     android:minHeight="?attr/actionBarSize"
 
     />

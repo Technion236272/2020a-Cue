@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -169,7 +168,7 @@ public class BusinessScheduleWeek extends Fragment {
             if (DateUtils.isToday(position_date.getTime())) {
                 holder.day_of_the_week.setText("Today");
                 holder.day_of_the_week.setTextColor(getResources()
-                        .getColor(R.color.ColorSecondaryDark));
+                        .getColor(R.color.secondaryDarkColor));
             } else {
                 holder.day_of_the_week.setText(sdf.format(position_date));
             }

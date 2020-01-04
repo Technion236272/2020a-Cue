@@ -10,13 +10,13 @@
         android:layout_height="150dp"
         android:layout_marginTop="24dp"
         app:srcCompat="@drawable/ic_person_outline_black_24dp"
-        app:civ_border_color="@color/ColorSecondary"
+        app:civ_border_color="@color/secondaryColor"
         app:civ_border_width="4dp"
         android:layout_centerHorizontal="true"/>
 
     <TextView
         android:id="@+id/homepageBusinessName"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="22sp"
@@ -26,7 +26,7 @@
 
     <TextView
         android:id="@+id/homepageBusinessDescription"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
@@ -55,7 +55,7 @@
 
     <TextView
         android:id="@+id/address_text"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
@@ -89,7 +89,7 @@
 
     <TextView
         android:id="@+id/phone_text"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
@@ -116,7 +116,7 @@
 
     <TextView
         android:id="@+id/current_day_hours"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="12dp"
@@ -137,7 +137,7 @@
 
         <TextView
             android:id="@+id/sunday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -146,7 +146,7 @@
 
         <TextView
             android:id="@+id/sunday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -162,7 +162,7 @@
 
         <TextView
             android:id="@+id/monday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -171,7 +171,7 @@
 
         <TextView
             android:id="@+id/monday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -187,7 +187,7 @@
 
         <TextView
             android:id="@+id/tuesday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -196,7 +196,7 @@
 
         <TextView
             android:id="@+id/tuesday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -212,7 +212,7 @@
 
         <TextView
             android:id="@+id/wednesday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -221,7 +221,7 @@
 
         <TextView
             android:id="@+id/wednesday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -237,7 +237,7 @@
 
         <TextView
             android:id="@+id/thursday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -246,7 +246,7 @@
 
         <TextView
             android:id="@+id/thursday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -262,7 +262,7 @@
 
         <TextView
             android:id="@+id/friday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -271,7 +271,7 @@
 
         <TextView
             android:id="@+id/friday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -287,7 +287,7 @@
 
         <TextView
             android:id="@+id/saturday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -296,7 +296,7 @@
 
         <TextView
             android:id="@+id/saturday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"

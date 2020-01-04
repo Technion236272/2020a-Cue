@@ -82,7 +82,6 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
             return true;
         });
 
-        // TODO: create listener for item 2 (settings)
         menu.getItem(2).setOnMenuItemClickListener(cl -> {
             startActivityForResult(new Intent(this, Settings.class), EDIT_RESULT);
             return true;
