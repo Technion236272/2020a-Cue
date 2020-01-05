@@ -10,21 +10,13 @@ import androidx.fragment.app.FragmentStatePagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -144,7 +136,7 @@ public class BusinessSignUpContainer extends AppCompatActivity {
         }
     }
 
-    private boolean inputIsValid() {
+    private boolean isInputValid() {
 
         String bEmail = email.getText().toString();
         String bPassword = password.getText().toString();
@@ -157,7 +149,8 @@ public class BusinessSignUpContainer extends AppCompatActivity {
         String bAddress = address.getText().toString();
 
         // check if fields were filled
-        if (isInputNotEmpty(bName, bEmail, bPassword, boName, bDesc, bPhone, bState, bCity, bAddress)){
+        if (isInputNotEmpty(bName, bEmail, bPassword, boName,
+                bDesc, bPhone, bState, bCity, bAddress)){
 
             // if email is invalid
             if(!isEmailValid(bEmail)){
@@ -175,7 +168,7 @@ public class BusinessSignUpContainer extends AppCompatActivity {
             // if the BO's bo_name doesn't contains both first & last names
             if(!boName.contains(" ")){
                 Toast.makeText(this,
-                        "Full bo_name should contain both first and last names",
+                        "your name should contain both first and last names",
                         Toast.LENGTH_SHORT).show();
                 return false;
             }
@@ -185,9 +178,50 @@ public class BusinessSignUpContainer extends AppCompatActivity {
         return false;
     }
 
+    // called when the business owner finishes sign up
     public void onFinished() {
+
         String bEmail = email.getText().toString();
         String bPassword = password.getText().toString();
+
+        done_btn.setEnabled(false);
+        boolean res = isInputValid();
+
+        if (res) {
+            mAuth.createUserWithEmailAndPassword(bEmail, bPassword)
+                    .addOnSuccessListener(r -> {
+                        sendVerificationEmail();
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        uploadLogo(logoData);
+                        if (uploadTask == null) {
+                            uploadBusinessAndFinish(user, null);
+                        } else {
+                            uploadTask.addOnSuccessListener(storageRef ->
+                                    uploadBusinessAndFinish(user, storageRef));
+                        }
+                    }).addOnFailureListener(e -> {
+                        // If sign in fails, display a message to the user.
+                        if(e.getMessage().equals("The email address is already in use by another account.")) {
+                            Toast.makeText(getBaseContext(),
+                                    "email is already in use, please change your email or sign in",
+                                    Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getBaseContext(),
+                                    "Sign up failed",
+                                    Toast.LENGTH_LONG).show();
+                        }
+                        done_btn.setEnabled(true);
+            });
+        } else {
+            Toast.makeText(getBaseContext(),
+                    "Some fields are empty. Please fill the missing fields",
+                    Toast.LENGTH_SHORT).show();
+            done_btn.setEnabled(true);
+        }
+    }
+
+    private void uploadBusinessAndFinish(FirebaseUser user, UploadTask.TaskSnapshot sl) {
+
         String boName = bo_name.getText().toString();
         String bName = name.getText().toString();
         String bDesc = description.getText().toString();
@@ -196,46 +230,20 @@ public class BusinessSignUpContainer extends AppCompatActivity {
         String bCity = city.getText().toString();
         String bAddress = address.getText().toString();
 
-        done_btn.setEnabled(false);
-        boolean res = inputIsValid();
-
-        if (res) {
-            mAuth.createUserWithEmailAndPassword(bEmail, bPassword)
-                    .addOnSuccessListener(r -> {
-                        sendVerificationEmail();
-                        FirebaseUser user = mAuth.getCurrentUser();
-                        uploadLogo(logoData);
-                        uploadTask.addOnSuccessListener(sl -> {
-                            String logo_path = sl.getMetadata().getPath();
-                            Business business = new Business(bName, boName, bPhone, bDesc,
-                                    bState, bCity, bAddress, open_hours, logo_path);
-                            db.collection(BUSINESSES_COLLECTION)
-                                    .document(user.getUid())
-                                    .set(business);
-                            Toast.makeText(getBaseContext(), "Sign up done!",
-                                    Toast.LENGTH_LONG).show();
-                            Intent in = new Intent(getBaseContext(), SignInActivity.class);
-                            startActivity(in);
-                            done_btn.setEnabled(true);
-                            finish();
-                        });
-                    }).addOnFailureListener(e -> {
-                // If sign in fails, display a message to the user.
-                if(e.equals("The email address is already in use by another account.")) {
-                    Toast.makeText(getBaseContext(),
-                            "email is already in use, please sign in",
-                            Toast.LENGTH_LONG).show();
-                } else {
-                    Toast.makeText(getBaseContext(),
-                            "Sign up failed", Toast.LENGTH_LONG).show();
-                }
-            });
-        } else {
-            Toast.makeText(getBaseContext(),
-                    "Some fields are empty. Please fill the missing fields",
-                    Toast.LENGTH_SHORT).show();
-            done_btn.setEnabled(true);
-        }
+        String logo_path = "";
+        if (sl != null)
+            logo_path = sl.getMetadata().getPath();
+        Business business = new Business(bName, boName, bPhone, bDesc,
+                bState, bCity, bAddress, open_hours, logo_path);
+        db.collection(BUSINESSES_COLLECTION)
+                .document(user.getUid())
+                .set(business);
+        Toast.makeText(getBaseContext(), "Sign up done!",
+                Toast.LENGTH_LONG).show();
+        Intent in = new Intent(getBaseContext(), SignInActivity.class);
+        startActivity(in);
+        done_btn.setEnabled(true);
+        finish();
     }
 
     class SignUpPagerAdapter extends FragmentStatePagerAdapter {
