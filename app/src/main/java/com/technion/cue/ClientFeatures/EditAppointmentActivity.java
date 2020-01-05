@@ -166,7 +166,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                         for(int i=0; i<l.getDocuments().size(); i++){
                             rb[i]  = new RadioButton(this);
                             rg.addView(rb[i]);
-                            rb[i].setText(document.getString("name"));
+                            rb[i].setText(document.getString("bo_name"));
                             // ---
                             rb[i].setId(i);
                             if (document.getId().equals(appointment_type) ) {

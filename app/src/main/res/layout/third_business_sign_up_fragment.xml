@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/business_sign_up3">
+
+    <TextView
+        android:id="@+id/businessOpenHoursEditInstructions"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/business_operating_hours_fill"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:textColor="@color/secondaryTextColor"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+        android:id="@+id/openHoursEditSpinner"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/businessOpenHoursEditInstructions"
+        android:layout_marginTop="24dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/secondaryTextColor"
+        android:hint="@string/day_of_the_week">
+
+        <AutoCompleteTextView
+            android:id="@+id/days_filled_exposed_dropdown"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryTextColor"/>
+
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/openingHoursEditText"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="26dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_toRightOf="@id/openHoursEditSpinner"
+        android:layout_toEndOf="@id/openHoursEditSpinner"
+        android:layout_below="@id/businessOpenHoursEditInstructions"
+        android:textColor="@color/secondaryTextColor"
+        android:hint="@string/opening_hour" />
+
+
+    <TextView
+        android:id="@+id/closingHoursEditText"
+        android:layout_width="168dp"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_toRightOf="@id/openHoursEditSpinner"
+        android:layout_toEndOf="@id/openHoursEditSpinner"
+        android:layout_below="@id/openingHoursEditText"
+        android:textColor="@color/secondaryTextColor"
+        android:layout_marginBottom="24dp"
+        android:hint="@string/closing_hour" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/sign_up_finish_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        android:text="@string/done" />
+
+
+
+</RelativeLayout>

@@ -3,11 +3,9 @@ package com.technion.cue.ClientFeatures;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.view.ViewGroup;
 import android.widget.Button;
 
 import android.os.Bundle;
-import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -16,7 +14,6 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.technion.cue.BusinessFeatures.BOSignUp3;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Client;
@@ -86,7 +83,7 @@ public class ClientSignUp extends AppCompatActivity {
                 return false;
             }
             if(!name.contains(" ")){
-                Toast.makeText(this, "Full name should be at least two words", Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "Full bo_name should be at least two words", Toast.LENGTH_SHORT).show();
                 return false;
             }
             return true;

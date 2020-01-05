@@ -67,18 +67,21 @@ public class Business implements Serializable {
     public Business() { }
 
     public Business(String business_name, String name, String phone_number, String description,
-                    String state, String city, String address, Map<String,String> open_hours_map) {
+                    String state, String city, String address, Map<String,String> open_hours,
+                    String logo_path) {
+
         this.business_name = business_name;
         this.name = name;
         this.phone_number = phone_number;
 
-        this.description=description;
+        this.logo_path = logo_path;
+
+        this.description = description;
         location.put("state",state);
         location.put("city",city);
         location.put("address",address);
 
-        open_hours_map.keySet().removeAll(open_hours.keySet());
-        open_hours.putAll(open_hours_map);
-        }
+        this.open_hours.putAll(open_hours);
+    }
 
 }

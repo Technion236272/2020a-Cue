@@ -28,7 +28,7 @@ import java.util.Map;
 
 /**
  * This this the activity in which the business owner can change the details of his business
- * such as it's logo, name, location and opening hours
+ * such as it's logo, bo_name, location and opening hours
  */
 @ModuleAuthor("Ophir Eyal")
 public class BusinessProfileEdit extends AppCompatActivity {

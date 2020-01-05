@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".BusinessFeatures.BOSignUp1"
+    tools:context=".BusinessFeatures.BusinessSignUp1"
     android:id="@+id/business_sign_up1">
 
     <TextView
@@ -87,14 +87,5 @@
             android:inputType="textPersonName"/>
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_next1"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:text="@string/next"/>
 
 </RelativeLayout>
