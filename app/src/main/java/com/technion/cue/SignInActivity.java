@@ -44,6 +44,7 @@ public class SignInActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 //      check if already signup
         findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
+        getSupportActionBar().hide();
         mAuth = FirebaseAuth.getInstance();
         // checking if already sign in - ben
         if (mAuth.getCurrentUser()!= null)  {
