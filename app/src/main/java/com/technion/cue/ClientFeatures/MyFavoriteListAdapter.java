@@ -45,7 +45,7 @@ public class MyFavoriteListAdapter extends
                     if (task.isSuccessful()) {
                         DocumentSnapshot document = task.getResult();
                         if (document.exists()) {
-                            holder.businessName.setText(document.getString("business_name"));
+                            holder.businessName.setText(document.getString("name"));
                             StorageReference sRef = FirebaseStorage.getInstance()
                                     .getReference()
                                     .child((Objects.requireNonNull(document.getString("logo_path"))));

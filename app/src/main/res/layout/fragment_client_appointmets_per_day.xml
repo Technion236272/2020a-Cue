@@ -56,7 +56,7 @@
             android:layout_alignParentTop="true"
             android:layout_alignParentRight="true"
             android:background="@color/primaryTextColor"
-            app:srcCompat="@drawable/ic_event_note_black_24dp"
+            app:srcCompat="@drawable/event_note_icon"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginTop="8dp"/>

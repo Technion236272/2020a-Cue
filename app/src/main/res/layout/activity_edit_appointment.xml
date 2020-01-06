@@ -57,7 +57,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="1.0dp"
                 android:layout_marginRight="5dp"
-                app:srcCompat="@drawable/ic_place_black_30dp"
+                app:srcCompat="@drawable/location_icon"
                 android:contentDescription="phone icon"
                 />
 
@@ -103,7 +103,7 @@
                 android:layout_height="30dp"
                 android:layout_marginTop="7dp"
                 android:layout_marginRight="5dp"
-                app:srcCompat="@drawable/ic_access_time_black_24dp"
+                app:srcCompat="@drawable/clock_icon"
                 android:contentDescription="time icon"
                 />
 

@@ -54,7 +54,7 @@ public class MyAppointmentListAdapter extends
                 .document(appointment.business_id)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.business.setText(l.getString("business_name"));
+                    holder.business.setText(l.getString("name"));
                     holder.business_id = (appointment.business_id);
                 });
         FirebaseFirestore.getInstance()
@@ -64,7 +64,7 @@ public class MyAppointmentListAdapter extends
                 .document(appointment.type)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.type.setText(l.getString("name"));
+                    holder.type.setText(l.getString("bo_name"));
                 });
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
@@ -97,7 +97,7 @@ public class MyAppointmentListAdapter extends
             public void onClick(View v) {
                 Intent getIntentBOPage = new Intent(parent.getContext(), ClientAppointmentPage.class);
                 // TODO: start using appointmet object !!! - refactoring later.
-                getIntentBOPage.putExtra("business_name",holder.business.getText());
+                getIntentBOPage.putExtra("name",holder.business.getText());
                 getIntentBOPage.putExtra("appointment_type",holder.type.getText());
                 getIntentBOPage.putExtra("appointment_date",holder.date.getText());
                 getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());

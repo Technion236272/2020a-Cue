@@ -16,10 +16,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
-import com.technion.cue.BusinessFeatures.BOSignUp1;
+import com.technion.cue.BusinessFeatures.BusinessSignUpContainer;
 import com.technion.cue.ClientFeatures.ClientHomePage;
 import com.technion.cue.ClientFeatures.ClientSignUp;
-import com.technion.cue.annotations.ModuleAuthor;
 
 import android.util.Log;
 
@@ -42,7 +41,7 @@ public class SignInActivity extends AppCompatActivity {
 
 
         setContentView(R.layout.activity_main);
-//      check if already signup
+//      check if already signed up
         findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
         getSupportActionBar().hide();
         mAuth = FirebaseAuth.getInstance();
@@ -85,7 +84,8 @@ public class SignInActivity extends AppCompatActivity {
         // open up sign up activity for business owners
         bo_sign_up.setOnClickListener(v -> {
             bo_sign_up.setEnabled(false);
-            final Intent intent1 = new Intent(getBaseContext(), BOSignUp1.class);
+            // TODO: change back
+            final Intent intent1 = new Intent(getBaseContext(), BusinessSignUpContainer.class);
             bo_sign_up.setEnabled(true);
             startActivity(intent1);
         });

@@ -112,14 +112,14 @@ public class DailyAppointmentListAdapter extends
                 .document(appointment.type)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.type.setText(l.getString("name"));
+                    holder.type.setText(l.getString("bo_name"));
                 });
         FirebaseFirestore.getInstance()
                 .collection(CLIENTS_COLLECTION)
                 .document(appointment.client_id)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.client.setText(l.getString("name"));
+                    holder.client.setText(l.getString("bo_name"));
                 });
 
         Date currentTime = new Date(System.currentTimeMillis());

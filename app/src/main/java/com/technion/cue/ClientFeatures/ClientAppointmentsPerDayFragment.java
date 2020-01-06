@@ -79,7 +79,7 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
         dateText = view.findViewById(R.id.client_calendar_fragment_appointment_top_date);
         dateMonth = view.findViewById(R.id.client_calendar_fragment_appointment_top_date_month);
 
-        // use calendar to get month name
+        // use calendar to get month bo_name
         Calendar cal =Calendar.getInstance();
         cal.set(bundle.getInt("year"),bundle.getInt("month"),bundle.getInt("day"));
         String monthName = (new SimpleDateFormat("MMM").format(cal.getTime()));
