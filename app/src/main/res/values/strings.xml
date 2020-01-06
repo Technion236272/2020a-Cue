@@ -74,6 +74,8 @@
     <string name="business_logout">Logout</string>
     <string name="schedule_an_appointment_manual">Schedule an appointment</string>
     <string name="client_phone_number">Phone number</string>
+    <string name="appointment_type_fill_in">Fill in an appointment type</string>
+    <string name="type_duration_fill">duration</string>
 
 
 </resources>

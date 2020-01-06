@@ -7,6 +7,7 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import android.Manifest;
@@ -14,6 +15,8 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Pair;
+import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -24,16 +27,20 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.google.gson.TypeAdapter;
 import com.technion.cue.R;
 import com.technion.cue.SignInActivity;
 import com.technion.cue.data_classes.Business;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
 import static com.technion.cue.ConstantsCollection.MY_PERMISSIONS_REQUEST_READ_MEDIA;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 public class BusinessSignUpContainer extends AppCompatActivity {
 
@@ -49,6 +56,10 @@ public class BusinessSignUpContainer extends AppCompatActivity {
     public TextInputEditText city;
     public TextInputEditText address;
     public Map<String, String> open_hours = new HashMap<>();
+    public BusinessSignUp3.AppointmentTypesListAdapter types_adapter;
+    public RecyclerView types_list;
+    public int num_of_types = 1;
+    public List<Pair<String, String>> types_fields = new ArrayList<>();
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -238,6 +249,22 @@ public class BusinessSignUpContainer extends AppCompatActivity {
         db.collection(BUSINESSES_COLLECTION)
                 .document(user.getUid())
                 .set(business);
+
+        for (int i = 0 ; i < types_list.getChildCount(); i++) {
+            BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder holder =
+                    (BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder)
+                            types_list.findViewHolderForAdapterPosition(i);
+            Map<String, String> attributes = new HashMap<>();
+            attributes.put("duration", holder.duration.getText().toString());
+            Business.AppointmentType at =
+                    new Business.AppointmentType(holder.type_text.getText().toString(), attributes);
+            db.collection(BUSINESSES_COLLECTION)
+                    .document(user.getUid())
+                    .collection(TYPES_COLLECTION)
+                    .document()
+                    .set(at);
+        }
+
         Toast.makeText(getBaseContext(), "Sign up done!",
                 Toast.LENGTH_LONG).show();
         Intent in = new Intent(getBaseContext(), SignInActivity.class);
@@ -248,7 +275,7 @@ public class BusinessSignUpContainer extends AppCompatActivity {
 
     class SignUpPagerAdapter extends FragmentStatePagerAdapter {
 
-        private static final int SIGN_UP_PAGE_COUNT = 3;
+        private static final int SIGN_UP_PAGE_COUNT = 4;
 
         SignUpPagerAdapter(@NonNull FragmentManager fm) {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
@@ -264,9 +291,10 @@ public class BusinessSignUpContainer extends AppCompatActivity {
                     return new BusinessSignUp2(BusinessSignUpContainer.this);
                 case 2:
                     return new BusinessSignUp3(BusinessSignUpContainer.this);
-                default:
-                    return new BusinessScheduleFragmentPlaceholder();
+                case 3:
+                    return new BusinessSignUp4(BusinessSignUpContainer.this);
             }
+            return null;
         }
 
         @Override
