@@ -100,7 +100,7 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
                 case "This Month":
                     return new BusinessScheduleMonth();
                 case "Recent Changes":
-                    return new BusinessScheduleFragmentPlaceholder();
+                    return new BusinessScheduleRecentChanges();
                 default:
                     return new BusinessScheduleFragmentPlaceholder();
             }

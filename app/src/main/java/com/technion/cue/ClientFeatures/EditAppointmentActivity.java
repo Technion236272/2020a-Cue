@@ -59,7 +59,7 @@ public class EditAppointmentActivity extends AppCompatActivity
     /**
     *
      * Business Owner that want to create an NEW appointment*
-     * should add bundle with "business_id" and "client_id"*
+     * should add bundle with "business_id" and "client_name"*
      * Business Owner that want to create an EDIT appointment
      * should add bundle with "appointment_id" and "business_id"*
      *
@@ -85,7 +85,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 business_id = intent.getExtras().getString("business_id");
 
                 loadAppointmentDetails();
-            } else if (extras.containsKey("business_id") && extras.containsKey("client_id")){ // newAppointment as business owner
+            } else if (extras.containsKey("business_id") && extras.containsKey("client_name")){ // newAppointment as business owner
 
                 business_id = intent.getExtras().getString("business_id");
                 appointment_id ="";
@@ -93,7 +93,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 appointment = new Appointment();
                 appointment.id="";
                 appointment.business_id=business_id;
-                appointment.client_id = intent.getExtras().getString("client_id");
+                appointment.client_id = intent.getExtras().getString("client_name");
                 loadNewAppointment();
 
             } else if (extras.containsKey("business_id")){ // newAppointment as client

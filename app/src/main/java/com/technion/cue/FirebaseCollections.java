@@ -8,4 +8,5 @@ public class FirebaseCollections {
     public static String CLIENTELE_COLLECTION = "Clientele";
     public static String REVIEWS_COLLECTION = "Reviews";
     public static String FAVORITES_COLLECTION = "Favorites";
+    public static String APPOINTMENT_ACTIONS_COLLECTION = "AppointmentActions";
 }

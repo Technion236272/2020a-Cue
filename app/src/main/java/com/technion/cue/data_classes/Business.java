@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Business implements Serializable {
 
@@ -61,6 +60,29 @@ public class Business implements Serializable {
         public AppointmentType(String name, Map<String, String> attributes) {
             this.attributes = attributes;
             this.name = name;
+        }
+    }
+
+    public static class AppointmentAction {
+        @DocumentId
+        public String id;
+
+        public String action_type, client_name, appointment_type, new_appointment_type;
+        public Date action_date, appointment_date, new_appointment_date;
+
+        public AppointmentAction() { }
+
+        public AppointmentAction(String action_type, String client_name,
+                                 Timestamp action_date, Timestamp appointment_date,
+                                 Timestamp new_appointment_date,
+                                 String appointment_type, String new_appointment_type) {
+            this.action_type = action_type;
+            this.client_name = client_name;
+            this.action_date = action_date.toDate();
+            this.appointment_date = appointment_date.toDate();
+            this.new_appointment_date = new_appointment_date.toDate();
+            this.appointment_type = appointment_type;
+            this.new_appointment_type = new_appointment_type;
         }
     }
 

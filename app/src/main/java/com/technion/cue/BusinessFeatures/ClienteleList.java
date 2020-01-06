@@ -129,7 +129,7 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     .addOnSuccessListener(documentSnapshots -> {
                         if (!documentSnapshots.isEmpty() &&
                                 documentSnapshots.getDocuments()
-                                        .get(0).getString("client_id").equals(cm.client_id)) {
+                                        .get(0).getString("client_name").equals(cm.client_id)) {
                             holder.firstLetter.setText(String.valueOf(cm.name.charAt(0)));
                             holder.firstLetter.setVisibility(View.VISIBLE);
                         }

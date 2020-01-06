@@ -68,7 +68,7 @@ public class MyAppointmentListAdapter extends
                 });
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("client_id",appointment.client_id)
+                .whereEqualTo("client_name",appointment.client_id)
                 .whereEqualTo("business_id",appointment.business_id)
                 .whereEqualTo("date", new Timestamp(appointment.date))
                 .limit(1)
