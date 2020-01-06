@@ -38,7 +38,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
+import static com.technion.cue.FirebaseCollections.APPOINTMENT_ACTIONS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 
@@ -55,6 +57,8 @@ public class EditAppointmentActivity extends AppCompatActivity
     Appointment appointment;
     FirebaseAuth mAuth;
     String radioButton_id;
+    private Date old_appointment_date;
+    private String old_appointment_type;
 
     /**
     *
@@ -186,6 +190,10 @@ public class EditAppointmentActivity extends AppCompatActivity
                 .addOnSuccessListener(documentSnapshot -> {
                     appointment = documentSnapshot.toObject(Appointment.class);
                     if (appointment!=null) {
+
+                        old_appointment_date = appointment.date;
+                        old_appointment_type = appointment.type;
+
                         appointment.id = documentSnapshot.getId();
                         TextView notes = findViewById(R.id.edit_appointment_notes_text);
                         notes.setText(appointment.notes);
@@ -254,7 +262,53 @@ public class EditAppointmentActivity extends AppCompatActivity
                                 //--
                             }));
 
+                      /*
+                      additions by Ophir on 6/1
+                       */
 
+                      // Awful everything D:
+                      FirebaseFirestore.getInstance()
+                              .collection(CLIENTS_COLLECTION)
+                              .document(appointment.client_id)
+                              .get()
+                              .addOnSuccessListener(client  -> {
+                                  FirebaseFirestore.getInstance()
+                                          .collection(BUSINESSES_COLLECTION)
+                                          .document(appointment.business_id)
+                                          .collection(TYPES_COLLECTION)
+                                          .document(appointment.type)
+                                          .get()
+                                          .addOnSuccessListener(type -> {
+                                              FirebaseFirestore.getInstance()
+                                                      .collection(BUSINESSES_COLLECTION)
+                                                      .document(appointment.business_id)
+                                                      .collection(TYPES_COLLECTION)
+                                                      .document(old_appointment_type)
+                                                      .get()
+                                                      .addOnSuccessListener(old_type -> {
+                                                          Business.AppointmentAction aa =
+                                                                  new Business.AppointmentAction(
+                                                                          "rescheduling",
+                                                                          client.getString("name"),
+                                                                          new Date(),
+                                                                          old_appointment_date,
+                                                                          appointment.date,
+                                                                          type.getString("name"),
+                                                                          old_type.getString("name")
+                                                                  );
+
+
+                                                          FirebaseFirestore.getInstance()
+                                                                  .collection(BUSINESSES_COLLECTION)
+                                                                  .document(appointment.business_id)
+                                                                  .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                                  .document()
+                                                                  .set(aa);
+                                                      });
+
+                                          });
+
+                              });
             } else {                                // new appointment
                 appointment.notes ="notes about the appointments - per type"; // TODO: need to be change per type
                 appointment.type = radioButton_id;
@@ -266,6 +320,44 @@ public class EditAppointmentActivity extends AppCompatActivity
                         findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
                         finish();
                     });
+
+                /*
+                additions by Ophir on 6/1
+                */
+
+                FirebaseFirestore.getInstance()
+                        .collection(CLIENTS_COLLECTION)
+                        .document(appointment.client_id)
+                        .get()
+                        .addOnSuccessListener(client  -> {
+                            FirebaseFirestore.getInstance()
+                                    .collection(BUSINESSES_COLLECTION)
+                                    .document(appointment.business_id)
+                                    .collection(TYPES_COLLECTION)
+                                    .document(appointment.type)
+                                    .get()
+                                    .addOnSuccessListener(type -> {
+                                        Business.AppointmentAction aa =
+                                                new Business.AppointmentAction(
+                                                        "scheduling",
+                                                        client.getString("name"),
+                                                        new Date(),
+                                                        appointment.date,
+                                                        appointment.date,
+                                                        type.getString("name"),
+                                                        type.getString("name")
+                                                );
+
+
+                                        FirebaseFirestore.getInstance()
+                                                .collection(BUSINESSES_COLLECTION)
+                                                .document(appointment.business_id)
+                                                .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                .document()
+                                                .set(aa);
+                                    });
+
+                        });
 
 
                 }

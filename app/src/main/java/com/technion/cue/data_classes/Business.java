@@ -84,6 +84,19 @@ public class Business implements Serializable {
             this.appointment_type = appointment_type;
             this.new_appointment_type = new_appointment_type;
         }
+
+        public AppointmentAction(String action_type, String client_name,
+                                 Date action_date, Date appointment_date,
+                                 Date new_appointment_date,
+                                 String appointment_type, String new_appointment_type) {
+            this.action_type = action_type;
+            this.client_name = client_name;
+            this.action_date = action_date;
+            this.appointment_date = appointment_date;
+            this.new_appointment_date = new_appointment_date;
+            this.appointment_type = appointment_type;
+            this.new_appointment_type = new_appointment_type;
+        }
     }
 
     public Business() { }
