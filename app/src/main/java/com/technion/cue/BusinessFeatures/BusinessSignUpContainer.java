@@ -59,7 +59,8 @@ public class BusinessSignUpContainer extends AppCompatActivity {
     public BusinessSignUp3.AppointmentTypesListAdapter types_adapter;
     public RecyclerView types_list;
     public int num_of_types = 1;
-    public List<Pair<String, String>> types_fields = new ArrayList<>();
+    public List<Map<String, String>> types_fields = new ArrayList<>();
+
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -254,8 +255,7 @@ public class BusinessSignUpContainer extends AppCompatActivity {
             BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder holder =
                     (BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder)
                             types_list.findViewHolderForAdapterPosition(i);
-            Map<String, String> attributes = new HashMap<>();
-            attributes.put("duration", holder.duration.getText().toString());
+            Map<String, String> attributes = types_fields.get(i);
             Business.AppointmentType at =
                     new Business.AppointmentType(holder.type_text.getText().toString(), attributes);
             db.collection(BUSINESSES_COLLECTION)
