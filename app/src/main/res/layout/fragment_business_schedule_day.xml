@@ -12,7 +12,7 @@
         android:layout_height="wrap_content"
         android:textSize="35sp"
         android:layout_centerInParent="true"
-        android:textColor="@color/TextOnBackgroundDim"
+        android:textColor="@color/dimTextOnBackground"
         android:visibility="gone"
         android:text="@string/no_appointments_today_message"
         android:textAlignment="center"/>

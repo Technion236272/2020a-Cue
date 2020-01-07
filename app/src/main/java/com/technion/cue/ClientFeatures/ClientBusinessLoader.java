@@ -107,7 +107,7 @@ class ClientBusinessLoader {
         }
         Glide.with(logo.getContext())
                 .load(logoRef)
-                .error(R.drawable.ic_person_outline_black_24dp)
+                .error(R.drawable.person_icon)
                 .into(logo);
     }
 

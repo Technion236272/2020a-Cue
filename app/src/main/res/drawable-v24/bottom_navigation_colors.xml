@@ -2,8 +2,8 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:state_checked="true"
-        android:color="@color/ColorSecondaryLight" />
+        android:color="@color/primaryTextColor" />
     <item
         android:state_checked="false"
-        android:color="@color/TextColorPrimary" />
+        android:color="@color/primaryDarkColor" />
 </selector>

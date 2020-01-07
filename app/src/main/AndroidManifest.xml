@@ -3,14 +3,15 @@
     package="com.technion.cue">
 
     <uses-permission android:name="android.permission.CALL_PHONE" />
+
     <uses-permission-sdk-23 android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="com.google.android.apps.photos.permission.GOOGLE_PHOTOS"/>
+    <uses-permission android:name="com.google.android.apps.photos.permission.GOOGLE_PHOTOS" />
 
     <uses-feature
         android:name="android.hardware.camera"
         android:required="true" />
-
 
     <application
         android:allowBackup="true"
@@ -19,7 +20,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".ClientFeatures.EditAppointmentActivity"></activity>
+        <activity android:name=".BusinessFeatures.BusinessSignUpContainer" />
+        <activity android:name=".ClientFeatures.EditAppointmentActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".ClientFeatures.ClientSettingsActivity" />
         <activity android:name=".BusinessFeatures.ClienteleList" />
@@ -33,21 +35,22 @@
         <activity android:name=".ClientFeatures.ClientBusinessHomepage"
                   android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-                <data
-                    android:host="cueapp.com"
-                    android:scheme="https" />
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="cueapp.page.link"
+                    android:host="cueapp2.com"
+                    android:scheme="https" />
+                <data
+                    android:host="cueapp2.page.link"
                     android:scheme="https" />
             </intent-filter>
 
         </activity>
         <activity android:name=".ClientFeatures.ClientAppointmentPage" />
-        <activity android:name=".Settings" />
+        <activity android:name=".BusinessFeatures.BusinessSettings" />
         <activity android:name=".LauncherActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -57,16 +60,11 @@
             </intent-filter>
         </activity>
         <activity android:name=".BusinessFeatures.BOBusinessHomePage" />
-
-
-
-
         <activity android:name=".ClientFeatures.ClientSignUp" />
         <activity android:name=".ClientFeatures.ClientHomePage" />
-        <activity android:name=".BusinessFeatures.BOSignUp1" />
-        <activity android:name=".BusinessFeatures.BOSignUp2" />
-        <activity android:name=".BusinessFeatures.BOSignUp3" />
-
+        <activity android:name=".BusinessFeatures.BusinessSignUp1" />
+        <activity android:name=".BusinessFeatures.BusinessSignUp2" />
+        <activity android:name=".BusinessFeatures.BusinessSignUp3" />
     </application>
 
 </manifest>

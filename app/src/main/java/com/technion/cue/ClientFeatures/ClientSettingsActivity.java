@@ -1,11 +1,9 @@
 package com.technion.cue.ClientFeatures;
 
-import android.content.Intent;
+
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.RadioGroup;
 
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -13,9 +11,9 @@ import androidx.preference.PreferenceFragmentCompat;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 
-import com.technion.cue.Credits;
+
 import com.technion.cue.R;
-import com.technion.cue.Settings;
+
 
 public class ClientSettingsActivity extends AppCompatActivity  {
 

@@ -8,7 +8,7 @@
 
     <TextView
         android:id="@+id/client_appointment_business_Name"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="8sp"
@@ -16,14 +16,14 @@
         android:layout_centerHorizontal="true" />
     <TextView
         android:id="@+id/client_appointment_business_type"
-        android:textColor="@color/TextColorSecondary"
+        android:textColor="@color/primaryTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="30sp"
         android:layout_below="@id/client_appointment_business_Name"
         android:layout_marginTop="20dp"
         android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimaryDark"
+        android:background="@color/primaryDarkColor"
         android:textStyle="bold"
         android:paddingHorizontal="7dp"
         android:paddingVertical="7dp"
@@ -31,7 +31,7 @@
 
     <TextView
         android:id="@+id/client_appointment_BusinessDescription"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="20sp"
@@ -55,7 +55,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="1.0dp"
             android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_place_black_30dp"
+            app:srcCompat="@drawable/location_icon"
             android:contentDescription="phone icon"
             />
 
@@ -67,9 +67,9 @@
             android:layout_marginLeft="5dp"
             android:textColor="#283593"
             android:textSize="20sp"
-            android:background="@color/TextColorSecondary"
+            android:background="@color/primaryTextColor"
             android:layout_gravity="center"
-            android:shadowColor="@color/colorPrimary"
+            android:shadowColor="@color/primaryColor"
             android:shadowRadius="3"
             android:layout_marginTop="1dp"
              />
@@ -93,7 +93,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="1.0dp"
             android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_local_phone_black_30dp"
+            app:srcCompat="@drawable/phone_icon"
             android:contentDescription="phone icon"
             />
 
@@ -105,9 +105,9 @@
             android:text=""
             android:textColor="#283593"
             android:textSize="20sp"
-            android:background="@color/TextColorSecondary"
+            android:background="@color/primaryTextColor"
             android:layout_gravity="center"
-            android:shadowColor="@color/colorPrimary"
+            android:shadowColor="@color/primaryColor"
             android:shadowRadius="3"
             android:layout_marginTop="1dp"/>
 
@@ -128,7 +128,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="1.0dp"
             android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_access_time_black_24dp"
+            app:srcCompat="@drawable/clock_icon"
             android:contentDescription="time icon"
 
 
@@ -141,9 +141,9 @@
             android:text=""
             android:textColor="#283593"
             android:textSize="20sp"
-            android:background="@color/TextColorSecondary"
+            android:background="@color/primaryTextColor"
             android:layout_gravity="center"
-            android:shadowColor="@color/colorPrimary"
+            android:shadowColor="@color/primaryColor"
             android:shadowRadius="3"
             android:layout_marginTop="1dp"
             android:layout_marginLeft="5dp"
@@ -168,7 +168,7 @@
             android:layout_height="30dp"
             android:layout_marginTop="1.0dp"
             android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_note_black_30dp"
+            app:srcCompat="@drawable/note_icon"
             android:contentDescription="note_icon"
 
 
@@ -180,9 +180,9 @@
                 android:textColor="#283593"
                 android:textSize="20sp"
                 android:layout_marginLeft="5dp"
-                android:background="@color/TextColorSecondary"
+                android:background="@color/primaryTextColor"
                 android:layout_gravity="center"
-                android:shadowColor="@color/colorPrimary"
+                android:shadowColor="@color/primaryColor"
                 android:shadowRadius="3"
                 android:layout_toRightOf="@+id/notes_icon"
                 android:layout_marginTop="1dp"/>

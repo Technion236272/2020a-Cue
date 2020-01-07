@@ -57,7 +57,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_appointment_page);
         intent = getIntent();
-        b_name = intent.getExtras().getString("business_name"); //  appointment id
+        b_name = intent.getExtras().getString("name"); //  appointment id
         a_type = intent.getExtras().getString("appointment_type");
         a_notes = intent.getExtras().getString("appointment_notes");
         a_date = intent.getExtras().getString("appointment_date");
@@ -79,8 +79,8 @@ public class ClientAppointmentPage extends AppCompatActivity  {
             getSupportActionBar().setTitle(b_name);
 
         }
-        //TextView business_name = findViewById(R.id.client_appointment_business_Name);
-        //business_name.setText(b_name);
+        //TextView name = findViewById(R.id.client_appointment_business_Name);
+        //name.setText(b_name);
         TextView type = findViewById(R.id.client_appointment_business_type);
         type.setText(a_type);
         TextView notes = findViewById(R.id.client_appointment_page_notes_text);

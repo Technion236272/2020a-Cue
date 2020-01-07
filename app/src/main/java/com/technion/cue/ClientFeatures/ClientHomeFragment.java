@@ -95,7 +95,7 @@ public class ClientHomeFragment extends Fragment {
     private void setUpRecycleAppointmentAView() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
         Query query = db.collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("client_id", currentUser.getUid())
+                .whereEqualTo("client_name", currentUser.getUid())
                 .whereGreaterThanOrEqualTo("date", Timestamp.now())
                 .orderBy("date", Query.Direction.ASCENDING)
                 .limit(3);

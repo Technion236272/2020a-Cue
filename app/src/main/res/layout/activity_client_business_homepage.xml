@@ -25,13 +25,13 @@
         android:id="@+id/actionBarTopBox"
         android:layout_width="match_parent"
         android:layout_height="120dp"
-        android:background="@color/colorPrimary" />
+        android:background="@color/primaryColor" />
 
     <FrameLayout
         android:id="@+id/actionBarTopBoxLine"
         android:layout_width="match_parent"
         android:layout_height="3dp"
-        android:background="@color/colorPrimaryLight"
+        android:background="@color/primaryLightColor"
         android:layout_below="@id/actionBarTopBox"/>
 
     <com.mikhaellopez.circularimageview.CircularImageView
@@ -39,7 +39,7 @@
         android:layout_marginTop="40dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        app:srcCompat="@drawable/ic_person_outline_black_24dp"
+        app:srcCompat="@drawable/person_icon"
         app:civ_border_color="@color/secondaryColor"
         app:civ_border_width="8dp"
         android:clickable="false"
@@ -68,7 +68,7 @@
             android:gravity="center"
             android:layout_below="@id/clientBusinessLogo"
             android:textSize="35dp"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/primaryDarkColor"
             android:layout_marginTop="15dp"
             android:layout_marginBottom="10dp"
             android:text="Ben's Pizza"
@@ -85,7 +85,7 @@
         android:textSize="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:textColor="@color/colorPrimaryLight"
+        android:textColor="@color/primaryLightColor"
         android:layout_marginBottom="10dp"
         android:text="We Make The Best Pizza"
         />
@@ -98,7 +98,7 @@
         android:gravity="center"
         android:layout_below="@id/clientBusinessTitleDes"
         android:textSize="15dp"
-        android:textColor="@color/colorPrimaryDark"
+        android:textColor="@color/primaryDarkColor"
         android:layout_marginBottom="15dp"
         android:text="..."
         />
@@ -115,8 +115,8 @@
             android:id="@+id/makeACall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:srcCompat="@drawable/ic_local_phone_black_30dp"
-            android:background="@color/TextColorSecondary"
+        app:srcCompat="@drawable/phone_icon"
+            android:background="@color/fui_transparent"
             android:onClick="makeACall"/>
 
         <ImageButton
@@ -129,7 +129,7 @@
             android:layout_toEndOf="@id/makeACall"
             android:layout_marginLeft="20dp"
             android:layout_marginStart="20dp"
-            android:background="@color/TextColorSecondary"
+            android:background="@color/fui_transparent"
             android:onClick="makeAMap"/>
 
 
@@ -150,7 +150,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="17sp"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/primaryDarkColor"
         android:text="Sunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday"
 
         />
@@ -166,7 +166,7 @@
             android:layout_centerHorizontal="true"
             android:textSize="17sp"
             android:textStyle="bold"
-            android:textColor="@color/colorPrimaryDark"
+            android:textColor="@color/primaryDarkColor"
             android:text=""
 
             />

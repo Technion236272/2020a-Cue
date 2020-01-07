@@ -13,7 +13,6 @@
         android:clickable="true"
         android:focusable="true"
         android:dateTextAppearance="@style/calendarText"
-        android:background="@color/ColorSecondaryLight"
         android:layout_marginTop="5dp"/>
 
 </RelativeLayout>

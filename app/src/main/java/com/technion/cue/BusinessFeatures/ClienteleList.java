@@ -53,7 +53,7 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                 .collection(BUSINESSES_COLLECTION)
                 .document(FirebaseAuth.getInstance().getUid())
                 .collection(CLIENTELE_COLLECTION)
-                .orderBy("name");
+                .orderBy("bo_name");
 
         FirestoreRecyclerOptions<Business.ClienteleMember> options =
                 new FirestoreRecyclerOptions.Builder<Business.ClienteleMember>()
@@ -121,15 +121,15 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     .collection(BUSINESSES_COLLECTION)
                     .document(FirebaseAuth.getInstance().getUid())
                     .collection(CLIENTELE_COLLECTION)
-                    .whereGreaterThanOrEqualTo("name", String.valueOf(currentFirstLetter))
-                    .whereLessThan("name", String.valueOf(nextFirstLetter))
-                    .orderBy("name")
+                    .whereGreaterThanOrEqualTo("bo_name", String.valueOf(currentFirstLetter))
+                    .whereLessThan("bo_name", String.valueOf(nextFirstLetter))
+                    .orderBy("bo_name")
                     .limit(1)
                     .get()
                     .addOnSuccessListener(documentSnapshots -> {
                         if (!documentSnapshots.isEmpty() &&
                                 documentSnapshots.getDocuments()
-                                        .get(0).getString("client_id").equals(cm.client_id)) {
+                                        .get(0).getString("client_name").equals(cm.client_id)) {
                             holder.firstLetter.setText(String.valueOf(cm.name.charAt(0)));
                             holder.firstLetter.setVisibility(View.VISIBLE);
                         }

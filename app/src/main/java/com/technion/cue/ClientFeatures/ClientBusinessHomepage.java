@@ -34,13 +34,9 @@ import com.technion.cue.BusinessFeatures.BusinessInfoFragment;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
-import java.util.Dictionary;
-import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
-import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
 /*
@@ -53,7 +49,6 @@ public class ClientBusinessHomepage extends AppCompatActivity {
     Bundle bundle;
     FirebaseFirestore db;
     ClientBusinessLoader businessLoader;
-    String phoneNumber,businessLocation;
     Boolean favorite;
 
     @Override
@@ -92,7 +87,8 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                                         String formattedDeepLink = deepLink.toString()
                                                 .substring(deepLink.toString().indexOf('=') + 1)
                                                 .replace('+', ' ');
-                                        findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
+                                        findViewById(R.id.switch_to_date_time_fragments)
+                                                .setVisibility(View.VISIBLE);
                                         Fragment f = new BusinessInfoFragment();
                                         bundle.putString("business_id", formattedDeepLink);
                                         f.setArguments(bundle);
@@ -190,6 +186,7 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+
     public void makeACall(View view) {
         String phoneNumber = businessLoader.getPhoneNumber();
         Intent mIntent = new Intent(Intent.ACTION_CALL);
@@ -222,6 +219,8 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
     }
+
+
 
 
 

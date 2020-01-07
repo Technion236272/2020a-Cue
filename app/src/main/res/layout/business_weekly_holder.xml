@@ -24,14 +24,14 @@
                 android:textSize="22sp"
                 android:layout_marginTop="6dp"
                 android:layout_marginBottom="6dp"
-                android:textColor="@color/TextOnBackground"
+                android:textColor="@color/secondaryTextColor"
                 android:textStyle="bold"/>
 
             <ImageView
                 android:id="@+id/list_arrow"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/list_drop_down"
+                android:src="@drawable/list_drop_down_icon"
                 android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"/>

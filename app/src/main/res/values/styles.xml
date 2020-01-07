@@ -1,18 +1,19 @@
 <resources>
 
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorSecondary">@color/ColorSecondary</item>
-        <item name="colorOnBackground">@color/TextOnBackground</item>
-        <item name="colorOnPrimary">@color/TextColorPrimary</item>
-        <item name="colorOnSecondary">@color/TextColorSecondary</item>
-        <item name="android:textColor">@color/TextOnBackground</item>
+        <item name="colorPrimary">@color/primaryColor</item>
+        <item name="colorPrimaryDark">@color/primaryDarkColor</item>
+        <item name="colorSecondary">@color/secondaryColor</item>
+        <item name="colorOnBackground">@color/secondaryTextColor</item>
+        <item name="colorOnPrimary">@color/secondaryTextColor</item>
+        <item name="colorOnSecondary">@color/primaryTextColor</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:actionMenuTextAppearance">@color/primaryTextColor</item>
     </style>
 
 
     <style name="calendarText" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:textColor">@color/TextColorPrimary</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
         <item name="android:textSize">18sp</item>
     </style>
 
@@ -22,7 +23,7 @@
     </style>
 
     <style name="FullScreenDialogStyle" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:textColor">@color/TextOnBackground</item>
+        <item name="android:textColor">@color/secondaryTextColor</item>
         <item name="android:windowFullscreen">false</item>
         <item name="android:windowIsFloating">false</item>
         <item name="android:windowBackground">#FFFFFF</item>

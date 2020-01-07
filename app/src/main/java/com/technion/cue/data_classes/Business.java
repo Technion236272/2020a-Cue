@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Set;
 
 public class Business implements Serializable {
 
@@ -64,21 +63,60 @@ public class Business implements Serializable {
         }
     }
 
+    public static class AppointmentAction {
+        @DocumentId
+        public String id;
+
+        public String action_type, client_name, appointment_type, new_appointment_type;
+        public Date action_date, appointment_date, new_appointment_date;
+
+        public AppointmentAction() { }
+
+        public AppointmentAction(String action_type, String client_name,
+                                 Timestamp action_date, Timestamp appointment_date,
+                                 Timestamp new_appointment_date,
+                                 String appointment_type, String new_appointment_type) {
+            this.action_type = action_type;
+            this.client_name = client_name;
+            this.action_date = action_date.toDate();
+            this.appointment_date = appointment_date.toDate();
+            this.new_appointment_date = new_appointment_date.toDate();
+            this.appointment_type = appointment_type;
+            this.new_appointment_type = new_appointment_type;
+        }
+
+        public AppointmentAction(String action_type, String client_name,
+                                 Date action_date, Date appointment_date,
+                                 Date new_appointment_date,
+                                 String appointment_type, String new_appointment_type) {
+            this.action_type = action_type;
+            this.client_name = client_name;
+            this.action_date = action_date;
+            this.appointment_date = appointment_date;
+            this.new_appointment_date = new_appointment_date;
+            this.appointment_type = appointment_type;
+            this.new_appointment_type = new_appointment_type;
+        }
+    }
+
     public Business() { }
 
     public Business(String business_name, String name, String phone_number, String description,
-                    String state, String city, String address, Map<String,String> open_hours_map) {
+                    String state, String city, String address, Map<String,String> open_hours,
+                    String logo_path) {
+
         this.business_name = business_name;
         this.name = name;
         this.phone_number = phone_number;
 
-        this.description=description;
+        this.logo_path = logo_path;
+
+        this.description = description;
         location.put("state",state);
         location.put("city",city);
         location.put("address",address);
 
-        open_hours_map.keySet().removeAll(open_hours.keySet());
-        open_hours.putAll(open_hours_map);
-        }
+        this.open_hours.putAll(open_hours);
+    }
 
 }

@@ -1,4 +1,4 @@
-package com.technion.cue;
+package com.technion.cue.BusinessFeatures;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -23,12 +23,14 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.technion.cue.Credits;
+import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
 import java.util.Set;
 
 @ModuleAuthor("Topaz")
-public class Settings extends AppCompatActivity {
+public class BusinessSettings extends AppCompatActivity {
     private RadioGroup radioGroup;
 
     private FirebaseUser currentUser;

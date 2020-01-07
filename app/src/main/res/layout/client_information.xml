@@ -33,7 +33,7 @@
 
         <TextView
             android:id="@+id/client_phone_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -62,7 +62,7 @@
 
         <TextView
             android:id="@+id/client_email_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"

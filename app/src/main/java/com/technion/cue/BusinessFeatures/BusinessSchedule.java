@@ -39,6 +39,12 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
 
+        // disable swiping when in the monthly schedule view (calendar view)
+        pager.setOnTouchListener((v, event) -> {
+            pager.setCurrentItem(pager.getCurrentItem());
+            return pager.getCurrentItem() == 2;
+        });
+
         TabLayout tabs = findViewById(R.id.business_schedule_tabs);
         tabs.setupWithViewPager(pager);
 
@@ -94,7 +100,7 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
                 case "This Month":
                     return new BusinessScheduleMonth();
                 case "Recent Changes":
-                    return new BusinessScheduleFragmentPlaceholder();
+                    return new BusinessScheduleRecentChanges();
                 default:
                     return new BusinessScheduleFragmentPlaceholder();
             }
@@ -109,6 +115,8 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         public CharSequence getPageTitle(int position) {
             return titleList.get(position);
         }
+
+
     }
 
 }

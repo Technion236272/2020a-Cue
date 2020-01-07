@@ -1,75 +1,92 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/business_sign_up3">
+    android:id="@+id/business_sign_up2">
 
-    <TextView
-        android:id="@+id/businessOpenHoursEditInstructions"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/business_operating_hours_fill"
-        android:layout_marginTop="16dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginStart="24dp"
-        android:textColor="@color/TextOnBackground"
-        android:textSize="16sp"
-        android:textStyle="bold" />
+    <com.mikhaellopez.circularimageview.CircularImageView
+        android:id="@+id/businessLogoEdit"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_marginTop="24dp"
+        android:clickable="false"
+        android:layout_centerHorizontal="true"
+        android:padding="5dp"
+        app:civ_border_color="@color/secondaryColor"
+        app:civ_border_width="4dp"
+        app:srcCompat="@drawable/person_icon" />
 
     <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-        android:id="@+id/openHoursEditSpinner"
-        android:layout_width="160dp"
+        android:id="@+id/businessNameEdit"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/businessOpenHoursEditInstructions"
-        android:layout_marginTop="24dp"
         android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginBottom="24dp"
-        android:textColor="@color/TextOnBackground"
-        android:hint="@string/day_of_the_week">
+        android:layout_marginTop="24dp"
+        android:hint="@string/business_name_hint"
+        android:textSize="14sp"
+        app:counterEnabled="true"
+        app:counterMaxLength="30"
+        app:endIconMode="clear_text"
+        android:layout_below="@id/businessLogoEdit">
 
-        <AutoCompleteTextView
-            android:id="@+id/days_filled_exposed_dropdown"
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessNameEditText"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:layout_height="wrap_content" />
 
     </com.google.android.material.textfield.TextInputLayout>
 
-    <TextView
-        android:id="@+id/openingHoursEditText"
-        android:layout_width="168dp"
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessDescriptionEdit"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="26dp"
+        android:textSize="14sp"
         android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
-        android:layout_toRightOf="@id/openHoursEditSpinner"
-        android:layout_toEndOf="@id/openHoursEditSpinner"
-        android:layout_below="@id/businessOpenHoursEditInstructions"
-        android:textColor="@color/TextOnBackground"
-        android:hint="@string/opening_hour" />
+        android:layout_marginTop="24dp"
+        android:layout_below="@id/businessNameEdit"
+        android:hint="@string/business_description_hint"
+        app:counterEnabled="true"
+        app:endIconMode="clear_text"
+        app:counterMaxLength="200" >
 
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessDescriptionEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-    <TextView
-        android:id="@+id/closingHoursEditText"
-        android:layout_width="168dp"
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:id="@+id/businessPhoneEdit"
+        android:layout_width="360dp"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
-        android:layout_marginTop="8dp"
+        android:textSize="14sp"
         android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
-        android:layout_toRightOf="@id/openHoursEditSpinner"
-        android:layout_toEndOf="@id/openHoursEditSpinner"
-        android:layout_below="@id/openingHoursEditText"
-        android:textColor="@color/TextOnBackground"
-        android:layout_marginBottom="24dp"
-        android:hint="@string/closing_hour" />
+        android:layout_marginTop="24dp"
+        android:layout_below="@id/businessDescriptionEdit"
+        android:hint="@string/business_phone_number"
+        app:counterEnabled="true"
+        app:endIconMode="clear_text"
+        app:counterMaxLength="10" >
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/businessPhoneEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone" />
+
+    </com.google.android.material.textfield.TextInputLayout>
 
     <View
         android:id="@+id/divider_0"
@@ -77,7 +94,7 @@
         android:layout_height="1dp"
         android:layout_marginTop="16dp"
         android:background="@drawable/list_divider"
-        android:layout_below="@id/closingHoursEditText" />
+        android:layout_below="@id/businessPhoneEdit" />
 
     <TextView
         android:id="@+id/businessAddressEditInstructions"
@@ -88,7 +105,7 @@
         android:layout_marginTop="16dp"
         android:layout_marginLeft="24dp"
         android:layout_marginStart="24dp"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:textSize="16sp"
         android:textStyle="bold"/>
 
@@ -108,7 +125,7 @@
             android:id="@+id/businessStateEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:textColor="@color/secondaryTextColor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -132,7 +149,7 @@
             android:id="@+id/businessCityEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:textColor="@color/secondaryTextColor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
 
@@ -154,20 +171,9 @@
             android:id="@+id/businessAddressEditText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/TextOnBackground"/>
+            android:textColor="@color/secondaryTextColor"/>
 
     </com.google.android.material.textfield.TextInputLayout>
-
-    <com.google.android.material.button.MaterialButton
-        android:id="@+id/btn_done1"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:text="@string/done"
-    android:layout_alignParentRight="true"/>
-
 
 
 </RelativeLayout>

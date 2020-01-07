@@ -94,7 +94,7 @@ public class ClientInformationDialog extends DialogFragment {
         manual_schedule.setOnClickListener(cl -> {
             Bundle bundle = new Bundle();
             bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
-            bundle.putString("client_id", client_id);
+            bundle.putString("client_name", client_id);
             Intent intent = new Intent(getContext(), EditAppointmentActivity.class);
             intent.putExtras(bundle);
             startActivity(intent);

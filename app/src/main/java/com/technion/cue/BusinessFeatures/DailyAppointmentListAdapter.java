@@ -9,7 +9,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -155,30 +154,30 @@ public class DailyAppointmentListAdapter extends
                                         if (c.getTime().getTime() >= currentTime.getTime()){
                                             holder.flag.setVisibility(View.VISIBLE);
                                             holder.type.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackground));
+                                                    .getColor(R.color.secondaryTextColor));
                                             holder.client.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackground));
+                                                    .getColor(R.color.secondaryTextColor));
                                             holder.date.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackground));
+                                                    .getColor(R.color.secondaryTextColor));
                                         }
                                         else {
                                             holder.type.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                                    .getColor(R.color.transparentTextOnBackground));
                                             holder.client.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                                    .getColor(R.color.transparentTextOnBackground));
                                             holder.date.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                                    .getColor(R.color.transparentTextOnBackground));
                                         }
                                     });
                             // if the appointment's time has passed, display it
                             // with a gray color
                         } else if (appointment.date.getTime() < currentTime.getTime()) {
                             holder.type.setTextColor(context.getResources()
-                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                    .getColor(R.color.transparentTextOnBackground));
                             holder.client.setTextColor(context.getResources()
-                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                    .getColor(R.color.transparentTextOnBackground));
                             holder.date.setTextColor(context.getResources()
-                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                    .getColor(R.color.transparentTextOnBackground));
                         }
                     }
                 });

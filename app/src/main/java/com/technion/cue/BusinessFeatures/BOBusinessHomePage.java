@@ -4,8 +4,6 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.Menu;
@@ -24,15 +22,11 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.technion.cue.FirebaseCollections;
 import com.technion.cue.R;
-import com.technion.cue.Settings;
 import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -82,9 +76,8 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
             return true;
         });
 
-        // TODO: create listener for item 2 (settings)
         menu.getItem(2).setOnMenuItemClickListener(cl -> {
-            startActivityForResult(new Intent(this, Settings.class), EDIT_RESULT);
+            startActivityForResult(new Intent(this, BusinessSettings.class), EDIT_RESULT);
             return true;
         });
 
@@ -111,7 +104,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                     CircularImageView logo = business_info_fragment.findViewById(R.id.business_logo);
                     Glide.with(logo.getContext())
                             .load(logoData)
-                            .error(R.drawable.ic_person_outline_black_24dp)
+                            .error(R.drawable.person_icon)
                             .into(logo);
                 }
 
@@ -219,9 +212,9 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
     private boolean generateDynamicLink() {
         FirebaseDynamicLinks.getInstance()
                 .createDynamicLink()
-                .setLink(Uri.parse("https://cueapp.com/?name=" +
+                .setLink(Uri.parse("https://cueapp2.com/?name=" +
                         FirebaseAuth.getInstance().getUid()))
-                .setDomainUriPrefix("https://cueapp.page.link")
+                .setDomainUriPrefix("https://cueapp2.page.link")
                 .setAndroidParameters(
                         new DynamicLink.AndroidParameters
                                 .Builder("com.technion.cue")
