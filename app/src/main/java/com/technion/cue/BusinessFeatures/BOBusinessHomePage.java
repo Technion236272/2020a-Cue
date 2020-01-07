@@ -6,21 +6,30 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Html;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.SignInActivity;
@@ -32,7 +41,9 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import static com.technion.cue.FirebaseCollections.APPOINTMENT_ACTIONS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.REVIEWS_COLLECTION;
 
 @ModuleAuthor("Ophir Eyal")
 public class BOBusinessHomePage extends AppCompatActivity implements BusinessBottomMenu {
@@ -46,6 +57,9 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
     private Uri logoData;
 
     Business business;
+
+    private RecyclerView reviews_list;
+    private BOBusinessHomePage.ReviewsAdapter mAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,6 +75,29 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 .document(FirebaseAuth.getInstance().getUid())
                 .get()
                 .addOnSuccessListener(ds -> business = ds.toObject(Business.class));
+
+
+        reviews_list = findViewById(R.id.reviews_list);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
+        reviews_list.setLayoutManager(layoutManager);
+
+        // a query to get all the 10 most recent changes in the business'es schedule
+        Query query = FirebaseFirestore.getInstance()
+                .collection(BUSINESSES_COLLECTION)
+                .document(FirebaseAuth.getInstance().getUid())
+                .collection(REVIEWS_COLLECTION)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(10);
+
+        FirestoreRecyclerOptions<Business.Review> options =
+                new FirestoreRecyclerOptions.Builder<Business.Review>()
+                        .setQuery(query, Business.Review.class)
+                        .build();
+
+        mAdapter = new BOBusinessHomePage.ReviewsAdapter(options);
+        reviews_list.setAdapter(mAdapter);
+
     }
 
     @Override
@@ -231,6 +268,51 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                     clipboard.setPrimaryClip(clip);
                 });
         return true;
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
+
+    private class ReviewsAdapter extends
+            FirestoreRecyclerAdapter<Business.Review, BOBusinessHomePage.ReviewsAdapter.itemHolder> {
+
+        ReviewsAdapter(@NonNull FirestoreRecyclerOptions<Business.Review> options) {
+            super(options);
+        }
+
+        @Override
+        protected void onBindViewHolder(@NonNull itemHolder holder,
+                                        int position,
+                                        @NonNull Business.Review model) {
+            holder.reviewContent.setText(model.content);
+        }
+
+        @NonNull
+        @Override
+        public itemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.reviews_row, parent,false);
+            return new itemHolder(v);
+        }
+
+        private class itemHolder extends RecyclerView.ViewHolder {
+
+            TextView reviewContent;
+
+            itemHolder(@NonNull View itemView) {
+                super(itemView);
+                reviewContent = itemView.findViewById(R.id.review_content);
+            }
+        }
     }
 }
 

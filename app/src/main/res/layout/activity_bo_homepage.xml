@@ -11,17 +11,24 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <View
+        android:id="@+id/divider"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/business_info"
+        android:background="@drawable/full_list_divider" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reviews_list"
-        android:scrollbars="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/business_info" />
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/divider" />
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"
