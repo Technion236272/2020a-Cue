@@ -73,6 +73,7 @@ public class MyFavoriteListAdapter extends
                 Intent getIntentBOPage = new Intent(parent.getContext(), ClientBusinessHomepage.class);
                 // TODO: start using appointmet object !!! - refactoring later.
                 getIntentBOPage.putExtra("business_id",holder.business_id);
+                getIntentBOPage.putExtra("favorite","true");
                 parent.getContext().startActivity(getIntentBOPage);
 
             }

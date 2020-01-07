@@ -7,7 +7,7 @@
         android:key="logout"
         android:title="Logout"
         android:summary=""
-        android:icon="@drawable/ic_block_black_24dp"
+        android:icon="@drawable/ic_cancel_black_30dp"
         />
 
 <!--    <Preference-->

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -11,14 +12,41 @@
         xmlns:card_view="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        card_view:cardBackgroundColor="@color/colorPrimaryLight"
+        card_view:cardBackgroundColor="@color/TextColorSecondary"
         card_view:cardCornerRadius="4dp"
         card_view:cardElevation="3dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-
         card_view:cardUseCompatPadding="true"
         android:minHeight="140dp">
+
+        <FrameLayout
+            android:background="@color/colorPrimaryDark"
+            android:layout_width="match_parent"
+            android:layout_height="2dp"
+            />
+
+
+<!--        <FrameLayout-->
+<!--            android:background="@color/ColorSecondaryDark"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_width="1dp"-->
+<!--            />-->
+
+        <FrameLayout
+            android:background="@color/ColorSecondaryDark"
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_height="4dp"
+            />
+<!--        <FrameLayout-->
+<!--            android:background="@color/ColorSecondaryDark"-->
+<!--            android:layout_height="match_parent"-->
+<!--            android:layout_gravity="top"-->
+<!--            android:layout_width="1dp"-->
+<!--            />-->
+
+
 
         <RelativeLayout
 
@@ -44,7 +72,7 @@
                 android:layout_marginTop="2dp"
                 android:textSize="25sp"
                 android:layout_gravity="center_vertical"
-                android:textColor="@color/TextColorSecondary" />
+                android:textColor="@color/colorPrimaryDark" />
 
             <TextView
                 android:id="@+id/appointment_box_business_date"
@@ -54,7 +82,7 @@
                 android:layout_marginLeft="5dp"
                 android:textSize="17sp"
                 android:layout_marginTop="8dp"
-                android:textColor="@color/TextColorSecondary"
+                android:textColor="@color/colorPrimaryDark"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 />
@@ -70,24 +98,27 @@
                 android:layout_marginRight="5dp"
                 android:layout_marginLeft="5dp"
                 android:textSize="20sp"
-                android:textColor="@color/TextColorSecondary"
+                android:textColor="@color/colorPrimary"
                 android:layout_alignParentLeft="true"
                 android:layout_below="@+id/appointment_box_business"
                 android:layout_marginHorizontal="10dp"/>
             <TextView
                 android:id="@+id/type"
-                android:layout_marginRight="7dp"
-                android:layout_marginLeft="5dp"
+
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="18sp"
                 android:layout_below="@+id/notes"
-                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:background="@color/TextColorPrimary"
+                android:layout_alignParentBottom="true"
+
                 android:padding="6dp"
                 android:textStyle="bold"
-                android:textColor="@color/colorPrimaryDark" />
+
+                android:layout_marginRight="5dp"
+                android:layout_marginLeft="5dp"
+                android:layout_marginTop="25dp"
+                android:textColor="@color/ColorSecondaryDark" />
 
 
         </RelativeLayout>

@@ -10,6 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
         app:srcCompat="@drawable/ic_settings_black_24dp"
         android:tint="@color/TextColorSecondary"
         android:background="@color/colorPrimary"
@@ -29,9 +30,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
         app:srcCompat="@drawable/ic_business_black_24dp"
         android:onClick="showBusinesses"
-        android:layout_alignParentEnd="true"
         android:tint="@color/TextColorSecondary"
         android:background="@color/colorPrimary"/>
 

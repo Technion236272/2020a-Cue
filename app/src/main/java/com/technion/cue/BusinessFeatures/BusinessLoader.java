@@ -33,7 +33,7 @@ class BusinessLoader {
 
     public Business business;
 
-    BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
+    public BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
         this.db = db;
         this.business_id = business_to_fetch;
     }

@@ -19,11 +19,9 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager.widget.ViewPager;
 
-
 import com.google.android.material.tabs.TabLayout;
-
 import com.google.firebase.auth.FirebaseAuth;
-
+import com.technion.cue.LauncherActivity;
 import com.technion.cue.R;
 
 
@@ -45,7 +43,6 @@ public class ClientHomePage extends AppCompatActivity  {
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
 
 
-
         /** Set Action Bar */
         ActionBar actionBar = getSupportActionBar();
         actionBar.setCustomView(R.layout.client_homepage_action_bar);
@@ -57,9 +54,6 @@ public class ClientHomePage extends AppCompatActivity  {
 
 
         /** ----- */
-
-
-
 
         ViewPager viewPager = findViewById(R.id.pagerww);
         ClientPagerAdapter adapter = new ClientPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
@@ -91,6 +85,34 @@ public class ClientHomePage extends AppCompatActivity  {
         });
 
 
+    }
+
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        /**
+         * Check if user is signin
+         * */
+        if (mAuth.getCurrentUser() == null) {
+            Intent getIntentBOPage = new Intent(getBaseContext(), LauncherActivity.class);
+            startActivity(getIntentBOPage);
+            finish();
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        /**
+         * Check if user is signin
+         * */
+        if (mAuth.getCurrentUser() == null) {
+            Intent getIntentBOPage = new Intent(getBaseContext(), LauncherActivity.class);
+            startActivity(getIntentBOPage);
+            finish();
+        }
     }
 
 

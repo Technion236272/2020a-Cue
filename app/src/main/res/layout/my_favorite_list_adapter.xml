@@ -11,7 +11,7 @@
         app:cardCornerRadius="4dp"
         app:cardElevation="0dp"
         android:layout_centerInParent="true"
-        app:cardBackgroundColor="#ffffff"
+        app:cardBackgroundColor="@color/TextColorSecondary"
         android:layout_marginTop="30dp"
         android:layout_marginLeft="5dp">
 
@@ -25,12 +25,12 @@
                 <com.mikhaellopez.circularimageview.CircularImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:civ_border_color="@color/colorPrimary"
+                    app:civ_border_color="@color/secondaryColor"
                     app:civ_shadow="true"
-                    app:civ_shadow_color="#000000"
+                    app:civ_shadow_color="@color/TextOnBackgroundDim"
                     app:civ_shadow_gravity="center"
                     app:civ_border="true"
-                    app:civ_border_width="3dp"
+                    app:civ_border_width="5dp"
                     android:layout_marginTop="0dp"
                     android:id="@+id/businessLogo"
                     app:civ_shadow_radius="3"
@@ -44,7 +44,7 @@
                     android:layout_height="wrap_content"
                     android:maxLength="16"
                     android:text="Loading.."
-                    android:textColor="@color/TextColorPrimary"
+                    android:textColor="@color/TextColorSecondary"
                     android:layout_marginTop="0dp"
                     android:autoSizeTextType="uniform"
                     android:autoSizeMinTextSize="18sp"
