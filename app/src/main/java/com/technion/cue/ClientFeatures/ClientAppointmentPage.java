@@ -11,7 +11,6 @@ import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ParseException;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -34,12 +33,16 @@ import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.BusinessFeatures.BusinessInfoFragment;
 import com.technion.cue.data_classes.Business;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
+import static com.technion.cue.FirebaseCollections.APPOINTMENT_ACTIONS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 public class ClientAppointmentPage extends AppCompatActivity  {
@@ -152,16 +155,42 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Cancel this appointment")
                 .setMessage("Cancellation is Irreversible. ")
-                .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-                        FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-                                .document(a_id).delete().addOnSuccessListener(result -> {
-                            findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-                            Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();
-                            finish();
-                    });
-                    }
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+                    FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
+                            .document(a_id).delete().addOnSuccessListener(result -> {
+                                FirebaseFirestore.getInstance()
+                                        .collection(CLIENTS_COLLECTION)
+                                        .document(FirebaseAuth.getInstance().getUid())
+                                        .get()
+                                        .addOnSuccessListener(ds -> {
+                                            SimpleDateFormat sdf =
+                                                    new SimpleDateFormat("HH:mm dd/MM/YYYY");
+                                            try {
+                                                Business.AppointmentAction aa = new Business.AppointmentAction(
+                                                        "cancellation",
+                                                        ds.getString("name"),
+                                                        new Date(),
+                                                        sdf.parse(a_date),
+                                                        sdf.parse(a_date),
+                                                        a_type,
+                                                        a_type
+                                                );
+                                                FirebaseFirestore.getInstance()
+                                                        .collection(BUSINESSES_COLLECTION)
+                                                        .document(b_id)
+                                                        .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                        .document()
+                                                        .set(aa);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                        });
+
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();
+                        finish();
+                });
                 })
                 .setNegativeButton("No",null)
                 .show();
