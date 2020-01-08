@@ -1,13 +1,27 @@
 package com.technion.cue.ClientFeatures;
 
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 
 import android.annotation.SuppressLint;
+import android.app.AlarmManager;
 import android.app.DatePickerDialog;
+import android.app.IntentService;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.Service;
 import android.app.TimePickerDialog;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
@@ -26,6 +40,7 @@ import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 
+import com.technion.cue.AlarmReceiver;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
@@ -113,6 +128,8 @@ public class EditAppointmentActivity extends AppCompatActivity
 
             }
         }
+
+        createNotificationChannel();
 
 
     }
@@ -322,50 +339,73 @@ public class EditAppointmentActivity extends AppCompatActivity
                     });
 
                 /*
-                additions by Ophir on 6/1
+                additions by Ophir on 8/1
                 */
+
+                // alarm for sending reminders
+                Intent alarmIntent = new Intent(EditAppointmentActivity.this,
+                        AlarmReceiver.class);
+                PendingIntent pendingIntent =
+                        PendingIntent.getBroadcast(getBaseContext(), 0, alarmIntent, 0);
+
+                AlarmManager alarmManager =
+                        (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(appointment.date);
+                calendar.add(Calendar.DAY_OF_WEEK, -1);
+                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
 
                 FirebaseFirestore.getInstance()
                         .collection(CLIENTS_COLLECTION)
                         .document(appointment.client_id)
                         .get()
-                        .addOnSuccessListener(client  -> {
-                            FirebaseFirestore.getInstance()
-                                    .collection(BUSINESSES_COLLECTION)
-                                    .document(appointment.business_id)
-                                    .collection(TYPES_COLLECTION)
-                                    .document(appointment.type)
-                                    .get()
-                                    .addOnSuccessListener(type -> {
-                                        Business.AppointmentAction aa =
-                                                new Business.AppointmentAction(
-                                                        "scheduling",
-                                                        client.getString("name"),
-                                                        new Date(),
-                                                        appointment.date,
-                                                        appointment.date,
-                                                        type.getString("name"),
-                                                        type.getString("name")
-                                                );
+                        .addOnSuccessListener(client  ->
+                                FirebaseFirestore.getInstance()
+                                .collection(BUSINESSES_COLLECTION)
+                                .document(appointment.business_id)
+                                .collection(TYPES_COLLECTION)
+                                .document(appointment.type)
+                                .get()
+                                .addOnSuccessListener(type -> {
+                                    Business.AppointmentAction aa =
+                                            new Business.AppointmentAction(
+                                                    "scheduling",
+                                                    client.getString("name"),
+                                                    new Date(),
+                                                    appointment.date,
+                                                    appointment.date,
+                                                    type.getString("name"),
+                                                    type.getString("name")
+                                            );
 
 
-                                        FirebaseFirestore.getInstance()
-                                                .collection(BUSINESSES_COLLECTION)
-                                                .document(appointment.business_id)
-                                                .collection(APPOINTMENT_ACTIONS_COLLECTION)
-                                                .document()
-                                                .set(aa);
-                                    });
-
-                        });
-
-
+                                    FirebaseFirestore.getInstance()
+                                            .collection(BUSINESSES_COLLECTION)
+                                            .document(appointment.business_id)
+                                            .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                            .document()
+                                            .set(aa);
+                                }));
                 }
 
         }
     }
 
-
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "close appointment reminder";
+            String description = "reminder for an appointment 24 hours from now";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("0", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
 
     @SuppressLint("ResourceType")
     public Boolean didChooseType() {
