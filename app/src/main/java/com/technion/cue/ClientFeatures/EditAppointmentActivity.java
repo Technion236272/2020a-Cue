@@ -283,6 +283,21 @@ public class EditAppointmentActivity extends AppCompatActivity
                       additions by Ophir on 6/1
                        */
 
+
+                      Intent alarmIntent = new Intent(EditAppointmentActivity.this,
+                              AlarmReceiver.class);
+                      PendingIntent pendingIntent =
+                              PendingIntent.getBroadcast(getBaseContext(), 0, alarmIntent, 0);
+                      AlarmManager alarmManager =
+                              (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
+                      alarmManager.cancel(pendingIntent);
+
+                      Calendar calendar = Calendar.getInstance();
+                      calendar.setTime(appointment.date);
+                      calendar.add(Calendar.DAY_OF_WEEK, -1);
+                      alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
+
+
                       // Awful everything D:
                       FirebaseFirestore.getInstance()
                               .collection(CLIENTS_COLLECTION)
