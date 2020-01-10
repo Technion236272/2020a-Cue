@@ -1,23 +1,13 @@
 package com.technion.cue.BusinessFeatures;
 
-import android.app.TimePickerDialog;
-import java.text.ParseException;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-import java.text.SimpleDateFormat;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,16 +16,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.firebase.auth.FirebaseUser;
 import com.technion.cue.R;
-import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
-import com.technion.cue.data_classes.Business;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import java.util.HashMap;
+import java.util.Map;
 
 @ModuleAuthor("Topaz & Ophir")
 public class BusinessSignUp3 extends Fragment {
@@ -91,10 +76,15 @@ public class BusinessSignUp3 extends Fragment {
         @Override
         public void onBindViewHolder(@NonNull TypeHolder holder, int position) {
             if (businessSignUpContainer.types_fields.size() > position) {
-                holder.type_text.setText(businessSignUpContainer.types_fields.get(position).first);
-                holder.duration.setText(businessSignUpContainer.types_fields.get(position).second);
+                holder.type_text.setText(businessSignUpContainer.types_fields.get(position).get("name"));
+                holder.duration.setText(businessSignUpContainer.types_fields.get(position).get("duration"));
+                holder.notes_text.setText(businessSignUpContainer.types_fields.get(position).get("notes"));
+                if (businessSignUpContainer.types_fields.get(position).containsKey("isAvailableSunday")) {
+                    holder.sunday.setChecked(true);
+                }
+                // for all of them
             } else {
-                businessSignUpContainer.types_fields.add(new Pair<>("", ""));
+                businessSignUpContainer.types_fields.add(new HashMap<>());
             }
 
             holder.type_text.addTextChangedListener(new TextWatcher() {
@@ -109,9 +99,9 @@ public class BusinessSignUp3 extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    businessSignUpContainer.types_fields.set(position, new Pair<>(
-                            s.toString(), businessSignUpContainer.types_fields.get(position).second
-                    ));
+                    Map<String, String> fields = businessSignUpContainer.types_fields.get(position);
+                    fields.put("name", s.toString());
+                    businessSignUpContainer.types_fields.set(position, fields);
                 }
             });
 
@@ -128,11 +118,42 @@ public class BusinessSignUp3 extends Fragment {
 
                 @Override
                 public void afterTextChanged(Editable s) {
-                    businessSignUpContainer.types_fields.set(position, new Pair<>(
-                            businessSignUpContainer.types_fields.get(position).first, s.toString()
-                    ));
+                    Map<String, String> fields = businessSignUpContainer.types_fields.get(position);
+                    fields.put("duration", s.toString());
+                    businessSignUpContainer.types_fields.set(position, fields);
                 }
             });
+
+            holder.notes_text.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    Map<String, String> fields = businessSignUpContainer.types_fields.get(position);
+                    fields.put("notes", s.toString());
+                    businessSignUpContainer.types_fields.set(position, fields);
+                }
+            });
+
+            holder.sunday.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                Map<String, String> fields = businessSignUpContainer.types_fields.get(position);
+                if (isChecked) {
+                    fields.put("isAvailableSunday", "true");
+                    businessSignUpContainer.types_fields.set(position, fields);
+                } else {
+                    fields.remove("isAvailableSunday");
+                }
+                // for all of them
+            });
+
         }
 
         @Override
@@ -153,11 +174,16 @@ public class BusinessSignUp3 extends Fragment {
         class TypeHolder extends RecyclerView.ViewHolder {
             TextInputEditText duration;
             TextInputEditText type_text;
+            TextInputEditText notes_text;
+            CheckBox sunday;
 
             TypeHolder(@NonNull View itemView) {
                 super(itemView);
                 type_text = itemView.findViewById(R.id.businessTypeEditText);
                 duration = itemView.findViewById(R.id.businessTypeDurationEditText);
+                notes_text = itemView.findViewById(R.id.businessNotesEditText);
+                sunday = itemView.findViewById(R.id.type_sunday);
+                // for all of them
             }
         }
     }

@@ -15,8 +15,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Pair;
-import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -27,7 +25,6 @@ import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
-import com.google.gson.TypeAdapter;
 import com.technion.cue.R;
 import com.technion.cue.SignInActivity;
 import com.technion.cue.data_classes.Business;
@@ -59,7 +56,8 @@ public class BusinessSignUpContainer extends AppCompatActivity {
     public BusinessSignUp3.AppointmentTypesListAdapter types_adapter;
     public RecyclerView types_list;
     public int num_of_types = 1;
-    public List<Pair<String, String>> types_fields = new ArrayList<>();
+    public List<Map<String, String>> types_fields = new ArrayList<>();
+
 
     private FirebaseAuth mAuth = FirebaseAuth.getInstance();
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
@@ -254,8 +252,7 @@ public class BusinessSignUpContainer extends AppCompatActivity {
             BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder holder =
                     (BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder)
                             types_list.findViewHolderForAdapterPosition(i);
-            Map<String, String> attributes = new HashMap<>();
-            attributes.put("duration", holder.duration.getText().toString());
+            Map<String, String> attributes = types_fields.get(i);
             Business.AppointmentType at =
                     new Business.AppointmentType(holder.type_text.getText().toString(), attributes);
             db.collection(BUSINESSES_COLLECTION)
@@ -281,7 +278,6 @@ public class BusinessSignUpContainer extends AppCompatActivity {
             super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         }
 
-        @NonNull
         @Override
         public Fragment getItem(int position) {
             switch(position) {

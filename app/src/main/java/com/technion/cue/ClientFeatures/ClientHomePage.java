@@ -5,25 +5,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.net.Uri;
+
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.TextView;
 
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.technion.cue.LauncherActivity;
-import com.technion.cue.R;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.technion.cue.R;
 
 
 public class ClientHomePage extends AppCompatActivity  {
@@ -41,6 +37,14 @@ public class ClientHomePage extends AppCompatActivity  {
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        /*
+         Addition by Ophir on 10/1
+         */
+
+        FirebaseMessaging
+                .getInstance()
+                .subscribeToTopic(FirebaseAuth.getInstance().getUid());
 
 
         /** Set Action Bar */
