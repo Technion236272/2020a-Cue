@@ -24,8 +24,12 @@ import com.google.android.material.tabs.TabLayout;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.messaging.FirebaseMessaging;
+import com.technion.cue.FirebaseCollections;
 import com.technion.cue.R;
 
+import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
 
 public class ClientHomePage extends AppCompatActivity  {
@@ -43,6 +47,14 @@ public class ClientHomePage extends AppCompatActivity  {
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
+
+        /*
+         Addition by Ophir on 10/1
+         */
+
+        FirebaseMessaging
+                .getInstance()
+                .subscribeToTopic(FirebaseAuth.getInstance().getUid());
 
 
 

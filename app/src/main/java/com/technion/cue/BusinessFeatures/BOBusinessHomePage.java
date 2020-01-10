@@ -37,6 +37,7 @@ import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.SignInActivity;
@@ -74,6 +75,11 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bo_homepage);
+
+        FirebaseMessaging
+                .getInstance()
+                .subscribeToTopic(FirebaseAuth.getInstance().getUid());
+
         business_info_fragment = findViewById(R.id.business_info);
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
         // check the homepage item in the bottom menu

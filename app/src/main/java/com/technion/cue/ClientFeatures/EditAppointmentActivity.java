@@ -248,7 +248,16 @@ public class EditAppointmentActivity extends AppCompatActivity
     }
 
     public void saveChanges(View view) {
+
         findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.VISIBLE);
+
+        String doer;
+        if (FirebaseAuth.getInstance().getUid()
+                .equals(appointment.business_id)) {
+            doer = "business";
+        } else {
+            doer = "client";
+        }
 
         // exit and save
         if ((((TextView)findViewById(R.id.edit_appointment_time_text)).getText() == "Choose a time") ||
@@ -283,21 +292,6 @@ public class EditAppointmentActivity extends AppCompatActivity
                       additions by Ophir on 6/1
                        */
 
-
-                      Intent alarmIntent = new Intent(EditAppointmentActivity.this,
-                              AlarmReceiver.class);
-                      PendingIntent pendingIntent =
-                              PendingIntent.getBroadcast(getBaseContext(), 0, alarmIntent, 0);
-                      AlarmManager alarmManager =
-                              (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
-                      alarmManager.cancel(pendingIntent);
-
-                      Calendar calendar = Calendar.getInstance();
-                      calendar.setTime(appointment.date);
-                      calendar.add(Calendar.DAY_OF_WEEK, -1);
-                      alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
-
                       // Awful everything D:
                       FirebaseFirestore.getInstance()
                               .collection(CLIENTS_COLLECTION)
@@ -326,7 +320,8 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                                           old_appointment_date,
                                                                           appointment.date,
                                                                           type.getString("name"),
-                                                                          old_type.getString("name")
+                                                                          old_type.getString("name"),
+                                                                          doer
                                                                   );
 
 
@@ -390,7 +385,8 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                     appointment.date,
                                                     appointment.date,
                                                     type.getString("name"),
-                                                    type.getString("name")
+                                                    type.getString("name"),
+                                                    doer
                                             );
 
 

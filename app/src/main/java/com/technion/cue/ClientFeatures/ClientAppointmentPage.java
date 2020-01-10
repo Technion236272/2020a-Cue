@@ -152,6 +152,14 @@ public class ClientAppointmentPage extends AppCompatActivity  {
     }
 
     public void abortAppointment(MenuItem v) {
+        String doer;
+        if (FirebaseAuth.getInstance().getUid()
+                .equals(b_id)) {
+            doer = "business";
+        } else {
+            doer = "client";
+        }
+
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Cancel this appointment")
                 .setMessage("Cancellation is Irreversible. ")
@@ -174,7 +182,8 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                                                         sdf.parse(a_date),
                                                         sdf.parse(a_date),
                                                         a_type,
-                                                        a_type
+                                                        a_type,
+                                                        doer
                                                 );
                                                 FirebaseFirestore.getInstance()
                                                         .collection(BUSINESSES_COLLECTION)

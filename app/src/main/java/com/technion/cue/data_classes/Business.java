@@ -67,7 +67,7 @@ public class Business implements Serializable {
         @DocumentId
         public String id;
 
-        public String action_type, client_name, appointment_type, new_appointment_type;
+        public String action_type, client_name, appointment_type, new_appointment_type, action_doer;
         public Date action_date, appointment_date, new_appointment_date;
 
         public AppointmentAction() { }
@@ -75,7 +75,8 @@ public class Business implements Serializable {
         public AppointmentAction(String action_type, String client_name,
                                  Timestamp action_date, Timestamp appointment_date,
                                  Timestamp new_appointment_date,
-                                 String appointment_type, String new_appointment_type) {
+                                 String appointment_type, String new_appointment_type,
+                                 String actionDoer) {
             this.action_type = action_type;
             this.client_name = client_name;
             this.action_date = action_date.toDate();
@@ -83,12 +84,14 @@ public class Business implements Serializable {
             this.new_appointment_date = new_appointment_date.toDate();
             this.appointment_type = appointment_type;
             this.new_appointment_type = new_appointment_type;
+            this.action_doer = actionDoer;
         }
 
         public AppointmentAction(String action_type, String client_name,
                                  Date action_date, Date appointment_date,
                                  Date new_appointment_date,
-                                 String appointment_type, String new_appointment_type) {
+                                 String appointment_type, String new_appointment_type,
+                                 String actionDoer) {
             this.action_type = action_type;
             this.client_name = client_name;
             this.action_date = action_date;
@@ -96,6 +99,7 @@ public class Business implements Serializable {
             this.new_appointment_date = new_appointment_date;
             this.appointment_type = appointment_type;
             this.new_appointment_type = new_appointment_type;
+            this.action_doer = actionDoer;
         }
     }
 
