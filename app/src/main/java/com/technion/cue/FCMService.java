@@ -20,7 +20,9 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
+import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 public class FCMService extends FirebaseMessagingService {
 
@@ -95,8 +97,8 @@ public class FCMService extends FirebaseMessagingService {
                                             .build();
                             mNotificationManager.notify(0, notification);
                         } else {
-                            if (remoteMessage.getData().get("action_doer").equals("client"))
-                                return;
+//                            if (remoteMessage.getData().get("action_doer").equals("client"))
+//                                return;
                             switch (remoteMessage.getData().get("action_type")) {
                                 case "scheduling":
                                     bigTextStyle.setBigContentTitle(
@@ -143,6 +145,27 @@ public class FCMService extends FirebaseMessagingService {
                             mNotificationManager.notify(0, notification);
 
                             Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+
+                            String ap_type = remoteMessage.getData()
+                                    .get("action_type").equals("scheduling") ?
+                                    remoteMessage.getData().get("appointment_type") :
+                                    remoteMessage.getData().get("new_appointment_type");
+
+                            String ap_date = remoteMessage.getData()
+                                    .get("action_type").equals("scheduling") ?
+                                    remoteMessage.getData().get("appointment_date") :
+                                    remoteMessage.getData().get("new_appointment_date");
+
+                            c.setTimeInMillis(Long.valueOf(ap_date));
+
+                            alarmIntent.putExtra("business", remoteMessage.getData().get("business_name"));
+                            alarmIntent.putExtra("notes", remoteMessage.getData().get("notes"));
+                            alarmIntent.putExtra("type", ap_type);
+                            alarmIntent.putExtra("date", formattingDateFormat.format(c.getTime()));
+
+                            c.add(Calendar.DAY_OF_WEEK, -1);
+
+
                             PendingIntent pendingIntent =
                                     PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
                             AlarmManager alarmManager =
@@ -152,12 +175,8 @@ public class FCMService extends FirebaseMessagingService {
                                 alarmManager.cancel(pendingIntent);
                             else if (remoteMessage.getData().get("action_type").equals("rescheduling")) {
                                 alarmManager.cancel(pendingIntent);
-                                c.setTimeInMillis(Long.valueOf(remoteMessage.getData().get("new_appointment_date")));
-                                c.add(Calendar.DAY_OF_WEEK, -1);
                                 alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
                             } else {
-                                c.setTimeInMillis(Long.valueOf(remoteMessage.getData().get("appointment_date")));
-                                c.add(Calendar.DAY_OF_WEEK, -1);
                                 alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
                             }
                         }

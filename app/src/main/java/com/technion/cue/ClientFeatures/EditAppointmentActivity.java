@@ -80,12 +80,12 @@ public class EditAppointmentActivity extends AppCompatActivity
      * Business Owner that want to create an NEW appointment*
      * should add bundle with "business_id" and "client_name"*
      * Business Owner that want to create an EDIT appointment
-     * should add bundle with "appointment_id" and "business_id"*
+     * should add bundle with "notes" and "business_id"*
      *
      * Client  that want to create an NEW appointment*
      * should add bundle with "business_id" *
      * Client that want to create an EDIT appointment
-     * should add bundle with "appointment_id" and "business_id"*
+     * should add bundle with "notes" and "business_id"*
     * **/
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,8 +99,8 @@ public class EditAppointmentActivity extends AppCompatActivity
         intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (extras.containsKey("appointment_id") && extras.containsKey("business_id")) { // you are in edit appointment
-                appointment_id = intent.getExtras().getString("appointment_id");
+            if (extras.containsKey("notes") && extras.containsKey("business_id")) { // you are in edit appointment
+                appointment_id = intent.getExtras().getString("notes");
                 business_id = intent.getExtras().getString("business_id");
 
                 loadAppointmentDetails();
@@ -321,7 +321,8 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                                           appointment.date,
                                                                           type.getString("name"),
                                                                           old_type.getString("name"),
-                                                                          doer
+                                                                          doer,
+                                                                          type.getString("notes")
                                                                   );
 
 
@@ -352,52 +353,40 @@ public class EditAppointmentActivity extends AppCompatActivity
                 additions by Ophir on 8/1
                 */
 
-                // alarm for sending reminders
-                Intent alarmIntent = new Intent(EditAppointmentActivity.this,
-                        AlarmReceiver.class);
-                PendingIntent pendingIntent =
-                        PendingIntent.getBroadcast(getBaseContext(), 0, alarmIntent, 0);
-
-                AlarmManager alarmManager =
-                        (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
-                Calendar calendar = Calendar.getInstance();
-                calendar.setTime(appointment.date);
-                calendar.add(Calendar.DAY_OF_WEEK, -1);
-                alarmManager.set(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), pendingIntent);
-
                 FirebaseFirestore.getInstance()
                         .collection(CLIENTS_COLLECTION)
                         .document(appointment.client_id)
                         .get()
                         .addOnSuccessListener(client  ->
                                 FirebaseFirestore.getInstance()
-                                .collection(BUSINESSES_COLLECTION)
-                                .document(appointment.business_id)
-                                .collection(TYPES_COLLECTION)
-                                .document(appointment.type)
-                                .get()
-                                .addOnSuccessListener(type -> {
-                                    Business.AppointmentAction aa =
-                                            new Business.AppointmentAction(
-                                                    "scheduling",
-                                                    client.getString("name"),
-                                                    new Date(),
-                                                    appointment.date,
-                                                    appointment.date,
-                                                    type.getString("name"),
-                                                    type.getString("name"),
-                                                    doer
-                                            );
+                                        .collection(BUSINESSES_COLLECTION)
+                                        .document(appointment.business_id)
+                                        .collection(TYPES_COLLECTION)
+                                        .document(appointment.type)
+                                        .get()
+                                        .addOnSuccessListener(type -> {
+                                            Business.AppointmentAction aa =
+                                                    new Business.AppointmentAction(
+                                                            "scheduling",
+                                                            client.getString("name"),
+                                                            new Date(),
+                                                            appointment.date,
+                                                            appointment.date,
+                                                            type.getString("name"),
+                                                            type.getString("name"),
+                                                            doer,
+                                                            type.getString("notes")
+                                                    );
 
 
-                                    FirebaseFirestore.getInstance()
-                                            .collection(BUSINESSES_COLLECTION)
-                                            .document(appointment.business_id)
-                                            .collection(APPOINTMENT_ACTIONS_COLLECTION)
-                                            .document()
-                                            .set(aa);
-                                }));
-                }
+                                            FirebaseFirestore.getInstance()
+                                                    .collection(BUSINESSES_COLLECTION)
+                                                    .document(appointment.business_id)
+                                                    .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                    .document()
+                                                    .set(aa);
+                                        }));
+            }
 
         }
     }

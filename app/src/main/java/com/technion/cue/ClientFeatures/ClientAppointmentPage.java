@@ -64,7 +64,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         a_type = intent.getExtras().getString("appointment_type");
         a_notes = intent.getExtras().getString("appointment_notes");
         a_date = intent.getExtras().getString("appointment_date");
-        a_id = intent.getExtras().getString("appointment_id");
+        a_id = intent.getExtras().getString("notes");
         //System.out.println("----------------------" + a_id);
 
         b_id = intent.getExtras().getString("business_id");
@@ -143,7 +143,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
     public void reschedThisAppointment(MenuItem v) {
         //System.out.println("----------------------" + a_id);
         Intent intent = new Intent(this, EditAppointmentActivity.class);
-        intent.putExtra("appointment_id",a_id);
+        intent.putExtra("notes",a_id);
         intent.putExtra("business_id",b_id);
         startActivity(intent);
         finish();
@@ -183,7 +183,8 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                                                         sdf.parse(a_date),
                                                         a_type,
                                                         a_type,
-                                                        doer
+                                                        doer,
+                                                        a_id
                                                 );
                                                 FirebaseFirestore.getInstance()
                                                         .collection(BUSINESSES_COLLECTION)

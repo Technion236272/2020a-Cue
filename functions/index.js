@@ -4,7 +4,7 @@ admin.initializeApp(functions.config().firebase);
 const firestoreTriggers = functions.region('europe-west1').firestore;
 const db = admin.firestore()
 
-// new appointment / change in exisiting appointment / cancellation of an appointment
+// new appointment / change in existing appointment / cancellation of an appointment
 exports.informOnAppointmentAndRemind = firestoreTriggers
                             .document('Businesses/{businessId}/AppointmentActions/{actionId}')
                             .onCreate((snap, context) => {
@@ -28,7 +28,9 @@ exports.informOnAppointmentAndRemind = firestoreTriggers
                                                         appointment_date: snap.data().appointment_date.toDate().getTime().toString(),
                                                         new_appointment_date: snap.data().new_appointment_date.toDate().getTime().toString(),
                                                         appointment_type: snap.data().appointment_type,
-                                                        action_doer: snap.data().action_doer
+                                                        action_doer: snap.data().action_doer,
+                                                        business_id: businessId,
+                                                        notes: snap.data().notes
                                                     }
                                                 };
 

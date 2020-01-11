@@ -23,7 +23,7 @@ public class Appointment implements Serializable {
         this.type = type;
         this.notes = notes;
         this.date = ts.toDate();
-//        this.appointment_id = appointment_id;
+//        this.notes = notes;
     }
 
     public Appointment(String business_id, String client_id,
@@ -32,7 +32,7 @@ public class Appointment implements Serializable {
         this.client_id = client_id;
         this.type = type;
         this.date = d;
-//        this.appointment_id = appointment_id;
+//        this.notes = notes;
     }
 
     @Override

@@ -75,7 +75,7 @@ public class MyAppointmentListAdapter extends
                 .get()
                 .addOnSuccessListener(l -> {
                     holder.appointment_id = l.getDocuments().get(0).getId();
-//                    holder.business.setTag(R.id.myAppointmentList,holder.appointment_id); // need to change - ben
+//                    holder.business.setTag(R.id.myAppointmentList,holder.notes); // need to change - ben
                 });
             holder.notes.setText(appointment.notes);
 
@@ -102,7 +102,7 @@ public class MyAppointmentListAdapter extends
                 getIntentBOPage.putExtra("appointment_date",holder.date.getText());
                 getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
                 getIntentBOPage.putExtra("business_id",holder.business_id);
-                getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
+                getIntentBOPage.putExtra("notes",holder.appointment_id);
 
                 parent.getContext().startActivity(getIntentBOPage);
 
