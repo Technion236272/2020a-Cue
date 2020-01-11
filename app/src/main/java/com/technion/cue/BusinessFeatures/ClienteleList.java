@@ -18,6 +18,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.ClientFeatures.EditAppointmentActivity;
@@ -53,7 +54,7 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                 .collection(BUSINESSES_COLLECTION)
                 .document(FirebaseAuth.getInstance().getUid())
                 .collection(CLIENTELE_COLLECTION)
-                .orderBy("bo_name");
+                .orderBy("name");
 
         FirestoreRecyclerOptions<Business.ClienteleMember> options =
                 new FirestoreRecyclerOptions.Builder<Business.ClienteleMember>()
@@ -121,15 +122,15 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     .collection(BUSINESSES_COLLECTION)
                     .document(FirebaseAuth.getInstance().getUid())
                     .collection(CLIENTELE_COLLECTION)
-                    .whereGreaterThanOrEqualTo("bo_name", String.valueOf(currentFirstLetter))
-                    .whereLessThan("bo_name", String.valueOf(nextFirstLetter))
-                    .orderBy("bo_name")
+                    .whereGreaterThanOrEqualTo("name", String.valueOf(currentFirstLetter))
+                    .whereLessThan("name", String.valueOf(nextFirstLetter))
+                    .orderBy("name")
                     .limit(1)
                     .get()
                     .addOnSuccessListener(documentSnapshots -> {
                         if (!documentSnapshots.isEmpty() &&
                                 documentSnapshots.getDocuments()
-                                        .get(0).getString("client_name").equals(cm.client_id)) {
+                                        .get(0).getString("client_id").equals(cm.client_id)) {
                             holder.firstLetter.setText(String.valueOf(cm.name.charAt(0)));
                             holder.firstLetter.setVisibility(View.VISIBLE);
                         }

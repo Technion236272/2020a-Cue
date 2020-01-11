@@ -2,11 +2,16 @@ package com.technion.cue.BusinessFeatures;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -15,6 +20,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.ClientFeatures.EditAppointmentActivity;
@@ -111,16 +117,12 @@ public class DailyAppointmentListAdapter extends
                 .collection(TYPES_COLLECTION)
                 .document(appointment.type)
                 .get()
-                .addOnSuccessListener(l -> {
-                    holder.type.setText(l.getString("name"));
-                });
+                .addOnSuccessListener(l -> holder.type.setText(l.getString("name")));
         FirebaseFirestore.getInstance()
                 .collection(CLIENTS_COLLECTION)
                 .document(appointment.client_id)
                 .get()
-                .addOnSuccessListener(l -> {
-                    holder.client.setText(l.getString("name"));
-                });
+                .addOnSuccessListener(l -> holder.client.setText(l.getString("name")));
 
         Date currentTime = new Date(System.currentTimeMillis());
         FirebaseFirestore.getInstance()
@@ -178,9 +180,25 @@ public class DailyAppointmentListAdapter extends
                                     .getColor(R.color.transparentTextOnBackground));
                             holder.date.setTextColor(context.getResources()
                                     .getColor(R.color.transparentTextOnBackground));
+                            // if th appointment has not happened yet, disallow marking it as "NO-SHOW"
+                        } else {
+                            holder.itemView.findViewById(R.id.no_show_mark).setClickable(false);
                         }
                     }
                 });
+
+        RadioButton no_show = holder.itemView.findViewById(R.id.no_show_mark);
+        no_show.setChecked(appointment.no_show);
+
+        no_show.setOnCheckedChangeListener((buttonView, isChecked) ->
+                FirebaseFirestore.getInstance()
+                        .collection(APPOINTMENTS_COLLECTION)
+                        .document(appointment.id)
+                        .update("no_show", isChecked)
+        );
+
+        noShowClarify(holder, appointment.client_id);
+
     }
 
     @NonNull
@@ -209,5 +227,27 @@ public class DailyAppointmentListAdapter extends
                 // TODO: check if need to change color of text inside items
             }
         }
+    }
+
+    private void noShowClarify(itemHolder holder, String client_id) {
+        FirebaseFirestore.getInstance()
+                .collection(APPOINTMENTS_COLLECTION)
+                .whereEqualTo("client_id", client_id)
+                .get()
+                .addOnSuccessListener(documentSnapshots -> {
+                    double size = documentSnapshots.size();
+                    double no_show_num = 0;
+                    for (DocumentSnapshot ds : documentSnapshots) {
+                        if (ds.getString("business_id").equals(FirebaseAuth.getInstance().getUid())
+                                && ds.contains("no_show")
+                                && ds.getBoolean("no_show")) {
+                            no_show_num++;
+                        }
+                    }
+
+                    if (no_show_num >= ((1.0/3.0) * size)) {
+                        holder.client.setTextColor(Color.RED);
+                    }
+                });
     }
 }

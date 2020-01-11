@@ -20,12 +20,16 @@ import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.ClientFeatures.EditAppointmentActivity;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Client;
 
+import org.w3c.dom.Text;
+
+import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
 /**
@@ -71,7 +75,10 @@ public class ClientInformationDialog extends DialogFragment {
                     client_email.setText(client.email);
                     client_phone.setClickable(true);
                     client_email.setClickable(true);
+                    noShowClarify(view, client.name);
                 });
+
+
 
         // clicking on the displayed email copied it to the clipboard
         client_email.setOnClickListener(cl -> {
@@ -111,5 +118,29 @@ public class ClientInformationDialog extends DialogFragment {
         if (dialog != null) {
             dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         }
+    }
+
+    private void noShowClarify(View view, String client_name) {
+        FirebaseFirestore.getInstance()
+                .collection(APPOINTMENTS_COLLECTION)
+                .whereEqualTo("business_id", FirebaseAuth.getInstance().getUid())
+                .whereEqualTo("client_id", client_id)
+                .get()
+                .addOnSuccessListener(documentSnapshots -> {
+                    double size = documentSnapshots.size();
+                    double no_show_num = 0;
+                    for (DocumentSnapshot ds : documentSnapshots) {
+                        if (ds.contains("no_show") && ds.getBoolean("no_show")) {
+                            no_show_num++;
+                        }
+                    }
+                    if (no_show_num >= ((1.0/3.0) * size)) {
+                        view.findViewById(R.id.no_show_clarify).setVisibility(View.VISIBLE);
+                        ((TextView) view.findViewById(R.id.no_show_clarify))
+                                .setText(client_name + " hasn't shown / was late to "
+                                        + (int) no_show_num + " appointments out of "
+                                        + (int) size + " appointments");
+                    }
+                });
     }
 }

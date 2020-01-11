@@ -7,11 +7,12 @@ import java.io.Serializable;
 import java.util.Date;
 
 public class Appointment implements Serializable {
-    public String business_id, client_id, type, notes;
 
     @DocumentId
     public String id;
 
+    public String business_id, client_id, type, notes;
+    public boolean no_show = false;
     public Date date;
 
     public Appointment() { }
@@ -23,7 +24,17 @@ public class Appointment implements Serializable {
         this.type = type;
         this.notes = notes;
         this.date = ts.toDate();
-//        this.notes = notes;
+    }
+
+    public Appointment(String business_id, String client_id,
+                       String type, String notes,
+                       Timestamp ts,String appointment_id, boolean no_show) {
+        this.business_id = business_id;
+        this.client_id = client_id;
+        this.type = type;
+        this.notes = notes;
+        this.date = ts.toDate();
+        this.no_show = no_show;
     }
 
     public Appointment(String business_id, String client_id,
@@ -32,7 +43,6 @@ public class Appointment implements Serializable {
         this.client_id = client_id;
         this.type = type;
         this.date = d;
-//        this.notes = notes;
     }
 
     @Override

@@ -7,7 +7,7 @@
     <RelativeLayout
         android:id="@+id/appointment_item"
         android:layout_width="match_parent"
-        android:layout_height="64dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="28dp"
@@ -64,6 +64,14 @@
             android:contentDescription="@string/current_appointment_flag"
             android:layout_marginTop="6dp"
             android:visibility="gone"/>
+
+        <RadioButton
+            android:id="@+id/no_show_mark"
+            android:text="NOSHOW?"
+            android:textSize="12sp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/appointment_item_text" />
 
     </RelativeLayout>
 
