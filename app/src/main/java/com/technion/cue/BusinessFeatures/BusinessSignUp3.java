@@ -57,22 +57,29 @@ public class BusinessSignUp3 extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        businessSignUpContainer.types_list = view.findViewById(R.id.types_list);
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
-        businessSignUpContainer.types_list.setLayoutManager(layoutManager);
-
-        businessSignUpContainer.types_list.setHasFixedSize(true);
+//        businessSignUpContainer.types_list = view.findViewById(R.id.types_list);
+//
+//        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+//        businessSignUpContainer.types_list.setLayoutManager(layoutManager);
+//
+//        businessSignUpContainer.types_list.setHasFixedSize(true);
 
 //        businessSignUpContainer.types_adapter = new AppointmentTypesListAdapter();
 //        businessSignUpContainer.types_adapter.setHasStableIds(true);
 
-        businessSignUpContainer.types_list.setAdapter(businessSignUpContainer.types_adapter);
+//        businessSignUpContainer.types_list.setAdapter(businessSignUpContainer.types_adapter);
 
         ImageButton another_appointment_button = view.findViewById(R.id.add_another_type_button);
         another_appointment_button.setOnClickListener(cl -> {
             businessSignUpContainer.num_of_types++;
+            Fragment types = new typesFragment();
+            FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+            transaction.replace(R.id.fragment_setting, types)
+                    .addToBackStack(null)
+                    .commit();
 
+//                final Intent intent = new Intent(MySettingsFragment.super.getContext(),AppoitmentTypes.class);
+//                startActivity(intent);
 //            businessSignUpContainer.types_adapter.notifyDataSetChanged();
         });
     }
