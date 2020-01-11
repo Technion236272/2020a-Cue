@@ -64,15 +64,16 @@ public class BusinessSignUp3 extends Fragment {
 
         businessSignUpContainer.types_list.setHasFixedSize(true);
 
-        businessSignUpContainer.types_adapter = new AppointmentTypesListAdapter();
-        businessSignUpContainer.types_adapter.setHasStableIds(true);
+//        businessSignUpContainer.types_adapter = new AppointmentTypesListAdapter();
+//        businessSignUpContainer.types_adapter.setHasStableIds(true);
 
         businessSignUpContainer.types_list.setAdapter(businessSignUpContainer.types_adapter);
 
         ImageButton another_appointment_button = view.findViewById(R.id.add_another_type_button);
         another_appointment_button.setOnClickListener(cl -> {
             businessSignUpContainer.num_of_types++;
-            businessSignUpContainer.types_adapter.notifyDataSetChanged();
+
+//            businessSignUpContainer.types_adapter.notifyDataSetChanged();
         });
     }
 
