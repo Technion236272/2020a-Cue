@@ -79,5 +79,10 @@
     <string name="appointment_notes_fill">fill in notes regarding the appointment</string>
     <string name="check_available_type_days">Check days in which this type is available for scheduling</string>
 
+    <string name="hint_type_name">Appointment Type Name</string>
+    <string name="notes_for_clients">fill in notes regarding the appointment</string>
+    <string name="add_type">Add Type</string>
+    <string name="done">Done</string>
+    <string name="active_type">Type is Active</string>
 
 </resources>

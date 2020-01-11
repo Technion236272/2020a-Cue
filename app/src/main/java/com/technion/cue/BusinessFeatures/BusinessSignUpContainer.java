@@ -246,28 +246,33 @@ public class BusinessSignUpContainer extends AppCompatActivity {
                 bState, bCity, bAddress, open_hours, logo_path);
         db.collection(BUSINESSES_COLLECTION)
                 .document(user.getUid())
-                .set(business);
+                .set(business)
+                .addOnSuccessListener(l -> {
+                    for (int i = 0 ; i < types_list.getChildCount() - 1; i++) {
+                        BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder holder =
+                                (BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder)
+                                        types_list.findViewHolderForAdapterPosition(i);
+                        Map<String, String> attributes = types_fields.get(i);
+                        Business.AppointmentType at =
+                                new Business.AppointmentType(holder.type_name.getText().toString(), attributes);
+                        db.collection(BUSINESSES_COLLECTION)
+                                .document(user.getUid())
+                                .collection(TYPES_COLLECTION)
+                                .document()
+                                .set(at)
+                                .addOnSuccessListener(l2 -> {
+                                    Toast.makeText(getBaseContext(), "Sign up done!",
+                                            Toast.LENGTH_LONG).show();
+                                    Intent in = new Intent(getBaseContext(), SignInActivity.class);
+                                    startActivity(in);
+                                    done_btn.setEnabled(true);
+                                    finish();
+                                });
+                    }
 
-        for (int i = 0 ; i < types_list.getChildCount(); i++) {
-            BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder holder =
-                    (BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder)
-                            types_list.findViewHolderForAdapterPosition(i);
-            Map<String, String> attributes = types_fields.get(i);
-            Business.AppointmentType at =
-                    new Business.AppointmentType(holder.type_text.getText().toString(), attributes);
-            db.collection(BUSINESSES_COLLECTION)
-                    .document(user.getUid())
-                    .collection(TYPES_COLLECTION)
-                    .document()
-                    .set(at);
-        }
+                });
 
-        Toast.makeText(getBaseContext(), "Sign up done!",
-                Toast.LENGTH_LONG).show();
-        Intent in = new Intent(getBaseContext(), SignInActivity.class);
-        startActivity(in);
-        done_btn.setEnabled(true);
-        finish();
+
     }
 
     class SignUpPagerAdapter extends FragmentStatePagerAdapter {
