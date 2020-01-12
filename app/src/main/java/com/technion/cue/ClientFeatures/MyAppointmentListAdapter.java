@@ -54,7 +54,7 @@ public class MyAppointmentListAdapter extends
                 .document(appointment.business_id)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.business.setText(l.getString("name"));
+                    holder.business.setText(l.getString("business_name"));
                     holder.business_id = (appointment.business_id);
                 });
         FirebaseFirestore.getInstance()
@@ -64,11 +64,11 @@ public class MyAppointmentListAdapter extends
                 .document(appointment.type)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.type.setText(l.getString("bo_name"));
+                    holder.type.setText(l.getString("name"));
                 });
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("client_name",appointment.client_id)
+                .whereEqualTo("client_id",appointment.client_id)
                 .whereEqualTo("business_id",appointment.business_id)
                 .whereEqualTo("date", new Timestamp(appointment.date))
                 .limit(1)
@@ -77,7 +77,10 @@ public class MyAppointmentListAdapter extends
                     holder.appointment_id = l.getDocuments().get(0).getId();
 //                    holder.business.setTag(R.id.myAppointmentList,holder.notes); // need to change - ben
                 });
-            holder.notes.setText(appointment.notes);
+
+            holder.notes.setText(appointment.notes == null ? "No note yet." : appointment.notes);
+
+
 
 
     }
