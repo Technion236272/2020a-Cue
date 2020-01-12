@@ -103,7 +103,7 @@ public class DailyAppointmentListAdapter extends
         holder.itemView.findViewById(R.id.appointment_item).setOnClickListener(cl -> {
             Bundle bundle = new Bundle();
             bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
-            bundle.putString("notes", appointment.id);
+            bundle.putString("appointment_id", appointment.id);
             Intent intent = new Intent(context, EditAppointmentActivity.class);
             intent.putExtras(bundle);
             activity.startActivity(intent);

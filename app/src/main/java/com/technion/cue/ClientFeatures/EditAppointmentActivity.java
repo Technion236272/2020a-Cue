@@ -1,31 +1,17 @@
 package com.technion.cue.ClientFeatures;
 
-
-import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
-
 import android.annotation.SuppressLint;
-import android.app.AlarmManager;
 import android.app.DatePickerDialog;
-import android.app.IntentService;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.Service;
 import android.app.TimePickerDialog;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.IBinder;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -33,14 +19,17 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.google.android.material.chip.Chip;
+
+import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 
+import com.technion.cue.LauncherActivity;
 
-import com.technion.cue.AlarmReceiver;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
@@ -58,20 +47,23 @@ import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
-
+enum UserType {
+    BusinessOwner,
+    Client
+}
 public class EditAppointmentActivity extends AppCompatActivity
         implements DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener{
 
-    String business_id;
-    String appointment_id;
     FirebaseFirestore db;
     Business business;
     Intent intent;
-    String appointment_type;
     Calendar calendar;
     Appointment appointment;
     FirebaseAuth mAuth;
     String radioButton_id;
+    Map<Integer, String> typesIdAndNotes = new HashMap<>();
+    UserType userType;
+    Boolean firstEdit;// needed to change
     private Date old_appointment_date;
     private String old_appointment_type;
 
@@ -95,41 +87,49 @@ public class EditAppointmentActivity extends AppCompatActivity
 
         db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        appointment = new Appointment();
         radioButton_id="";
+        firstEdit=true;
         intent = getIntent();
         Bundle extras = intent.getExtras();
         if (extras != null) {
-            if (extras.containsKey("notes") && extras.containsKey("business_id")) { // you are in edit appointment
-                appointment_id = intent.getExtras().getString("notes");
-                business_id = intent.getExtras().getString("business_id");
+            if (extras.containsKey("appointment_id") && extras.containsKey("business_id")) { // you are in edit appointment
 
+                appointment.id = intent.getExtras().getString("appointment_id");
+                appointment.business_id = intent.getExtras().getString("business_id");
                 loadAppointmentDetails();
             } else if (extras.containsKey("business_id") && extras.containsKey("client_name")){ // newAppointment as business owner
 
-                business_id = intent.getExtras().getString("business_id");
-                appointment_id ="";
-                appointment_type ="";
-                appointment = new Appointment();
-                appointment.id="";
-                appointment.business_id=business_id;
+                userType = UserType.BusinessOwner;
+                appointment.id = "";
+                appointment.business_id = intent.getExtras().getString("business_id");
+                appointment.type="";
                 appointment.client_id = intent.getExtras().getString("client_name");
                 loadNewAppointment();
-
             } else if (extras.containsKey("business_id")){ // newAppointment as client
-                business_id = intent.getExtras().getString("business_id");
-                appointment_id ="";
-                appointment_type ="";
-                // -- setting appointment object
-                appointment = new Appointment();
+
+                userType = UserType.Client;
                 appointment.id="";
-                appointment.business_id=business_id;
+                appointment.type="";
+                appointment.business_id=intent.getExtras().getString("business_id");
                 appointment.client_id = mAuth.getCurrentUser().getUid();
                 loadNewAppointment();
 
             }
+        } else {
+
+            Intent intent = new Intent(this, LauncherActivity.class);
+            startActivity(intent);
+            finish();
         }
 
         createNotificationChannel();
+        /** Set Action Bar */
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.edit_appointment_actionbar);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+
 
 
     }
@@ -142,7 +142,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     private void loadBusinessData() {
         db.collection(BUSINESSES_COLLECTION)
-                .document(business_id)
+                .document(appointment.business_id)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     business = documentSnapshot.toObject(Business.class);
@@ -162,62 +162,79 @@ public class EditAppointmentActivity extends AppCompatActivity
     private void loadTypes() {
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
-                .document(business_id)
+                .document(appointment.business_id)
                 .collection(TYPES_COLLECTION)
                 .get()
                 .addOnSuccessListener(l -> {
-                    RadioGroup rg = findViewById(R.id.edit_appoinment_radiogroup);
+                    ChipGroup rg = findViewById(R.id.edit_appoinment_radiogroup);
                     // add a listener to check button
                     rg.setOnCheckedChangeListener((group, checkedId) -> {
-                        // This will get the radiobutton that has changed in its check state
-                        RadioButton checkedRadioButton = group.findViewById(checkedId);
-                        // This puts the value (true/false) into the variable
-                        boolean isChecked = checkedRadioButton.isChecked();
-                        // If the radiobutton that has changed in check state is now checked...
-                        if (isChecked)
-                        {
-                            appointment_type = l.getDocuments().get(checkedId).getId();
+                        if (checkedId != -1) {
+                            if (firstEdit == false ) { appointment.notes = typesIdAndNotes.get(checkedId);} else {firstEdit=false;}
+                            appointment.type = l.getDocuments().get(checkedId).getId();
+                            if (userType == UserType.BusinessOwner) {
+                                ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
+                            } else {
+                                    ((TextView) findViewById(R.id.edit_appointment_notes_text)).setText(appointment.notes);
+                                    firstEdit = false;
+
+                            }
                             radioButton_id = l.getDocuments().get(checkedId).getId();
+                        } else {
+                            radioButton_id="";
+                            appointment.type="";
                         }
                     });
-                    // ----
-                    // load new radioview  buttons :
+                    int i=0;
                     for (DocumentSnapshot document : l.getDocuments()) {
-                        RadioButton[] rb = new RadioButton[l.getDocuments().size()];
-                        for(int i=0; i<l.getDocuments().size(); i++){
-                            rb[i]  = new RadioButton(this);
+
+                        Chip[] rb = new Chip[l.getDocuments().size()];
+                            rb[i]  = (Chip)getLayoutInflater().inflate(R.layout.layout_chip_choice, rg, false);
+                            rb[i].setText(document.getString("name"));
                             rg.addView(rb[i]);
-                            rb[i].setText(document.getString("bo_name"));
-                            // ---
+                            // Get types notes :
+                            typesIdAndNotes.put(i, (((Map<String, String>)document.get("attributes")).get("note:" +
+                                    "") != null ? ((Map<String, String>)document.get("attributes")).get("note") : "No notes yet."));
                             rb[i].setId(i);
-                            if (document.getId().equals(appointment_type) ) {
-                                rb[i].setChecked(true);
+                            if (document.getId().equals(appointment.type) ) {
+                                rg.check(rb[i].getId());
                                 radioButton_id = document.getId();
                             }
-                        }
-
+                            i++;
                     }
                 });
     }
 
+
     private void loadAppointmentData() {
+        System.out.println("--------------------------- WE ARE HERE");
         db.collection(APPOINTMENTS_COLLECTION)
-                .document(appointment_id)
+                .document(appointment.id)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     appointment = documentSnapshot.toObject(Appointment.class);
                     if (appointment!=null) {
-
                         old_appointment_date = appointment.date;
                         old_appointment_type = appointment.type;
 
+                        System.out.println("--------------------------- " +appointment.business_id+ " = " +mAuth.getUid());
+                        if (appointment.business_id.equals(mAuth.getUid())) {
+                            System.out.println("--------------------------- WE ARE HERE");
+                            userType = UserType.BusinessOwner;
+                            ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
+                            findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
+                            ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
+
+                        } else {
+                            userType = UserType.Client;
+                            ((TextView)findViewById(R.id.edit_appointment_notes_text)).setText(appointment.notes);
+                        }
+
                         appointment.id = documentSnapshot.getId();
-                        TextView notes = findViewById(R.id.edit_appointment_notes_text);
-                        notes.setText(appointment.notes);
+
                         TextView date = findViewById(R.id.edit_appointment_time_text);
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
                         date.setText(sdf.format(appointment.date ));
-                        appointment_type = appointment.type;
                     }
                     loadTypes(); // load appointments type
 
@@ -267,20 +284,26 @@ public class EditAppointmentActivity extends AppCompatActivity
                     .setTitle("Please Choose a date and Appointment Type")
                     .setMessage("")
                     .setPositiveButton("Ok", null)
-                    .setNegativeButton("Nevermind", null)
+                    .setNegativeButton("Cancel", null)
                     .show();
 
         } else {
+
+            // Update notes
+            if (userType == UserType.BusinessOwner) {
+                appointment.notes = ((com.google.android.material.textfield.TextInputEditText)findViewById(R.id.edit_appointment_notes_text_edit_text)).getText().toString();
+            }
+
             if (!appointment.id.equals(""))  {// reschedule  appointment
                 appointment.type = radioButton_id;
-                appointment.notes ="notes about the appointments - per type";
+                String oldAppointmentId = appointment.id;
                 appointment.id="";// avoid adding old appointmet_id to  firestore
                       FirebaseFirestore.getInstance()
                             .collection(APPOINTMENTS_COLLECTION)
                             .document()
                             .set(appointment).addOnCompleteListener(task ->
                               FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-                                      .document(appointment_id).delete().addOnSuccessListener(result -> { // deleting old appointment
+                                      .document(oldAppointmentId).delete().addOnSuccessListener(result -> { // deleting old appointment
                                 findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(), "Appointment Rescheduled Successfully ", Toast.LENGTH_LONG).show();
                                 // --
@@ -338,8 +361,10 @@ public class EditAppointmentActivity extends AppCompatActivity
 
                               });
             } else {                                // new appointment
-                appointment.notes ="notes about the appointments - per type"; // TODO: need to be change per type
                 appointment.type = radioButton_id;
+
+                if (appointment.notes.equals("")) {  appointment.notes="No notes yet." ;}
+
                 FirebaseFirestore.getInstance()
                         .collection(APPOINTMENTS_COLLECTION)
                         .document()
@@ -409,7 +434,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     @SuppressLint("ResourceType")
     public Boolean didChooseType() {
-        RadioGroup radioGroup = findViewById(R.id.edit_appoinment_radiogroup);
+        ChipGroup radioGroup = findViewById(R.id.edit_appoinment_radiogroup);
         return !radioButton_id.equals("");
     }
 
@@ -441,7 +466,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 .collection(BUSINESSES_COLLECTION)
                 .document(business.id)
                 .collection(TYPES_COLLECTION)
-                .document(appointment_type)
+                .document(appointment.type)
                 .get()
                 .addOnSuccessListener(ds -> {
                     calendar.add(Calendar.MINUTE, Integer.valueOf(
@@ -466,6 +491,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                     for (DocumentSnapshot d : qs.getDocuments()) {
                         atm.put(d.getId(), Integer.valueOf(
                                 ((Map<String, String>)d.get("attributes")).get("duration"))
+
                         );
                     }
                 });
@@ -512,14 +538,14 @@ public class EditAppointmentActivity extends AppCompatActivity
 
                 });
 
-        Tasks.whenAll(t).addOnSuccessListener(sl ->
+        Tasks.whenAllSuccess(t).addOnSuccessListener(sl ->
                 db.collection(APPOINTMENTS_COLLECTION)
-                        .whereEqualTo("business_id",business_id)
+                        .whereEqualTo("business_id",appointment.business_id)
                         .orderBy("date")
                         .get().addOnCompleteListener(l -> {
                             findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
                             for (DocumentSnapshot document : l.getResult().getDocuments()) {
-                                if ((document.exists()) && (document.getId() != appointment_id)) {
+                                if ((document.exists()) && (document.getId() != appointment.id)) {
                                     Date appointmentDate = ((Timestamp)document.get("date")).toDate();
                                     int duration = atm.get(document.getString("type"));
                                     Calendar c = Calendar.getInstance();
@@ -560,7 +586,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                     newFragment.show(getSupportFragmentManager(),
                             "datePicker");
                 })
-                .setNegativeButton("Nevermind", null)
+                .setNegativeButton("Cancel", null)
                 .show();
         return;
     }
