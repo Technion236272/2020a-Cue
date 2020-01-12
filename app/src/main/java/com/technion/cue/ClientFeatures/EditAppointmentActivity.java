@@ -207,7 +207,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
 
     private void loadAppointmentData() {
-        System.out.println("--------------------------- WE ARE HERE");
+
         db.collection(APPOINTMENTS_COLLECTION)
                 .document(appointment.id)
                 .get()
@@ -216,10 +216,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                     if (appointment!=null) {
                         old_appointment_date = appointment.date;
                         old_appointment_type = appointment.type;
-
-                        System.out.println("--------------------------- " +appointment.business_id+ " = " +mAuth.getUid());
                         if (appointment.business_id.equals(mAuth.getUid())) {
-                            System.out.println("--------------------------- WE ARE HERE");
                             userType = UserType.BusinessOwner;
                             ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
                             findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
