@@ -80,7 +80,7 @@ class ClientBusinessLoader {
 
 
         TextView openHours = view.findViewById(R.id.openHoursTime);
-        String Sunday = business.open_hours.get("Sunday")!= "" ? business.open_hours.get("Monday") : "Close";
+        String Sunday = business.open_hours.get("Sunday")!= "" ? business.open_hours.get("Sunday") : "Close";
         String Monday = (business.open_hours.get("Monday") != "" ? business.open_hours.get("Monday") : "Close");
         String Tuesday =(business.open_hours.get("Tuesday")!= "" ? business.open_hours.get("Tuesday") : "Close");
         String Wednesday =  (business.open_hours.get("Wednesday")!= "" ? business.open_hours.get("Wednesday") : "Close");
