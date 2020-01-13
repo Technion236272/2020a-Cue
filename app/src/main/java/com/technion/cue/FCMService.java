@@ -32,6 +32,9 @@ public class FCMService extends FirebaseMessagingService {
         NotificationManager mNotificationManager =
                 (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 
+        if (FirebaseAuth.getInstance().getUid() == null)
+            return;
+
         // reminder on appointment
         if (remoteMessage.getData().containsKey("business_name")) {
 
@@ -97,8 +100,8 @@ public class FCMService extends FirebaseMessagingService {
                                             .build();
                             mNotificationManager.notify(0, notification);
                         } else {
-//                            if (remoteMessage.getData().get("action_doer").equals("client"))
-//                                return;
+                            if (remoteMessage.getData().get("action_doer").equals("client"))
+                                return;
                             switch (remoteMessage.getData().get("action_type")) {
                                 case "scheduling":
                                     bigTextStyle.setBigContentTitle(

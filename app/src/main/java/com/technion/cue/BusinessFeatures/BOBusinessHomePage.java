@@ -97,7 +97,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
         reviews_list.setLayoutManager(layoutManager);
 
-        // a query to get all the 10 most recent changes in the business'es schedule
+        // a query to get all the 10 most recent reviews in the business'es schedule
         Query query = FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
                 .document(FirebaseAuth.getInstance().getUid())
