@@ -123,7 +123,7 @@ public class ClientInformationDialog extends DialogFragment {
     private void noShowClarify(View view, String client_name) {
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("business_id", FirebaseAuth.getInstance().getUid())
+                .whereEqualTo("busines  s_id", FirebaseAuth.getInstance().getUid())
                 .whereEqualTo("client_id", client_id)
                 .get()
                 .addOnSuccessListener(documentSnapshots -> {

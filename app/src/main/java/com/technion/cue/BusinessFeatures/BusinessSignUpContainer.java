@@ -253,6 +253,7 @@ public class BusinessSignUpContainer extends AppCompatActivity {
                                 (BusinessSignUp3.AppointmentTypesListAdapter.TypeHolder)
                                         types_list.findViewHolderForAdapterPosition(i);
                         Map<String, String> attributes = types_fields.get(i);
+                        attributes.put("active", "true");
                         Business.AppointmentType at =
                                 new Business.AppointmentType(holder.type_name.getText().toString(), attributes);
                         db.collection(BUSINESSES_COLLECTION)
