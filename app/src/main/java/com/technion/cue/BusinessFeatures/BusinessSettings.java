@@ -16,12 +16,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
@@ -37,6 +39,7 @@ import com.google.firebase.storage.StorageReference;
 import com.technion.cue.Credits;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
+import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
@@ -49,14 +52,13 @@ import static com.technion.cue.data_classes.Business.*;
 
 @ModuleAuthor("Topaz")
 public class BusinessSettings extends AppCompatActivity {
-    private RadioGroup radioGroup;
-
     private FirebaseUser currentUser;
     RecyclerView types;
     AlertDialog.Builder builder;
     public FirebaseFirestore db;
     public FirebaseStorage storage;
     StorageReference storageRef;
+
 
 
     @Override
@@ -94,8 +96,6 @@ public class BusinessSettings extends AppCompatActivity {
                         .addToBackStack(null)
                         .commit();
 
-//                final Intent intent = new Intent(MySettingsFragment.super.getContext(),AppoitmentTypes.class);
-//                startActivity(intent);
             }
 
             if (p.getKey().equals("time frame")) {
@@ -192,6 +192,7 @@ public class BusinessSettings extends AppCompatActivity {
     }
 
     public static class typesFragment extends Fragment {
+        AppointmentTypesListAdapter tAdapter;
         public FirebaseFirestore db;
         public FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
@@ -208,9 +209,26 @@ public class BusinessSettings extends AppCompatActivity {
         }
 
         @Override
+        public void onStart() {
+            super.onStart();
+            tAdapter.startListening();
+        }
+
+        @Override
+        public void onStop() {
+            super.onStop();
+            tAdapter.stopListening();
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+            tAdapter.startListening();
+        }
+
+        @Override
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-
 
             Button add_button = view.findViewById(R.id.button_add_type);
             RecyclerView types = view.findViewById(R.id.types_list);
@@ -219,23 +237,38 @@ public class BusinessSettings extends AppCompatActivity {
             types.setHasFixedSize(true);
 
             Query query = FirebaseFirestore.getInstance()
-                    .collection(BUSINESSES_COLLECTION)
-                    .document(FirebaseAuth.getInstance().getUid())
-                    .collection(TYPES_COLLECTION)
-                    .orderBy("name");
+                    .collection(BUSINESSES_COLLECTION+"/"+FirebaseAuth.getInstance().getUid()
+                            +"/Types").orderBy("name");
 
             FirestoreRecyclerOptions<AppointmentType> options =
                     new FirestoreRecyclerOptions.Builder<AppointmentType>()
                             .setQuery(query, AppointmentType.class)
                             .build();
 
-            AppointmentTypesListAdapter tAdapter = new AppointmentTypesListAdapter(options);
+            tAdapter = new AppointmentTypesListAdapter(options, new AppointmentTypesListAdapter.OnItemClickListener(){
+                @Override
+                public void onItemClick (View view, int position){
+                    View v = types.getLayoutManager().findViewByPosition(position);
+                    TextView name = v.findViewById(R.id.businessType);
+                    Fragment new_types = new newTypesFragment();
+                    Bundle args = new Bundle();
+                    args.putString("name",name.getText().toString());
+                    new_types.setArguments(args);
+                    FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.fragment_setting, new_types)
+                            .addToBackStack(null)
+                            .commit();
+
+
+                }
+            });
             types.setAdapter(tAdapter);
+
 
             add_button.setOnClickListener(v->{
                 Fragment new_types = new newTypesFragment();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.types_fragment, new_types)
+                transaction.replace(R.id.fragment_setting, new_types)
                         .addToBackStack(null)
                         .commit();
                     });
@@ -251,6 +284,8 @@ public class BusinessSettings extends AppCompatActivity {
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
 
+
+
         }
 
         @Nullable
@@ -262,6 +297,65 @@ public class BusinessSettings extends AppCompatActivity {
         @Override
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
+            String tname = getArguments().getString("name");
+            if(tname != null){ //if the type exists - we want to fill in the field.
+                FirebaseFirestore.getInstance()
+                        .collection(BUSINESSES_COLLECTION+"/"+FirebaseAuth.getInstance().getUid()
+                                +"/Types").whereEqualTo("name",tname).limit(1).get().addOnSuccessListener(documentSnapshot -> {
+                                    final AppointmentType appointmentType = documentSnapshot.getDocuments().get(0).toObject(AppointmentType.class);
+
+                    Switch isActive = (Switch) view.findViewById(R.id.active_type);
+                    TextInputEditText type_name = view.findViewById(R.id.bTypeNameEdit);
+                    TextInputEditText duration = view.findViewById(R.id.bTypeDurationEdit);
+                    CheckBox check1 = (CheckBox) view.findViewById(R.id.type_sunday);
+                    CheckBox check2 = (CheckBox) view.findViewById(R.id.type_monday);
+                    CheckBox check3 = (CheckBox) view.findViewById(R.id.type_tuesday);
+                    CheckBox check4 = (CheckBox) view.findViewById(R.id.type_wednesday);
+                    CheckBox check5 = (CheckBox) view.findViewById(R.id.type_thursday);
+                    CheckBox check6 = (CheckBox) view.findViewById(R.id.type_friday);
+                    CheckBox check7 = (CheckBox) view.findViewById(R.id.type_saturday);
+                    TextInputEditText notes = view.findViewById(R.id.bTypeNotesEdit);
+
+                    //assign all check to false to save else statement later
+                    isActive.setChecked(false);
+                    check1.setChecked(false);
+                    check2.setChecked(false);
+                    check3.setChecked(false);
+                    check4.setChecked(false);
+                    check5.setChecked(false);
+                    check6.setChecked(false);
+                    check7.setChecked(false);
+
+                    if(appointmentType.attributes.get("active").equals("true")){
+                        isActive.setChecked(true);
+                    }
+                    type_name.setText(appointmentType.name);
+                    duration.setText(appointmentType.attributes.get("duration"));
+                    notes.setText(appointmentType.attributes.get("notes"));
+                    if(appointmentType.attributes.get("sunday").equals("true")){
+                        check1.setChecked(true);
+                    }
+                    if(appointmentType.attributes.get("monday").equals("true")){
+                        check2.setChecked(true);
+                    }
+                    if(appointmentType.attributes.get("tuesday").equals("true")){
+                        check3.setChecked(true);
+                    }
+                    if(appointmentType.attributes.get("wednesday").equals("true")){
+                        check4.setChecked(true);
+                    }
+                    if(appointmentType.attributes.get("thursday").equals("true")){
+                        check5.setChecked(true);
+                    }
+                    if(appointmentType.attributes.get("friday").equals("true")){
+                        check6.setChecked(true);
+                    }
+                    if(appointmentType.attributes.get("saturday").equals("true")){
+                        check7.setChecked(true);
+                    }
+                        });
+            }
+
             Button done = view.findViewById(R.id.button_done);
             done.setOnClickListener(l->{
                 boolean isActive = ((Switch) view.findViewById(R.id.active_type)).isChecked();
@@ -289,14 +383,28 @@ public class BusinessSettings extends AppCompatActivity {
                 attributes.put("saturday",String.valueOf(isChecked7));
                 attributes.put("notes",notes.getText().toString());
                 AppointmentType type = new AppointmentType(type_name.getText().toString(),attributes);
+                Map<String,Object> map = new HashMap<>();
+                map.put("attributes",attributes);
+                //map.put("name", type_name);
 
+
+                if (tname != null){
                 FirebaseFirestore.getInstance()
                         .collection(BUSINESSES_COLLECTION+"/"+FirebaseAuth.getInstance().getUid()
-                                +"/Types").document().set(type);
-            });
+                                +"/Types").document().update(map);
 
+            }
+            else {
+                    FirebaseFirestore.getInstance()
+                            .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                                    + "/Types").document().set(type);
+                }
+                getFragmentManager().beginTransaction().remove(newTypesFragment.this).commit();
+
+            });
+}
         }
-    }
+
 
     private boolean isInputValid(){
 
