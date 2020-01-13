@@ -360,7 +360,7 @@ public class EditAppointmentActivity extends AppCompatActivity
             } else {                                // new appointment
                 appointment.type = radioButton_id;
 
-                if (appointment.notes.equals("")) {  appointment.notes="No notes yet." ;}
+                if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
 
                 FirebaseFirestore.getInstance()
                         .collection(APPOINTMENTS_COLLECTION)

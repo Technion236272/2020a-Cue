@@ -53,7 +53,10 @@ public class ClientAppointmentPage extends AppCompatActivity  {
     FirebaseFirestore db;
     Business business;
 
-
+/*
+* Appointment Page for BO and for Client
+* HOWTO : put extras "name" - for appointment id
+* */
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
