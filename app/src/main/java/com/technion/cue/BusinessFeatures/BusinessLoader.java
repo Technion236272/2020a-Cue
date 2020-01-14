@@ -30,16 +30,11 @@ class BusinessLoader {
     private FirebaseFirestore db;
     private String business_id;
 
-
     public static Business business = null;
 
-    public BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
+    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {
         this.db = db;
         this.business_id = business_to_fetch;
-    }
-
-    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {
-        this(db, business_to_fetch);
         this.view = view;
     }
 
@@ -96,7 +91,7 @@ class BusinessLoader {
 
         String open_hours_tomorrow = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
 
-        if ((open_hours_today==null) || (!open_hours_today.contains("-")))
+        if ((open_hours_today == null) || (!open_hours_today.contains("-")))
             current_day_hours.setText("Close.");
         else {
             try {

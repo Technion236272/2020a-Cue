@@ -29,8 +29,11 @@ import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
@@ -50,6 +53,8 @@ public class DailyAppointmentListAdapter extends
     private final FragmentActivity activity;
     private ViewGroup parentView = null;
     private boolean useDivider = true;
+
+    static Map<String, Boolean> no_show_checked = new HashMap<>();
 
     DailyAppointmentListAdapter(FragmentActivity activity, ViewGroup view,
                                 Context context,
@@ -125,6 +130,9 @@ public class DailyAppointmentListAdapter extends
                 .addOnSuccessListener(l -> holder.client.setText(l.getString("name")));
 
         Date currentTime = new Date(System.currentTimeMillis());
+        if (appointment.date.getTime() > currentTime.getTime())
+            holder.itemView.findViewById(R.id.no_show_mark).setClickable(false);
+
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
                 .whereLessThanOrEqualTo("date", currentTime)
@@ -180,9 +188,7 @@ public class DailyAppointmentListAdapter extends
                                     .getColor(R.color.transparentTextOnBackground));
                             holder.date.setTextColor(context.getResources()
                                     .getColor(R.color.transparentTextOnBackground));
-                            // if th appointment has not happened yet, disallow marking it as "NO-SHOW"
-                        } else {
-                            holder.itemView.findViewById(R.id.no_show_mark).setClickable(false);
+                            // if the appointment has not happened yet, disallow marking it as "NO-SHOW"
                         }
                     }
                 });
@@ -191,10 +197,7 @@ public class DailyAppointmentListAdapter extends
         no_show.setChecked(appointment.no_show);
 
         no_show.setOnCheckedChangeListener((buttonView, isChecked) ->
-                FirebaseFirestore.getInstance()
-                        .collection(APPOINTMENTS_COLLECTION)
-                        .document(appointment.id)
-                        .update("no_show", isChecked)
+               no_show_checked.put(appointment.id, isChecked)
         );
 
         noShowClarify(holder, appointment.client_id);

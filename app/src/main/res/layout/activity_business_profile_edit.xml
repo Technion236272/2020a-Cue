@@ -11,7 +11,10 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".BusinessFeatures.BusinessProfileEdit"
-        android:fillViewport="true" >
+        android:fillViewport="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:focusable="true" >
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/business_profile_save_button"
