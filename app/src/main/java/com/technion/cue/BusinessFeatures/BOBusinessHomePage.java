@@ -76,8 +76,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bo_homepage);
 
-        FirebaseMessaging
-                .getInstance()
+        FirebaseMessaging.getInstance()
                 .subscribeToTopic(FirebaseAuth.getInstance().getUid());
 
         business_info_fragment = findViewById(R.id.business_info);
