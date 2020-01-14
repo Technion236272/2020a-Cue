@@ -1,17 +1,29 @@
 package com.technion.cue.ClientFeatures;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.graphics.drawable.DrawableWrapper;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.graphics.Color;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -82,7 +94,8 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
-            getSupportActionBar().setTitle(b_name);
+            getSupportActionBar().setTitle("");
+            getSupportActionBar().setElevation(0);
 
         }
         //TextView name = findViewById(R.id.client_appointment_business_Name);
@@ -93,6 +106,8 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         notes.setText(a_notes);
         TextView date = findViewById(R.id.client_appointment_time_text);
         date.setText(a_date);
+        TextView title = findViewById(R.id.client_appointment_business_Name);
+        title.setText(b_name);
 
         findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
@@ -132,9 +147,20 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                         phoneView.setText(business.phone_number);
                         TextView locationView = (TextView) findViewById(R.id.client_appointment_address_text);
                         locationView.setText(business.location.get("city") + "," +
-                                business.location.get("state") + "," +
-                                business.location.get("street") + "," +
-                                business.location.get("number") + ".");
+                                (business.location.get("state") != null ? business.location.get("state") + "," : "" ) +
+                                (business.location.get("street") != null ? business.location.get("street") + "," : "" ) +
+                                (business.location.get("number") != null ? business.location.get("number") + "" : "" ));
+
+                        SpannableString content = new SpannableString(locationView.getText());
+                        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+                        locationView.setText(content);
+
+                        SpannableString contentPhone = new SpannableString(phoneView.getText());
+                        contentPhone.setSpan(new UnderlineSpan(), 0, contentPhone.length(), 0);
+                        phoneView.setText(contentPhone);
+
+
+                        //locationView.setTextColor(getResources().getColor(R.color.primaryDarkColor));
                     }
 
 
@@ -144,7 +170,6 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
     // attach to an onclick handler to show the date picker
     public void reschedThisAppointment(MenuItem v) {
-        //System.out.println("----------------------" + a_id);
         Intent intent = new Intent(this, EditAppointmentActivity.class);
         intent.putExtra("notes",a_id);
         intent.putExtra("business_id",b_id);
@@ -153,6 +178,43 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
 
     }
+
+
+    public void goToMap(View view) {
+        String location = ((TextView)findViewById(R.id.client_appointment_address_text)).getText().toString();
+        Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + location);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
+
+
+    public void makeACall(View view) {
+        String phoneNumber = ((TextView)findViewById(R.id.client_appointment_phone_text)).getText().toString();
+        Intent mIntent = new Intent(Intent.ACTION_CALL);
+        mIntent.setData(Uri.parse("tel:" + phoneNumber));
+
+        // Here, thisActivity is the current activity
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.CALL_PHONE)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.CALL_PHONE},
+                    0);
+
+        } else {
+            //You already have permission
+            try {
+                startActivity(mIntent);
+            } catch(SecurityException e) {
+                e.printStackTrace();
+            }
+        }
+
+    }
+
+
 
     public void abortAppointment(MenuItem v) {
         String doer;

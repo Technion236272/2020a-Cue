@@ -527,27 +527,20 @@ public class EditAppointmentActivity extends AppCompatActivity
                                 closing_c.get(Calendar.MINUTE));
                         if (end.getTime() > closing_c.getTimeInMillis() ||
                                 start.getTime() < opening_c.getTimeInMillis()) {
-                            onUnavailableAppointment(oldDate, old);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                });
-
-        Tasks.whenAllSuccess(t).addOnSuccessListener(sl ->
-                db.collection(APPOINTMENTS_COLLECTION)
-                        .whereEqualTo("business_id",appointment.business_id)
-                        .orderBy("date")
-                        .get().addOnCompleteListener(l -> {
-                            findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
-                            for (DocumentSnapshot document : l.getResult().getDocuments()) {
-                                if ((document.exists()) && (document.getId() != appointment.id)) {
-                                    Date appointmentDate = ((Timestamp)document.get("date")).toDate();
-                                    int duration = atm.get(document.getString("type"));
-                                    Calendar c = Calendar.getInstance();
-                                    c.setTime(appointmentDate);
-                                    c.add(Calendar.MINUTE, duration);
+                            onUnavailableAppointment(oldDate, old,"Open hours in this day are "+currentDayOpenHours);
+                        } else {
+                            db.collection(APPOINTMENTS_COLLECTION)
+                                    .whereEqualTo("business_id",appointment.business_id)
+                                    .orderBy("date")
+                                    .get().addOnCompleteListener(l -> {
+                                findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                                for (DocumentSnapshot document : l.getResult().getDocuments()) {
+                                    if ((document.exists()) && (document.getId() != appointment.id)) {
+                                        Date appointmentDate = ((Timestamp)document.get("date")).toDate();
+                                        int duration = atm.get(document.getString("type"));
+                                        Calendar c2 = Calendar.getInstance();
+                                        c2.setTime(appointmentDate);
+                                        c2.add(Calendar.MINUTE, duration);
 
                                     /*
                                     cases where scheduling is impossible:
@@ -555,19 +548,28 @@ public class EditAppointmentActivity extends AppCompatActivity
                                     2) appointment ends in the middle of another appointment
                                     3) appointment is scheduled when the business is closed (checked above)
                                      */
-                                    if ((start.getTime() > appointmentDate.getTime()
-                                            && start.getTime() < c.getTimeInMillis()) ||
-                                            ((end.getTime() < c.getTimeInMillis())
-                                            && end.getTime() > appointmentDate.getTime())) {
-                                        onUnavailableAppointment(oldDate, old);
-                                        break;
+                                        if ((start.getTime() > appointmentDate.getTime()
+                                                && start.getTime() < c2.getTimeInMillis()) ||
+                                                ((end.getTime() < c2.getTimeInMillis())
+                                                        && end.getTime() > appointmentDate.getTime())) {
+                                            onUnavailableAppointment(oldDate, old,"Choose another time. Open hour in this day are "+currentDayOpenHours);
+                                            break;
+                                        }
                                     }
+                                }
+                            });
                         }
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                }));
+
+                });
+//
+//        Tasks.whenAllSuccess(t).addOnSuccessListener(sl ->
+//               );
     }
 
-    private void onUnavailableAppointment(String oldDate, Date old) {
+    private void onUnavailableAppointment(String oldDate, Date old,String message) {
         // return to old date in textview
         ((TextView) findViewById(R.id.edit_appointment_time_text))
                 .setText(oldDate);
@@ -576,7 +578,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
         new MaterialAlertDialogBuilder(this)
                 .setTitle("Date is not available ")
-                .setMessage("Please Choose another one. ")
+                .setMessage(message)
                 .setPositiveButton("Ok", (dialog, id) -> {
                     ClientChooseDateFragment newFragment =
                             new ClientChooseDateFragment();

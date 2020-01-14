@@ -1,0 +1,24 @@
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle"
+    android:tint="@color/secondaryColor"
+    >
+
+    <!-- view border color and width -->
+    <stroke
+        android:width="1dip"
+        android:color="@color/primaryLightColor" >
+    </stroke>
+
+    <gradient
+        android:startColor="@color/secondaryDarkColor"
+        android:endColor="@color/secondaryColor"
+        android:angle="270"
+        >
+    </gradient>
+
+    <corners android:radius="29px">
+
+    </corners>
+    <!-- Here is the corner radius -->
+</shape>
