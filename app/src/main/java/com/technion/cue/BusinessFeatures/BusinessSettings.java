@@ -434,7 +434,7 @@ public class BusinessSettings extends AppCompatActivity {
                                                 + "/Types").document().set(type);
                             }
                             getFragmentManager().beginTransaction().remove(newTypesFragment.this).commit();
-                            
+
                         } else {
                             Toast.makeText(this.getContext(),
                                     "Type name is taken. please choose different name", Toast.LENGTH_LONG).show();
