@@ -74,7 +74,9 @@ public class MyAppointmentListAdapter extends
                 .limit(1)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.appointment_id = l.getDocuments().get(0).getId();
+                    if (l.getDocuments().size() > 0 ) {
+                        holder.appointment_id = l.getDocuments().get(0).getId();
+                    }
 //                    holder.business.setTag(R.id.myAppointmentList,holder.notes); // need to change - ben
                 });
 
@@ -138,9 +140,9 @@ public class MyAppointmentListAdapter extends
         super.onDataChanged();
         if ( parentView!= null) {
             if (getItemCount() == 0) {
-                parentView.findViewById(R.id.no_appointments_message).setVisibility(View.VISIBLE);
+                parentView.findViewById(R.id.client_no_appointments_message_y).setVisibility(View.VISIBLE);
             } else {
-                parentView.findViewById(R.id.no_appointments_message).setVisibility(View.GONE);
+                parentView.findViewById(R.id.client_no_appointments_message_y).setVisibility(View.GONE);
                 // TODO: check if the flag needs to be moved
                 //  to a different meeting / assigned to a meeting
                 // TODO: check if need to change color of text inside items

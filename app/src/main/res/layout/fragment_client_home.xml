@@ -24,17 +24,18 @@
 
             />
         <FrameLayout
-            android:id="@+id/client_no_appointments_message"
+            android:id="@+id/client_no_appointments_message_y"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:visibility="gone"
             >
         <TextView
+            android:id="@+id/no_appointments_message_x"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="35sp"
-            android:textColor="@color/dimTextOnBackground"
+            android:textColor="@color/primaryDarkColor"
             android:text="@string/no_appointments_today_message"
             android:textAlignment="center"/>
         </FrameLayout>
