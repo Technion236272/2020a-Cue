@@ -34,12 +34,12 @@ exports.informOnAppointmentAndRemind = firestoreTriggers
                                                     }
                                                 };
 
-                                                if (snap.data().action_doer === 'client') {
+                                                if (snap.data().action_doer === 'business') {
                                                     console.log('Sending to client: ' + querySnapshot.docs[0].id)
-                                                    return admin.messaging().sendToTopic(querySnapshot.docs[0].id, payload)  
+                                                    return admin.messaging().sendToTopic(querySnapshot.docs[0].id, payload)
                                                 } else {
                                                     console.log('Sending to business: ' + businessId)
-                                                    return admin.messaging().sendToTopic(businessId, payload)  
+                                                    return admin.messaging().sendToTopic(businessId, payload)
                                                 }
 
                                             });
@@ -57,6 +57,6 @@ exports.informOnNewReview = firestoreTriggers
                                     data: {}
                                 };
 
-                                return admin.messaging().sendToTopic(businessId, payload) 
+                                return admin.messaging().sendToTopic(businessId, payload)
 
 });
