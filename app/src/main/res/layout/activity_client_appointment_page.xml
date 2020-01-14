@@ -40,6 +40,7 @@
             android:textSize="28sp"
             android:layout_margin="8dp"
             android:text=""
+            android:maxWidth="240dp"
             android:layout_gravity="left|bottom"
 
 
@@ -54,6 +55,8 @@
         android:layout_gravity="right|bottom"
         android:gravity="bottom"
         android:layout_margin="8dp"
+        android:maxWidth="100dp"
+        android:maxLength="15"
         />
 
         <TextView
