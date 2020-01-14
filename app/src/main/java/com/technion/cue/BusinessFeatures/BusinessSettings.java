@@ -62,7 +62,6 @@ public class BusinessSettings extends AppCompatActivity {
     StorageReference storageRef;
 
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -238,22 +237,22 @@ public class BusinessSettings extends AppCompatActivity {
             types.setHasFixedSize(true);
 
             Query query = FirebaseFirestore.getInstance()
-                    .collection(BUSINESSES_COLLECTION+"/"+FirebaseAuth.getInstance().getUid()
-                            +"/Types").orderBy("name");
+                    .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                            + "/Types").orderBy("name");
 
             FirestoreRecyclerOptions<AppointmentType> options =
                     new FirestoreRecyclerOptions.Builder<AppointmentType>()
                             .setQuery(query, AppointmentType.class)
                             .build();
 
-            tAdapter = new AppointmentTypesListAdapter(options, new AppointmentTypesListAdapter.OnItemClickListener(){
+            tAdapter = new AppointmentTypesListAdapter(options, new AppointmentTypesListAdapter.OnItemClickListener() {
                 @Override
-                public void onItemClick (View view, int position){
+                public void onItemClick(View view, int position) {
                     View v = types.getLayoutManager().findViewByPosition(position);
                     TextView name = v.findViewById(R.id.businessType);
                     Fragment new_types = new newTypesFragment();
                     Bundle args = new Bundle();
-                    args.putString("name",name.getText().toString());
+                    args.putString("name", name.getText().toString());
                     new_types.setArguments(args);
                     FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                     transaction.replace(R.id.fragment_setting, new_types)
@@ -266,13 +265,13 @@ public class BusinessSettings extends AppCompatActivity {
             types.setAdapter(tAdapter);
 
 
-            add_button.setOnClickListener(v->{
+            add_button.setOnClickListener(v -> {
                 Fragment new_types = new newTypesFragment();
                 FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
                 transaction.replace(R.id.fragment_setting, new_types)
                         .addToBackStack(null)
                         .commit();
-                    });
+            });
         }
     }
 
@@ -297,7 +296,12 @@ public class BusinessSettings extends AppCompatActivity {
         @Override
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
-            String tname = getArguments().getString("name");
+            String oname;
+            if (getArguments() == null)
+                oname = null;
+            else
+                oname = getArguments().getString("name");
+            final String tname = oname;
             if (tname != null) { //if the type exists - we want to fill in the field.
                 FirebaseFirestore.getInstance()
                         .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
@@ -388,57 +392,61 @@ public class BusinessSettings extends AppCompatActivity {
                             , Toast.LENGTH_LONG).show();
                 } else if ((tname != null && !tname.equals(type_name.getText().toString())) ||
                         tname == null) { //need to check if type name already exist
-                    boolean name_avail = FirebaseFirestore.getInstance()
+                    FirebaseFirestore.getInstance()
                             .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
                                     + "/Types").whereEqualTo("name", type_name.getText().toString())
-                            .get().getResult().isEmpty();
-                    if (!name_avail) {
-                        Toast.makeText(this.getContext(),
-                                "Type name is taken. please choose different name", Toast.LENGTH_LONG).show();
-                    }
-                } else {
-                    Map<String, String> attributes = new HashMap<>();
-                    attributes.put("active", String.valueOf(isActive));
-                    attributes.put("duration", duration.getText().toString());
-                    attributes.put("sunday", String.valueOf(isChecked1));
-                    attributes.put("monday", String.valueOf(isChecked2));
-                    attributes.put("tuesday", String.valueOf(isChecked3));
-                    attributes.put("wednesday", String.valueOf(isChecked4));
-                    attributes.put("thursday", String.valueOf(isChecked5));
-                    attributes.put("friday", String.valueOf(isChecked6));
-                    attributes.put("saturday", String.valueOf(isChecked7));
-                    attributes.put("notes", notes.getText().toString());
+                            .get().addOnSuccessListener(f -> {
+                        if (f.isEmpty()) {
+                            Map<String, String> attributes = new HashMap<>();
+                            attributes.put("active", String.valueOf(isActive));
+                            attributes.put("duration", duration.getText().toString());
+                            attributes.put("sunday", String.valueOf(isChecked1));
+                            attributes.put("monday", String.valueOf(isChecked2));
+                            attributes.put("tuesday", String.valueOf(isChecked3));
+                            attributes.put("wednesday", String.valueOf(isChecked4));
+                            attributes.put("thursday", String.valueOf(isChecked5));
+                            attributes.put("friday", String.valueOf(isChecked6));
+                            attributes.put("saturday", String.valueOf(isChecked7));
+                            attributes.put("notes", notes.getText().toString());
 
-                    AppointmentType type = new AppointmentType(type_name.getText().toString(), attributes);
-                    Map<String, Object> map = new HashMap<>();
-                    map.put("attributes", attributes);
-                    map.put("name", type_name.getText().toString());
+                            AppointmentType type = new AppointmentType(type_name.getText().toString(), attributes);
+                            Map<String, Object> map = new HashMap<>();
+                            map.put("attributes", attributes);
+                            map.put("name", type_name.getText().toString());
 
 
-                    if (tname != null) {
-                        FirebaseFirestore.getInstance()
-                                .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
-                                        + "/Types").whereEqualTo("name", tname).get().addOnSuccessListener(p -> {
-                            String document_id = p.getDocuments().get(0).getId();
-                            FirebaseFirestore.getInstance()
-                                    .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
-                                            + "/Types").document(document_id).update(map);
-                        });
-                        FirebaseFirestore.getInstance()
-                                .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
-                                        + "/Types").document().update(map);
+                            if (tname != null) {
+                                FirebaseFirestore.getInstance()
+                                        .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                                                + "/Types").whereEqualTo("name", tname).get().addOnSuccessListener(p -> {
+                                    String document_id = p.getDocuments().get(0).getId();
+                                    FirebaseFirestore.getInstance()
+                                            .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                                                    + "/Types").document(document_id).update(map);
+                                });
+                                FirebaseFirestore.getInstance()
+                                        .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                                                + "/Types").document().update(map);
 
-                    } else {
-                        FirebaseFirestore.getInstance()
-                                .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
-                                        + "/Types").document().set(type);
-                    }
-                    getFragmentManager().beginTransaction().remove(newTypesFragment.this).commit();
+                            } else {
+                                FirebaseFirestore.getInstance()
+                                        .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                                                + "/Types").document().set(type);
+                            }
+                            getFragmentManager().beginTransaction().remove(newTypesFragment.this).commit();
+                            
+                        } else {
+                            Toast.makeText(this.getContext(),
+                                    "Type name is taken. please choose different name", Toast.LENGTH_LONG).show();
+                        }
+                    });
+
 
                 }
             });
         }
     }
 }
+
 
 
