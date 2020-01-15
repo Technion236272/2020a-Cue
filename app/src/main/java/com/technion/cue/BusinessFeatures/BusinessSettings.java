@@ -407,6 +407,9 @@ public class BusinessSettings extends AppCompatActivity {
                             attributes.put("thursday", String.valueOf(isChecked5));
                             attributes.put("friday", String.valueOf(isChecked6));
                             attributes.put("saturday", String.valueOf(isChecked7));
+                            if(notes.getText().toString().isEmpty()){
+                                notes.setText("No special notes");
+                            }
                             attributes.put("notes", notes.getText().toString());
 
                             AppointmentType type = new AppointmentType(type_name.getText().toString(), attributes);
@@ -433,7 +436,7 @@ public class BusinessSettings extends AppCompatActivity {
                                         .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
                                                 + "/Types").document().set(type);
                             }
-                            getFragmentManager().beginTransaction().remove(newTypesFragment.this).commit();
+                            getFragmentManager().popBackStackImmediate();
 
                         } else {
                             Toast.makeText(this.getContext(),
