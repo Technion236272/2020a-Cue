@@ -6,6 +6,7 @@
       android:key="appointment type"
       android:title="Set appointment types"
       android:icon="@drawable/appointment_type_icon"
+
       />
 
   <Preference

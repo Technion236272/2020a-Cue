@@ -31,7 +31,7 @@ class BusinessLoader {
     private String business_id;
 
 
-    public Business business;
+    public static Business business = null;
 
     public BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
         this.db = db;
@@ -48,14 +48,20 @@ class BusinessLoader {
      */
     @ModuleAuthor("Ophir Eyal")
      void load() {
-        db.collection(BUSINESSES_COLLECTION)
-                .document(business_id)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                            business = documentSnapshot.toObject(Business.class);
-                            loadBusinessData();
-                            loadLogoFromFireBase();
-                });
+        if (business == null) {
+            db.collection(BUSINESSES_COLLECTION)
+                    .document(business_id)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        business = documentSnapshot.toObject(Business.class);
+                        loadBusinessData();
+                        loadLogoFromFireBase();
+                    });
+        } else {
+            loadBusinessData();
+            loadLogoFromFireBase();
+        }
+
     }
 
 
