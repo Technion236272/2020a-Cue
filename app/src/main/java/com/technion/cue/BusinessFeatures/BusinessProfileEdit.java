@@ -1,5 +1,6 @@
 package com.technion.cue.BusinessFeatures;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
@@ -72,8 +73,10 @@ public class BusinessProfileEdit extends AppCompatActivity {
                 if (!isFocused) hideKeyboard(v);
         });
 
-
-
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.edit_profile_action_bar);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
 
         uploader = new BusinessUploader(business, logoData, findViewById(R.id.businessLogoEdit));
         uploader.loadLogo();

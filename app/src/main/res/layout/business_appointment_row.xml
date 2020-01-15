@@ -67,7 +67,7 @@
 
         <RadioButton
             android:id="@+id/no_show_mark"
-            android:text="NOSHOW?"
+            android:text="Did the client not show?"
             android:textSize="12sp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -75,11 +75,15 @@
 
     </RelativeLayout>
 
-    <View
+
+    <FrameLayout
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@drawable/list_divider"
-        android:layout_below="@id/appointment_item" />
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:background="@color/primaryLightColor"
+        android:layout_below="@id/appointment_item"
+        android:alpha="0.4" />
 
 </RelativeLayout>

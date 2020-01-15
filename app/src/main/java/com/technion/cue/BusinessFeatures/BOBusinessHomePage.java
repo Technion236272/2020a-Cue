@@ -107,24 +107,25 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.business_menu, menu);
         menu.getItem(0).setOnMenuItemClickListener(cl -> generateDynamicLink());
-        // go the profile edit activity
-        menu.getItem(1).setOnMenuItemClickListener(cl -> {
-            Intent intent = new Intent(this, BusinessProfileEdit.class);
-            intent.putExtra("business", business);
-            intent.putExtra("logo", logoData);
-            startActivityForResult(intent, EDIT_RESULT);
-            return true;
-        });
 
-        menu.getItem(2).setOnMenuItemClickListener(cl -> {
+        menu.getItem(1).setOnMenuItemClickListener(cl -> {
             startActivityForResult(new Intent(this, BusinessSettings.class), EDIT_RESULT);
             return true;
         });
 
-        menu.getItem(3).setOnMenuItemClickListener(cl -> {
+        menu.getItem(2).setOnMenuItemClickListener(cl -> {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
             finish();
+            return true;
+        });
+
+        // go the profile edit activity
+        menu.getItem(3).setOnMenuItemClickListener(cl -> {
+            Intent intent = new Intent(this, BusinessProfileEdit.class);
+            intent.putExtra("business", business);
+            intent.putExtra("logo", logoData);
+            startActivityForResult(intent, EDIT_RESULT);
             return true;
         });
 
@@ -154,7 +155,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 businessName.setText(business.business_name);
                 businessDescription.setText(business.description);
 
-                TextView location = business_info_fragment.findViewById(R.id.address_text);
+                TextView location = business_info_fragment.findViewById(R.id.address);
 
 
                 String full_address = business.location.get("address") + ", "
@@ -162,7 +163,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                         + business.location.get("state");
                 location.setText(full_address);
 
-                TextView phone = business_info_fragment.findViewById(R.id.phone_text);
+                TextView phone = business_info_fragment.findViewById(R.id.phone);
                 phone.setText(business.phone_number);
 
                 TextView current_day_hours = business_info_fragment.findViewById(R.id.current_day_hours);

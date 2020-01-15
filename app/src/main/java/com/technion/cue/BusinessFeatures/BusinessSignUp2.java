@@ -45,6 +45,13 @@ public class BusinessSignUp2 extends Fragment {
         businessSignUpContainer.city = view.findViewById(R.id.businessCityEditText);
         businessSignUpContainer.address = view.findViewById(R.id.businessAddressEditText);
 
+        for (View vw : new View[] { businessSignUpContainer.name, businessSignUpContainer.description,
+        businessSignUpContainer.phone, businessSignUpContainer.state, businessSignUpContainer.city,
+                businessSignUpContainer.address})
+            vw.setOnFocusChangeListener((v, isFocused) -> {
+                if (!isFocused) businessSignUpContainer.hideKeyboard(v);
+            });
+
         view.findViewById(R.id.businessLogoEdit).setOnClickListener(cl -> {
             Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
             photoPickerIntent.setType("image/*");

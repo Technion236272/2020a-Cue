@@ -23,7 +23,7 @@ public class TypesDialog extends DialogFragment {
 
     private final BusinessSignUpContainer businessSignUpContainer;
 
-    public TypesDialog(BusinessSignUpContainer businessSignUpContainer) {
+    TypesDialog(BusinessSignUpContainer businessSignUpContainer) {
         this.businessSignUpContainer = businessSignUpContainer;
     }
 

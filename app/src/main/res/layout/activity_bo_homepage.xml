@@ -1,9 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+<ScrollView
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:layout_marginBottom="16dp">
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".BusinessFeatures.BOBusinessHomePage">
 
     <fragment android:name="com.technion.cue.BusinessFeatures.BusinessInfoFragment"
@@ -11,13 +21,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
-    <View
+    <FrameLayout
         android:id="@+id/divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
         android:layout_marginTop="16dp"
+        android:background="@color/primaryLightColor"
         android:layout_below="@id/business_info"
-        android:background="@drawable/full_list_divider" />
+        android:alpha="0.4" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/reviews_list"
@@ -27,10 +40,14 @@
         android:layout_below="@id/divider"
         android:layout_marginBottom="60dp"/>
 
+</RelativeLayout>
+</ScrollView>
+
     <FrameLayout
         android:id="@+id/bottom_navigation_wrapper"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true">
 
         <com.google.android.material.bottomnavigation.BottomNavigationView
             android:id="@+id/bottom_navigation"

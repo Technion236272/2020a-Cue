@@ -101,75 +101,59 @@ public class BusinessScheduleRecentChanges extends Fragment {
             SimpleDateFormat sdf_date = new SimpleDateFormat("EEEE, dd MMMM yyyy");
             SimpleDateFormat sdf_time = new SimpleDateFormat("HH:mm");
 
-            String nameColor = "#29434e";
-
             holder.actionDate.setText(sdf_date.format(model.action_date) + " at " +
                     sdf_time.format(model.action_date));
 
-            String old_appointment_date, old_appointment_time;
+            String coloredText;
 
             switch (model.action_type) {
                 case "scheduling":
-                    old_appointment_date = "<b><font color=\"#267838\">" +
-                            sdf_date.format(model.appointment_date) + "</font></b>";
-                    old_appointment_time = "<b><font color=\"#267838\">" +
-                            sdf_time.format(model.appointment_date) + "</font></b>";
+                    coloredText = "<b><font color=\"#267838\">scheduled</font></b>";
                     holder.actionMessage.setText(
-                            Html.fromHtml(
-                                    "<b><font color=\"" + nameColor + "\">"
-                                            + model.client_name
-                                            + "</font></b>"
-                                            + " has <i>scheduled</i> an appointment of type "
+                            Html.fromHtml(model.client_name
+                                            + " has "
+                                            + coloredText
+                                            + " an appointment of type "
                                             + model.appointment_type
                                             + " on "
-                                            + old_appointment_date
+                                            + sdf_time.format(model.appointment_date)
                                             + " at "
-                                            + old_appointment_time
+                                            + sdf_time.format(model.appointment_date)
                             )
                     );
                     break;
                 case "rescheduling":
-                    String new_appointment_date = "<b><font color=\"#267838\">" +
-                            sdf_date.format(model.new_appointment_date) + "</font></b>";
-                    String new_appointment_time =  "<b><font color=\"#267838\">" +
-                            sdf_time.format(model.new_appointment_date) + "</font></b>";
-                    old_appointment_date = "<b><font color=\"#c7283c\">" +
-                            sdf_date.format(model.appointment_date) + "</font></b>";
-                    old_appointment_time = "<b><font color=\"#c7283c\">" +
-                            sdf_time.format(model.appointment_date) + "</font></b>";
+                    coloredText = "<b><font color=\"#312980\">rescheduled</font></b>";
                     holder.actionMessage.setText(
-                            Html.fromHtml(
-                                    "<b><font color=\"" + nameColor + "\">"
-                                            + model.client_name
-                                            + "</font></b>"
-                                            + " has <i>rescheduled</i> from an appointment of type "
-                                            + model.appointment_type + " in " + old_appointment_date
+                            Html.fromHtml(model.client_name
+                                            + " has "
+                                            + coloredText
+                                            + " from an appointment of type "
+                                            + model.appointment_type + " in "
+                                            + sdf_date.format(model.appointment_date)
                                             + ", at "
-                                            + old_appointment_time
+                                            + sdf_time.format(model.appointment_date)
                                             + " to an appointment of type "
                                             + model.new_appointment_type
                                             + " on "
-                                            + new_appointment_date
-                                            + " at " + new_appointment_time
+                                            + sdf_date.format(model.new_appointment_date)
+                                            + " at "
+                                            + sdf_time.format(model.new_appointment_date)
                             )
                     );
                     break;
                 case "cancellation":
-                    old_appointment_date = "<b><font color=\"#267838\">" +
-                            sdf_date.format(model.appointment_date) + "</font></b>";
-                    old_appointment_time = "<b><font color=\"#267838\">" +
-                            sdf_time.format(model.appointment_date) + "</font></b>";
+                    coloredText = "<b><font color=\"#9C3A10\">cancelled</font></b>";
                     holder.actionMessage.setText(
-                            Html.fromHtml(
-                                    "<b><font color=\"" + nameColor + "\">"
-                                            + model.client_name
-                                            + "</font></b>"
-                                            + " has <i>cancelled</i> an appointment of type "
+                            Html.fromHtml(model.client_name
+                                            + " has "
+                                            + coloredText
+                                            + " an appointment of type "
                                             + model.appointment_type
                                             + " that was due to happen on "
-                                            + old_appointment_date
+                                            + sdf_date.format(model.appointment_date)
                                             + " at "
-                                            + old_appointment_time
+                                            + sdf_time.format(model.appointment_date)
                             )
                     );
                     break;

@@ -79,6 +79,7 @@ public class DailyAppointmentListAdapter extends
         TextView client;
         TextView date;
         TextView type;
+        boolean no_show_mark = false;
 
         itemHolder(@NonNull View itemView) {
             super(itemView);
@@ -165,16 +166,22 @@ public class DailyAppointmentListAdapter extends
                                             holder.flag.setVisibility(View.VISIBLE);
                                             holder.type.setTextColor(context.getResources()
                                                     .getColor(R.color.secondaryTextColor));
-                                            holder.client.setTextColor(context.getResources()
-                                                    .getColor(R.color.secondaryTextColor));
+                                            if (holder.no_show_mark)
+                                                holder.client.setTextColor(Color.RED);
+                                            else
+                                                holder.client.setTextColor(context.getResources()
+                                                        .getColor(R.color.secondaryTextColor));
                                             holder.date.setTextColor(context.getResources()
                                                     .getColor(R.color.secondaryTextColor));
                                         }
                                         else {
                                             holder.type.setTextColor(context.getResources()
                                                     .getColor(R.color.transparentTextOnBackground));
-                                            holder.client.setTextColor(context.getResources()
-                                                    .getColor(R.color.transparentTextOnBackground));
+                                            if (holder.no_show_mark)
+                                                holder.client.setTextColor(Color.RED);
+                                            else
+                                                holder.client.setTextColor(context.getResources()
+                                                        .getColor(R.color.secondaryTextColor));
                                             holder.date.setTextColor(context.getResources()
                                                     .getColor(R.color.transparentTextOnBackground));
                                         }
@@ -248,8 +255,9 @@ public class DailyAppointmentListAdapter extends
                         }
                     }
 
-                    if (no_show_num >= ((1.0/3.0) * size)) {
+                    if (size > 0 && no_show_num >= ((1.0/3.0) * size)) {
                         holder.client.setTextColor(Color.RED);
+                        holder.no_show_mark = true;
                     }
                 });
     }
