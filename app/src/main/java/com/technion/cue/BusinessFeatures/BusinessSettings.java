@@ -11,12 +11,13 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -25,12 +26,9 @@ import android.widget.RadioGroup;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.text.TextUtils;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -40,9 +38,7 @@ import com.google.firebase.storage.StorageReference;
 import com.technion.cue.Credits;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
-import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -57,9 +53,6 @@ public class BusinessSettings extends AppCompatActivity {
     private FirebaseUser currentUser;
     RecyclerView types;
     AlertDialog.Builder builder;
-    public FirebaseFirestore db;
-    public FirebaseStorage storage;
-    StorageReference storageRef;
 
 
     @Override
@@ -74,6 +67,10 @@ public class BusinessSettings extends AppCompatActivity {
 
 
     }
+    /*
+    The following class creates the main Settings Fragment -
+    the one we see when we press settings on the menu.
+     */
 
 
     public static class MySettingsFragment extends PreferenceFragmentCompat {
@@ -86,7 +83,113 @@ public class BusinessSettings extends AppCompatActivity {
             setPreferencesFromResource(R.xml.preference, rootKey);
 
         }
+        /*
+        the following class if for the two dialogs in the settings -
+        1. time frame dialog - where the business owner choose how much time before a meeting
+        the client can't make any changes at the meeting.
+        2. remind time dialog - where the business owner can choose how much time before a meeting
+        the client will recieve a reminder about to meeting.
 
+        this class is for dealing with the save button click event on the dialog -
+        check if everything is legal and then save the changes in the firebase.
+         */
+        class CustomListener implements View.OnClickListener {
+            private final Dialog dialog;
+            private final String title;
+
+            public CustomListener(Dialog dialog, String title) {
+                this.dialog = dialog;
+                this.title = title;
+            }
+
+            @Override
+            public void onClick(View v) {
+                String business_id = FirebaseAuth.getInstance().getUid();
+                Map<String, Object> map = new HashMap<>();
+                // put your code here
+                // take the value from selected radio button
+                RadioGroup radioGroup = dialog.findViewById(R.id.radio_group);
+                int selectedId = radioGroup.getCheckedRadioButtonId();
+
+                // find the radiobutton by returned id
+                RadioButton radioButton = dialog.findViewById(selectedId);
+
+                // get edittext value
+                EditText edit_text = dialog.findViewById(R.id.num_input);
+                String edit_text_value = edit_text.getText().toString();
+
+                if (edit_text_value.isEmpty() || radioButton == null) {
+                    Toast.makeText(MySettingsFragment.super.getContext(),
+                            "Please enter a number and choose", Toast.LENGTH_LONG).show();
+                } else {
+                    FirebaseFirestore.getInstance().collection(BUSINESSES_COLLECTION)
+                            .document(business_id)
+                            .get()
+                            .addOnSuccessListener(rt -> {
+                                Business business = rt.toObject(Business.class);
+                                if (title.equals("remind time")) {
+                                    boolean is_contain = business.attributes.containsKey("remind time");
+                                    if (is_contain) {
+                                        business.attributes.remove("remind time");
+                                        business.attributes.remove("remind time unit");
+                                    }
+                                    int remind_time_num = Integer.valueOf(edit_text_value);
+                                    int choosen_rbutton_id = radioButton.getId();
+                                    if (choosen_rbutton_id == R.id.minutes_button) {
+                                        business.attributes.put("remind time", edit_text_value);
+                                        business.attributes.put("remind time unit", "minutes");
+                                    } else if (choosen_rbutton_id == R.id.hours_button) {
+                                        int convert_hours_to_minutes = remind_time_num * 60;
+                                        business.attributes.put("remind time", Integer.toString(convert_hours_to_minutes));
+                                        business.attributes.put("remind time unit", "hours");
+                                    } else if (choosen_rbutton_id == R.id.days_button) {
+                                        int convert_days_to_minutes = remind_time_num * 24 * 60;
+                                        business.attributes.put("remind time", Integer.toString(convert_days_to_minutes));
+                                        business.attributes.put("remind time unit", "days");
+                                    } else if (choosen_rbutton_id == R.id.weeks_button) {
+                                        int convert_weeks_to_minutes = remind_time_num * 7 * 24 * 60;
+                                        business.attributes.put("remind time", Integer.toString(convert_weeks_to_minutes));
+                                        business.attributes.put("remind time unit", "weeks");
+                                    }
+                                } else if (title.equals("time frame")) {
+                                    boolean is_contain = business.attributes.containsKey("time frame");
+                                    if (is_contain) {
+                                        business.attributes.remove("time frame");
+                                        business.attributes.remove("time frame unit");
+                                    }
+                                    int remind_time_num = Integer.valueOf(edit_text_value);
+                                    int choosen_rbutton_id = radioButton.getId();
+                                    if (choosen_rbutton_id == R.id.minutes_button) {
+                                        business.attributes.put("time frame", edit_text_value);
+                                        business.attributes.put("time frame unit", "minutes");
+                                    } else if (choosen_rbutton_id == R.id.hours_button) {
+                                        int convert_hours_to_minutes = remind_time_num * 60;
+                                        business.attributes.put("time frame", Integer.toString(convert_hours_to_minutes));
+                                        business.attributes.put("time frame unit", "hours");
+                                    } else if (choosen_rbutton_id == R.id.days_button) {
+                                        int convert_days_to_minutes = remind_time_num * 24 * 60;
+                                        business.attributes.put("time frame", Integer.toString(convert_days_to_minutes));
+                                        business.attributes.put("time frame unit", "days");
+                                    } else if (choosen_rbutton_id == R.id.weeks_button) {
+                                        int convert_weeks_to_minutes = remind_time_num * 7 * 24 * 60;
+                                        business.attributes.put("time frame", Integer.toString(convert_weeks_to_minutes));
+                                        business.attributes.put("time frame unit", "weeks");
+                                    }
+                                }
+                                map.put("attributes", business.attributes);
+                                FirebaseFirestore.getInstance().collection(BUSINESSES_COLLECTION)
+                                        .document(business_id)
+                                        .update(map);
+                                dialog.dismiss();
+                            });
+                }
+            }
+        }
+
+        /*
+        this function recognize a click on some preference on the prefernce menu,
+        and define what to do with it.
+         */
         @Override
         public boolean onPreferenceTreeClick(Preference p) {
 
@@ -99,85 +202,130 @@ public class BusinessSettings extends AppCompatActivity {
 
             }
 
+            /*
+            here if we choose the time frame setting,
+            it searches in the firebase for the previous settings and upload it to the edit text,
+            and to the correct radio button.
+             */
             if (p.getKey().equals("time frame")) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-                View dialogView = inflater.inflate(R.layout.set_time, null);
+                builder.setCancelable(false)
+                        .setMessage("Please enter a number and choose")
+                        .setView(R.layout.set_time)
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) { }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                    }
+                });
 
-                builder.setView(dialogView).
-                        setPositiveButton(R.string.save_settings, (dialog, which) -> {
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
-                            // take the value from selected radio button
-                            RadioGroup radioGroup = (RadioGroup) dialogView.findViewById(R.id.radio_group);
-                            int selectedId = radioGroup.getCheckedRadioButtonId();
-
-                            // find the radiobutton by returned id
-                            RadioButton radioButton = (RadioButton) dialogView.findViewById(selectedId);
-
-                            // get edittext value
-                            EditText edit_text = (EditText) dialogView.findViewById(R.id.num_input);
-                            String edit_text_value = edit_text.getText().toString();
-
-                            if (edit_text_value.isEmpty() || radioButton == null) {
-                                Toast t = Toast.makeText(MySettingsFragment.super.getContext(), "Please enter a number and choose", Toast.LENGTH_LONG);
-                                t.show();
-                                //Todo: how to block people from not choose and press save?
-                            } else {
-                                //Todo: put the values inside the settings map.
-//                                    db = FirebaseFirestore.getInstance();
-//                                    StorageReference ref = storageRef.child("Businesses").child("attributes");
-
-
+                //upload the previous settings
+                FirebaseFirestore.getInstance().collection(BUSINESSES_COLLECTION)
+                        .document(FirebaseAuth.getInstance().getUid())
+                        .get()
+                        .addOnSuccessListener(rt->{
+                            Business business = rt.toObject(Business.class);
+                            if (business.attributes.containsKey("time frame")){
+                                EditText number =alertDialog.findViewById(R.id.num_input);
+                                String time_unit = business.attributes.get("time frame unit");
+                                String time_in_minutes = business.attributes.get("time frame");
+                                if(time_unit.equals("minutes")){
+                                    number.setText(time_in_minutes);
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.minutes_button);
+                                    radioButton.setChecked(true);
+                                } else if(time_unit.equals("hours")){
+                                    int time_in_hours = Integer.valueOf(time_in_minutes)/60;
+                                    number.setText(String.valueOf(time_in_hours));
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.hours_button);
+                                    radioButton.setChecked(true);
+                                } else if(time_unit.equals("days")){
+                                    int time_in_days = Integer.valueOf(time_in_minutes)/(60 * 24 );
+                                    number.setText(String.valueOf(time_in_days));
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.days_button);
+                                    radioButton.setChecked(true);
+                                } else if(time_unit.equals("weeks")){
+                                    int time_in_days = Integer.valueOf(time_in_minutes)/(60 * 24 * 7 );
+                                    number.setText(String.valueOf(time_in_days));
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.weeks_button);
+                                    radioButton.setChecked(true);
+                                }
                             }
-
-                            //Todo: old settings (number and units) need to be performed
-                        })
-                        .setNegativeButton(R.string.cancel_settings, (dialog, which) -> dialog.cancel());
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                        });
+                Button save_button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                Button cancel_button = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                save_button.setOnClickListener(new CustomListener(alertDialog,"time frame"));
+                cancel_button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        alertDialog.dismiss();
+                    }
+                });
             }
 
+            /*here if we choose the time frame setting,
+            it searches in the firebase for the previous settings and upload it to the edit text,
+            and to the correct radio button.
+             */
             if (p.getKey().equals("remind time")) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-                LayoutInflater inflater = requireActivity().getLayoutInflater();
 
-                View dialogView = inflater.inflate(R.layout.set_time, null);
+                builder.setCancelable(false)
+                        .setMessage("Please enter a number and choose")
+                        .setView(R.layout.set_time)
+                        .setPositiveButton("Save", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) { }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
 
-                builder.setView(dialogView).
-                        setPositiveButton(R.string.save_settings, (dialog, which) -> {
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
 
-
-                            // take the value from selected radio button
-                            RadioGroup radioGroup = dialogView.findViewById(R.id.radio_group);
-                            int selectedId = radioGroup.getCheckedRadioButtonId();
-
-                            // find the radiobutton by returned id
-                            RadioButton radioButton = dialogView.findViewById(selectedId);
-
-                            // get edittext value
-                            EditText edit_text = dialogView.findViewById(R.id.num_input);
-                            String edit_text_value = edit_text.getText().toString();
-
-                            if (edit_text_value.isEmpty() || radioButton == null) {
-
-                                Toast t = Toast.makeText(MySettingsFragment.super.getContext(),
-                                        "Please enter a number and choose", Toast.LENGTH_LONG);
-                                t.show();
-                                //Todo: how to block people from not choose and press save?
-                            } else {
-                                //Todo: put the values inside the settings map.
-
-//
-
-
+                //upload the previous settings
+                FirebaseFirestore.getInstance().collection(BUSINESSES_COLLECTION)
+                        .document(FirebaseAuth.getInstance().getUid())
+                        .get()
+                        .addOnSuccessListener(rt->{
+                            Business business = rt.toObject(Business.class);
+                            if (business.attributes.containsKey("remind time")){
+                                EditText number =alertDialog.findViewById(R.id.num_input);
+                                String time_unit = business.attributes.get("remind time unit");
+                                String time_in_minutes = business.attributes.get("remind time");
+                                if(time_unit.equals("minutes")){
+                                    number.setText(time_in_minutes);
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.minutes_button);
+                                    radioButton.setChecked(true);
+                                } else if(time_unit.equals("hours")){
+                                    int time_in_hours = Integer.valueOf(time_in_minutes)/60;
+                                    number.setText(String.valueOf(time_in_hours));
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.hours_button);
+                                    radioButton.setChecked(true);
+                                } else if(time_unit.equals("days")){
+                                    int time_in_days = Integer.valueOf(time_in_minutes)/(60 * 24 );
+                                    number.setText(String.valueOf(time_in_days));
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.days_button);
+                                    radioButton.setChecked(true);
+                                } else if(time_unit.equals("weeks")){
+                                    int time_in_days = Integer.valueOf(time_in_minutes)/(60 * 24 * 7 );
+                                    number.setText(String.valueOf(time_in_days));
+                                    RadioButton radioButton = (RadioButton)alertDialog.findViewById(R.id.weeks_button);
+                                    radioButton.setChecked(true);
+                                }
                             }
-
-                            //Todo: old settings (number and units) need to be performed
-                        })
-                        .setNegativeButton(R.string.cancel_settings, (dialog, which) -> dialog.cancel());
-                AlertDialog dialog = builder.create();
-                dialog.show();
+                        });
+                Button save_button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
+                Button cancel_button = alertDialog.getButton(DialogInterface.BUTTON_NEGATIVE);
+                save_button.setOnClickListener(new CustomListener(alertDialog,"remind time"));
             }
 
             if (p.getKey().equals("credits")) {
@@ -191,6 +339,12 @@ public class BusinessSettings extends AppCompatActivity {
         }
     }
 
+    /*
+    this class presents all the type appointments there is.
+    they all in a list and when you press one of them -
+    you go to newTypeFragment - another class fragment,
+    and upload all the information about the type in the edit texts.
+     */
     public static class typesFragment extends Fragment {
         AppointmentTypesListAdapter tAdapter;
         public FirebaseFirestore db;
@@ -258,8 +412,6 @@ public class BusinessSettings extends AppCompatActivity {
                     transaction.replace(R.id.fragment_setting, new_types)
                             .addToBackStack(null)
                             .commit();
-
-
                 }
             });
             types.setAdapter(tAdapter);
@@ -274,6 +426,9 @@ public class BusinessSettings extends AppCompatActivity {
             });
         }
     }
+    /*
+    this class is for creating new type or edit an existing one.
+     */
 
     public static class newTypesFragment extends Fragment {
         public FirebaseFirestore db;
