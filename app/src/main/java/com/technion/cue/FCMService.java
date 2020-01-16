@@ -75,8 +75,8 @@ public class FCMService extends FirebaseMessagingService {
 
 
                         if (snapshot.exists()) {
-//                            if (remoteMessage.getData().get("action_doer").equals("business"))
-//                                return;
+                            if (remoteMessage.getData().get("action_doer").equals("business"))
+                                return;
                             switch (remoteMessage.getData().get("action_type")) {
                                 case "scheduling":
                                     bigTextStyle.setBigContentTitle(
