@@ -151,9 +151,7 @@
         android:layout_height="wrap_content"
         android:textSize="17sp"
         android:textColor="@color/primaryDarkColor"
-        android:text="Sunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday"
-
-        />
+        android:text="Sunday\nMonday\nTuesday\nWednesday\nThursday\nFriday\nSaturday" />
 
         <TextView
             android:id="@+id/openHoursTime"

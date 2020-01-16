@@ -6,7 +6,10 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     tools:context=".BusinessFeatures.BusinessSignUp1"
-    android:id="@+id/business_sign_up1">
+    android:id="@+id/business_sign_up1"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true" >
 
     <TextView
         android:id="@+id/bo_join_community"

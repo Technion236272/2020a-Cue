@@ -11,8 +11,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -102,6 +104,12 @@ public class BusinessScheduleDay extends Fragment {
         if (!getArguments().containsKey("returnToTabs") ||
                 getArguments().getBoolean("returnToTabs"))
             getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.VISIBLE);
+        for (String id : DailyAppointmentListAdapter.no_show_checked.keySet()) {
+            FirebaseFirestore.getInstance()
+                    .collection(APPOINTMENTS_COLLECTION)
+                    .document(id)
+                    .update("no_show", DailyAppointmentListAdapter.no_show_checked.get(id));
+        }
     }
 }
 

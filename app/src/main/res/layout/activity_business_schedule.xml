@@ -10,7 +10,8 @@
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/business_schedule_pager"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_marginBottom="48dp" >
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/business_schedule_tabs"
             android:layout_width="match_parent"

@@ -30,16 +30,11 @@ class BusinessLoader {
     private FirebaseFirestore db;
     private String business_id;
 
-
     public static Business business = null;
 
-    public BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
+    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {
         this.db = db;
         this.business_id = business_to_fetch;
-    }
-
-    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {
-        this(db, business_to_fetch);
         this.view = view;
     }
 
@@ -79,27 +74,41 @@ class BusinessLoader {
         name.setText(business.business_name);
         desc.setText(business.description);
 
-        TextView location = view.findViewById(R.id.address_text);
+        TextView location = view.findViewById(R.id.address);
         String full_address = business.location.get("address") + ", "
                 + business.location.get("city") + ", "
                 + business.location.get("state");
         location.setText(full_address);
 
-        TextView phone = view.findViewById(R.id.phone_text);
+        TextView phone = view.findViewById(R.id.phone);
         phone.setText(business.phone_number);
 
         TextView current_day_hours = view.findViewById(R.id.current_day_hours);
         Calendar c = Calendar.getInstance();
         String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         String open_hours_today = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
-        c.add(Calendar.DAY_OF_WEEK, 1);
+        String open_hours_next = null;
 
-        String open_hours_tomorrow = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+        for (int i = 1 ; i < 7 ; i++) {
+            c.add(Calendar.DAY_OF_WEEK, 1);
+            open_hours_next = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+            if (open_hours_next != null && open_hours_next.contains("-"))
+                break;
+            if (i == 6)
+                open_hours_next = null;
+        }
 
-        if ((open_hours_today==null) || (!open_hours_today.contains("-")))
+        if (open_hours_next == null)
             current_day_hours.setText("Close.");
-        else {
+        else if (open_hours_today == null || !open_hours_today.contains("-")) {
+            current_day_hours.setText(
+                    "Close. Opens on " +
+                            days[c.get(Calendar.DAY_OF_WEEK) - 1] +
+                            " at " + open_hours_next.split("-")[0]
+                    );
+        } else {
             try {
+
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 Date when_opens = sdf.parse(open_hours_today.split("-")[0]);
                 Date when_closes = sdf.parse(open_hours_today.split("-")[1]);
@@ -124,27 +133,27 @@ class BusinessLoader {
                 else if (currentTime < open_time_millis)
                     current_day_hours.setText("Close. Opens " + open_hours_today.split("-")[0]);
                 else
-                    current_day_hours.setText("Close. Opens " + open_hours_tomorrow.split("-")[0]);
-
-                ((TextView) view.findViewById(R.id.sunday))
-                        .setText(business.open_hours.get("Sunday"));
-                ((TextView) view.findViewById(R.id.monday))
-                        .setText(business.open_hours.get("Monday"));
-                ((TextView) view.findViewById(R.id.tuesday))
-                        .setText(business.open_hours.get("Tuesday"));
-                ((TextView) view.findViewById(R.id.wednesday))
-                        .setText(business.open_hours.get("Wednesday"));
-                ((TextView) view.findViewById(R.id.thursday))
-                        .setText(business.open_hours.get("Thursday"));
-                ((TextView) view.findViewById(R.id.friday))
-                        .setText(business.open_hours.get("Friday"));
-                ((TextView) view.findViewById(R.id.saturday))
-                        .setText(business.open_hours.get("Saturday"));
+                    current_day_hours.setText("Close. Opens " + open_hours_next.split("-")[0]);
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
+
+        ((TextView) view.findViewById(R.id.sunday))
+                .setText(business.open_hours.get("Sunday"));
+        ((TextView) view.findViewById(R.id.monday))
+                .setText(business.open_hours.get("Monday"));
+        ((TextView) view.findViewById(R.id.tuesday))
+                .setText(business.open_hours.get("Tuesday"));
+        ((TextView) view.findViewById(R.id.wednesday))
+                .setText(business.open_hours.get("Wednesday"));
+        ((TextView) view.findViewById(R.id.thursday))
+                .setText(business.open_hours.get("Thursday"));
+        ((TextView) view.findViewById(R.id.friday))
+                .setText(business.open_hours.get("Friday"));
+        ((TextView) view.findViewById(R.id.saturday))
+                .setText(business.open_hours.get("Saturday"));
     }
 
     /**

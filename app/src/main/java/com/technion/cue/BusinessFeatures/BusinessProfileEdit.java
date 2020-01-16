@@ -1,12 +1,16 @@
 package com.technion.cue.BusinessFeatures;
 
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.TextView;
@@ -14,6 +18,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
@@ -45,6 +50,7 @@ public class BusinessProfileEdit extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_profile_edit);
+
         TextInputEditText businessName = findViewById(R.id.businessNameEditText);
         TextInputEditText businessDescription = findViewById(R.id.businessDescriptionEditText);
         TextInputEditText phone = findViewById(R.id.businessPhoneEditText);
@@ -60,6 +66,17 @@ public class BusinessProfileEdit extends AppCompatActivity {
         state.setText(business.location.get("state"));
         city.setText(business.location.get("city"));
         address.setText(business.location.get("address"));
+
+        for (View view :
+                new View[] { businessName, businessDescription, phone, state, city, address })
+            view.setOnFocusChangeListener((v, isFocused) -> {
+                if (!isFocused) hideKeyboard(v);
+        });
+
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.edit_profile_action_bar);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
 
         uploader = new BusinessUploader(business, logoData, findViewById(R.id.businessLogoEdit));
         uploader.loadLogo();
@@ -213,6 +230,12 @@ public class BusinessProfileEdit extends AppCompatActivity {
             mTimePicker.setTitle("Select closing hour");
             mTimePicker.show();
         });
+    }
+
+    private void hideKeyboard(View v) {
+        InputMethodManager imm = (InputMethodManager)
+                getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(v.getWindowToken(), 0);
     }
 
     /**

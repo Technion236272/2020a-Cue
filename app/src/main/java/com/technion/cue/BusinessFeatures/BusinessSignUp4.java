@@ -1,15 +1,10 @@
 package com.technion.cue.BusinessFeatures;
 
-import android.app.Notification;
 import android.app.TimePickerDialog;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,7 +14,6 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.textfield.TextInputEditText;
 import com.technion.cue.R;
 
 import java.text.ParseException;
@@ -30,7 +24,6 @@ import java.util.Date;
 public class BusinessSignUp4 extends Fragment {
 
     private final BusinessSignUpContainer businessSignUpContainer;
-    private String lastUsedKey;
 
     BusinessSignUp4(BusinessSignUpContainer businessSignUpContainer) {
         this.businessSignUpContainer = businessSignUpContainer;

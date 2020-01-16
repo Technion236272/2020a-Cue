@@ -11,18 +11,10 @@
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         tools:context=".BusinessFeatures.BusinessProfileEdit"
-        android:fillViewport="true" >
-
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/business_profile_save_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:layout_margin="8dp"
-            android:text="@string/save"
-            android:textSize="16sp"
-            android:onClick="saveChanges" />
+        android:fillViewport="true"
+        android:clickable="true"
+        android:focusableInTouchMode="true"
+        android:focusable="true" >
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/businessLogoEdit"
@@ -110,13 +102,16 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <View
+        <FrameLayout
             android:id="@+id/divider_0"
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
+            android:background="@color/primaryLightColor"
+            android:layout_below="@id/businessPhoneEdit"
             android:layout_marginTop="16dp"
-            android:background="@drawable/list_divider"
-            android:layout_below="@id/businessPhoneEdit" />
+            android:alpha="0.4" />
 
         <TextView
             android:id="@+id/businessAddressEditInstructions"
@@ -194,13 +189,17 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <View
+        <FrameLayout
             android:id="@+id/divider_1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:background="@drawable/list_divider"
+            android:layout_marginLeft="24dp"
+            android:layout_marginRight="24dp"
             android:layout_marginTop="16dp"
-            android:layout_below="@id/businessAddressEdit" />
+            android:background="@color/primaryLightColor"
+            android:layout_below="@id/businessAddressEdit"
+            android:alpha="0.4" />
+
 
         <TextView
             android:id="@+id/businessOpenHoursEditInstructions"

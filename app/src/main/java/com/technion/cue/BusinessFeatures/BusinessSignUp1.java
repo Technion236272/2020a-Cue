@@ -36,6 +36,12 @@ public class BusinessSignUp1 extends Fragment {
         businessSignUpContainer.email = view.findViewById(R.id.businessEmailEditText);
         businessSignUpContainer.password = view.findViewById(R.id.businessPasswordEditText);
         businessSignUpContainer.bo_name = view.findViewById(R.id.businessFullNameEditText);
+
+        for (View vw : new View[]
+                { businessSignUpContainer.email, businessSignUpContainer.password, businessSignUpContainer.bo_name })
+            vw.setOnFocusChangeListener((v, isFocused) -> {
+                if (!isFocused) businessSignUpContainer.hideKeyboard(v);
+            });
     }
 
 }

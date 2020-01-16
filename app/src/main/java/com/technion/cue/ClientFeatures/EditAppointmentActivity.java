@@ -330,12 +330,80 @@ public class EditAppointmentActivity extends AppCompatActivity
                       additions by Ophir on 6/1
                        */
 
-                    // Awful everything D:
-                    FirebaseFirestore.getInstance()
-                            .collection(CLIENTS_COLLECTION)
-                            .document(appointment.client_id)
-                            .get()
-                            .addOnSuccessListener(client -> {
+                      // Awful everything D:
+                      FirebaseFirestore.getInstance()
+                              .collection(CLIENTS_COLLECTION)
+                              .document(appointment.client_id)
+                              .get()
+                              .addOnSuccessListener(client  -> {
+                                  FirebaseFirestore.getInstance()
+                                          .collection(BUSINESSES_COLLECTION)
+                                          .document(appointment.business_id)
+                                          .collection(TYPES_COLLECTION)
+                                          .document(appointment.type)
+                                          .get()
+                                          .addOnSuccessListener(type -> {
+                                              String notes;
+                                              if (appointment.notes.equals("No notes yet.")) {
+                                                  notes = type.getString("notes");
+                                              } else {
+                                                  notes = appointment.notes;
+                                              }
+                                              FirebaseFirestore.getInstance()
+                                                      .collection(BUSINESSES_COLLECTION)
+                                                      .document(appointment.business_id)
+                                                      .collection(TYPES_COLLECTION)
+                                                      .document(old_appointment_type)
+                                                      .get()
+                                                      .addOnSuccessListener(old_type -> {
+                                                          Business.AppointmentAction aa =
+                                                                  new Business.AppointmentAction(
+                                                                          "rescheduling",
+                                                                          client.getString("name"),
+                                                                          new Date(),
+                                                                          old_appointment_date,
+                                                                          appointment.date,
+                                                                          type.getString("name"),
+                                                                          old_type.getString("name"),
+                                                                          doer,
+                                                                          notes
+                                                                  );
+
+
+                                                          FirebaseFirestore.getInstance()
+                                                                  .collection(BUSINESSES_COLLECTION)
+                                                                  .document(appointment.business_id)
+                                                                  .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                                  .document()
+                                                                  .set(aa);
+                                                      });
+
+                                          });
+
+                              });
+            } else {                                // new appointment
+                appointment.type = radioButton_id;
+
+                if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
+
+                FirebaseFirestore.getInstance()
+                        .collection(APPOINTMENTS_COLLECTION)
+                        .document()
+                        .set(appointment).addOnCompleteListener(task -> {
+                        Toast.makeText(getApplicationContext(), "Appointment scheduled Successfully ", Toast.LENGTH_LONG).show();
+                        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                        finish();
+                    });
+
+                /*
+                additions by Ophir on 8/1
+                */
+
+                FirebaseFirestore.getInstance()
+                        .collection(CLIENTS_COLLECTION)
+                        .document(appointment.client_id)
+                        .get()
+                        .addOnSuccessListener(client  ->
                                 FirebaseFirestore.getInstance()
                                         .collection(BUSINESSES_COLLECTION)
                                         .document(appointment.business_id)
@@ -343,6 +411,25 @@ public class EditAppointmentActivity extends AppCompatActivity
                                         .document(appointment.type)
                                         .get()
                                         .addOnSuccessListener(type -> {
+                                            String notes;
+                                            if (appointment.notes.equals("No notes yet.")) {
+                                                notes = type.getString("notes");
+                                            } else {
+                                                notes = appointment.notes;
+                                            }
+                                            Business.AppointmentAction aa =
+                                                    new Business.AppointmentAction(
+                                                            "scheduling",
+                                                            client.getString("name"),
+                                                            new Date(),
+                                                            appointment.date,
+                                                            appointment.date,
+                                                            type.getString("name"),
+                                                            type.getString("name"),
+                                                            doer,
+                                                            notes
+                                                    );
+
                                             FirebaseFirestore.getInstance()
                                                     .collection(BUSINESSES_COLLECTION)
                                                     .document(appointment.business_id)

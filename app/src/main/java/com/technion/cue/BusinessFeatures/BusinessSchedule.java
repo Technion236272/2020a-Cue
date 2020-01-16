@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -87,11 +88,18 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         public Fragment getItem(int position) {
             switch (titleList.get(position)) {
                 case "Today":
-                    Bundle b = new Bundle();
-                    Calendar c = Calendar.getInstance();
-                    b.putInt("year", c.get(Calendar.YEAR));
-                    b.putInt("month", c.get(Calendar.MONTH));
-                    b.putInt("day", c.get(Calendar.DAY_OF_MONTH));
+                    Bundle b;
+                    if (getIntent().hasExtra("year")) {
+                        b = getIntent().getExtras();
+                        findViewById(R.id.business_schedule_tabs).setVisibility(View.GONE);
+                    }
+                    else {
+                        b = new Bundle();
+                        Calendar c = Calendar.getInstance();
+                        b.putInt("year", c.get(Calendar.YEAR));
+                        b.putInt("month", c.get(Calendar.MONTH));
+                        b.putInt("day", c.get(Calendar.DAY_OF_MONTH));
+                    }
                     Fragment bsd = new BusinessScheduleDay();
                     bsd.setArguments(b);
                     return bsd;

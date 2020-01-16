@@ -13,7 +13,7 @@
 
 
     <style name="calendarText" parent="Theme.MaterialComponents.Light.DarkActionBar">
-        <item name="android:textColor">@color/secondaryTextColor</item>
+        <item name="android:textColor">@color/primaryLightColor</item>
         <item name="android:textSize">18sp</item>
     </style>
 
