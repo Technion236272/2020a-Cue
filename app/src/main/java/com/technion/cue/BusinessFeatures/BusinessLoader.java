@@ -99,10 +99,10 @@ class BusinessLoader {
         }
 
         if (open_hours_next == null)
-            current_day_hours.setText("Close.");
+            current_day_hours.setText("Now Close.");
         else if (open_hours_today == null || !open_hours_today.contains("-")) {
             current_day_hours.setText(
-                    "Close. Opens on " +
+                    "Now Close. Opens on " +
                             days[c.get(Calendar.DAY_OF_WEEK) - 1] +
                             " at " + open_hours_next.split("-")[0]
                     );
@@ -129,11 +129,11 @@ class BusinessLoader {
                 long currentTime = currentDate.getTime();
 
                 if (open_time_millis <= currentTime && currentTime <= close_time_millis)
-                    current_day_hours.setText("Open. Closes " + open_hours_today.split("-")[1]);
+                    current_day_hours.setText("Now Open. Closes " + open_hours_today.split("-")[1]);
                 else if (currentTime < open_time_millis)
-                    current_day_hours.setText("Close. Opens " + open_hours_today.split("-")[0]);
+                    current_day_hours.setText("Now Close. Opens " + open_hours_today.split("-")[0]);
                 else
-                    current_day_hours.setText("Close. Opens " + open_hours_next.split("-")[0]);
+                    current_day_hours.setText("Now Close. Opens " + open_hours_next.split("-")[0]);
 
             } catch (ParseException e) {
                 e.printStackTrace();
