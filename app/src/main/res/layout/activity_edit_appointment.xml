@@ -62,16 +62,16 @@
 
     </RelativeLayout>
 
-        <View
-            android:id="@+id/divider_0"
-            android:layout_width="match_parent"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            android:layout_height="1dp"
-            android:background="@color/primaryLightColor"
-            android:layout_below="@id/edit_appointment_address"
-            android:alpha="0.7"/>
+    <View
+        android:id="@+id/divider_0"
+        android:layout_width="match_parent"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_height="1dp"
+        android:background="@color/primaryLightColor"
+        android:layout_below="@id/edit_appointment_address"
+        android:alpha="0.7"/>
 
 
     <RelativeLayout
@@ -188,25 +188,25 @@
         android:alpha="0.7"
         />
 
-        <RelativeLayout
-            android:id="@+id/edit_appointment_notes"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/divider_2"
-            android:layout_marginTop="16dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginRight="16dp"
-            >
+    <RelativeLayout
+        android:id="@+id/edit_appointment_notes"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/divider_2"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        >
 
-            <TextView
-                android:id="@+id/noteTitle"
-                android:layout_width="130dp"
-                android:layout_height="wrap_content"
-                android:text="Note\n"
-                android:textColor="@color/secondaryTextColor"
-                android:textSize="20sp"
-                android:layout_gravity="start"
-                android:textStyle="bold" />
+        <TextView
+            android:id="@+id/noteTitle"
+            android:layout_width="130dp"
+            android:layout_height="wrap_content"
+            android:text="Note\n"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp"
+            android:layout_gravity="start"
+            android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -221,37 +221,37 @@
                 android:layout_gravity="end"
                 android:gravity="end"
                 android:visibility="visible" />
-    <FrameLayout
-         android:id="@+id/edit_appointment_note_laylout"
-            android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-                android:visibility="invisible">
-            <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/edit_appointment_notes_text_edit"
-                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <FrameLayout
+                android:id="@+id/edit_appointment_note_laylout"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:hint="Edit Appointment Note"
-                app:counterEnabled="true"
-                app:endIconMode="clear_text"
-                app:counterMaxLength="140"
-                android:layout_centerVertical="true">
-
-                <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/edit_appointment_notes_text_edit_text"
+                android:layout_height="wrap_content"
+                android:visibility="invisible">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/edit_appointment_notes_text_edit"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:inputType="text"
-                    android:maxLength="140" />
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginRight="16dp"
+                    android:hint="Edit Appointment Note"
+                    app:counterEnabled="true"
+                    app:endIconMode="clear_text"
+                    app:counterMaxLength="140"
+                    android:layout_centerVertical="true">
 
-            </com.google.android.material.textfield.TextInputLayout>
-</FrameLayout>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/edit_appointment_notes_text_edit_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="text"
+                        android:maxLength="140" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+            </FrameLayout>
 
         </RelativeLayout>
 
-        </RelativeLayout>
+    </RelativeLayout>
 
 
     <RelativeLayout
