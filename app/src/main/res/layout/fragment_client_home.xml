@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,10 +9,22 @@
     <!-- TODO: Update blank fragment layout -->
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        android:minHeight="200dp">
+        <TextView
+            android:id="@+id/client_no_appointments_message_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textColor="@color/primaryColor"
+            android:text=" No Favorites yet. "
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myFavoriteList"
@@ -23,22 +35,24 @@
             android:layout_marginLeft="10dp"
 
             />
-        <FrameLayout
-            android:id="@+id/client_no_appointments_message_y"
+    </LinearLayout>
+
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerInParent="true"
-            android:visibility="gone"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
             >
         <TextView
-            android:id="@+id/no_appointments_message_x"
+            android:id="@+id/client_no_appointments_message_y"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textSize="35sp"
-            android:textColor="@color/primaryDarkColor"
-            android:text="@string/no_appointments_today_message"
-            android:textAlignment="center"/>
-        </FrameLayout>
+            android:textColor="@color/primaryColor"
+            android:text="You have no appointments yet."
+            android:layout_marginTop="50dp"
+            android:visibility="gone"
+            android:gravity="center"
+            android:layout_gravity="center"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myAppointmentList"
@@ -46,9 +60,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/myFavoriteList"
-            android:background="#ffffff" />
-    </RelativeLayout>
+            android:background="#ffffff" >
+        </androidx.recyclerview.widget.RecyclerView>
 
+        </LinearLayout>
 
-
-</RelativeLayout>
+</LinearLayout>

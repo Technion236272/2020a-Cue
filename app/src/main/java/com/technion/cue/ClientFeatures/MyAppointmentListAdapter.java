@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
@@ -37,6 +39,7 @@ public class MyAppointmentListAdapter extends
         this.parentView = view;
 
     }
+
     public MyAppointmentListAdapter(@NonNull FirestoreRecyclerOptions<Appointment> options) {
         super(options);
     }
@@ -135,18 +138,17 @@ public class MyAppointmentListAdapter extends
 
         }
     }
-
+    @Override
     public void onDataChanged() {
         super.onDataChanged();
-        if ( parentView!= null) {
+        if ( parentView != null) {
             if (getItemCount() == 0) {
                 parentView.findViewById(R.id.client_no_appointments_message_y).setVisibility(View.VISIBLE);
             } else {
                 parentView.findViewById(R.id.client_no_appointments_message_y).setVisibility(View.GONE);
-                // TODO: check if the flag needs to be moved
-                //  to a different meeting / assigned to a meeting
-                // TODO: check if need to change color of text inside items
             }
         }
     }
+
+
 }

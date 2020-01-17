@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.content.Intent;
 
 import android.os.Bundle;
+import android.util.Log;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -17,6 +19,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -40,11 +45,14 @@ import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.REVIEWS_COLLECTION;
 
 
-public class ClientHomePage extends AppCompatActivity {
+public class ClientHomePage extends AppCompatActivity  {
 
 
     FirebaseFirestore db;
     FirebaseAuth mAuth;
+
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -72,9 +80,6 @@ public class ClientHomePage extends AppCompatActivity {
 
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
-//        actionBar.setDisplayShowHomeEnabled(false);
-        //actionBar.setTitle("My Appointments");
-
 
         /** ----- */
 
@@ -177,6 +182,7 @@ public class ClientHomePage extends AppCompatActivity {
     @Override
     protected void onStart() {
         super.onStart();
+
         /**
          * Check if user is signin
          * */
@@ -202,6 +208,9 @@ public class ClientHomePage extends AppCompatActivity {
             startActivity(getIntentBOPage);
             finish();
         }
+
+
+
     }
 
 
@@ -212,18 +221,16 @@ public class ClientHomePage extends AppCompatActivity {
     }
 
     public void showBusinesses(View v) {
-
+        ClientBusinessList fragment = new ClientBusinessList();
+        // R.id.container - the id of a view that will hold your fragment; usually a FrameLayout
+        getSupportFragmentManager().beginTransaction()
+                .addToBackStack("BLF")
+                .add(android.R.id.content,fragment,"BLF")
+                .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_in_left)
+                .commit();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // handle arrow click here
 
-        return super.onOptionsItemSelected(item);
-    }
-
-
-    // - menu - ben 17.12
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -231,8 +238,33 @@ public class ClientHomePage extends AppCompatActivity {
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.client_homepage_action_bar);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                getSupportFragmentManager().popBackStack();
+                return true;
+            default:
+                return false;
+        }
+    }
 
 
-
-
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ActionBar actionBar = getSupportActionBar();
+            actionBar.setCustomView(R.layout.client_homepage_action_bar);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setDisplayShowCustomEnabled(true);
+        }
+        return super.onKeyDown(keyCode, event);
+    }
 }

@@ -28,9 +28,15 @@ import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
 public class MyFavoriteListAdapter extends
         FirestoreRecyclerAdapter<Client.Favorite, MyFavoriteListAdapter.itemHolder > {
+    private ViewGroup parentView;
 
     MyFavoriteListAdapter(@NonNull FirestoreRecyclerOptions<Client.Favorite> options) {
         super(options);
+    }
+
+    MyFavoriteListAdapter(@NonNull FirestoreRecyclerOptions<Client.Favorite> options,ViewGroup parent) {
+        super(options);
+        this.parentView = parent;
     }
 
     @Override
@@ -82,7 +88,17 @@ public class MyFavoriteListAdapter extends
 
     }
 
-
+    @Override
+    public void onDataChanged() {
+        super.onDataChanged();
+        if ( parentView != null) {
+            if (getItemCount() == 0) {
+                parentView.findViewById(R.id.client_no_appointments_message_fav).setVisibility(View.VISIBLE);
+            } else {
+                parentView.findViewById(R.id.client_no_appointments_message_fav).setVisibility(View.GONE);
+            }
+        }
+    }
 
     class itemHolder extends RecyclerView.ViewHolder {
         TextView businessName;

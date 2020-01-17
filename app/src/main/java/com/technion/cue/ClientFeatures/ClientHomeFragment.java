@@ -103,7 +103,7 @@ public class ClientHomeFragment extends Fragment {
                 new FirestoreRecyclerOptions.Builder<Appointment>()
                         .setQuery(query, Appointment.class)
                         .build();
-        appointmentAdapter = new MyAppointmentListAdapter(options);
+        appointmentAdapter = new MyAppointmentListAdapter((ViewGroup)getView(),getContext(),options);
 
         RecyclerView recyclerView = getActivity().findViewById(R.id.myAppointmentList);
 
@@ -126,7 +126,7 @@ public class ClientHomeFragment extends Fragment {
                 new FirestoreRecyclerOptions.Builder<Client.Favorite>()
                 .setQuery(query, Client.Favorite.class)
                 .build();
-        favoriteAdapter = new MyFavoriteListAdapter(options);
+        favoriteAdapter = new MyFavoriteListAdapter(options,(ViewGroup)getView());
 
         RecyclerView recyclerView = getActivity().findViewById(R.id.myFavoriteList);
         recyclerView.setHasFixedSize(true);
