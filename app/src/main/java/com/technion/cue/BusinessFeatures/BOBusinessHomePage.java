@@ -1,16 +1,11 @@
 package com.technion.cue.BusinessFeatures;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -22,8 +17,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -34,7 +27,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.messaging.FirebaseMessaging;
@@ -42,7 +34,6 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
-import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
 
 import java.text.ParseException;
@@ -50,8 +41,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
-import static com.technion.cue.FirebaseCollections.APPOINTMENT_ACTIONS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.REVIEWS_COLLECTION;
 
@@ -118,24 +107,25 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.business_menu, menu);
         menu.getItem(0).setOnMenuItemClickListener(cl -> generateDynamicLink());
-        // go the profile edit activity
-        menu.getItem(1).setOnMenuItemClickListener(cl -> {
-            Intent intent = new Intent(this, BusinessProfileEdit.class);
-            intent.putExtra("business", business);
-            intent.putExtra("logo", logoData);
-            startActivityForResult(intent, EDIT_RESULT);
-            return true;
-        });
 
-        menu.getItem(2).setOnMenuItemClickListener(cl -> {
+        menu.getItem(1).setOnMenuItemClickListener(cl -> {
             startActivityForResult(new Intent(this, BusinessSettings.class), EDIT_RESULT);
             return true;
         });
 
-        menu.getItem(3).setOnMenuItemClickListener(cl -> {
+        menu.getItem(2).setOnMenuItemClickListener(cl -> {
             FirebaseAuth.getInstance().signOut();
             startActivity(new Intent(this, SignInActivity.class));
             finish();
+            return true;
+        });
+
+        // go the profile edit activity
+        menu.getItem(3).setOnMenuItemClickListener(cl -> {
+            Intent intent = new Intent(this, BusinessProfileEdit.class);
+            intent.putExtra("business", business);
+            intent.putExtra("logo", logoData);
+            startActivityForResult(intent, EDIT_RESULT);
             return true;
         });
 
@@ -165,7 +155,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 businessName.setText(business.business_name);
                 businessDescription.setText(business.description);
 
-                TextView location = business_info_fragment.findViewById(R.id.address_text);
+                TextView location = business_info_fragment.findViewById(R.id.address);
 
 
                 String full_address = business.location.get("address") + ", "
@@ -173,7 +163,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                         + business.location.get("state");
                 location.setText(full_address);
 
-                TextView phone = business_info_fragment.findViewById(R.id.phone_text);
+                TextView phone = business_info_fragment.findViewById(R.id.phone);
                 phone.setText(business.phone_number);
 
                 TextView current_day_hours = business_info_fragment.findViewById(R.id.current_day_hours);

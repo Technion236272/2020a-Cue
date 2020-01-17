@@ -335,7 +335,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .collection(CLIENTS_COLLECTION)
                             .document(appointment.client_id)
                             .get()
-                            .addOnSuccessListener(client -> {
+                            .addOnSuccessListener(client  -> {
                                 FirebaseFirestore.getInstance()
                                         .collection(BUSINESSES_COLLECTION)
                                         .document(appointment.business_id)
@@ -343,6 +343,12 @@ public class EditAppointmentActivity extends AppCompatActivity
                                         .document(appointment.type)
                                         .get()
                                         .addOnSuccessListener(type -> {
+                                            String notes;
+                                            if (appointment.notes.equals("No notes yet.")) {
+                                                notes = type.getString("notes");
+                                            } else {
+                                                notes = appointment.notes;
+                                            }
                                             FirebaseFirestore.getInstance()
                                                     .collection(BUSINESSES_COLLECTION)
                                                     .document(appointment.business_id)
@@ -360,7 +366,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                                         type.getString("name"),
                                                                         old_type.getString("name"),
                                                                         doer,
-                                                                        type.getString("notes")
+                                                                        notes
                                                                 );
 
 
@@ -378,9 +384,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 } else {                                // new appointment
                     appointment.type = radioButton_id;
 
-                    if (appointment.notes != null) {
-                        appointment.notes = "No notes yet.";
-                    }
+                    if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
 
                     FirebaseFirestore.getInstance()
                             .collection(APPOINTMENTS_COLLECTION)
@@ -399,7 +403,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .collection(CLIENTS_COLLECTION)
                             .document(appointment.client_id)
                             .get()
-                            .addOnSuccessListener(client ->
+                            .addOnSuccessListener(client  ->
                                     FirebaseFirestore.getInstance()
                                             .collection(BUSINESSES_COLLECTION)
                                             .document(appointment.business_id)
@@ -407,6 +411,12 @@ public class EditAppointmentActivity extends AppCompatActivity
                                             .document(appointment.type)
                                             .get()
                                             .addOnSuccessListener(type -> {
+                                                String notes;
+                                                if (appointment.notes.equals("No notes yet.")) {
+                                                    notes = type.getString("notes");
+                                                } else {
+                                                    notes = appointment.notes;
+                                                }
                                                 Business.AppointmentAction aa =
                                                         new Business.AppointmentAction(
                                                                 "scheduling",
@@ -417,7 +427,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                                 type.getString("name"),
                                                                 type.getString("name"),
                                                                 doer,
-                                                                type.getString("notes")
+                                                                notes
                                                         );
 
 

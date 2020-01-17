@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.widget.TextViewCompat;
 import androidx.fragment.app.DialogFragment;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -108,7 +110,6 @@ public class ClientInformationDialog extends DialogFragment {
         });
 
 
-
     }
 
     @Override
@@ -123,7 +124,7 @@ public class ClientInformationDialog extends DialogFragment {
     private void noShowClarify(View view, String client_name) {
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("busines  s_id", FirebaseAuth.getInstance().getUid())
+                .whereEqualTo("business_id", FirebaseAuth.getInstance().getUid())
                 .whereEqualTo("client_id", client_id)
                 .get()
                 .addOnSuccessListener(documentSnapshots -> {
@@ -134,11 +135,11 @@ public class ClientInformationDialog extends DialogFragment {
                             no_show_num++;
                         }
                     }
-                    if (no_show_num >= ((1.0/3.0) * size)) {
+                    if (size > 0 && no_show_num >= ((1.0/3.0) * size)) {
                         view.findViewById(R.id.no_show_clarify).setVisibility(View.VISIBLE);
                         ((TextView) view.findViewById(R.id.no_show_clarify))
                                 .setText(client_name + " hasn't shown / was late to "
-                                        + (int) no_show_num + " appointments out of "
+                                        + (int) no_show_num + " out of "
                                         + (int) size + " appointments");
                     }
                 });

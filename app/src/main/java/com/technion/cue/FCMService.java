@@ -5,17 +5,23 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
+import com.technion.cue.BusinessFeatures.BusinessSchedule;
+import com.technion.cue.BusinessFeatures.BusinessScheduleDay;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -61,6 +67,12 @@ public class FCMService extends FirebaseMessagingService {
                         String old_date = formattingDateFormat.format(c.getTime());
                         c.setTimeInMillis(Long.valueOf(remoteMessage.getData().get("new_appointment_date")));
                         String new_date = formattingDateFormat.format(c.getTime());
+                        Bundle b = new Bundle();
+                        b.putInt("year", c.get(Calendar.YEAR));
+                        b.putInt("month", c.get(Calendar.MONTH));
+                        b.putInt("day", c.get(Calendar.DAY_OF_MONTH));
+                        b.putBoolean("returnToTabs", false);
+
 
                         if (snapshot.exists()) {
                             if (remoteMessage.getData().get("action_doer").equals("business"))
@@ -102,11 +114,21 @@ public class FCMService extends FirebaseMessagingService {
                                     break;
                             }
 
+
+                            Intent resultIntent = new Intent(this, BusinessSchedule.class);
+                            resultIntent.putExtras(b);
+                            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                            stackBuilder.addNextIntentWithParentStack(resultIntent);
+                            PendingIntent resultPendingIntent =
+                                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
                             Notification notification =
                                     new NotificationCompat.Builder(getApplicationContext(), "0")
                                             .setSmallIcon(R.drawable.business_icon)
                                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                             .setStyle(bigTextStyle)
+                                            .setContentIntent(resultPendingIntent)
+                                            .setAutoCancel(true)
                                             .build();
                             mNotificationManager.notify(0, notification);
                         } else {
@@ -177,7 +199,6 @@ public class FCMService extends FirebaseMessagingService {
                             alarmIntent.putExtra("date", formattingDateFormat.format(c.getTime()));
 
                             c.add(Calendar.DAY_OF_WEEK, -1);
-
 
                             PendingIntent pendingIntent =
                                     PendingIntent.getBroadcast(this, 0, alarmIntent, 0);

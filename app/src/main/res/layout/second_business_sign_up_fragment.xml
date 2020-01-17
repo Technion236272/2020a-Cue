@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+<RelativeLayout
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:id="@+id/business_sign_up2">
+    android:id="@+id/business_sign_up2"
+    android:clickable="true"
+    android:focusableInTouchMode="true"
+    android:focusable="true"  >
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/businessLogoEdit"
@@ -16,7 +24,7 @@
         android:padding="5dp"
         app:civ_border_color="@color/secondaryColor"
         app:civ_border_width="4dp"
-        app:srcCompat="@drawable/person_icon" />
+        android:src="@drawable/person_icon" />
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/businessNameEdit"
@@ -177,3 +185,4 @@
 
 
 </RelativeLayout>
+</ScrollView>

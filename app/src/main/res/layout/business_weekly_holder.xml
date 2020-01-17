@@ -46,11 +46,14 @@
         </androidx.recyclerview.widget.RecyclerView>
     </RelativeLayout>
 
-    <View
+    <FrameLayout
         android:id="@+id/week_day_divider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:background="@drawable/list_divider"
-        android:layout_below="@id/week_day_item" />
+        android:layout_marginLeft="28dp"
+        android:layout_marginRight="28dp"
+        android:background="@color/primaryLightColor"
+        android:layout_below="@id/week_day_item"
+        android:alpha="0.4" />
 
 </RelativeLayout>
