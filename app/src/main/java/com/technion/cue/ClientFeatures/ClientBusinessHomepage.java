@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,6 +38,8 @@ import com.technion.cue.annotations.ModuleAuthor;
 import java.util.HashMap;
 import java.util.Map;
 
+import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.CLIENTELE_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
 /*
@@ -58,7 +61,7 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         setContentView(R.layout.activity_client_business_homepage);
         db = FirebaseFirestore.getInstance();
 
-        findViewById(R.id.Loading).setVisibility(View.VISIBLE);
+        findViewById(R.id.LoadingCBHP).setVisibility(View.VISIBLE);
 
         //getting the b_id from client home page
         this.bundle = getIntent().getExtras();
@@ -82,6 +85,7 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, pendingDynamicLinkData -> {
                     // Get deep link from result (may be null if no link is found)
+                    findViewById(R.id.LoadingCBHP).setVisibility(View.VISIBLE);
                     if (pendingDynamicLinkData != null) {
                         FirebaseFirestore.getInstance()
                                 .collection(CLIENTS_COLLECTION)
@@ -114,10 +118,24 @@ public class ClientBusinessHomepage extends AppCompatActivity {
 
 
         findViewById(R.id.switch_to_date_time_fragments).setOnClickListener(l -> {
-            Intent intent = new Intent(this, EditAppointmentActivity.class);
-            intent.putExtras(this.bundle);
-            startActivity(intent);
-            findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
+            FirebaseFirestore.getInstance()
+                    .collection(BUSINESSES_COLLECTION)
+                    .document(FirebaseAuth.getInstance().getUid())
+                    .collection(CLIENTELE_COLLECTION)
+                    .document(FirebaseAuth.getInstance().getUid())
+                    .get()
+                    .addOnSuccessListener(ds -> {
+                        if (ds.exists() && ds.contains("blocked") && ds.getBoolean("blocked"))
+                            Toast.makeText(getBaseContext(),
+                                    "This client is blocked, so you can't schedule appointments with him/her",
+                                    Toast.LENGTH_SHORT).show();
+                        else {
+                            Intent intent = new Intent(this, EditAppointmentActivity.class);
+                            intent.putExtras(this.bundle);
+                            startActivity(intent);
+                            findViewById(R.id.switch_to_date_time_fragments).setVisibility(View.VISIBLE);
+                        }
+                    });
         });
 
         if (bundle.containsKey("business_id") == true) {
@@ -236,7 +254,7 @@ public boolean onCreateOptionsMenu(Menu menu) {
     inflater.inflate(R.menu.business_menu, menu);
     menu.getItem(1).setVisible(false);
     menu.getItem(2).setVisible(false);
-    menu.getItem(3).setVisible(false);
+//    menu.getItem(3).setVisible(false);
     menu.getItem(0).setVisible(false);
 //        menu.getItem(0).setOnMenuItemClickListener(cl -> {
 //            FirebaseDynamicLinks.getInstance()

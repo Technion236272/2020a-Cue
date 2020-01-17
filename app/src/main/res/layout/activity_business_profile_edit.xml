@@ -5,8 +5,7 @@
     android:padding="5dp"
     android:scrollbars="none">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -18,7 +17,7 @@
 
         <com.mikhaellopez.circularimageview.CircularImageView
             android:id="@+id/businessLogoEdit"
-            android:layout_marginTop="96dp"
+            android:layout_marginTop="24dp"
             android:layout_width="150dp"
             android:layout_height="150dp"
             app:srcCompat="@drawable/person_icon"
@@ -31,8 +30,9 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/businessNameEdit"
-            android:layout_width="360dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:textSize="14sp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -56,8 +56,9 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/businessDescriptionEdit"
-            android:layout_width="360dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:textSize="14sp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -80,8 +81,9 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/businessPhoneEdit"
-            android:layout_width="360dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:textSize="14sp"
             android:layout_marginLeft="24dp"
             android:layout_marginRight="24dp"
@@ -106,8 +108,8 @@
             android:id="@+id/divider_0"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:background="@color/primaryLightColor"
             android:layout_below="@id/businessPhoneEdit"
             android:layout_marginTop="16dp"
@@ -120,64 +122,78 @@
             android:text="@string/business_address_fill"
             android:layout_below="@id/divider_0"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:textColor="@color/secondaryTextColor"
             android:textSize="16sp"
             android:textStyle="bold"/>
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/businessStateEdit"
-            android:layout_width="118dp"
+        <RelativeLayout
+            android:id="@+id/state_and_city"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textSize="14sp"
+            android:layout_below="@id/businessAddressEditInstructions"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
-            android:layout_below="@id/businessAddressEditInstructions"
-            android:hint="@string/state" >
+            android:layout_centerHorizontal="true">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/businessStateEditText"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/businessStateEdit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:hint="@string/state"
+                android:layout_toLeftOf="@id/center_point"
+                android:layout_toStartOf="@id/center_point">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/businessStateEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
-            android:id="@+id/businessCityEdit"
-            android:layout_width="226dp"
-            android:layout_height="wrap_content"
-            android:textSize="14sp"
-            android:layout_marginRight="8dp"
-            android:layout_marginEnd="8dp"
-            android:layout_marginTop="24dp"
-            android:layout_marginLeft="16dp"
-            android:layout_marginStart="16dp"
-            android:layout_below="@id/businessAddressEditInstructions"
-            android:layout_toRightOf="@id/businessStateEdit"
-            android:layout_toEndOf="@id/businessStateEdit"
-            android:hint="@string/city" >
+            </com.google.android.material.textfield.TextInputLayout>
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/businessCityEditText"
+            <View android:id="@+id/center_point"
+                android:layout_width="1px"
+                android:layout_height="1px"
+                android:visibility="invisible"
+                android:layout_centerInParent="true"/>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/businessCityEdit"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginLeft="16dp"
+                android:layout_marginStart="16dp"
+                android:hint="@string/city"
+                android:layout_toRightOf="@id/center_point"
+                android:layout_toEndOf="@id/center_point">
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/businessCityEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+
+        </RelativeLayout>
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:id="@+id/businessAddressEdit"
-            android:layout_width="360dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
             android:textSize="14sp"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
-            android:layout_below="@id/businessCityEdit"
+            android:layout_below="@id/state_and_city"
             android:hint="@string/the_address_of_your_business"
             app:helperTextEnabled="true"
             app:helperText="please enter address in the form [number] [street]" >
@@ -193,8 +209,8 @@
             android:id="@+id/divider_1"
             android:layout_width="match_parent"
             android:layout_height="1dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginRight="24dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:layout_marginTop="16dp"
             android:background="@color/primaryLightColor"
             android:layout_below="@id/businessAddressEdit"
@@ -208,59 +224,78 @@
             android:text="@string/business_operating_hours_fill"
             android:layout_below="@id/divider_1"
             android:layout_marginTop="16dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
             android:textColor="@color/secondaryTextColor"
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
-            android:id="@+id/openHoursEditSpinner"
-            android:layout_width="160dp"
+        <RelativeLayout
+            android:id="@+id/opening_hours_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/businessOpenHoursEditInstructions"
             android:layout_marginTop="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginStart="24dp"
             android:layout_marginBottom="24dp"
-            android:hint="@string/day_of_the_week">
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/businessOpenHoursEditInstructions" >
 
-            <AutoCompleteTextView
-                android:id="@+id/days_filled_exposed_dropdown"
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu"
+                android:id="@+id/openHoursEditSpinner"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:editable="false"/>
+                android:hint="@string/day_of_the_week"
+                android:layout_toLeftOf="@id/center_point_2"
+                android:layout_toStartOf="@id/center_point_2" >
 
-        </com.google.android.material.textfield.TextInputLayout>
+                <AutoCompleteTextView
+                    android:id="@+id/days_filled_exposed_dropdown"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:editable="false"/>
 
-        <TextView
-            android:id="@+id/openingHoursEditText"
-            android:layout_width="168dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="26dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_toRightOf="@id/openHoursEditSpinner"
-            android:layout_toEndOf="@id/openHoursEditSpinner"
-            android:layout_below="@id/businessOpenHoursEditInstructions"
-            android:hint="@string/opening_hour" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <View android:id="@+id/center_point_2"
+                android:layout_width="1px"
+                android:layout_height="1px"
+                android:visibility="invisible"
+                android:layout_centerInParent="true"/>
+
+            <LinearLayout
+                android:id="@+id/opening_hours_fill"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/center_point_2"
+                android:layout_toEndOf="@id/center_point_2" >
+
+                <TextView
+                    android:id="@+id/openingHoursEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
+                    android:hint="@string/opening_hour" />
 
 
-        <TextView
-            android:id="@+id/closingHoursEditText"
-            android:layout_width="168dp"
-            android:layout_height="wrap_content"
-            android:textSize="18sp"
-            android:layout_marginTop="8dp"
-            android:layout_marginLeft="24dp"
-            android:layout_marginStart="24dp"
-            android:layout_toRightOf="@id/openHoursEditSpinner"
-            android:layout_toEndOf="@id/openHoursEditSpinner"
-            android:layout_below="@id/openingHoursEditText"
-            android:layout_marginBottom="24dp"
-            android:hint="@string/closing_hour" />
+                <TextView
+                    android:id="@+id/closingHoursEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="18sp"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginLeft="24dp"
+                    android:layout_marginStart="24dp"
+                    android:layout_marginBottom="24dp"
+                    android:hint="@string/closing_hour" />
+
+            </LinearLayout>
+
+        </RelativeLayout>
 
     </RelativeLayout>
     

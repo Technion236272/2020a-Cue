@@ -5,9 +5,7 @@
   <Preference
       android:key="appointment type"
       android:title="Set appointment types"
-      android:icon="@drawable/appointment_type_icon"
-
-      />
+      android:icon="@drawable/appointment_type_icon" />
 
   <Preference
       android:id="@+id/timeFrame"
@@ -26,10 +24,16 @@
       android:icon="@drawable/send_reminder_icon" />
 
   <Preference
+      android:id="@+id/logout"
+      android:key="logout"
+      android:title="Logout"
+      android:icon="@drawable/logout_icon" />
+
+
+  <Preference
       android:id="@+id/credits"
       android:key="credits"
       android:title="Credits"
       android:icon="@drawable/help_icon" />
-
 
 </PreferenceScreen>

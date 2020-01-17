@@ -3,6 +3,7 @@ package com.technion.cue.BusinessFeatures;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -228,6 +229,7 @@ public class DailyAppointmentListAdapter extends
     public void onDataChanged() {
         super.onDataChanged();
         if (parentView != null) {
+            activity.findViewById(R.id.progress_bar).setVisibility(View.GONE);
             if (getItemCount() == 0) {
                 parentView.findViewById(R.id.no_appointments_message).setVisibility(View.VISIBLE);
             } else {
@@ -242,21 +244,23 @@ public class DailyAppointmentListAdapter extends
     private void noShowClarify(itemHolder holder, String client_id) {
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
+                .whereEqualTo("business_id", FirebaseAuth.getInstance().getUid())
                 .whereEqualTo("client_id", client_id)
                 .get()
                 .addOnSuccessListener(documentSnapshots -> {
-                    double size = documentSnapshots.size();
+                    double size = 0;
                     double no_show_num = 0;
                     for (DocumentSnapshot ds : documentSnapshots) {
-                        if (ds.getString("business_id").equals(FirebaseAuth.getInstance().getUid())
-                                && ds.contains("no_show")
-                                && ds.getBoolean("no_show")) {
-                            no_show_num++;
+                        if (ds.getTimestamp("date").toDate().getTime() <= System.currentTimeMillis()) {
+                            size++;
+                            if (ds.contains("no_show") && ds.getBoolean("no_show"))
+                                no_show_num++;
                         }
                     }
 
                     if (size > 0 && no_show_num >= ((1.0/3.0) * size)) {
                         holder.client.setTextColor(Color.RED);
+                        holder.client.setTypeface(null, Typeface.BOLD);
                         holder.no_show_mark = true;
                     }
                 });

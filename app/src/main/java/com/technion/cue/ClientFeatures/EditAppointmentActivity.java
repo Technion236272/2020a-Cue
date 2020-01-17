@@ -46,6 +46,7 @@ import java.util.Map;
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.APPOINTMENT_ACTIONS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.CLIENTELE_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
@@ -282,7 +283,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
         findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.VISIBLE);
 
-        if (changed == true) {
+        if (changed) {
             String doer;
             if (FirebaseAuth.getInstance().getUid()
                     .equals(appointment.business_id)) {
@@ -337,52 +338,50 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .collection(CLIENTS_COLLECTION)
                             .document(appointment.client_id)
                             .get()
-                            .addOnSuccessListener(client  -> {
-                                FirebaseFirestore.getInstance()
-                                        .collection(BUSINESSES_COLLECTION)
-                                        .document(appointment.business_id)
-                                        .collection(TYPES_COLLECTION)
-                                        .document(appointment.type)
-                                        .get()
-                                        .addOnSuccessListener(type -> {
-                                            String notes;
-                                            if (appointment.notes.equals("No notes yet.")) {
-                                                notes = type.getString("notes");
-                                            } else {
-                                                notes = appointment.notes;
-                                            }
-                                            FirebaseFirestore.getInstance()
-                                                    .collection(BUSINESSES_COLLECTION)
-                                                    .document(appointment.business_id)
-                                                    .collection(TYPES_COLLECTION)
-                                                    .document(old_appointment_type)
-                                                    .get()
-                                                    .addOnSuccessListener(old_type -> {
-                                                        Business.AppointmentAction aa =
-                                                                new Business.AppointmentAction(
-                                                                        "rescheduling",
-                                                                        client.getString("name"),
-                                                                        new Date(),
-                                                                        old_appointment_date,
-                                                                        appointment.date,
-                                                                        type.getString("name"),
-                                                                        old_type.getString("name"),
-                                                                        doer,
-                                                                        notes
-                                                                );
+                            .addOnSuccessListener(client  ->
+                                    FirebaseFirestore.getInstance()
+                                    .collection(BUSINESSES_COLLECTION)
+                                    .document(appointment.business_id)
+                                    .collection(TYPES_COLLECTION)
+                                    .document(appointment.type)
+                                    .get()
+                                    .addOnSuccessListener(type -> {
+                                        String notes;
+                                        if (appointment.notes.equals("No notes yet.")) {
+                                            notes = type.getString("notes");
+                                        } else {
+                                            notes = appointment.notes;
+                                        }
+                                        FirebaseFirestore.getInstance()
+                                                .collection(BUSINESSES_COLLECTION)
+                                                .document(appointment.business_id)
+                                                .collection(TYPES_COLLECTION)
+                                                .document(old_appointment_type)
+                                                .get()
+                                                .addOnSuccessListener(old_type -> {
+                                                    Business.AppointmentAction aa =
+                                                            new Business.AppointmentAction(
+                                                                    "rescheduling",
+                                                                    client.getString("name"),
+                                                                    new Date(),
+                                                                    old_appointment_date,
+                                                                    appointment.date,
+                                                                    type.getString("name"),
+                                                                    old_type.getString("name"),
+                                                                    doer,
+                                                                    notes
+                                                            );
 
 
-                                                        FirebaseFirestore.getInstance()
-                                                                .collection(BUSINESSES_COLLECTION)
-                                                                .document(appointment.business_id)
-                                                                .collection(APPOINTMENT_ACTIONS_COLLECTION)
-                                                                .document()
-                                                                .set(aa);
-                                                    });
+                                                    FirebaseFirestore.getInstance()
+                                                            .collection(BUSINESSES_COLLECTION)
+                                                            .document(appointment.business_id)
+                                                            .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                            .document()
+                                                            .set(aa);
+                                                });
 
-                                        });
-
-                            });
+                                    }));
                 } else {                                // new appointment
                     appointment.type = radioButton_id;
 
@@ -392,6 +391,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .collection(APPOINTMENTS_COLLECTION)
                             .document()
                             .set(appointment).addOnCompleteListener(task -> {
+
                         Toast.makeText(getApplicationContext(), "Appointment scheduled Successfully ", Toast.LENGTH_LONG).show();
                         findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
                         finish();
@@ -414,7 +414,9 @@ public class EditAppointmentActivity extends AppCompatActivity
                                             .get()
                                             .addOnSuccessListener(type -> {
                                                 String notes;
+
                                                 if ((appointment.notes == null) || appointment.notes.equals("No notes yet.")) {
+
                                                     notes = type.getString("notes");
                                                 } else {
                                                     notes = appointment.notes;
@@ -439,6 +441,24 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                         .collection(APPOINTMENT_ACTIONS_COLLECTION)
                                                         .document()
                                                         .set(aa);
+
+
+                                                FirebaseFirestore.getInstance()
+                                                        .collection(BUSINESSES_COLLECTION)
+                                                        .document(appointment.business_id)
+                                                        .collection(CLIENTELE_COLLECTION)
+                                                        .whereEqualTo("client_id", appointment.client_id)
+                                                        .get()
+                                                        .addOnSuccessListener(ds -> {
+                                                            if (ds.isEmpty())
+                                                                FirebaseFirestore.getInstance()
+                                                                        .collection(BUSINESSES_COLLECTION)
+                                                                        .document(appointment.business_id)
+                                                                        .collection(CLIENTELE_COLLECTION)
+                                                                        .document()
+                                                                        .set(new Business.ClienteleMember(appointment.client_id, client.getString("name")));
+                                                        });
+
                                             }));
                 }
 
@@ -569,6 +589,8 @@ public class EditAppointmentActivity extends AppCompatActivity
                                         .orderBy("date")
                                         .get().addOnCompleteListener(l -> {
                                     findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                                    if (l.getResult().getDocuments().isEmpty())
+                                        changed = true;
                                     for (DocumentSnapshot document : l.getResult().getDocuments()) {
                                         if ((document.exists()) && (document.getId() != appointment.id)) {
                                             Date appointmentDate = ((Timestamp) document.get("date")).toDate();

@@ -1,10 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="match_parent">
+<LinearLayout
     android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     tools:context=".SignInActivity">
 
     <View
@@ -24,6 +27,8 @@
         android:gravity="center" >
 
         <ProgressBar
+            android:id="@+id/progress_bar"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true" />
@@ -35,7 +40,7 @@
 
     <EditText
         android:id="@+id/email_address"
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="@string/email_hint"
@@ -43,7 +48,7 @@
 
     <EditText
         android:id="@+id/password"
-        android:layout_width="150dp"
+        android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:hint="@string/password_hint"
@@ -80,6 +85,8 @@
         android:clickable="true"
         android:focusable="true"
         android:text="@string/business_join"
-        android:layout_gravity="center"/>
+        android:layout_gravity="center"
+        android:layout_marginBottom="16dp" />
 
 </LinearLayout>
+</ScrollView>

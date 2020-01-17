@@ -7,11 +7,19 @@
     android:layout_height="match_parent"
     tools:context=".BusinessFeatures.BusinessSchedule">
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        android:indeterminate="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"/>
+
     <androidx.viewpager.widget.ViewPager
         android:id="@+id/business_schedule_pager"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginBottom="48dp" >
+
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/business_schedule_tabs"
             android:layout_width="match_parent"
@@ -20,9 +28,10 @@
             app:tabTextColor="@color/primaryTextColor"
             app:tabRippleColor="@color/primaryLightColor"
             app:tabIndicatorColor="@color/secondaryLightColor"
-            app:tabIndicatorHeight="3dp">
+            app:tabIndicatorHeight="3dp"
+            app:tabGravity="fill" />
 
-        </com.google.android.material.tabs.TabLayout>
+
     </androidx.viewpager.widget.ViewPager>
 
     <FrameLayout

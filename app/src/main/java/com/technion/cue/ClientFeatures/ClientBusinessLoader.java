@@ -131,13 +131,13 @@ public class ClientBusinessLoader {
 
                     @Override
                     public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        view.findViewById(R.id.Loading).setVisibility(View.GONE);
+                        view.findViewById(R.id.LoadingCBHP).setVisibility(View.GONE);
                         return false;
                     }
 
                     @Override
                     public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        view.findViewById(R.id.Loading).setVisibility(View.GONE);
+                        view.findViewById(R.id.LoadingCBHP).setVisibility(View.GONE);
                         return false;
                     }})
                 .into(logo);

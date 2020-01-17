@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:background="@drawable/dialog_rounded_corners" >
 
     <TextView
@@ -11,71 +15,55 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="24dp"
         android:textSize="36sp"
-        android:layout_marginLeft="24dp" />
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="24dp" />
 
-    <LinearLayout
+    <TextView
         android:id="@+id/client_phone"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
         android:layout_below="@id/client_name"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
-        android:clickable="false">
-
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="3dp"
-            app:srcCompat="@drawable/phone_icon"
-            android:contentDescription="phone icon" />
-
-        <TextView
-            android:id="@+id/client_phone_text"
-            android:textColor="@color/secondaryTextColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:textSize="20sp" />
-
-    </LinearLayout>
-
-    <LinearLayout
-        android:id="@+id/client_email"
-        android:layout_width="match_parent"
+        android:textColor="@color/secondaryTextColor"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/client_phone"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/phone_icon"
+        android:drawablePadding="12dp"
+        android:drawableStart="@drawable/phone_icon" />
+
+
+    <TextView
+        android:id="@+id/client_email"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
+        android:layout_below="@id/client_phone"
+        android:textColor="@color/secondaryTextColor"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:drawableLeft="@drawable/email_icon"
+        android:drawablePadding="12dp"
+        android:drawableStart="@drawable/email_icon" />
+
+    <CheckBox
+        android:id="@+id/block"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/client_email"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="24dp"
+        android:layout_marginStart="20dp"
         android:layout_marginBottom="24dp"
-        android:clickable="false" >
+        android:text="Block this person from scheduling?" />
 
-        <ImageView
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_marginTop="3dp"
-            app:srcCompat="@drawable/email_icon"
-            android:contentDescription="email icon" />
-
-        <TextView
-            android:id="@+id/client_email_text"
-            android:textColor="@color/secondaryTextColor"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="12dp"
-            android:textSize="20sp"
-            android:layout_marginStart="12dp" />
-
-    </LinearLayout>
 
     <TextView
         android:id="@+id/no_show_clarify"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/client_email"
+        android:layout_below="@id/block"
         android:layout_marginLeft="24dp"
         android:layout_marginTop="24dp"
         android:layout_marginStart="24dp"
@@ -96,3 +84,4 @@
         android:layout_centerHorizontal="true" />
 
 </RelativeLayout>
+</ScrollView>
