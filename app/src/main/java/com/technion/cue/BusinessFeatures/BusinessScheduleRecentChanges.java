@@ -44,6 +44,7 @@ public class BusinessScheduleRecentChanges extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        getActivity().findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
         return inflater.inflate(R.layout.fragment_business_recent_changes,
                 container, false);
     }
@@ -98,6 +99,8 @@ public class BusinessScheduleRecentChanges extends Fragment {
                                         int position,
                                         @NonNull Business.AppointmentAction model) {
 
+            getActivity().findViewById(R.id.progress_bar).setVisibility(View.GONE);
+
             SimpleDateFormat sdf_date = new SimpleDateFormat("EEEE, dd MMMM yyyy");
             SimpleDateFormat sdf_time = new SimpleDateFormat("HH:mm");
 
@@ -116,7 +119,7 @@ public class BusinessScheduleRecentChanges extends Fragment {
                                             + " an appointment of type "
                                             + model.appointment_type
                                             + " on "
-                                            + sdf_time.format(model.appointment_date)
+                                            + sdf_date.format(model.appointment_date)
                                             + " at "
                                             + sdf_time.format(model.appointment_date)
                             )

@@ -21,18 +21,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="false"
         android:theme="@style/AppTheme">
-        <activity android:name=".BusinessFeatures.BusinessSignUpContainer" />
+        <activity android:name=".BusinessFeatures.BusinessSignUpContainer"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".ClientFeatures.EditAppointmentActivity" />
         <activity android:name=".SignInActivity" />
         <activity android:name=".ClientFeatures.ClientSettingsActivity" />
-        <activity android:name=".BusinessFeatures.ClienteleList" />
+        <activity android:name=".BusinessFeatures.ClienteleList"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".BusinessFeatures.BusinessProfileEdit" />
         <activity android:name=".Credits" />
         <activity android:name=".BusinessFeatures.BusinessScheduleWeek" />
         <activity android:name=".ClientFeatures.ClientChooseTimeFragment" />
         <activity android:name=".ClientFeatures.ClientChooseDateFragment" />
         <activity android:name=".BusinessFeatures.BusinessScheduleDay" />
-        <activity android:name=".BusinessFeatures.BusinessSchedule" />
+        <activity android:name=".BusinessFeatures.BusinessSchedule"
+            android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".ClientFeatures.ClientBusinessHomepage"
                   android:exported="true">
             <intent-filter>

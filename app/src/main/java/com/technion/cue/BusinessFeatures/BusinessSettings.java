@@ -37,6 +37,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.technion.cue.Credits;
 import com.technion.cue.R;
+import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
@@ -335,6 +336,14 @@ public class BusinessSettings extends AppCompatActivity {
 
 
             }
+
+            if (p.getKey().equals("logout")) {
+                    FirebaseAuth.getInstance().signOut();
+                    startActivity(new Intent(getContext(), SignInActivity.class));
+                    getActivity().finish();
+                    return true;
+            }
+
             return true;
         }
     }

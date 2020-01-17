@@ -57,6 +57,7 @@ public class BusinessScheduleWeek extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        getActivity().findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
         return inflater.inflate(R.layout.fragment_business_schedule_week,
                 container, false);
     }

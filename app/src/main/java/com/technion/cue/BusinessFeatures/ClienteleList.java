@@ -128,6 +128,7 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     .limit(1)
                     .get()
                     .addOnSuccessListener(documentSnapshots -> {
+                        findViewById(R.id.progress_bar).setVisibility(View.GONE);
                         if (!documentSnapshots.isEmpty() &&
                                 documentSnapshots.getDocuments()
                                         .get(0).getString("client_id").equals(cm.client_id)) {
@@ -138,7 +139,7 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     });
 
             holder.client.setOnClickListener(cl ->
-                    new ClientInformationDialog(cm.client_id)
+                    new ClientInformationDialog(cm)
                             .show(getSupportFragmentManager(), null));
         }
 
