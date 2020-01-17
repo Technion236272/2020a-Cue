@@ -26,6 +26,8 @@ public class Business implements Serializable {
         public String id;
 
         public String client_id = "", name = "";
+        public boolean blocked;
+
         public ClienteleMember() { }
         public ClienteleMember(String client_id) {
             this.client_id = client_id;
@@ -33,6 +35,11 @@ public class Business implements Serializable {
         public ClienteleMember(String client_id, String name) {
             this.client_id = client_id;
             this.name = name;
+            this.blocked = false;
+        }
+        public ClienteleMember(String client_id, String name, boolean blocked) {
+            this(client_id, name);
+            this.blocked = blocked;
         }
     }
 

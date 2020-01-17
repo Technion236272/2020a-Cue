@@ -5,8 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ClientFeatures.EditAppointmentActivity"
-    android:orientation="vertical"
-    >
+    android:orientation="vertical">
 
 
     <FrameLayout
@@ -20,8 +19,7 @@
             android:layout_height="wrap_content"
             android:indeterminate="true"
             android:layout_gravity="center"
-            android:progress="1"
-            />
+            android:progress="1" />
     </FrameLayout>
 
 
@@ -208,14 +206,12 @@
                 android:textColor="@color/secondaryTextColor"
                 android:textSize="20sp"
                 android:layout_gravity="start"
-                android:textStyle="bold"
-       />
+                android:textStyle="bold" />
 
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            >
+            android:layout_centerVertical="true" >
             <TextView
                 android:id="@+id/edit_appointment_notes_text"
                 android:layout_width="match_parent"
@@ -224,11 +220,7 @@
                 android:textSize="20sp"
                 android:layout_gravity="end"
                 android:gravity="end"
-                android:visibility="visible"
-
-
-
-                />
+                android:visibility="visible" />
     <FrameLayout
          android:id="@+id/edit_appointment_note_laylout"
             android:layout_width="match_parent"
@@ -245,16 +237,14 @@
                 app:counterEnabled="true"
                 app:endIconMode="clear_text"
                 app:counterMaxLength="140"
-                android:layout_centerVertical="true"
-                >
+                android:layout_centerVertical="true">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edit_appointment_notes_text_edit_text"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:inputType="text"
-                    android:maxLength="140"
-                   />
+                    android:maxLength="140" />
 
             </com.google.android.material.textfield.TextInputLayout>
 </FrameLayout>
@@ -262,10 +252,6 @@
         </RelativeLayout>
 
         </RelativeLayout>
-
-
-
-
 
 
     <RelativeLayout

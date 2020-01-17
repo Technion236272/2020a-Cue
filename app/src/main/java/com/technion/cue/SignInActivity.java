@@ -60,6 +60,7 @@ public class SignInActivity extends AppCompatActivity {
                                 searchForBO(mAuth.getCurrentUser().getUid());
                             }
                         } else {
+                            findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                             Toast.makeText(SignInActivity.this,
                                     "Authentication failed.##",
                                     Toast.LENGTH_LONG).show();
@@ -92,6 +93,8 @@ public class SignInActivity extends AppCompatActivity {
 
         button_sign_in.setOnClickListener(v -> {
 
+            findViewById(R.id.loadingPanelSignin).setVisibility(View.VISIBLE);
+
             button_sign_in.setEnabled(false);
             final EditText user_password = findViewById(R.id.password);
             final EditText email = findViewById(R.id.email_address);
@@ -103,6 +106,7 @@ public class SignInActivity extends AppCompatActivity {
                         .addOnSuccessListener(l -> {
                             boolean res = checkIfEmailVerified();
                             if(res) {
+                                findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                                 Log.d(TAG, "signInWithEmail:success");
                                 updateUI(mAuth.getCurrentUser().getUid());
                             }
@@ -141,7 +145,7 @@ public class SignInActivity extends AppCompatActivity {
                             searchForBO(uid);
                         }
                     } else {
-                            Toast.makeText(SignInActivity.this,
+                        Toast.makeText(SignInActivity.this,
                                     "Authentication failed.##",
                                     Toast.LENGTH_LONG).show();
                                      findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
@@ -167,16 +171,20 @@ public class SignInActivity extends AppCompatActivity {
                             startActivity(new Intent(getBaseContext(), BOBusinessHomePage.class));
                             finish();
                         } else {
+                            findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                             Toast.makeText(SignInActivity.this,
                                     "Authentication failed : Email us your username.##", // - ben - 17/12 - when user is not client and not bo
                                     Toast.LENGTH_LONG).show();
                                     findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                         }
-                    }).addOnFailureListener(l ->
-                    Toast.makeText(SignInActivity.this,
-                            "Authentication failed",
-                            Toast.LENGTH_LONG).show());
-                            findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
+                    }).addOnFailureListener(l -> {
+                        findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
+                        Toast.makeText(SignInActivity.this,
+                                "Authentication failed",
+                                Toast.LENGTH_LONG).show();
+                        findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
+                    });
+
     }
     private boolean checkIfEmailVerified()
     {
@@ -198,5 +206,10 @@ public class SignInActivity extends AppCompatActivity {
             //restart this activity
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        moveTaskToBack(true);
     }
 }

@@ -113,15 +113,8 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
             return true;
         });
 
-        menu.getItem(2).setOnMenuItemClickListener(cl -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
-            return true;
-        });
-
         // go the profile edit activity
-        menu.getItem(3).setOnMenuItemClickListener(cl -> {
+        menu.getItem(2).setOnMenuItemClickListener(cl -> {
             Intent intent = new Intent(this, BusinessProfileEdit.class);
             intent.putExtra("business", business);
             intent.putExtra("logo", logoData);
@@ -298,6 +291,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                                         int position,
                                         @NonNull Business.Review model) {
             holder.reviewContent.setText(model.content);
+            findViewById(R.id.progress_bar).setVisibility(View.GONE);
         }
 
         @NonNull

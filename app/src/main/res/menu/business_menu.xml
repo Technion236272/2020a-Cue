@@ -5,8 +5,6 @@
         android:title="@string/generate_a_link_to_the_business" />
     <item android:id="@+id/business_settings"
         android:title="@string/settings" />
-    <item android:id="@+id/business_logout"
-        android:title="@string/business_logout" />
     <item
         android:id="@+id/business_edit"
         android:title="Edit Profile"

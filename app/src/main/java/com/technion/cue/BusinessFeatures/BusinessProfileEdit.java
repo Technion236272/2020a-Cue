@@ -268,6 +268,10 @@ public class BusinessProfileEdit extends AppCompatActivity {
         }
     }
 
+    public void cancelChanges(View view) {
+        finish();
+    }
+
     /**
      * Save all content that has changed, and upload it to Firestore.
      * Finally, finish this activity, and return to the homepage activity
