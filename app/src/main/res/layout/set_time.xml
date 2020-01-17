@@ -4,7 +4,7 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/primaryLightColor">
+    android:background="#FFFFFF">
 
     <EditText
         android:id="@+id/num_input"
@@ -13,38 +13,41 @@
         android:hint="@string/default_num"
         android:inputType="text" />
 
-    <RadioGroup
-        android:id="@+id/radio_group"
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
+        android:layout_height="wrap_content">
 
-        <RadioButton
-            android:id="@+id/minutes_button"
+        <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/minutes" />
+            android:layout_height="wrap_content">
+
+            <RadioButton
+                android:id="@+id/minutes_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/minutes" />
 
 
-        <RadioButton
-            android:id="@+id/hours_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text = "@string/hours"/>
+            <RadioButton
+                android:id="@+id/hours_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "@string/hours"/>
 
-        <RadioButton
-            android:id="@+id/days_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text = "@string/days"/>
+            <RadioButton
+                android:id="@+id/days_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "@string/days"/>
 
-        <RadioButton
-            android:id="@+id/weeks_button"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text = "@string/weeks"/>
+            <RadioButton
+                android:id="@+id/weeks_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text = "@string/weeks"/>
 
-    </RadioGroup>
-
-
+        </RadioGroup>
+    </ScrollView>
 
 </LinearLayout>

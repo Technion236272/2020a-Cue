@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
@@ -42,6 +43,7 @@ import com.technion.cue.data_classes.Business;
 
 import java.util.HashMap;
 import java.util.Map;
+import android.text.TextUtils;
 
 import static android.text.TextUtils.isDigitsOnly;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -118,7 +120,7 @@ public class BusinessSettings extends AppCompatActivity {
                 EditText edit_text = dialog.findViewById(R.id.num_input);
                 String edit_text_value = edit_text.getText().toString();
 
-                if (edit_text_value.isEmpty() || radioButton == null) {
+                if (edit_text_value.isEmpty() || !isDigitsOnly(edit_text_value) || radioButton == null) {
                     Toast.makeText(MySettingsFragment.super.getContext(),
                             "Please enter a number and choose", Toast.LENGTH_LONG).show();
                 } else {
@@ -273,7 +275,9 @@ public class BusinessSettings extends AppCompatActivity {
             and to the correct radio button.
              */
             if (p.getKey().equals("remind time")) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                AlertDialog.Builder builder = new AlertDialog.
+                        Builder(new ContextThemeWrapper(getActivity(),R.style.MyAlertDialogTheme));
 
                 builder.setCancelable(false)
                         .setMessage("Please enter a number and choose")
