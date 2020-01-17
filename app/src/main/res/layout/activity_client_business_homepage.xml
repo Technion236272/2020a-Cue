@@ -4,8 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-
 <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
@@ -14,9 +12,22 @@
     tools:context=".ClientFeatures.ClientBusinessHomepage"
     android:id="@+id/view">
 
-
     <FrameLayout
-        android:id="@+id/fragment_holder_business_client"
+        android:id="@+id/Loading"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone">
+        <ProgressBar
+            android:id="@+id/loadingPanelEditAppointment_progress"
+            android:layout_width="100dp"
+            android:layout_height="100dp"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:progress="1"
+            />
+    </FrameLayout>
+    <FrameLayout
+        android:id="@+id/fragment_holder_business_Client"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
 
@@ -91,7 +102,7 @@
         />
 
     <TextView
-        android:id="@+id/clientBusinessTitleLocation"
+        android:id="@+id/ClientBusinessTitleLocation"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
@@ -106,7 +117,7 @@
         android:id="@+id/Services"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/clientBusinessTitleLocation"
+        android:layout_below="@id/ClientBusinessTitleLocation"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="15dp">

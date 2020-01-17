@@ -50,14 +50,20 @@ public class ClientBusinessHomepage extends AppCompatActivity {
     FirebaseFirestore db;
     ClientBusinessLoader businessLoader;
     Boolean favorite;
+    ClientBusinessLoader f;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_business_homepage);
         db = FirebaseFirestore.getInstance();
+
+        findViewById(R.id.Loading).setVisibility(View.VISIBLE);
+
         //getting the b_id from client home page
         this.bundle = getIntent().getExtras();
+
+        favorite=false;
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
@@ -89,13 +95,10 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                                                 .replace('+', ' ');
                                         findViewById(R.id.switch_to_date_time_fragments)
                                                 .setVisibility(View.VISIBLE);
-                                        Fragment f = new BusinessInfoFragment();
-                                        bundle.putString("business_id", formattedDeepLink);
-                                        f.setArguments(bundle);
-                                        getSupportFragmentManager()
-                                                .beginTransaction()
-                                                .replace(R.id.fragment_holder_business_client, f)
-                                                .commit();
+                                        f = new ClientBusinessLoader(findViewById(android.R.id.content),db,formattedDeepLink);
+                                        this.bundle.putString("business_id",formattedDeepLink);
+                                        f.load();
+                                        checkIfFavorite();
                                     } else {
                                         Toast.makeText(getBaseContext(),
                                                 "You are not a client. " +
@@ -104,6 +107,7 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                                                 .show();
                                         finish();
                                     }
+
                                 });
                     }
         });
@@ -117,10 +121,10 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         });
 
         if (bundle.containsKey("business_id") == true) {
-            // --- //
             businessLoader = new ClientBusinessLoader(this.findViewById(R.id.view),db,bundle.getString("business_id"));
             businessLoader.load();
             checkIfFavorite();
+
         }
 
 
@@ -136,8 +140,10 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                     .limit(1)
                     .get()
                     .addOnSuccessListener(l -> {
-                        ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_black_30dp);
-                        favorite=true;
+                        if (!l.isEmpty()) {
+                            ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_black_30dp);
+                            favorite = true;
+                        }
                     })
                     .addOnFailureListener(l -> {
                         ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_border_grey_30dp);

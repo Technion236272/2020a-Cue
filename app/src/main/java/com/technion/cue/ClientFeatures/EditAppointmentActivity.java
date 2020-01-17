@@ -87,7 +87,7 @@ public class EditAppointmentActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_appointment);
-        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.VISIBLE);
 
         db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -199,6 +199,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             radioButton_id="";
                             appointment.type="";
                         }
+
                     });
                     int i=0;
                     for (DocumentSnapshot document : l.getDocuments()) {
@@ -217,6 +218,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             }
                             i++;
                     }
+                    findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
                 });
     }
 
@@ -412,7 +414,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                             .get()
                                             .addOnSuccessListener(type -> {
                                                 String notes;
-                                                if (appointment.notes.equals("No notes yet.")) {
+                                                if ((appointment.notes == null) || appointment.notes.equals("No notes yet.")) {
                                                     notes = type.getString("notes");
                                                 } else {
                                                     notes = appointment.notes;

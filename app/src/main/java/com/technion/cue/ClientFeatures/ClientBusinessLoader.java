@@ -1,11 +1,22 @@
 package com.technion.cue.ClientFeatures;
 
-import android.content.Intent;
-import android.net.Uri;
+import android.graphics.drawable.Drawable;
+import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -14,6 +25,7 @@ import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
+import java.net.UnknownHostException;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -22,7 +34,7 @@ import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
  * This class is used to load data about the business from Firestore
  */
 @ModuleAuthor("Ben Siso")
-class ClientBusinessLoader {
+public class ClientBusinessLoader {
 
     private View view;
     private FirebaseFirestore db;
@@ -42,9 +54,14 @@ class ClientBusinessLoader {
         this.view = view;
     }
 
+    ClientBusinessLoader() {
+    }
+
+
+
     /**
-     * loads data from Firebase into matching fields in the BO homepage activity
-     */
+         * loads data from Firebase into matching fields in the BO homepage activity
+         */
     @ModuleAuthor("Ben Siso")
     void load() {
         db.collection(BUSINESSES_COLLECTION)
@@ -72,7 +89,7 @@ class ClientBusinessLoader {
         name.setText(business.business_name);
         desc.setText(business.description);
 
-        TextView location = view.findViewById(R.id.clientBusinessTitleLocation);
+        TextView location = view.findViewById(R.id.ClientBusinessTitleLocation);
         full_address = business.location.get("address") + ", "
                 + business.location.get("city") + ", "
                 + business.location.get("state");
@@ -89,6 +106,8 @@ class ClientBusinessLoader {
         String Saturday = (business.open_hours.get("Saturday")!= "" ? business.open_hours.get("Saturday") : "Close");
 
         openHours.setText(Sunday+"\n"+Monday+"\n"+Tuesday +"\n"+ Wednesday+"\n"+Thursday +"\n"+Friday +"\n"+Saturday);
+
+
     }
 
 
@@ -108,6 +127,19 @@ class ClientBusinessLoader {
         Glide.with(logo.getContext())
                 .load(logoRef)
                 .error(R.drawable.person_icon)
+                .listener(new RequestListener<Drawable>() {
+
+                    @Override
+                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
+                        view.findViewById(R.id.Loading).setVisibility(View.GONE);
+                        return false;
+                    }
+
+                    @Override
+                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
+                        view.findViewById(R.id.Loading).setVisibility(View.GONE);
+                        return false;
+                    }})
                 .into(logo);
     }
 
