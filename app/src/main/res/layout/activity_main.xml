@@ -69,9 +69,20 @@
         android:text="@string/client_join"
         android:layout_gravity="center"/>
 
-    <View
-        android:layout_width="0dp"
-        android:layout_height="100dp" />
+    <TextView
+        android:id="@+id/or_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/or"
+        android:textSize="16sp"
+        android:layout_gravity="center"/>
+
+    <com.google.android.gms.common.SignInButton
+        android:id="@+id/sign_in_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
+
 
     <TextView
         android:id="@+id/business_join"
@@ -80,6 +91,8 @@
         android:clickable="true"
         android:focusable="true"
         android:text="@string/business_join"
-        android:layout_gravity="center"/>
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="1sp"/>
 
 </LinearLayout>
