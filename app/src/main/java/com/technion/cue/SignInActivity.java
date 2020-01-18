@@ -219,9 +219,16 @@ public class SignInActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            Toast.makeText(SignInActivity.this,
+                                    "Sign in failed. make sure your email isn't already in use",
+                                    Toast.LENGTH_LONG).show();
                         }
                     }
-                });
+                }).addOnFailureListener(f->{
+            Toast.makeText(SignInActivity.this,
+                    "Sign in failed. make sure your email isn't already in use",
+                    Toast.LENGTH_LONG).show();
+        });
     }
 
 
@@ -271,20 +278,6 @@ public class SignInActivity extends AppCompatActivity {
                     findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                 });
             }
-        }
-    }
-
-    private void handleSignInResult(Task<GoogleSignInAccount> completedTask){
-        try {
-            GoogleSignInAccount account = completedTask.getResult(ApiException.class);
-
-            // Signed in successfully, show authenticated UI.
-            updateUI(account.getId());
-        } catch (ApiException e) {
-            // The ApiException status code indicates the detailed failure reason.
-            // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Log.w(TAG, "signInResult:failed code=" + e.getStatusCode());
-            //updateUI(null);
         }
     }
 
@@ -353,7 +346,7 @@ public class SignInActivity extends AppCompatActivity {
                         } else {
                             findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                             Toast.makeText(SignInActivity.this,
-                                    "Authentication failed : Email us your username............", // - ben - 17/12 - when user is not client and not bo
+                                    "Authentication failed : Email us your username", // - ben - 17/12 - when user is not client and not bo
                                     Toast.LENGTH_LONG).show();
                                     findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                         }
