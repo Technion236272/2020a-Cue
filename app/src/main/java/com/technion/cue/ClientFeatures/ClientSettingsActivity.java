@@ -1,6 +1,7 @@
 package com.technion.cue.ClientFeatures;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
 
@@ -12,6 +13,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.FirebaseAuth;
 
 
+import com.technion.cue.LauncherActivity;
 import com.technion.cue.R;
 
 
@@ -38,7 +40,7 @@ public class ClientSettingsActivity extends AppCompatActivity  {
         switch (item.getItemId()) {
             case android.R.id.home:
                 this.finish();
-                overridePendingTransition(R.anim.animation_right_to_left,0);
+                overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
 
                 return true;
         }
@@ -64,6 +66,8 @@ public class ClientSettingsActivity extends AppCompatActivity  {
 
             if (preference.getKey().equals("logout") == true) {
                 mAuth.signOut();
+                Intent getIntentBOPage = new Intent(getActivity().getBaseContext(), LauncherActivity.class);
+                startActivity(getIntentBOPage);
                 getActivity().finish();
             } else {
 

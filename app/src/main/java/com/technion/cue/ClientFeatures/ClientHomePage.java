@@ -57,9 +57,10 @@ public class ClientHomePage extends AppCompatActivity  {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_home_page);
-
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
@@ -183,16 +184,6 @@ public class ClientHomePage extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
 
-        /**
-         * Check if user is signin
-         * */
-        if (mAuth.getCurrentUser() == null) {
-            Intent getIntentBOPage = new Intent(getBaseContext(), LauncherActivity.class);
-            startActivity(getIntentBOPage);
-            finish();
-        }
-
-
         checkForReview();
     }
 
@@ -200,24 +191,15 @@ public class ClientHomePage extends AppCompatActivity  {
     protected void onResume() {
         super.onResume();
 
-        /**
-         * Check if user is signin
-         * */
-        if (mAuth.getCurrentUser() == null) {
-            Intent getIntentBOPage = new Intent(getBaseContext(), LauncherActivity.class);
-            startActivity(getIntentBOPage);
-            finish();
-        }
-
-
 
     }
+
 
 
     public void Settings(View v) {
         Intent getIntentBOPage = new Intent(getBaseContext(), ClientSettingsActivity.class);
        startActivity(getIntentBOPage);
-        overridePendingTransition(R.anim.animation_left_to_right,0);
+        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
     }
 
     public void showBusinesses(View v) {
@@ -226,7 +208,7 @@ public class ClientHomePage extends AppCompatActivity  {
         getSupportFragmentManager().beginTransaction()
                 .addToBackStack("BLF")
                 .add(android.R.id.content,fragment,"BLF")
-                .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_in_left)
+                .setCustomAnimations(android.R.anim.slide_in_left,android.R.anim.slide_out_right)
                 .commit();
     }
 
