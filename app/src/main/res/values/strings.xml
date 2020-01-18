@@ -4,8 +4,9 @@
     <string name="email_hint">Email</string>
     <string name="password_hint">Password</string>
     <string name="sign_in_button">Sign in</string>
-    <string name="client_join">Don"'"t have an account? Sign Up!</string>
-    <string name="business_join">Business Owner? Join Us!</string>
+    <string name="client_join">Client? Sign Up here!</string>
+    <string name="or">OR</string>
+    <string name="business_join">Business Owner? Join Us here!</string>
     <string name="opening_hours">opening hours:</string>
     <string name="address">address:</string>
     <string name="sign_up">Sign Up</string>
@@ -84,8 +85,7 @@
     <string name="add_type">Add Type</string>
     <string name="done">Done</string>
     <string name="active_type">Type is Active</string>
-
-
+    <string name="for_continue">In order to continue, please insert this following details:</string>
 
 
 </resources>
