@@ -23,9 +23,11 @@
         android:theme="@style/AppTheme">
         <activity android:name=".BusinessFeatures.BusinessSignUpContainer"
             android:configChanges="keyboardHidden|orientation|screenSize" />
-        <activity android:name=".ClientFeatures.EditAppointmentActivity" />
+        <activity android:name=".ClientFeatures.EditAppointmentActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".SignInActivity" />
-        <activity android:name=".ClientFeatures.ClientSettingsActivity" />
+        <activity android:name=".ClientFeatures.ClientSettingsActivity"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".BusinessFeatures.ClienteleList"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".BusinessFeatures.BusinessProfileEdit" />
@@ -34,10 +36,13 @@
         <activity android:name=".ClientFeatures.ClientChooseTimeFragment" />
         <activity android:name=".ClientFeatures.ClientChooseDateFragment" />
         <activity android:name=".BusinessFeatures.BusinessScheduleDay" />
+        <activity android:name=".ClientFeatures.ClientHomePage"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".BusinessFeatures.BusinessSchedule"
             android:configChanges="keyboardHidden|orientation|screenSize" />
         <activity android:name=".ClientFeatures.ClientBusinessHomepage"
-                  android:exported="true">
+                  android:exported="true"
+                  android:configChanges="keyboardHidden|orientation|screenSize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -53,7 +58,8 @@
             </intent-filter>
 
         </activity>
-        <activity android:name=".ClientFeatures.ClientAppointmentPage" />
+        <activity android:name=".ClientFeatures.ClientAppointmentPage"
+            android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".BusinessFeatures.BusinessSettings" />
         <activity android:name=".LauncherActivity">
             <intent-filter>
@@ -65,7 +71,6 @@
         </activity>
         <activity android:name=".BusinessFeatures.BOBusinessHomePage" />
         <activity android:name=".ClientFeatures.ClientSignUp" />
-        <activity android:name=".ClientFeatures.ClientHomePage" />
         <activity android:name=".BusinessFeatures.BusinessSignUp1" />
         <activity android:name=".BusinessFeatures.BusinessSignUp2" />
         <activity android:name=".BusinessFeatures.BusinessSignUp3" />

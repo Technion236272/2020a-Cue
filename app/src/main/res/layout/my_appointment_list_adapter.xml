@@ -17,8 +17,7 @@
         card_view:cardElevation="3dp"
         android:layout_marginRight="10dp"
         android:layout_marginLeft="10dp"
-        card_view:cardUseCompatPadding="true"
-        android:minHeight="140dp">
+        card_view:cardUseCompatPadding="true">
 
         <FrameLayout
             android:background="@color/primaryDarkColor"
@@ -115,13 +114,13 @@
                 android:textSize="18sp"
                 android:background="@color/fui_transparent"
                 android:padding="6dp"
+                android:layout_marginTop="8dp"
                 android:textStyle="bold"
                 android:textColor="@color/secondaryDarkColor"
-                android:gravity="bottom"
+                android:layout_gravity ="bottom|right"
                 android:layout_below="@id/notes"
-                android:layout_alignParentEnd="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentBottom="true"/>
+                android:gravity="right"
+                />
 
         </RelativeLayout>
 

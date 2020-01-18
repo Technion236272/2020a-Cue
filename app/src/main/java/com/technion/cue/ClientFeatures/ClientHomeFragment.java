@@ -30,6 +30,7 @@ import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.firestore.Query;
 
 import com.google.firebase.auth.FirebaseUser;
+import com.technion.cue.LauncherActivity;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Client;
@@ -66,8 +67,7 @@ public class ClientHomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+
 
     }
 
@@ -85,6 +85,8 @@ public class ClientHomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         setUpRecycleAppointmentAView();
         setUpRecyclerFavoriteView();
     }
@@ -98,7 +100,7 @@ public class ClientHomeFragment extends Fragment {
                 .whereEqualTo("client_id", currentUser.getUid())
                 .whereGreaterThanOrEqualTo("date", Timestamp.now())
                 .orderBy("date", Query.Direction.ASCENDING)
-                .limit(3);
+                .limit(5);
         FirestoreRecyclerOptions<Appointment> options =
                 new FirestoreRecyclerOptions.Builder<Appointment>()
                         .setQuery(query, Appointment.class)
