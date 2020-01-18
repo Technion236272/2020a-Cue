@@ -210,13 +210,15 @@ public class SignInActivity extends AppCompatActivity {
                             boolean new_user = task.getResult().getAdditionalUserInfo().isNewUser();
                             if (new_user) {
                                 updateUIGoogle(user);
-
-                            } else {
-                                // If sign in fails, display a message to the user.
-                                Log.w(TAG, "signInWithCredential:failure", task.getException());
+                            }
+                            else {
+                                updateUI(user.getUid());
                             }
 
                             // ...
+                        } else {
+                            // If sign in fails, display a message to the user.
+                            Log.w(TAG, "signInWithCredential:failure", task.getException());
                         }
                     }
                 });
