@@ -8,6 +8,11 @@
     android:background="@color/primaryTextColor"
     android:id="@+id/client_tabs_container">
 
+    <FrameLayout
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/day_fragment" />
 
     <FrameLayout
         android:layout_width="wrap_content"
