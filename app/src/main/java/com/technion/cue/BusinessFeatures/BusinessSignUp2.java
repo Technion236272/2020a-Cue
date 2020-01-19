@@ -62,6 +62,15 @@ public class BusinessSignUp2 extends Fragment {
                 );
             }
         });
+
+        if (businessSignUpContainer.logoData != null) {
+            CircularImageView logo = view.findViewById(R.id.businessLogoEdit);
+            Glide.with(logo.getContext())
+                    .load(businessSignUpContainer.logoData)
+                    .error(R.drawable.person_icon)
+                    .into(logo);
+        }
+
     }
 
     /**
