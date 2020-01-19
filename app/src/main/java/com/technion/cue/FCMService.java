@@ -134,8 +134,8 @@ public class FCMService extends FirebaseMessagingService {
                                             .build();
                             mNotificationManager.notify(0, notification);
                         } else {
-//                            if (remoteMessage.getData().get("action_doer").equals("client"))
-//                                return;
+                            if (remoteMessage.getData().get("action_doer").equals("client"))
+                                return;
                             switch (remoteMessage.getData().get("action_type")) {
                                 case "scheduling":
                                     bigTextStyle.setBigContentTitle(
