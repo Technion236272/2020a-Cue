@@ -75,31 +75,25 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_client_appointment_page);
         intent = getIntent();
-        b_name = intent.getExtras().getString("name"); //  appointment id
+        b_name = intent.getExtras().getString("business_name"); //  appointment id
         a_type = intent.getExtras().getString("appointment_type");
         a_notes = intent.getExtras().getString("appointment_notes");
         a_date = intent.getExtras().getString("appointment_date");
-        a_id = intent.getExtras().getString("notes");
-        //System.out.println("----------------------" + a_id);
+        a_id = intent.getExtras().getString("appointment_id");
+
 
         b_id = intent.getExtras().getString("business_id");
         db = FirebaseFirestore.getInstance();
         loadBusinessData(b_id);
 
 
-        // toolbar
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.appointment_page_toolbar);
-       // setSupportActionBar(toolbar);
-        // add back arrow to toolbar
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setDisplayShowHomeEnabled(true);
             getSupportActionBar().setTitle("");
             getSupportActionBar().setElevation(0);
-
         }
-        //TextView name = findViewById(R.id.client_appointment_business_Name);
-        //name.setText(b_name);
+
         TextView type = findViewById(R.id.client_appointment_business_type);
         type.setText(a_type);
         TextView notes = findViewById(R.id.client_appointment_page_notes_text);
@@ -170,11 +164,10 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
     // attach to an onclick handler to show the date picker
     public void reschedThisAppointment(MenuItem v) {
-        Intent intent = new Intent(this, EditAppointmentActivity.class);
-        intent.putExtra("appointment_id",a_id);
-        intent.putExtra("business_id",b_id);
-        startActivity(intent);
-        finish();
+        Intent intentEdit = new Intent(this, EditAppointmentActivity.class);
+        intentEdit.putExtras(intent);
+        startActivity(intentEdit);
+
 
 
     }
@@ -213,63 +206,79 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         }
 
     }
+    /**
+     * When client click on business name then open Business Page
+     * **/
+    public void goToBusinessPage(View view) {
+
+        Intent intentLocal = new Intent(this, ClientBusinessHomepage.class);
+        intentLocal.putExtra("business_name",b_name);
+        intentLocal.putExtra("appointment_id",a_id);
+        intentLocal.putExtra("business_id",b_id);
+        intentLocal.putExtra("appointment_type",intent.getExtras().getString("appointment_type"));
+        intentLocal.putExtra("appointment_notes",intent.getExtras().getString("appointment_notes"));
+        intentLocal.putExtra("appointment_date",intent.getExtras().getString("appointment_date"));
+        startActivity(intentLocal);
+        finish();
+
+    }
 
 
 
-//    public void abortAppointment(MenuItem v) {
-//        String doer;
-//        if (FirebaseAuth.getInstance().getUid()
-//                .equals(b_id)) {
-//            doer = "business";
-//        } else {
-//            doer = "client";
-//        }
-//
-//        new MaterialAlertDialogBuilder(this)
-//                .setTitle("Cancel this appointment")
-//                .setMessage("Cancellation is Irreversible. ")
-//                .setPositiveButton("Yes", (dialog, id) -> {
-//                    findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
-//                    FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-//                            .document(a_id).delete().addOnSuccessListener(result -> {
-//                                FirebaseFirestore.getInstance()
-//                                        .collection(CLIENTS_COLLECTION)
-//                                        .document(FirebaseAuth.getInstance().getUid())
-//                                        .get()
-//                                        .addOnSuccessListener(ds -> {
-//                                            SimpleDateFormat sdf =
-//                                                    new SimpleDateFormat("HH:mm dd/MM/YYYY");
-//                                            try {
-//                                                Business.AppointmentAction aa = new Business.AppointmentAction(
-//                                                        "cancellation",
-//                                                        ds.getString("name"),
-//                                                        new Date(),
-//                                                        sdf.parse(a_date),
-//                                                        sdf.parse(a_date),
-//                                                        a_type,
-//                                                        a_type,
-//                                                        doer,
-//                                                        a_id
-//                                                );
-//                                                FirebaseFirestore.getInstance()
-//                                                        .collection(BUSINESSES_COLLECTION)
-//                                                        .document(b_id)
-//                                                        .collection(APPOINTMENT_ACTIONS_COLLECTION)
-//                                                        .document()
-//                                                        .set(aa);
-//                                            } catch (ParseException e) {
-//                                                e.printStackTrace();
-//                                            }
-//                                        });
-//
-//                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
-//                        Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();
-//                        finish();
-//                });
-//                })
-//                .setNegativeButton("No",null)
-//                .show();
-//    }
+    public void abortAppointment(MenuItem v) {
+        String doer;
+        if (FirebaseAuth.getInstance().getUid()
+                .equals(b_id)) {
+            doer = "business";
+        } else {
+            doer = "client";
+        }
+
+        new MaterialAlertDialogBuilder(this)
+                .setTitle("Cancel this appointment")
+                .setMessage("Cancellation is Irreversible. ")
+                .setPositiveButton("Yes", (dialog, id) -> {
+                    findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+                    FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
+                            .document(a_id).delete().addOnSuccessListener(result -> {
+                                FirebaseFirestore.getInstance()
+                                        .collection(CLIENTS_COLLECTION)
+                                        .document(FirebaseAuth.getInstance().getUid())
+                                        .get()
+                                        .addOnSuccessListener(ds -> {
+                                            SimpleDateFormat sdf =
+                                                    new SimpleDateFormat("HH:mm dd/MM/YYYY");
+                                            try {
+                                                Business.AppointmentAction aa = new Business.AppointmentAction(
+                                                        "cancellation",
+                                                        ds.getString("name"),
+                                                        new Date(),
+                                                        sdf.parse(a_date),
+                                                        sdf.parse(a_date),
+                                                        a_type,
+                                                        a_type,
+                                                        doer,
+                                                        a_id
+                                                );
+                                                FirebaseFirestore.getInstance()
+                                                        .collection(BUSINESSES_COLLECTION)
+                                                        .document(b_id)
+                                                        .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                        .document()
+                                                        .set(aa);
+                                            } catch (ParseException e) {
+                                                e.printStackTrace();
+                                            }
+                                        });
+
+                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                        Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();
+                        finish();
+                });
+                })
+                .setNegativeButton("No",null)
+                .show();
+    }
 
 
 

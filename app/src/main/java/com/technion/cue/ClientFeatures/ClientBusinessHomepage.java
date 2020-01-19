@@ -204,7 +204,15 @@ public class ClientBusinessHomepage extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                if (bundle.containsKey("appointment_id")) { // back to appointment page
+                    Intent intent = new Intent(this, ClientAppointmentPage.class);
+                    intent.putExtras(bundle);
+                    startActivity(intent);
+                    finish();
+                    overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+                } else {
+                    finish();
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

@@ -214,7 +214,7 @@ public class ClientHomePage extends AppCompatActivity  {
     public void Settings(View v) {
         Intent getIntentBOPage = new Intent(getBaseContext(), ClientSettingsActivity.class);
        startActivity(getIntentBOPage);
-        overridePendingTransition(android.R.anim.fade_in,android.R.anim.fade_out);
+
     }
 
     public void showBusinesses(View v) {

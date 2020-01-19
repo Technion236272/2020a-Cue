@@ -32,42 +32,41 @@
         android:elevation="8dp"
         android:layout_gravity="center"
         android:minHeight="190dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="start|bottom">
         <TextView
             android:id="@+id/client_appointment_business_Name"
             android:textColor="@color/primaryTextColor"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="28sp"
-            android:layout_margin="8dp"
+            android:layout_marginLeft="8dp"
             android:text=""
             android:maxWidth="240dp"
-            android:layout_gravity="left|bottom"
-
-
+            android:layout_gravity="start|bottom"
+            android:gravity="bottom"
+            android:onClick="goToBusinessPage"
 
             />
     <TextView
         android:id="@+id/client_appointment_business_type"
         android:textColor="@color/primaryTextColor"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:layout_gravity="right|bottom"
-        android:gravity="bottom"
-        android:layout_margin="8dp"
-        android:maxWidth="100dp"
-        android:maxLength="15"
-        />
+        android:maxWidth="240dp"
+        android:layout_gravity="start|bottom"
+        android:maxLength="19"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
 
-        <TextView
-            android:id="@+id/client_appointment_BusinessDescription"
-            android:textColor="@color/primaryTextColor"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:layout_gravity="bottom"
-            android:layout_margin="8dp"
-            />
+
+        />
+        </LinearLayout>
 
 
     </FrameLayout>
@@ -232,6 +231,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/client_appointment_time_layout"
         android:layout_margin="16dp"
+
         >
 
         <TextView
@@ -245,21 +245,22 @@
             android:gravity="left"
             android:text="Note"
             android:textStyle="bold"
+
             />
 
 
         <TextView
             android:id="@+id/client_appointment_page_notes_text"
-            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="@color/secondaryTextColor"
+            android:layout_width="wrap_content"
+            android:maxWidth="200dp"
             android:textSize="20sp"
             android:layout_gravity="end"
             android:gravity="end"
+            android:text=""
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/client_appointment_page_notes_title"/>
+            android:layout_toRightOf="@id/client_appointment_page_notes_title" />
 
 
     </RelativeLayout>

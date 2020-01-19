@@ -42,6 +42,7 @@ public class MyAppointmentListAdapter extends
 
     public MyAppointmentListAdapter(@NonNull FirestoreRecyclerOptions<Appointment> options) {
         super(options);
+
     }
 
 
@@ -105,14 +106,17 @@ public class MyAppointmentListAdapter extends
             public void onClick(View v) {
                 Intent getIntentBOPage = new Intent(parent.getContext(), ClientAppointmentPage.class);
                 // TODO: start using appointmet object !!! - refactoring later.
-                getIntentBOPage.putExtra("name",holder.business.getText());
+                getIntentBOPage.putExtra("business_name",holder.business.getText());
                 getIntentBOPage.putExtra("appointment_type",holder.type.getText());
                 getIntentBOPage.putExtra("appointment_date",holder.date.getText());
                 getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
                 getIntentBOPage.putExtra("business_id",holder.business_id);
-                getIntentBOPage.putExtra("notes",holder.appointment_id);
+                getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
 
                 parent.getContext().startActivity(getIntentBOPage);
+
+
+
 
             }
         });
