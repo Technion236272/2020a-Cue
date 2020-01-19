@@ -55,6 +55,8 @@ public class ClientHomeFragment extends Fragment {
     private MyAppointmentListAdapter appointmentAdapter;
     private MyFavoriteListAdapter favoriteAdapter;
 
+    Query queryAppointment;
+    Query queryFavorite;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -96,21 +98,23 @@ public class ClientHomeFragment extends Fragment {
 
     private void setUpRecycleAppointmentAView() {
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection(APPOINTMENTS_COLLECTION)
+        queryAppointment = db.collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("client_id", currentUser.getUid())
                 .whereGreaterThanOrEqualTo("date", Timestamp.now())
                 .orderBy("date", Query.Direction.ASCENDING)
                 .limit(5);
         FirestoreRecyclerOptions<Appointment> options =
                 new FirestoreRecyclerOptions.Builder<Appointment>()
-                        .setQuery(query, Appointment.class)
+                        .setQuery(queryAppointment, Appointment.class)
                         .build();
         appointmentAdapter = new MyAppointmentListAdapter((ViewGroup)getView(),getContext(),options);
 
         RecyclerView recyclerView = getActivity().findViewById(R.id.myAppointmentList);
 
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+        recyclerView.setLayoutManager
+                (new LinearLayoutManager(
+                        getContext(), LinearLayoutManager.VERTICAL,false));
 
         recyclerView.setAdapter(appointmentAdapter);
 
@@ -120,13 +124,13 @@ public class ClientHomeFragment extends Fragment {
     private void setUpRecyclerFavoriteView() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection("Clients")
+        queryFavorite = db.collection("Clients")
                 .document(currentUser.getUid())
                 .collection("Favorites");
 
         FirestoreRecyclerOptions<Client.Favorite> options =
                 new FirestoreRecyclerOptions.Builder<Client.Favorite>()
-                .setQuery(query, Client.Favorite.class)
+                .setQuery(queryFavorite, Client.Favorite.class)
                 .build();
         favoriteAdapter = new MyFavoriteListAdapter(options,(ViewGroup)getView());
 
@@ -153,11 +157,11 @@ public class ClientHomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setUpRecycleAppointmentAView();
-        setUpRecyclerFavoriteView();
         appointmentAdapter.startListening();
         favoriteAdapter.startListening();
     }
+
+
 
 
     @Override

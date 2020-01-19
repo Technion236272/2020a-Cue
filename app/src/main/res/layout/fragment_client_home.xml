@@ -23,6 +23,7 @@
             android:visibility="gone"
             android:layout_gravity="center"
             android:layout_marginTop="40dp"
+            android:layout_marginBottom="30dp"
             />
 
         <androidx.recyclerview.widget.RecyclerView
@@ -40,6 +41,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical"
+            android:minHeight="110dp"
             >
         <TextView
             android:id="@+id/client_no_appointments_message_y"
@@ -50,15 +52,17 @@
             android:text="You have no appointments yet."
             android:layout_marginTop="50dp"
             android:visibility="gone"
-            android:layout_gravity="center" />
+            android:layout_gravity="center"
+            android:gravity="center"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/myAppointmentList"
             android:scrollbars="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:minHeight="100dp"
             android:layout_below="@id/myFavoriteList"
-            android:background="#ffffff" >
+            >
         </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
