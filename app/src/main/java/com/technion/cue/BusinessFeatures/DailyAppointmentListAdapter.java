@@ -107,15 +107,6 @@ public class DailyAppointmentListAdapter extends
                                     int position,
                                     @NonNull Appointment appointment) {
 
-        holder.itemView.findViewById(R.id.appointment_item).setOnClickListener(cl -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
-            bundle.putString("appointment_id", appointment.id);
-            Intent intent = new Intent(context, EditAppointmentActivity.class);
-            intent.putExtras(bundle);
-            activity.startActivity(intent);
-        });
-
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         holder.date.setText(sdf.format(appointment.date));
         FirebaseFirestore.getInstance()
@@ -132,8 +123,17 @@ public class DailyAppointmentListAdapter extends
                 .addOnSuccessListener(l -> holder.client.setText(l.getString("name")));
 
         Date currentTime = new Date(System.currentTimeMillis());
-        if (appointment.date.getTime() > currentTime.getTime())
-            holder.itemView.findViewById(R.id.no_show_mark).setClickable(false);
+        if (appointment.date.getTime() > currentTime.getTime()) {
+            holder.itemView.findViewById(R.id.no_show_mark).setVisibility(View.GONE);
+            holder.itemView.findViewById(R.id.appointment_item).setOnClickListener(cl -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
+                bundle.putString("appointment_id", appointment.id);
+                Intent intent = new Intent(context, EditAppointmentActivity.class);
+                intent.putExtras(bundle);
+                activity.startActivity(intent);
+            });
+        }
 
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
@@ -167,28 +167,22 @@ public class DailyAppointmentListAdapter extends
                                             holder.flag.setVisibility(View.VISIBLE);
                                             holder.type.setTextColor(context.getResources()
                                                     .getColor(R.color.secondaryTextColor));
-                                            if (holder.no_show_mark)
-                                                holder.client.setTextColor(Color.RED);
-                                            else
-                                                holder.client.setTextColor(context.getResources()
-                                                        .getColor(R.color.secondaryTextColor));
+                                            holder.client.setTextColor(context.getResources()
+                                                    .getColor(R.color.secondaryTextColor));
                                             holder.date.setTextColor(context.getResources()
                                                     .getColor(R.color.secondaryTextColor));
                                         }
                                         else {
+                                            holder.client.setTextColor(context.getResources()
+                                                    .getColor(R.color.transparentTextOnBackground));
                                             holder.type.setTextColor(context.getResources()
                                                     .getColor(R.color.transparentTextOnBackground));
-                                            if (holder.no_show_mark)
-                                                holder.client.setTextColor(Color.RED);
-                                            else
-                                                holder.client.setTextColor(context.getResources()
-                                                        .getColor(R.color.secondaryTextColor));
                                             holder.date.setTextColor(context.getResources()
                                                     .getColor(R.color.transparentTextOnBackground));
                                         }
                                     });
                             // if the appointment's time has passed, display it
-                            // with a gray color
+                            // with a gray color and disable the option to click on it
                         } else if (appointment.date.getTime() < currentTime.getTime()) {
                             holder.type.setTextColor(context.getResources()
                                     .getColor(R.color.transparentTextOnBackground));
@@ -258,11 +252,8 @@ public class DailyAppointmentListAdapter extends
                         }
                     }
 
-                    if (size > 0 && no_show_num >= ((1.0/3.0) * size)) {
-                        holder.client.setTextColor(Color.RED);
-                        holder.client.setTypeface(null, Typeface.BOLD);
+                    if (size > 0 && no_show_num >= ((1.0/3.0) * size))
                         holder.no_show_mark = true;
-                    }
                 });
     }
 }

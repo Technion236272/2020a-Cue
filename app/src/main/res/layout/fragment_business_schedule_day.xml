@@ -15,7 +15,7 @@
         android:layout_centerInParent="true"
         android:layout_centerHorizontal="true"
         android:textColor="@color/dimTextOnBackground"
-        android:visibility="visible"
+        android:visibility="gone"
         android:text="@string/no_appointments_today_message"
         android:textAlignment="center"
         android:gravity="center"/>

@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,8 +68,6 @@ public class ClientInformationDialog extends DialogFragment {
         super.onViewCreated(view, savedInstanceState);
 
         AtomicBoolean blocked = new AtomicBoolean(false);
-
-
 
         TextView client_name = view.findViewById(R.id.client_name);
         TextView client_phone = view.findViewById(R.id.client_phone);
@@ -168,11 +167,9 @@ public class ClientInformationDialog extends DialogFragment {
                                         }
 
                                         else {
-                                            MaterialAlertDialogBuilder iBuilder =
-                                                    new MaterialAlertDialogBuilder(getContext());
-                                            iBuilder.setMessage("You can block a client only if he has no scheduled appointments in your business")
-                                                    .create()
-                                                    .show();
+                                            Toast.makeText(getContext(),
+                                                    "You can block a client only if he has no scheduled appointments in your business",
+                                                    Toast.LENGTH_SHORT).show();
                                             recentlyChanged = true;
                                             ((CheckBox)view.findViewById(R.id.block)).setChecked(false);
                                         }
