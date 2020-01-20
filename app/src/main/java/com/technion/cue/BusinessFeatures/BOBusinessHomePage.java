@@ -32,7 +32,6 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
-import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
@@ -79,7 +78,6 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 .get()
                 .addOnSuccessListener(ds -> business = ds.toObject(Business.class));
 
-
         reviews_list = findViewById(R.id.reviews_list);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
@@ -100,6 +98,8 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
 
         mAdapter = new BOBusinessHomePage.ReviewsAdapter(options);
         reviews_list.setAdapter(mAdapter);
+
+        getSupportActionBar().setElevation(0);
 
     }
 
@@ -181,7 +181,6 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                         e.printStackTrace();
                     }
 
-                    // TODO: watch for potential issues here
                     if (when_opens == null || when_closes == null)
                         return;
 
@@ -313,4 +312,3 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
         }
     }
 }
-

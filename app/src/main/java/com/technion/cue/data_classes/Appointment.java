@@ -61,6 +61,4 @@ public class Appointment implements Serializable {
         }
         return false;
     }
-
-    // TODO: consider overriding hashCode
 }

@@ -21,6 +21,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+/**
+ * The fourth business sign-up screen
+ * Used for inserting the activity times of the business
+ */
 public class BusinessSignUp4 extends Fragment {
 
     private final BusinessSignUpContainer businessSignUpContainer;

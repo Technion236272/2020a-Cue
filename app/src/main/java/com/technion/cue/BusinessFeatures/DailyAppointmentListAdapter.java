@@ -2,17 +2,12 @@ package com.technion.cue.BusinessFeatures;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
 import android.widget.RadioButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.FragmentActivity;
@@ -30,11 +25,9 @@ import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
@@ -198,6 +191,7 @@ public class DailyAppointmentListAdapter extends
         RadioButton no_show = holder.itemView.findViewById(R.id.no_show_mark);
         no_show.setChecked(appointment.no_show);
 
+        // make sure this appointment would eventually be marked as "no-show"
         no_show.setOnCheckedChangeListener((buttonView, isChecked) ->
                no_show_checked.put(appointment.id, isChecked)
         );
@@ -217,7 +211,7 @@ public class DailyAppointmentListAdapter extends
     /**
      * checks whether there are items in the list.
      * If there are none, display the "no_appointments_message"
-     * If there are at least one, remove the message from the view
+     * If there are at least one, hide it
      */
     @Override
     public void onDataChanged() {
@@ -228,13 +222,16 @@ public class DailyAppointmentListAdapter extends
                 parentView.findViewById(R.id.no_appointments_message).setVisibility(View.VISIBLE);
             } else {
                 parentView.findViewById(R.id.no_appointments_message).setVisibility(View.GONE);
-                // TODO: check if the flag needs to be moved
-                //  to a different meeting / assigned to a meeting
-                // TODO: check if need to change color of text inside items
             }
         }
     }
 
+    /**
+     * checks whether the given client has missed too many (at least 1/3) of his appointments so far.
+     * If so, we make sure the given appointment's radio button is checked
+     * @param holder: the appointment holder
+     * @param client_id: the id of the checked client
+     */
     private void noShowClarify(itemHolder holder, String client_id) {
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
@@ -252,6 +249,7 @@ public class DailyAppointmentListAdapter extends
                         }
                     }
 
+                    // if the client has missed at least 1/3 of his appointments thus far, "check him"
                     if (size > 0 && no_show_num >= ((1.0/3.0) * size))
                         holder.no_show_mark = true;
                 });

@@ -10,8 +10,6 @@ import androidx.fragment.app.Fragment;
 import com.technion.cue.R;
 
 
-// TODO: delete this eventually
-
 /**
  * this is a dummy fragment class for all business schedule views that have not been implemented as of yet.
  * once all of them have been implemented, this fragment class, as well as it's accompanying layout file will be terminated

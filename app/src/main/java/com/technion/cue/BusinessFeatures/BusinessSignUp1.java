@@ -12,6 +12,10 @@ import androidx.fragment.app.Fragment;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
+/**
+ * The first business sign-up screen
+ * Used for inserting initial details, such as the name & email
+ */
 @ModuleAuthor("Topaz & Ophir")
 public class BusinessSignUp1 extends Fragment {
 

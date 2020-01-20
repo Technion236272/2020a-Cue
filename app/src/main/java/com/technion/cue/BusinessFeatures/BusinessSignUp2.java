@@ -14,6 +14,10 @@ import com.mikhaellopez.circularimageview.CircularImageView;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
+/**
+ * The second business sign-up screen
+ * Used for inserting details such as the logo, business name & description. as well as the address
+ */
 @ModuleAuthor("Topaz")
 public class BusinessSignUp2 extends Fragment {
 

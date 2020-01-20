@@ -1,20 +1,18 @@
 package com.technion.cue.BusinessFeatures;
 
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
-
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
@@ -26,7 +24,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.Objects;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 
@@ -104,6 +101,8 @@ public class BusinessScheduleDay extends Fragment {
         if (!getArguments().containsKey("returnToTabs") ||
                 getArguments().getBoolean("returnToTabs"))
             getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.VISIBLE);
+
+        // updates Firestore entries of all appointments that were marked as "no-show"
         for (String id : DailyAppointmentListAdapter.no_show_checked.keySet()) {
             FirebaseFirestore.getInstance()
                     .collection(APPOINTMENTS_COLLECTION)
