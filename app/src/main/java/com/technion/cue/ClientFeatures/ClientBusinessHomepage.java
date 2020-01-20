@@ -61,7 +61,6 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         setContentView(R.layout.activity_client_business_homepage);
         db = FirebaseFirestore.getInstance();
 
-
         //getting the b_id from client home page
         this.bundle = getIntent().getExtras();
 
@@ -69,12 +68,11 @@ public class ClientBusinessHomepage extends AppCompatActivity {
 
         ActionBar actionBar = getSupportActionBar();
         if (actionBar != null) {
-            actionBar.setTitle("");
+            actionBar.setCustomView(R.layout.client_business_homepage_actionbar);
             actionBar.setDisplayHomeAsUpEnabled(true);
+            actionBar.setDisplayShowTitleEnabled(true);
+            actionBar.setDisplayShowCustomEnabled(true);
             actionBar.setElevation(0);
-            // set action bar color colorPrimaryDark
-        //   actionBar.setBackgroundDrawable(new ColorDrawable(Color.rgb(0, 121, 107)));
-
 
        }
 
@@ -146,6 +144,9 @@ public class ClientBusinessHomepage extends AppCompatActivity {
 
     }
 
+
+
+
     private void  checkIfFavorite() {
         if (bundle.containsKey("favorite")) { // if came from client homepage
             ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_black_30dp);
@@ -170,7 +171,7 @@ public class ClientBusinessHomepage extends AppCompatActivity {
     }
 
     public  void addOrRemoveFromFavorite(View view) { //
-
+        findViewById(R.id.client_business_hp_progress_bar).setVisibility(View.VISIBLE);
         if (favorite == false)   {
             Map<String, Object> docData = new HashMap<>();
             docData.put("business_id", bundle.get("business_id"));
@@ -181,7 +182,9 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                             favorite=true;
                             ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_black_30dp);
 
-                    });
+                            findViewById(R.id.client_business_hp_progress_bar).setVisibility(View.GONE);
+
+            });
         } else { // remove
 
             Map<String, Object> docData = new HashMap<>();
@@ -193,6 +196,8 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                     .get().addOnSuccessListener(l->{ for(DocumentSnapshot document:l.getDocuments()) {document.getReference().delete(); }}) ;
             favorite = false;
             ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_border_grey_30dp);
+            findViewById(R.id.client_business_hp_progress_bar).setVisibility(View.GONE);
+
 
         }
 
@@ -249,45 +254,5 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         mapIntent.setPackage("com.google.android.apps.maps");
         startActivity(mapIntent);
     }
-
-
-
-
-
-    @Override
-public boolean onCreateOptionsMenu(Menu menu) {
-    MenuInflater inflater = getMenuInflater();
-    inflater.inflate(R.menu.business_menu, menu);
-    menu.getItem(1).setVisible(false);
-    menu.getItem(2).setVisible(false);
-//    menu.getItem(3).setVisible(false);
-    menu.getItem(0).setVisible(false);
-//        menu.getItem(0).setOnMenuItemClickListener(cl -> {
-//            FirebaseDynamicLinks.getInstance()
-//                    .createDynamicLink()
-//                    .setLink(Uri.parse("https://cueapp.com/?name=" +
-//                            bundle.getString("business_id")))
-//                    .setDomainUriPrefix("https://cueapp.page.link")
-//                    .setAndroidParameters(
-//                            new DynamicLink.AndroidParameters
-//                                    .Builder("com.technion.cue")
-//                                    .build())
-//                    .buildShortDynamicLink()
-//                    .addOnSuccessListener(this, shortLink -> {
-//                        // Short link created
-//                        ClipboardManager clipboard = (ClipboardManager)
-//                                getBaseContext()
-//                                        .getSystemService(Context.CLIPBOARD_SERVICE);
-//                        ClipData clip =
-//                                ClipData.newPlainText("copied to clipboard",
-//                                        shortLink.getShortLink().toString());
-//                        Toast.makeText(getBaseContext(), "copied link to clipboard",
-//                                Toast.LENGTH_SHORT).show();
-//                        clipboard.setPrimaryClip(clip);
-//                    });
-//            return true;
-//        });
-    return true;
-}
 
 }

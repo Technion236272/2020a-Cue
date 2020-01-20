@@ -44,32 +44,13 @@
         android:clickable="false"
         android:layout_centerHorizontal="true" />
 
-    <ImageButton
-        android:id="@+id/favoriteStar"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_toLeftOf="@id/clientBusinessTitleName"
-        android:layout_toStartOf="@id/clientBusinessTitleName"
-        android:layout_below="@id/clientBusinessLogo"
-        android:layout_margin="1dp"
-        android:background="@color/fui_transparent"
-        app:srcCompat="@drawable/ic_star_border_grey_30dp"
-        android:onClick="addOrRemoveFromFavorite"
-
-
-        />
-    <FrameLayout
-        android:id="@+id/client_business_hp_progress_bar"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
         <ProgressBar
-            android:id="@+id/client_homepage_progress"
+            android:id="@+id/client_business_hp_progress_bar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
-            android:layout_gravity="center"
+            android:layout_centerInParent="true"
             android:progress="1" />
-    </FrameLayout>
         <TextView
             android:id="@+id/clientBusinessTitleName"
             android:layout_width="wrap_content"

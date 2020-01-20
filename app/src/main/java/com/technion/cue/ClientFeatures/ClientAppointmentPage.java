@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import android.Manifest;
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.ClipData;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -23,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.SpannableString;
+import android.text.style.ForegroundColorSpan;
 import android.text.style.UnderlineSpan;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -45,6 +47,7 @@ import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.BusinessFeatures.BusinessInfoFragment;
 import com.technion.cue.data_classes.Business;
 
+import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -64,6 +67,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
     String b_name,a_type,a_notes,a_date,a_id,b_id;
     FirebaseFirestore db;
     Business business;
+    Integer timeFrame; // Time in Mintes that client can resched appointemnt (edit appointment
 
 /*
 * Appointment Page for BO and for Client
@@ -84,7 +88,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
         b_id = intent.getExtras().getString("business_id");
         db = FirebaseFirestore.getInstance();
-        loadBusinessData(b_id);
+
 
 
         if (getSupportActionBar() != null) {
@@ -104,6 +108,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         title.setText(b_name);
 
 
+        invalidateOptionsMenu();
 
     }
 
@@ -120,6 +125,12 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        loadBusinessData(b_id,menu);
+        return super.onPrepareOptionsMenu(menu);
+    }
+
 
     // - menu - ben 17.12
     @Override
@@ -129,12 +140,14 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         return true;
     }
 
-    private void loadBusinessData(String business_id) {
+
+    private void loadBusinessData(String business_id,Menu menu) {
         db.collection(BUSINESSES_COLLECTION)
                 .document(business_id)
                 .get()
                 .addOnSuccessListener(documentSnapshot -> {
                     business = documentSnapshot.toObject(Business.class);
+                    checkEditPossibility(menu);
                     if (business!=null) {
                         TextView phoneView = (TextView) findViewById(R.id.client_appointment_phone_text);
                         phoneView.setText(business.phone_number);
@@ -153,8 +166,6 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                         phoneView.setText(contentPhone);
                         // STOP Progress bar
                         findViewById(R.id.client_appointment_progress_bar).setVisibility(View.GONE);
-
-                        //locationView.setTextColor(getResources().getColor(R.color.primaryDarkColor));
                     }
 
 
@@ -164,11 +175,47 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
     // attach to an onclick handler to show the date picker
     public void reschedThisAppointment(MenuItem v) {
-        Intent intentEdit = new Intent(this, EditAppointmentActivity.class);
-        intentEdit.putExtras(intent);
-        startActivity(intentEdit);
+
+        if (v.getTitle().toString().equals("Time For Rescheduling Ended")) {
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Sorry, Time For Rescheduling Ended.")
+                    .setMessage("You can cancel or create a new appointment.")
+                    .setPositiveButton("Ok", null)
+                    .show();
+
+        } else {
+
+            Intent intentEdit = new Intent(this, EditAppointmentActivity.class);
+            intentEdit.putExtras(intent);
+            startActivity(intentEdit);
+
+        }
 
 
+
+
+    }
+
+    public void checkEditPossibility(Menu menu) {
+        timeFrame = (business.attributes.get("time frame") != null ? Integer.parseInt(business.attributes.get("time frame")) : 0);
+        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
+        try {
+            sdf.parse(a_date);
+            long t= sdf.getCalendar().getTimeInMillis();
+            Date afterAddingTenMins=new Date(t - (timeFrame * 60000)); // 60000 is  1 minute in millisecond
+            Date currentTime = new Date();
+            if (afterAddingTenMins.before(currentTime)) { // not allow to edit anymore
+
+                // update ui
+                SpannableString s = new SpannableString("Time For Rescheduling Ended"); // if u change the string here change it also in reschedThisAppointment
+                s.setSpan(new ForegroundColorSpan(Color.GRAY), 0, s.length(), 0);
+                MenuItem editButton = menu.findItem(R.id.client_appointment_toolbar_edit);
+                editButton.setTitle(s);
+            }
+        } catch (ParseException e){
+            e.printStackTrace();
+            System.out.print("----- ParseException" + e );
+        }
 
     }
 
@@ -276,10 +323,12 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                         finish();
                 });
                 })
-                .setNegativeButton("No",null)
+                .setNegativeButton("No", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int id) {
+                        findViewById(R.id.client_appointment_progress_bar).setVisibility(View.GONE);
+                    }})
                 .show();
     }
-
 
 
 }

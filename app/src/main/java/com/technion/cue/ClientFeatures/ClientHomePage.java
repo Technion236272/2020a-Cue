@@ -156,7 +156,7 @@ public class ClientHomePage extends AppCompatActivity  {
 
                                         final EditText etComments = view.findViewById(R.id.etComments);
                                         final TextView etComments_text = view.findViewById(R.id.etComments_title);
-                                        etComments_text.setText("Review About " + b.business_name);
+                                        etComments_text.setText("Tell us how was your experience with " + b.business_name + ".");
                                         alertDialog.setPositiveButton("Send", (t, t2) -> {
                                             if (!etComments.getText().equals("")) {
                                                 // add a review
