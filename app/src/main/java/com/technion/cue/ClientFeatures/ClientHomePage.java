@@ -62,6 +62,7 @@ public class ClientHomePage extends AppCompatActivity  {
 
 
         TabLayout tabLayout = findViewById(R.id.tabLayout);
+
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -199,6 +200,7 @@ public class ClientHomePage extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
 
+
         checkForReview();
     }
 
@@ -207,11 +209,13 @@ public class ClientHomePage extends AppCompatActivity  {
         super.onResume();
 
 
+
     }
 
 
 
     public void Settings(View v) {
+
         Intent getIntentBOPage = new Intent(getBaseContext(), ClientSettingsActivity.class);
        startActivity(getIntentBOPage);
 

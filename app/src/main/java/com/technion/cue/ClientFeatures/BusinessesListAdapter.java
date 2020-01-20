@@ -35,6 +35,7 @@ import com.technion.cue.data_classes.Business;
             holder.location.setText(model.location.get("address") + ", "
                     + model.location.get("city") + ", "
                     + model.location.get("state"));
+
         }
 
         @NonNull
@@ -63,6 +64,7 @@ import com.technion.cue.data_classes.Business;
         public void onDataChanged() {
             super.onDataChanged();
             if ( parentView != null) {
+                parentView.findViewById(R.id.client_business_progress_bar).setVisibility(View.GONE);
                 if (getItemCount() == 0) {
                     parentView.findViewById(R.id.no_businesses_message).setVisibility(View.VISIBLE);
                 } else {

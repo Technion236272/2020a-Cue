@@ -12,20 +12,7 @@
     tools:context=".ClientFeatures.ClientBusinessHomepage"
     android:id="@+id/view">
 
-    <FrameLayout
-        android:id="@+id/LoadingCBHP"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
-        <ProgressBar
-            android:id="@+id/loadingPanelEditAppointment_progress"
-            android:layout_width="100dp"
-            android:layout_height="100dp"
-            android:indeterminate="true"
-            android:layout_gravity="center"
-            android:progress="1"
-            />
-    </FrameLayout>
+
     <FrameLayout
         android:id="@+id/fragment_holder_business_Client"
         android:layout_width="wrap_content"
@@ -44,6 +31,7 @@
         android:layout_height="3dp"
         android:background="@color/primaryLightColor"
         android:layout_below="@id/actionBarTopBox"/>
+
 
     <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/clientBusinessLogo"
@@ -70,7 +58,18 @@
 
 
         />
-
+    <FrameLayout
+        android:id="@+id/client_business_hp_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/client_homepage_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:progress="1" />
+    </FrameLayout>
         <TextView
             android:id="@+id/clientBusinessTitleName"
             android:layout_width="wrap_content"
@@ -145,8 +144,6 @@
 
 
     </RelativeLayout>
-
-
 
     <RelativeLayout
         android:id="@+id/customView"

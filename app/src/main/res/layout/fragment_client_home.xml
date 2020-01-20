@@ -8,6 +8,19 @@
 
     <!-- TODO: Update blank fragment layout -->
 
+    <FrameLayout
+        android:id="@+id/client_homepage_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/client_homepage_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:progress="1" />
+    </FrameLayout>
+
 
     <LinearLayout
         android:layout_width="match_parent"
