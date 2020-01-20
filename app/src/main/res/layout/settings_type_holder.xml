@@ -12,13 +12,4 @@
         android:layout_marginStart="8dp"
         android:layout_marginBottom="24dp" />
 
-    <TextView
-        android:id="@+id/businessTypeDuration"
-        android:layout_width="104dp"
-        android:layout_height="wrap_content"
-        android:textSize="12sp"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginStart="8dp" />
-
 </LinearLayout>
