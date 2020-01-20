@@ -6,8 +6,6 @@
     tools:context=".ClientFeatures.ClientHomeFragment"
     android:orientation="vertical">
 
-    <!-- TODO: Update blank fragment layout -->
-
     <FrameLayout
         android:id="@+id/client_homepage_progress_bar"
         android:layout_width="match_parent"

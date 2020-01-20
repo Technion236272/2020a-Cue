@@ -1,17 +1,7 @@
 package com.technion.cue.ClientFeatures;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-
-
-import android.content.DialogInterface;
 import android.content.Intent;
-
 import android.os.Bundle;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -19,9 +9,9 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
@@ -30,14 +20,11 @@ import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.technion.cue.LauncherActivity;
-
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
 
-import java.util.Calendar;
 import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
@@ -145,7 +132,7 @@ public class ClientHomePage extends AppCompatActivity  {
                                 Business b = businessDoc.toObject(Business.class);
                                 Appointment appointmentReview = document.toObject(Appointment.class);
                                 Date currentTime = new Date();
-                                if ((appointmentReview.date.compareTo(currentTime)) < 0) {// TODO : need to update
+                                if ((appointmentReview.date.compareTo(currentTime)) < 0) {
 
                                     if (appointmentReview.askedForReview == false) {
                                         final View view = getLayoutInflater().inflate(R.layout.review_dialog_layout, null);
@@ -217,7 +204,7 @@ public class ClientHomePage extends AppCompatActivity  {
     public void Settings(View v) {
 
         Intent getIntentBOPage = new Intent(getBaseContext(), ClientSettingsActivity.class);
-       startActivity(getIntentBOPage);
+        startActivity(getIntentBOPage);
 
     }
 

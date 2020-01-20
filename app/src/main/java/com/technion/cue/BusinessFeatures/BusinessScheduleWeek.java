@@ -1,11 +1,5 @@
 package com.technion.cue.BusinessFeatures;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -13,6 +7,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -72,7 +72,6 @@ public class BusinessScheduleWeek extends Fragment {
         week_days_list.setLayoutManager(layoutManager);
         week_days_list.setHasFixedSize(true);
 
-        // TODO: possibly allow business owners to choose the day in which the week begins
         Calendar c = Calendar.getInstance();
         for (int i = 1 ; i <= NUMBER_OF_DAYS_IN_WEEK ; i++) {
             c.set(Calendar.DAY_OF_WEEK, i);

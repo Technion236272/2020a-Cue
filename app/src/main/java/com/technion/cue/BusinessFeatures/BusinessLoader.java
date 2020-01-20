@@ -3,7 +3,10 @@ package com.technion.cue.BusinessFeatures;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,13 +32,15 @@ class BusinessLoader {
     private View view;
     private FirebaseFirestore db;
     private String business_id;
+    private FragmentActivity activity;
 
     public static Business business = null;
 
-    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {
+    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch, FragmentActivity activity) {
         this.db = db;
         this.business_id = business_to_fetch;
         this.view = view;
+        this.activity = activity;
     }
 
     /**
@@ -43,7 +48,7 @@ class BusinessLoader {
      */
     @ModuleAuthor("Ophir Eyal")
      void load() {
-        if (business == null) {
+        if (business == null || !business.id.equals(FirebaseAuth.getInstance().getUid())) {
             db.collection(BUSINESSES_COLLECTION)
                     .document(business_id)
                     .get()

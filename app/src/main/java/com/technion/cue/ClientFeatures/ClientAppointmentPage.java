@@ -66,8 +66,9 @@ public class ClientAppointmentPage extends AppCompatActivity  {
     Calendar c;
     String b_name,a_type,a_notes,a_date,a_id,b_id;
     FirebaseFirestore db;
+    Date appointmentDate;
     Business business;
-    Integer timeFrame; // Time in Mintes that client can resched appointemnt (edit appointment
+    long timeFrame; // Time in Mintes that client can resched appointemnt (edit appointment
 
 /*
 * Appointment Page for BO and for Client
@@ -84,7 +85,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         a_notes = intent.getExtras().getString("appointment_notes");
         a_date = intent.getExtras().getString("appointment_date");
         a_id = intent.getExtras().getString("appointment_id");
-
+        appointmentDate = (Date)intent.getExtras().get("appointment_date_type");
 
         b_id = intent.getExtras().getString("business_id");
         db = FirebaseFirestore.getInstance();
@@ -198,24 +199,20 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
     public void checkEditPossibility(Menu menu) {
         timeFrame = (business.attributes.get("time frame") != null ? Integer.parseInt(business.attributes.get("time frame")) : 0);
-        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
-        try {
-            sdf.parse(a_date);
-            long t= sdf.getCalendar().getTimeInMillis();
-            Date afterAddingTenMins=new Date(t - (timeFrame * 60000)); // 60000 is  1 minute in millisecond
             Date currentTime = new Date();
-            if (afterAddingTenMins.before(currentTime)) { // not allow to edit anymore
+            Calendar c_appointment =  Calendar.getInstance();
+            c_appointment.setTime(appointmentDate);
+            long t = c_appointment.getTimeInMillis();
 
+            Date afterAddingTenMins=new Date(t - (timeFrame * 60000)); // 60000 is  1 minute in millisecond
+            if (afterAddingTenMins.before(currentTime)) { // not allow to edit appointment anymore
                 // update ui
                 SpannableString s = new SpannableString("Time For Rescheduling Ended"); // if u change the string here change it also in reschedThisAppointment
                 s.setSpan(new ForegroundColorSpan(Color.GRAY), 0, s.length(), 0);
                 MenuItem editButton = menu.findItem(R.id.client_appointment_toolbar_edit);
                 editButton.setTitle(s);
             }
-        } catch (ParseException e){
-            e.printStackTrace();
-            System.out.print("----- ParseException" + e );
-        }
+
 
     }
 

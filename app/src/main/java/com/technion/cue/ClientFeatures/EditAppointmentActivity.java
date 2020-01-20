@@ -1,7 +1,5 @@
 package com.technion.cue.ClientFeatures;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
@@ -10,28 +8,34 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+<<<<<<< HEAD
+import android.view.View;
+import android.widget.DatePicker;
+=======
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
+>>>>>>> ef64359b31ab7a94ac82d063abf41b321759f60b
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.chip.Chip;
-
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.technion.cue.LauncherActivity;
-
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
@@ -70,7 +74,6 @@ public class EditAppointmentActivity extends AppCompatActivity
     Boolean firstEdit;// needed to change
     private Date old_appointment_date;
     private String old_appointment_type;
-
 
     /**
     *
@@ -113,16 +116,21 @@ public class EditAppointmentActivity extends AppCompatActivity
                 appointment.type="";
                 appointment.client_id = intent.getExtras().getString("client_name");
                 ((RelativeLayout)findViewById(R.id.delete_button_bottom)).setVisibility(View.GONE);
+
+                ((TextView)findViewById(R.id.noteTitle)).setVisibility(View.GONE);
+                ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
+                findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
+                changed=true;
                 loadNewAppointment();
             } else if (extras.containsKey("business_id")){ // newAppointment as client
-
+                changed=true;
                 userType = UserType.Client;
                 appointment.id="";
                 appointment.type="";
                 appointment.business_id=intent.getExtras().getString("business_id");
                 appointment.client_id = mAuth.getCurrentUser().getUid();
                 loadNewAppointment();
-                ((RelativeLayout)findViewById(R.id.delete_button_bottom)).setVisibility(View.GONE);
+                findViewById(R.id.delete_button_bottom).setVisibility(View.GONE);
 
             }
         } else {
@@ -146,7 +154,6 @@ public class EditAppointmentActivity extends AppCompatActivity
     public void loadAppointmentDetails() {
         loadAppointmentData();
         loadBusinessData();
-
     }
 
     private void loadBusinessData() {
@@ -181,7 +188,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                 appointment.notes = typesIdAndNotes.get(checkedId);
                                 changed = true;
                                 ((TextView)findViewById(R.id.edit_appointment_time_text)).setText("Choose a Date");
-                                changeDate(((TextView)findViewById(R.id.edit_appointment_time_text)));
+                                changeDate(findViewById(R.id.edit_appointment_time_text));
                             }
                             else {
                                 firstEdit=false;
@@ -236,10 +243,25 @@ public class EditAppointmentActivity extends AppCompatActivity
                         if (appointment.business_id.equals(mAuth.getUid())) {
                             userType = UserType.BusinessOwner;
 
-                            ((TextView)findViewById(R.id.noteTitle)).setVisibility(View.GONE);
-                            ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
+                            findViewById(R.id.noteTitle).setVisibility(View.GONE);
+                            findViewById(R.id.edit_appointment_notes_text).setVisibility(View.INVISIBLE);
                             findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
+                            ((EditText)findViewById(R.id.edit_appointment_notes_text_edit_text)).addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                    changed = true;
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+
+                                }
+                            });
                             ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
 
                         } else {
@@ -387,7 +409,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 } else {                                // new appointment
                     appointment.type = radioButton_id;
 
-                    if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
+                   // if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
 
                     FirebaseFirestore.getInstance()
                             .collection(APPOINTMENTS_COLLECTION)

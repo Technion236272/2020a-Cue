@@ -21,6 +21,7 @@ import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -85,7 +86,7 @@ public class MyAppointmentListAdapter extends
                 });
 
             holder.notes.setText(appointment.notes == null ? "No note yet." : appointment.notes);
-
+            holder.dateType = appointment.date;
 
 
 
@@ -109,6 +110,7 @@ public class MyAppointmentListAdapter extends
                 getIntentBOPage.putExtra("business_name",holder.business.getText());
                 getIntentBOPage.putExtra("appointment_type",holder.type.getText());
                 getIntentBOPage.putExtra("appointment_date",holder.date.getText());
+                getIntentBOPage.putExtra("appointment_date_type",holder.dateType);
                 getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
                 getIntentBOPage.putExtra("business_id",holder.business_id);
                 getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
@@ -130,6 +132,7 @@ public class MyAppointmentListAdapter extends
         TextView type;
         String appointment_id;
         String business_id;
+        Date dateType;
 
         public itemHolder(@NonNull View itemView) {
             super(itemView);
@@ -139,6 +142,7 @@ public class MyAppointmentListAdapter extends
             type = itemView.findViewById(R.id.type);
             appointment_id ="";
             business_id ="";
+            dateType=null;
 
         }
     }
