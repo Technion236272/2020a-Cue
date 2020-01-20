@@ -127,20 +127,8 @@ public class ClientBusinessLoader {
         Glide.with(logo.getContext())
                 .load(logoRef)
                 .error(R.drawable.person_icon)
-                .listener(new RequestListener<Drawable>() {
-
-                    @Override
-                    public boolean onLoadFailed(@Nullable GlideException e, Object model, Target<Drawable> target, boolean isFirstResource) {
-                        view.findViewById(R.id.LoadingCBHP).setVisibility(View.GONE);
-                        return false;
-                    }
-
-                    @Override
-                    public boolean onResourceReady(Drawable resource, Object model, Target<Drawable> target, DataSource dataSource, boolean isFirstResource) {
-                        view.findViewById(R.id.LoadingCBHP).setVisibility(View.GONE);
-                        return false;
-                    }})
                 .into(logo);
+        view.findViewById(R.id.client_business_hp_progress_bar).setVisibility(View.GONE);
     }
 
     public String getPhoneNumber(){

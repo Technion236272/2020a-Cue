@@ -8,13 +8,13 @@
     android:orientation="vertical">
 
 
+
     <FrameLayout
-        android:id="@+id/loadingPanelEditAppointment"
+        android:id="@+id/client_edit_appointment_progress_bar"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone">
+        android:layout_height="match_parent">
         <ProgressBar
-            android:id="@+id/loadingPanelEditAppointment_progress"
+            android:id="@+id/client_homepage_progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:indeterminate="true"
@@ -225,7 +225,11 @@
                 android:id="@+id/edit_appointment_note_laylout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="invisible">
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:visibility="invisible"
+
+                >
                 <com.google.android.material.textfield.TextInputLayout
                     android:id="@+id/edit_appointment_notes_text_edit"
                     style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -233,7 +237,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:hint="Edit Appointment Note"
+                    android:hint="Appointment Note"
                     app:counterEnabled="true"
                     app:endIconMode="clear_text"
                     app:counterMaxLength="140"

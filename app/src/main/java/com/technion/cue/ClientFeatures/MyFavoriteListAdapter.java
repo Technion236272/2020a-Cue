@@ -58,6 +58,7 @@ public class MyFavoriteListAdapter extends
                             Glide.with(holder.logo.getContext())
                                     .load(sRef)
                                     .into(holder.logo);
+                            parentView.findViewById(R.id.client_homepage_progress_bar).setVisibility(View.GONE);
 
                         }
                     }
@@ -92,6 +93,7 @@ public class MyFavoriteListAdapter extends
     public void onDataChanged() {
         super.onDataChanged();
         if ( parentView != null) {
+            parentView.findViewById(R.id.client_homepage_progress_bar).setVisibility(View.GONE);
             if (getItemCount() == 0) {
                 parentView.findViewById(R.id.client_no_appointments_message_fav).setVisibility(View.VISIBLE);
             } else {

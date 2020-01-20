@@ -61,7 +61,6 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         setContentView(R.layout.activity_client_business_homepage);
         db = FirebaseFirestore.getInstance();
 
-        findViewById(R.id.LoadingCBHP).setVisibility(View.VISIBLE);
 
         //getting the b_id from client home page
         this.bundle = getIntent().getExtras();
@@ -85,7 +84,6 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, pendingDynamicLinkData -> {
                     // Get deep link from result (may be null if no link is found)
-                    findViewById(R.id.LoadingCBHP).setVisibility(View.VISIBLE);
                     if (pendingDynamicLinkData != null) {
                         FirebaseFirestore.getInstance()
                                 .collection(CLIENTS_COLLECTION)

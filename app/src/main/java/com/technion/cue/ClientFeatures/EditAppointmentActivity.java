@@ -88,7 +88,6 @@ public class EditAppointmentActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_appointment);
-        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.VISIBLE);
 
         db=FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
@@ -219,7 +218,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             }
                             i++;
                     }
-                    findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                    findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
                 });
     }
 
@@ -236,8 +235,11 @@ public class EditAppointmentActivity extends AppCompatActivity
                         old_appointment_type = appointment.type;
                         if (appointment.business_id.equals(mAuth.getUid())) {
                             userType = UserType.BusinessOwner;
+
+                            ((TextView)findViewById(R.id.noteTitle)).setVisibility(View.GONE);
                             ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
                             findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
+
                             ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
 
                         } else {
@@ -281,8 +283,8 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     public void saveChanges(View view) {
 
-        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.VISIBLE);
-
+        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.VISIBLE);
+        findViewById(R.id.edit_appointment_save_button).setClickable(false);
         if (changed) {
             String doer;
             if (FirebaseAuth.getInstance().getUid()
@@ -297,7 +299,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                     ((TextView) findViewById(R.id.edit_appointment_time_text)).getText().equals("") ||
                     ((TextView) findViewById(R.id.edit_appointment_time_text)).getText() == null ||
                     (!didChooseType())) {
-                findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
                 new MaterialAlertDialogBuilder(this)
                         .setTitle("Please Choose a date and Appointment Type")
                         .setMessage("")
@@ -321,7 +323,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .set(appointment).addOnCompleteListener(task ->
                             FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
                                     .document(oldAppointmentId).delete().addOnSuccessListener(result -> { // deleting old appointment
-                                findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                                findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
                                 Toast.makeText(getApplicationContext(), "Appointment Rescheduled Successfully ", Toast.LENGTH_LONG).show();
                                 // --
 
@@ -393,7 +395,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .set(appointment).addOnCompleteListener(task -> {
 
                         Toast.makeText(getApplicationContext(), "Appointment scheduled Successfully ", Toast.LENGTH_LONG).show();
-                        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
                         finish();
                     });
 
@@ -547,7 +549,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                     }
                 });
 
-        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.VISIBLE);
+        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.VISIBLE);
         // setting up appointment object
         Date old = appointment.date;
 
@@ -588,7 +590,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                         .whereEqualTo("business_id", appointment.business_id)
                                         .orderBy("date")
                                         .get().addOnCompleteListener(l -> {
-                                    findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+                                    findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
                                     if (l.getResult().getDocuments().isEmpty())
                                         changed = true;
                                     for (DocumentSnapshot document : l.getResult().getDocuments()) {
@@ -655,13 +657,14 @@ public class EditAppointmentActivity extends AppCompatActivity
                 })
                 .setNegativeButton("Cancel", null)
                 .show();
-        findViewById(R.id.loadingPanelEditAppointment).setVisibility(View.GONE);
+        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
         return;
 
     }
 
 
     public void abortAppointment(View view) {
+        findViewById(R.id.delete_icon).setClickable(false);
         String doer;
         if (FirebaseAuth.getInstance().getUid()
                 .equals(appointment.business_id)) {

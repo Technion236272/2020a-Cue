@@ -61,6 +61,7 @@ public class ClientHomePage extends AppCompatActivity  {
         mAuth = FirebaseAuth.getInstance();
 
 
+
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
@@ -184,6 +185,7 @@ public class ClientHomePage extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
 
+
         checkForReview();
     }
 
@@ -192,11 +194,13 @@ public class ClientHomePage extends AppCompatActivity  {
         super.onResume();
 
 
+
     }
 
 
 
     public void Settings(View v) {
+
         Intent getIntentBOPage = new Intent(getBaseContext(), ClientSettingsActivity.class);
        startActivity(getIntentBOPage);
 

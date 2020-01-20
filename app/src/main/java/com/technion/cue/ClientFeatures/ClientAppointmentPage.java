@@ -103,7 +103,6 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         TextView title = findViewById(R.id.client_appointment_business_Name);
         title.setText(b_name);
 
-        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
 
 
     }
@@ -152,7 +151,8 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                         SpannableString contentPhone = new SpannableString(phoneView.getText());
                         contentPhone.setSpan(new UnderlineSpan(), 0, contentPhone.length(), 0);
                         phoneView.setText(contentPhone);
-
+                        // STOP Progress bar
+                        findViewById(R.id.client_appointment_progress_bar).setVisibility(View.GONE);
 
                         //locationView.setTextColor(getResources().getColor(R.color.primaryDarkColor));
                     }
@@ -238,7 +238,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                 .setTitle("Cancel this appointment")
                 .setMessage("Cancellation is Irreversible. ")
                 .setPositiveButton("Yes", (dialog, id) -> {
-                    findViewById(R.id.loadingPanel).setVisibility(View.VISIBLE);
+                    findViewById(R.id.client_appointment_progress_bar).setVisibility(View.VISIBLE);
                     FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
                             .document(a_id).delete().addOnSuccessListener(result -> {
                                 FirebaseFirestore.getInstance()
@@ -271,7 +271,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                                             }
                                         });
 
-                        findViewById(R.id.loadingPanel).setVisibility(View.GONE);
+                        findViewById(R.id.client_appointment_progress_bar).setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();
                         finish();
                 });
