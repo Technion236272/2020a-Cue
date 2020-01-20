@@ -96,16 +96,21 @@ public class ClientBusinessLoader {
         location.setText(full_address +"("+ business.phone_number+")");
 
 
-        TextView openHours = view.findViewById(R.id.openHoursTime);
-        String Sunday = business.open_hours.get("Sunday")!= "" ? business.open_hours.get("Sunday") : "Close";
-        String Monday = (business.open_hours.get("Monday") != "" ? business.open_hours.get("Monday") : "Close");
-        String Tuesday =(business.open_hours.get("Tuesday")!= "" ? business.open_hours.get("Tuesday") : "Close");
-        String Wednesday =  (business.open_hours.get("Wednesday")!= "" ? business.open_hours.get("Wednesday") : "Close");
-        String Thursday= (business.open_hours.get("Thursday")!= "" ? business.open_hours.get("Thursday") : "Close");
-        String Friday =   (business.open_hours.get("Friday")!= "" ? business.open_hours.get("Friday") : "Close");
-        String Saturday = (business.open_hours.get("Saturday")!= "" ? business.open_hours.get("Saturday") : "Close");
+        TextView sundayText = view.findViewById(R.id.sundayText);
+        TextView mondayText = view.findViewById(R.id.mondayText);
+        TextView tuesdayText = view.findViewById(R.id.tuesdayText);
+        TextView wednesdayText = view.findViewById(R.id.wednesdayText);
+        TextView thursdayText = view.findViewById(R.id.thursdayText);
+        TextView fridayText = view.findViewById(R.id.fridayText);
+        TextView saturdayText = view.findViewById(R.id.saturdayText);
 
-        openHours.setText(Sunday+"\n"+Monday+"\n"+Tuesday +"\n"+ Wednesday+"\n"+Thursday +"\n"+Friday +"\n"+Saturday);
+        sundayText.setText(business.open_hours.get("Sunday")!= "" ? business.open_hours.get("Sunday") : "Close");
+        mondayText.setText(business.open_hours.get("Monday") != "" ? business.open_hours.get("Monday") : "Close");
+        tuesdayText.setText(business.open_hours.get("Tuesday")!= "" ? business.open_hours.get("Tuesday") : "Close");
+        wednesdayText.setText(business.open_hours.get("Wednesday")!= "" ? business.open_hours.get("Wednesday") : "Close");
+        thursdayText.setText(business.open_hours.get("Thursday")!= "" ? business.open_hours.get("Thursday") : "Close");
+        fridayText.setText(business.open_hours.get("Friday")!= "" ? business.open_hours.get("Friday") : "Close");
+        saturdayText.setText(business.open_hours.get("Saturday")!= "" ? business.open_hours.get("Saturday") : "Close");
 
 
     }
