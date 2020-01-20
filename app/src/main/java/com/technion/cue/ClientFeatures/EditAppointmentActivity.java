@@ -1,7 +1,5 @@
 package com.technion.cue.ClientFeatures;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
@@ -10,28 +8,24 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
-import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.chip.Chip;
-
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-
 import com.technion.cue.LauncherActivity;
-
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Business;
@@ -70,7 +64,6 @@ public class EditAppointmentActivity extends AppCompatActivity
     Boolean firstEdit;// needed to change
     private Date old_appointment_date;
     private String old_appointment_type;
-
 
     /**
     *
@@ -112,7 +105,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 appointment.business_id = intent.getExtras().getString("business_id");
                 appointment.type="";
                 appointment.client_id = intent.getExtras().getString("client_name");
-                ((RelativeLayout)findViewById(R.id.delete_button_bottom)).setVisibility(View.GONE);
+                findViewById(R.id.delete_button_bottom).setVisibility(View.GONE);
                 loadNewAppointment();
             } else if (extras.containsKey("business_id")){ // newAppointment as client
 
@@ -122,7 +115,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 appointment.business_id=intent.getExtras().getString("business_id");
                 appointment.client_id = mAuth.getCurrentUser().getUid();
                 loadNewAppointment();
-                ((RelativeLayout)findViewById(R.id.delete_button_bottom)).setVisibility(View.GONE);
+                findViewById(R.id.delete_button_bottom).setVisibility(View.GONE);
 
             }
         } else {
@@ -146,7 +139,6 @@ public class EditAppointmentActivity extends AppCompatActivity
     public void loadAppointmentDetails() {
         loadAppointmentData();
         loadBusinessData();
-
     }
 
     private void loadBusinessData() {
@@ -181,7 +173,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                 appointment.notes = typesIdAndNotes.get(checkedId);
                                 changed = true;
                                 ((TextView)findViewById(R.id.edit_appointment_time_text)).setText("Choose a Date");
-                                changeDate(((TextView)findViewById(R.id.edit_appointment_time_text)));
+                                changeDate(findViewById(R.id.edit_appointment_time_text));
                             }
                             else {
                                 firstEdit=false;
@@ -236,8 +228,8 @@ public class EditAppointmentActivity extends AppCompatActivity
                         if (appointment.business_id.equals(mAuth.getUid())) {
                             userType = UserType.BusinessOwner;
 
-                            ((TextView)findViewById(R.id.noteTitle)).setVisibility(View.GONE);
-                            ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
+                            findViewById(R.id.noteTitle).setVisibility(View.GONE);
+                            findViewById(R.id.edit_appointment_notes_text).setVisibility(View.INVISIBLE);
                             findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
 
                             ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
