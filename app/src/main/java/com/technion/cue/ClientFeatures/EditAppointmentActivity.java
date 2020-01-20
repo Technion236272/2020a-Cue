@@ -8,10 +8,9 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.view.View;
 import android.widget.DatePicker;
-=======
+
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -19,7 +18,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
->>>>>>> ef64359b31ab7a94ac82d063abf41b321759f60b
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;

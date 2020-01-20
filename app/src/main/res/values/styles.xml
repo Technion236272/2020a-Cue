@@ -27,4 +27,10 @@
         <item name="android:windowBackground">#FFFFFF</item>
     </style>
 
+    <style name="MyAlertDialogTheme" parent="Theme.MaterialComponents.Light.DarkActionBar">
+        <item name="colorAccent">@color/secondaryDarkColor</item>
+        <item name="android:colorBackground">#FFFFFF</item>
+        <item name="android:windowBackground">#FFFFFF</item>
+    </style>
+
 </resources>

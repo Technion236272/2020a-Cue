@@ -1,5 +1,16 @@
 package com.technion.cue.BusinessFeatures;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,18 +28,8 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -47,6 +48,7 @@ import com.technion.cue.data_classes.Business;
 
 import java.util.HashMap;
 import java.util.Map;
+import android.text.TextUtils;
 
 import static android.text.TextUtils.isDigitsOnly;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -139,7 +141,7 @@ public class BusinessSettings extends AppCompatActivity {
                 EditText edit_text = dialog.findViewById(R.id.num_input);
                 String edit_text_value = edit_text.getText().toString();
 
-                if (edit_text_value.isEmpty() || radioButton == null) {
+                if (edit_text_value.isEmpty() || !isDigitsOnly(edit_text_value) || radioButton == null) {
                     Toast.makeText(MySettingsFragment.super.getContext(),
                             "Please enter a number and choose", Toast.LENGTH_LONG).show();
                 } else {
@@ -294,7 +296,9 @@ public class BusinessSettings extends AppCompatActivity {
             and to the correct radio button.
              */
             if (p.getKey().equals("remind time")) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                AlertDialog.Builder builder = new AlertDialog.
+                        Builder(new ContextThemeWrapper(getActivity(),R.style.MyAlertDialogTheme));
 
                 builder.setCancelable(false)
                         .setMessage("Please enter a number and choose")
