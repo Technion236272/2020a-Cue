@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -9,6 +9,7 @@
         android:id="@+id/active_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:text="@string/active_type"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -23,14 +24,15 @@
         android:hint="@string/hint_type_name"
         android:textSize="14sp"
         app:counterEnabled="true"
+        android:layout_below="@id/active_type"
         app:counterMaxLength="30">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/bTypeNameEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="text"/>
-    </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bTypeNameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
 
 
     <com.google.android.material.textfield.TextInputLayout
@@ -45,15 +47,16 @@
         android:hint="@string/type_duration_fill"
         android:textSize="14sp"
         app:counterEnabled="true"
+        android:layout_below="@id/b_type_name"
         app:counterMaxLength="30">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/bTypeDurationEdit"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="numberDecimal"/>
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bTypeDurationEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
 
-    </com.google.android.material.textfield.TextInputLayout>
+        </com.google.android.material.textfield.TextInputLayout>
 
     <TextView
         android:id="@+id/before_check_box"
@@ -62,6 +65,7 @@
         android:text="@string/check_available_type_days"
         android:textStyle="bold"
         android:layout_marginLeft="8dp"
+        android:layout_below="@id/b_type_duration"
         android:layout_marginStart="8dp" />
 
     <LinearLayout
@@ -69,6 +73,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
+        android:layout_below="@id/before_check_box"
         android:id="@+id/check_boxes">
 
         <CheckBox
@@ -137,6 +142,7 @@
         android:layout_marginTop="24dp"
         android:hint="@string/notes_for_clients"
         android:textSize="14sp"
+        android:layout_below="@id/check_boxes"
         app:counterEnabled="true">
 
         <com.google.android.material.textfield.TextInputEditText
@@ -145,13 +151,16 @@
             android:layout_height="wrap_content"
             android:inputType="text" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+         </com.google.android.material.textfield.TextInputLayout>
 
-
-    <Button
+    <com.google.android.material.button.MaterialButton
         android:id="@+id/button_done"
-        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/done"/>
+        android:layout_width="wrap_content"
+        android:text="@string/done"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/b_type_notes"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
 
-</LinearLayout>
+
+</RelativeLayout>

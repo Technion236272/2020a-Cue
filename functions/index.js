@@ -28,6 +28,7 @@ exports.informOnAppointmentAndRemind = firestoreTriggers
                                                         appointment_date: snap.data().appointment_date.toDate().getTime().toString(),
                                                         new_appointment_date: snap.data().new_appointment_date.toDate().getTime().toString(),
                                                         appointment_type: snap.data().appointment_type,
+                                                        new_appointment_type: snap.data().new_appointment_type,
                                                         action_doer: snap.data().action_doer,
                                                         business_id: businessId,
                                                         notes: snap.data().notes

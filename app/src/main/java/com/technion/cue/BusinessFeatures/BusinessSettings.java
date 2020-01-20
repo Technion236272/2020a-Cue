@@ -1,5 +1,16 @@
 package com.technion.cue.BusinessFeatures;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.preference.Preference;
+import androidx.preference.PreferenceFragmentCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,20 +28,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.preference.Preference;
-import androidx.preference.PreferenceFragmentCompat;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -46,6 +48,7 @@ import com.technion.cue.data_classes.Business;
 
 import java.util.HashMap;
 import java.util.Map;
+import android.text.TextUtils;
 
 import static android.text.TextUtils.isDigitsOnly;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -68,10 +71,12 @@ public class BusinessSettings extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.settings_activity);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_setting, new MySettingsFragment())
-                .commit();
+        if(savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_setting, new MySettingsFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -110,7 +115,6 @@ public class BusinessSettings extends AppCompatActivity {
         the client can't make any changes at the meeting.
         2. remind time dialog - where the business owner can choose how much time before a meeting
         the client will recieve a reminder about to meeting.
-
         this class is for dealing with the save button click event on the dialog -
         check if everything is legal and then save the changes in the firebase.
          */
@@ -139,7 +143,7 @@ public class BusinessSettings extends AppCompatActivity {
                 EditText edit_text = dialog.findViewById(R.id.num_input);
                 String edit_text_value = edit_text.getText().toString();
 
-                if (edit_text_value.isEmpty() || radioButton == null) {
+                if (edit_text_value.isEmpty() || !isDigitsOnly(edit_text_value) || radioButton == null) {
                     Toast.makeText(MySettingsFragment.super.getContext(),
                             "Please enter a number and choose", Toast.LENGTH_LONG).show();
                 } else {
@@ -294,7 +298,9 @@ public class BusinessSettings extends AppCompatActivity {
             and to the correct radio button.
              */
             if (p.getKey().equals("remind time")) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+                AlertDialog.Builder builder = new AlertDialog.
+                        Builder(new ContextThemeWrapper(getActivity(),R.style.MyAlertDialogTheme));
 
                 builder.setCancelable(false)
                         .setMessage("Please enter a number and choose")
@@ -358,10 +364,10 @@ public class BusinessSettings extends AppCompatActivity {
             }
 
             if (p.getKey().equals("logout")) {
-                    FirebaseAuth.getInstance().signOut();
-                    startActivity(new Intent(getContext(), SignInActivity.class));
-                    getActivity().finish();
-                    return true;
+                FirebaseAuth.getInstance().signOut();
+                startActivity(new Intent(getContext(), SignInActivity.class));
+                getActivity().finish();
+                return true;
             }
 
             return true;
@@ -383,6 +389,7 @@ public class BusinessSettings extends AppCompatActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
         }
 
         @Nullable
@@ -413,7 +420,7 @@ public class BusinessSettings extends AppCompatActivity {
         public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
             super.onViewCreated(view, savedInstanceState);
 
-            Button add_button = view.findViewById(R.id.button_add_type);
+            FloatingActionButton add_button = view.findViewById(R.id.button_add_type);
             RecyclerView types = view.findViewById(R.id.types_list);
             LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
             types.setLayoutManager(layoutManager);
@@ -467,7 +474,6 @@ public class BusinessSettings extends AppCompatActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
 
         }
 
@@ -576,7 +582,7 @@ public class BusinessSettings extends AppCompatActivity {
                             "Please choose at least one day where type will be available"
                             , Toast.LENGTH_LONG).show();
                 } else if ((tname != null && !tname.equals(type_name.getText().toString())) ||
-                        tname == null) { //need to check if type name already exist
+                        tname == null) { //need to check if type name already exists
                     FirebaseFirestore.getInstance()
                             .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
                                     + "/Types").whereEqualTo("name", type_name.getText().toString())
@@ -612,9 +618,9 @@ public class BusinessSettings extends AppCompatActivity {
                                             .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
                                                     + "/Types").document(document_id).update(map);
                                 });
-                                FirebaseFirestore.getInstance()
-                                        .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
-                                                + "/Types").document().update(map);
+//                                FirebaseFirestore.getInstance()
+//                                        .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+//                                                + "/Types").document().update(map);
 
                             } else {
                                 FirebaseFirestore.getInstance()
@@ -630,11 +636,40 @@ public class BusinessSettings extends AppCompatActivity {
                     });
 
 
+                } else if(tname.equals(type_name.getText().toString())){ //name remains the same
+                    Map<String, String> attributes = new HashMap<>();
+                    attributes.put("active", String.valueOf(isActive));
+                    attributes.put("duration", duration.getText().toString());
+                    attributes.put("sunday", String.valueOf(isChecked1));
+                    attributes.put("monday", String.valueOf(isChecked2));
+                    attributes.put("tuesday", String.valueOf(isChecked3));
+                    attributes.put("wednesday", String.valueOf(isChecked4));
+                    attributes.put("thursday", String.valueOf(isChecked5));
+                    attributes.put("friday", String.valueOf(isChecked6));
+                    attributes.put("saturday", String.valueOf(isChecked7));
+                    if(notes.getText().toString().isEmpty()){
+                        notes.setText("No special notes");
+                    }
+                    attributes.put("notes", notes.getText().toString());
+
+                    AppointmentType type = new AppointmentType(type_name.getText().toString(), attributes);
+                    Map<String, Object> map = new HashMap<>();
+                    map.put("attributes", attributes);
+                    map.put("name", type_name.getText().toString());
+
+                    FirebaseFirestore.getInstance()
+                            .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                                    + "/Types").whereEqualTo("name", tname).get().addOnSuccessListener(p -> {
+                        String document_id = p.getDocuments().get(0).getId();
+                        FirebaseFirestore.getInstance()
+                                .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
+                                        + "/Types").document(document_id).update(map);
+
+
+                    });
+                    getFragmentManager().popBackStackImmediate();
                 }
             });
         }
     }
 }
-
-
-
