@@ -8,18 +8,12 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.view.View;
 import android.widget.DatePicker;
-=======
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.view.MenuItem;
-import android.view.View;
-import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
->>>>>>> ef64359b31ab7a94ac82d063abf41b321759f60b
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -704,18 +698,15 @@ public class EditAppointmentActivity extends AppCompatActivity
                             .document(appointment.id).delete().addOnSuccessListener(result -> {
                         FirebaseFirestore.getInstance()
                                 .collection(CLIENTS_COLLECTION)
-                                .document(FirebaseAuth.getInstance().getUid())
+                                .document(appointment.client_id)
                                 .get()
                                 .addOnSuccessListener(ds -> {
-                                    SimpleDateFormat sdf =
-                                            new SimpleDateFormat("HH:mm dd/MM/YYYY");
-                                    try {
                                         Business.AppointmentAction aa = new Business.AppointmentAction(
                                                 "cancellation",
                                                 ds.getString("name"),
                                                 new Date(),
-                                                sdf.parse(appointment.date.toString()),
-                                                sdf.parse(appointment.date.toString()),
+                                                appointment.date,
+                                                appointment.date,
                                                 appointment.type,
                                                 appointment.type,
                                                 doer,
@@ -726,14 +717,12 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                 .document(appointment.business_id)
                                                 .collection(APPOINTMENT_ACTIONS_COLLECTION)
                                                 .document()
-                                                .set(aa);
-                                    } catch (ParseException e) {
-                                        e.printStackTrace();
-                                    }
+                                                .set(aa)
+                                                .addOnSuccessListener(sl -> {
+                                                    Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();
+                                                    finish();
+                                                });
                                 });
-
-                        Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();
-                        finish();
                     });
                 })
                 .setNegativeButton("No",null)

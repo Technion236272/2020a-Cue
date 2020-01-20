@@ -9,11 +9,9 @@ import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
-import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -22,8 +20,6 @@ import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
 import com.technion.cue.BusinessFeatures.BusinessSchedule;
-import com.technion.cue.BusinessFeatures.BusinessScheduleDay;
-import com.technion.cue.ClientFeatures.ClientAppointmentsPerDayFragment;
 import com.technion.cue.ClientFeatures.ClientHomePage;
 
 import java.text.DateFormat;
@@ -31,9 +27,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Map;
 
-import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
-import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 public class FCMService extends FirebaseMessagingService {
 
@@ -170,7 +164,7 @@ public class FCMService extends FirebaseMessagingService {
                                     );
                                     bigTextStyle.bigText(
                                             remoteMessage.getData().get("business_name")
-                                                    + " has canceled for you an appointment that was due to happen on"
+                                                    + " has canceled for you an appointment that was due to happen on "
                                                     + old_date
                                     );
                                     break;
@@ -245,17 +239,24 @@ public class FCMService extends FirebaseMessagingService {
         } else
             c.add(Calendar.DAY_OF_WEEK, -1);
 
-        PendingIntent pendingIntent =
-                PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-        AlarmManager alarmManager =
-                (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
-
-        if (remoteMessage.getData().get("action_type").equals("cancellation"))
+        if (remoteMessage.getData().get("action_type").equals("cancellation")) {
+            PendingIntent pendingIntent =
+                    PendingIntent.getBroadcast(this, 0, alarmIntent,  PendingIntent.FLAG_CANCEL_CURRENT);
+            AlarmManager alarmManager =
+                    (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
             alarmManager.cancel(pendingIntent);
+        }
         else if (remoteMessage.getData().get("action_type").equals("rescheduling")) {
-            alarmManager.cancel(pendingIntent);
+            PendingIntent pendingIntent =
+                    PendingIntent.getBroadcast(this, 0, alarmIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager =
+                    (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
         } else {
+            PendingIntent pendingIntent =
+                    PendingIntent.getBroadcast(this, 0, alarmIntent,  PendingIntent.FLAG_UPDATE_CURRENT);
+            AlarmManager alarmManager =
+                    (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
             alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
         }
     }
