@@ -9,6 +9,7 @@
         android:id="@+id/active_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
         android:text="@string/active_type"/>
 
     <com.google.android.material.textfield.TextInputLayout

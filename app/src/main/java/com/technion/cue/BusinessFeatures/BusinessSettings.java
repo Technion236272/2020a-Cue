@@ -71,10 +71,12 @@ public class BusinessSettings extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.settings_activity);
-        getSupportFragmentManager()
-                .beginTransaction()
-                .replace(R.id.fragment_setting, new MySettingsFragment())
-                .commit();
+        if(savedInstanceState == null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_setting, new MySettingsFragment())
+                    .commit();
+        }
     }
 
     @Override
@@ -387,6 +389,7 @@ public class BusinessSettings extends AppCompatActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
+
         }
 
         @Nullable
@@ -471,7 +474,6 @@ public class BusinessSettings extends AppCompatActivity {
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
-
 
         }
 
