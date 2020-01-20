@@ -1,5 +1,7 @@
 package com.technion.cue.BusinessFeatures;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -13,6 +15,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.technion.cue.ClientFeatures.ClientAppointmentsPerDayFragment;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
@@ -51,22 +54,33 @@ public class BusinessScheduleMonth extends Fragment {
 
         CalendarView c = view.findViewById(R.id.month_business_schedule);
         c.setOnDateChangeListener((c_view, year, month, day) -> {
-            Bundle b = new Bundle();
-            b.putInt("year", year);
-            b.putInt("month", month);
-            b.putInt("day", day);
-            b.putBoolean("returnToTabs", false);
-            Fragment bsd = new BusinessScheduleDay();
-            bsd.setArguments(b);
-            getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.INVISIBLE);
-            getActivity().findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
-            getActivity().findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
-            getActivity().getSupportFragmentManager()
-                    .beginTransaction()
-                    .remove(this)
-                    .replace(R.id.business_schedule, bsd)
-                    .addToBackStack(null)
-                    .commit();
+            c.animate()
+                    .translationY(-c.getHeight())
+                    .setDuration(300)
+                    .setListener(new AnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationEnd(Animator animation) {
+                            super.onAnimationEnd(animation);
+
+                            Bundle b = new Bundle();
+                            b.putInt("year", year);
+                            b.putInt("month", month);
+                            b.putInt("day", day);
+                            b.putBoolean("returnToTabs", false);
+                            Fragment bsd = new BusinessScheduleDay();
+                            bsd.setArguments(b);
+                            getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.INVISIBLE);
+                            getActivity().findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
+                            getActivity().findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
+                            getActivity().getSupportFragmentManager()
+                                    .beginTransaction()
+                                    .setCustomAnimations(R.anim.animation_slidein_replace_fragment, 0)
+                                    .remove(BusinessScheduleMonth.this)
+                                    .replace(R.id.business_schedule, bsd)
+                                    .addToBackStack(null)
+                                    .commit();
+                        }
+                    });
         });
     }
 

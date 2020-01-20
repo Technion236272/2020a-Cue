@@ -217,7 +217,7 @@ public class ClientHomePage extends AppCompatActivity  {
     public void Settings(View v) {
 
         Intent getIntentBOPage = new Intent(getBaseContext(), ClientSettingsActivity.class);
-       startActivity(getIntentBOPage);
+        startActivity(getIntentBOPage);
 
     }
 

@@ -1,9 +1,17 @@
 package com.technion.cue.BusinessFeatures;
 
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentActivity;
+
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.DataSource;
+import com.bumptech.glide.load.engine.GlideException;
+import com.bumptech.glide.request.RequestListener;
+import com.bumptech.glide.request.target.Target;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,13 +37,15 @@ class BusinessLoader {
     private View view;
     private FirebaseFirestore db;
     private String business_id;
+    private FragmentActivity activity;
 
     public static Business business = null;
 
-    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {
+    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch, FragmentActivity activity) {
         this.db = db;
         this.business_id = business_to_fetch;
         this.view = view;
+        this.activity = activity;
     }
 
     /**
