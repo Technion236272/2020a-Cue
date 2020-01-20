@@ -93,7 +93,7 @@ public class ClientBusinessLoader {
         full_address = business.location.get("address") + ", "
                 + business.location.get("city") + ", "
                 + business.location.get("state");
-        location.setText(full_address +"("+ business.phone_number+")");
+        location.setText(full_address +", "+ business.phone_number);
 
 
         TextView sundayText = view.findViewById(R.id.sundayText);

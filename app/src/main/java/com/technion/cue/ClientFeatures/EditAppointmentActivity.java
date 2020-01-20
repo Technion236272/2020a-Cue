@@ -10,9 +10,12 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -113,9 +116,14 @@ public class EditAppointmentActivity extends AppCompatActivity
                 appointment.type="";
                 appointment.client_id = intent.getExtras().getString("client_name");
                 ((RelativeLayout)findViewById(R.id.delete_button_bottom)).setVisibility(View.GONE);
+
+                ((TextView)findViewById(R.id.noteTitle)).setVisibility(View.GONE);
+                ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
+                findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
+                changed=true;
                 loadNewAppointment();
             } else if (extras.containsKey("business_id")){ // newAppointment as client
-
+                changed=true;
                 userType = UserType.Client;
                 appointment.id="";
                 appointment.type="";
@@ -239,7 +247,22 @@ public class EditAppointmentActivity extends AppCompatActivity
                             ((TextView)findViewById(R.id.noteTitle)).setVisibility(View.GONE);
                             ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
                             findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
+                            ((EditText)findViewById(R.id.edit_appointment_notes_text_edit_text)).addTextChangedListener(new TextWatcher() {
+                                @Override
+                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
+                                }
+
+                                @Override
+                                public void onTextChanged(CharSequence s, int start, int before, int count) {
+                                    changed = true;
+                                }
+
+                                @Override
+                                public void afterTextChanged(Editable s) {
+
+                                }
+                            });
                             ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
 
                         } else {
@@ -311,6 +334,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 //appointment.date = new Timestamp(((TextView) findViewById(R.id.edit_appointment_time_text)).getText().toString());
                 if (userType == UserType.BusinessOwner) {
                     appointment.notes = ((com.google.android.material.textfield.TextInputEditText) findViewById(R.id.edit_appointment_notes_text_edit_text)).getText().toString();
+                    System.out.println("--------- " + appointment.notes +" -----------------");
                 }
 
                 if (!appointment.id.equals("")) {// reschedule  appointment
