@@ -87,6 +87,12 @@ public class BusinessScheduleRecentChanges extends Fragment {
         mAdapter.stopListening();
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+        getActivity().findViewById(R.id.progress_bar).setVisibility(View.GONE);
+    }
+
     private class RecentChangesAdapter extends
             FirestoreRecyclerAdapter<Business.AppointmentAction, RecentChangesAdapter.itemHolder> {
 

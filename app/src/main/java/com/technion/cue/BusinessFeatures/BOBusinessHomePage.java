@@ -204,15 +204,15 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                     if (open_time_millis <= currentTime && currentTime <= close_time_millis)
                         //  business is open
                         current_day_hours
-                                .setText("Open. Closes " + open_hours_today.split("-")[1]);
+                                .setText("Now Open. Closes " + open_hours_today.split("-")[1]);
                     else if (currentTime < open_time_millis)
                         // business is closed and will reopen later on today
                         current_day_hours
-                                .setText("Closed. Opens " + open_hours_today.split("-")[0]);
+                                .setText("Now Closed. Opens " + open_hours_today.split("-")[0]);
                     else
                         // business is closed and will reopen tomorrow
                         current_day_hours
-                                .setText("Closed. Opens " + open_hours_tomorrow.split("-")[0]);
+                                .setText("Now Closed. Opens " + open_hours_tomorrow.split("-")[0]);
                 }
 
                 int[] res_days =

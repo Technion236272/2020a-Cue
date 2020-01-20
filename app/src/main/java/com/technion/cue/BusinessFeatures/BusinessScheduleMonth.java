@@ -60,6 +60,7 @@ public class BusinessScheduleMonth extends Fragment {
             bsd.setArguments(b);
             getActivity().findViewById(R.id.business_schedule_tabs).setVisibility(View.INVISIBLE);
             getActivity().findViewById(R.id.bottom_navigation).setVisibility(View.GONE);
+            getActivity().findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
             getActivity().getSupportFragmentManager()
                     .beginTransaction()
                     .remove(this)

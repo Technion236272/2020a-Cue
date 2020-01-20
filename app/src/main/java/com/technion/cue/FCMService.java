@@ -16,6 +16,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
@@ -60,7 +61,7 @@ public class FCMService extends FirebaseMessagingService {
 
             FirebaseFirestore.getInstance()
                     .collection(BUSINESSES_COLLECTION)
-                    .document(FirebaseAuth.getInstance().getUid())
+                    .document(remoteMessage.getData().get("business_id"))
                     .get()
                     .addOnSuccessListener(snapshot -> {
                         DateFormat formattingDateFormat = new SimpleDateFormat("EE, dd/MM, HH:mm");
@@ -76,7 +77,7 @@ public class FCMService extends FirebaseMessagingService {
                         b.putBoolean("returnToTabs", false);
 
 
-                        if (snapshot.exists()) {
+                        if (snapshot.getId().equals(FirebaseAuth.getInstance().getUid())) {
                             if (remoteMessage.getData().get("action_doer").equals("business"))
                                 return;
                             switch (remoteMessage.getData().get("action_type")) {
@@ -134,8 +135,10 @@ public class FCMService extends FirebaseMessagingService {
                                             .build();
                             mNotificationManager.notify(0, notification);
                         } else {
-                            if (remoteMessage.getData().get("action_doer").equals("client"))
+                            if (remoteMessage.getData().get("action_doer").equals("client")) {
+                                setAlarm(remoteMessage, snapshot, formattingDateFormat, c);
                                 return;
+                            }
                             switch (remoteMessage.getData().get("action_type")) {
                                 case "scheduling":
                                     bigTextStyle.setBigContentTitle(
@@ -191,40 +194,7 @@ public class FCMService extends FirebaseMessagingService {
 
                             mNotificationManager.notify(0, notification);
 
-                            Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-
-                            String ap_type = remoteMessage.getData()
-                                    .get("action_type").equals("scheduling") ?
-                                    remoteMessage.getData().get("appointment_type") :
-                                    remoteMessage.getData().get("new_appointment_type");
-
-                            String ap_date = remoteMessage.getData()
-                                    .get("action_type").equals("scheduling") ?
-                                    remoteMessage.getData().get("appointment_date") :
-                                    remoteMessage.getData().get("new_appointment_date");
-
-                            c.setTimeInMillis(Long.valueOf(ap_date));
-
-                            alarmIntent.putExtra("business", remoteMessage.getData().get("business_name"));
-                            alarmIntent.putExtra("notes", remoteMessage.getData().get("notes"));
-                            alarmIntent.putExtra("type", ap_type);
-                            alarmIntent.putExtra("date", formattingDateFormat.format(c.getTime()));
-
-                            c.add(Calendar.DAY_OF_WEEK, -1);
-
-                            PendingIntent pendingIntent =
-                                    PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
-                            AlarmManager alarmManager =
-                                    (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
-
-                            if (remoteMessage.getData().get("action_type").equals("cancellation"))
-                                alarmManager.cancel(pendingIntent);
-                            else if (remoteMessage.getData().get("action_type").equals("rescheduling")) {
-                                alarmManager.cancel(pendingIntent);
-                                alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-                            } else {
-                                alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
-                            }
+                            setAlarm(remoteMessage, snapshot, formattingDateFormat, c);
                         }
                     });
 
@@ -243,6 +213,50 @@ public class FCMService extends FirebaseMessagingService {
                             .setAutoCancel(true)
                             .build();
             mNotificationManager.notify(0, notification);
+        }
+    }
+
+    void setAlarm(RemoteMessage remoteMessage, DocumentSnapshot snapshot, DateFormat formattingDateFormat, Calendar c) {
+        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
+
+        String ap_type = remoteMessage.getData()
+                .get("action_type").equals("scheduling") ?
+                remoteMessage.getData().get("appointment_type") :
+                remoteMessage.getData().get("new_appointment_type");
+
+        String ap_date = remoteMessage.getData()
+                .get("action_type").equals("scheduling") ?
+                remoteMessage.getData().get("appointment_date") :
+                remoteMessage.getData().get("new_appointment_date");
+
+        c.setTimeInMillis(Long.valueOf(ap_date));
+
+        alarmIntent.putExtra("business", remoteMessage.getData().get("business_name"));
+        alarmIntent.putExtra("notes", remoteMessage.getData().get("notes"));
+        alarmIntent.putExtra("type", ap_type);
+        alarmIntent.putExtra("date", formattingDateFormat.format(c.getTime()));
+
+        if (snapshot.contains("attributes")) {
+            Map<String, String> attributes = (Map<String, String>)snapshot.get("attributes");
+            if (attributes.containsKey("remind time")) {
+                c.add(Calendar.MINUTE, -1 * Integer.valueOf(attributes.get("remind time")));
+            } else
+                c.add(Calendar.DAY_OF_WEEK, -1);
+        } else
+            c.add(Calendar.DAY_OF_WEEK, -1);
+
+        PendingIntent pendingIntent =
+                PendingIntent.getBroadcast(this, 0, alarmIntent, 0);
+        AlarmManager alarmManager =
+                (AlarmManager) getBaseContext().getSystemService(Context.ALARM_SERVICE);
+
+        if (remoteMessage.getData().get("action_type").equals("cancellation"))
+            alarmManager.cancel(pendingIntent);
+        else if (remoteMessage.getData().get("action_type").equals("rescheduling")) {
+            alarmManager.cancel(pendingIntent);
+            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+        } else {
+            alarmManager.set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
         }
     }
 }

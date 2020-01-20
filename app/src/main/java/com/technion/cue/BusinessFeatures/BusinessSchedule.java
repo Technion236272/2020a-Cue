@@ -72,7 +72,7 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
         List<String> titleList = new ArrayList<>(
-                Arrays.asList("Today", "This Week", "This Month", "Recent Changes")
+                Arrays.asList("Today", "This Week", "ALL TIMES", "Recent Changes")
         );
 
         ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -105,7 +105,7 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
                     return bsd;
                 case "This Week":
                     return new BusinessScheduleWeek();
-                case "This Month":
+                case "ALL TIMES":
                     return new BusinessScheduleMonth();
                 case "Recent Changes":
                     return new BusinessScheduleRecentChanges();

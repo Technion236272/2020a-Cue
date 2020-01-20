@@ -2,9 +2,11 @@ package com.technion.cue.BusinessFeatures;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
@@ -60,6 +62,11 @@ public class BusinessSettings extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.business_settings_action_bar);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+
         setContentView(R.layout.settings_activity);
         getSupportFragmentManager()
                 .beginTransaction()
@@ -68,6 +75,15 @@ public class BusinessSettings extends AppCompatActivity {
 
 
     }
+
+    public void cancelChanges(View view) {
+        FragmentManager fm = getSupportFragmentManager();
+        if (fm.getBackStackEntryCount() > 0)
+            fm.popBackStack();
+        else
+            finish();
+    }
+
     /*
     The following class creates the main Settings Fragment -
     the one we see when we press settings on the menu.
@@ -494,36 +510,37 @@ public class BusinessSettings extends AppCompatActivity {
                     check6.setChecked(false);
                     check7.setChecked(false);
 
-                    if (appointmentType.attributes.get("active").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("active") ||
+                            appointmentType.attributes.get("active").equals("true")) {
                         isActive.setChecked(true);
                     }
                     type_name1.setText(appointmentType.name);
                     duration1.setText(appointmentType.attributes.get("duration"));
                     notes.setText(appointmentType.attributes.get("notes"));
-                    if (appointmentType.attributes.get("sunday").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("sunday") || appointmentType.attributes.get("sunday").equals("true")) {
                         check1.setChecked(true);
                     }
-                    if (appointmentType.attributes.get("monday").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("monday") || appointmentType.attributes.get("monday").equals("true")) {
                         check2.setChecked(true);
                     }
-                    if (appointmentType.attributes.get("tuesday").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("tuesday") || appointmentType.attributes.get("tuesday").equals("true")) {
                         check3.setChecked(true);
                     }
-                    if (appointmentType.attributes.get("wednesday").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("wednesday") || appointmentType.attributes.get("wednesday").equals("true")) {
                         check4.setChecked(true);
                     }
-                    if (appointmentType.attributes.get("thursday").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("thursday") || appointmentType.attributes.get("thursday").equals("true")) {
                         check5.setChecked(true);
                     }
-                    if (appointmentType.attributes.get("friday").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("friday") || appointmentType.attributes.get("friday").equals("true")) {
                         check6.setChecked(true);
                     }
-                    if (appointmentType.attributes.get("saturday").equals("true")) {
+                    if (!appointmentType.attributes.containsKey("saturday") || appointmentType.attributes.get("saturday").equals("true")) {
                         check7.setChecked(true);
                     }
                 });
             } else { //default - new type in active
-                Switch type_active = (Switch) view.findViewById(R.id.active_type);
+                Switch type_active = view.findViewById(R.id.active_type);
                 type_active.setChecked(true);
             }
             Button done = view.findViewById(R.id.button_done);
