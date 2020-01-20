@@ -89,8 +89,12 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
         b_id = intent.getExtras().getString("business_id");
         db = FirebaseFirestore.getInstance();
-
-
+        db.collection(APPOINTMENTS_COLLECTION).document(a_id).get().addOnSuccessListener(l->{
+           if (!l.exists()) {
+               Intent intentEdit = new Intent(this, ClientHomePage.class);
+               startActivity(intentEdit);
+           }
+        });
 
         if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -124,6 +128,17 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        db.collection(APPOINTMENTS_COLLECTION).document(a_id).get().addOnSuccessListener(l-> {
+            if (!l.exists()) {
+                Intent intentEdit = new Intent(this, ClientHomePage.class);
+                startActivity(intentEdit);
+            }
+        });
     }
 
     @Override

@@ -237,7 +237,7 @@
                     android:layout_height="match_parent"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
-                    android:hint="Appointment Note"
+                    android:hint="Appointment Note (Optional)"
                     app:counterEnabled="true"
                     app:endIconMode="clear_text"
                     app:counterMaxLength="140"

@@ -8,10 +8,8 @@ import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-<<<<<<< HEAD
 import android.view.View;
 import android.widget.DatePicker;
-=======
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MenuItem;
@@ -19,7 +17,6 @@ import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
->>>>>>> ef64359b31ab7a94ac82d063abf41b321759f60b
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
@@ -28,8 +25,10 @@ import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.Task;
+import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -70,8 +69,11 @@ public class EditAppointmentActivity extends AppCompatActivity
     String radioButton_id;
     Map<Integer, String> typesIdAndNotes = new HashMap<>();
     UserType userType;
-    Boolean changed=false;
-    Boolean firstEdit;// needed to change
+    Boolean firstEdit=false;// needed to change
+    Boolean editAppointment=false;
+    Boolean setDate=false;
+    Boolean setChip=false;
+
     private Date old_appointment_date;
     private String old_appointment_type;
 
@@ -104,12 +106,13 @@ public class EditAppointmentActivity extends AppCompatActivity
         Bundle extras = intent.getExtras();
         if (extras != null) {
             if (extras.containsKey("appointment_id") && extras.containsKey("business_id")) { // you are in edit appointment
-                changed=false;
                 appointment.id = intent.getExtras().getString("appointment_id");
                 appointment.business_id = intent.getExtras().getString("business_id");
+                setDate=true;
+                editAppointment=true;
                 loadAppointmentDetails();
             } else if (extras.containsKey("business_id") && extras.containsKey("client_name")){ // newAppointment as business owner
-
+                editAppointment=false;
                 userType = UserType.BusinessOwner;
                 appointment.id = "";
                 appointment.business_id = intent.getExtras().getString("business_id");
@@ -120,10 +123,9 @@ public class EditAppointmentActivity extends AppCompatActivity
                 ((TextView)findViewById(R.id.noteTitle)).setVisibility(View.GONE);
                 ((TextView)findViewById(R.id.edit_appointment_notes_text)).setVisibility(View.INVISIBLE);
                 findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
-                changed=true;
                 loadNewAppointment();
             } else if (extras.containsKey("business_id")){ // newAppointment as client
-                changed=true;
+                editAppointment=false;
                 userType = UserType.Client;
                 appointment.id="";
                 appointment.type="";
@@ -184,27 +186,33 @@ public class EditAppointmentActivity extends AppCompatActivity
                     // add a listener to check button
                     rg.setOnCheckedChangeListener((group, checkedId) -> {
                         if (checkedId != -1) {
-                            if (firstEdit == false ) {
+                            appointment.type = l.getDocuments().get(checkedId).getId();
+                            if ((firstEdit == true ) && (editAppointment == false )){
+                                firstEdit=false;
                                 appointment.notes = typesIdAndNotes.get(checkedId);
-                                changed = true;
                                 ((TextView)findViewById(R.id.edit_appointment_time_text)).setText("Choose a Date");
                                 changeDate(findViewById(R.id.edit_appointment_time_text));
                             }
-                            else {
+                            else if (firstEdit == false ) {
+                                appointment.notes = typesIdAndNotes.get(checkedId);
+                                ((TextView)findViewById(R.id.edit_appointment_time_text)).setText("Choose a Date");
+                                changeDate(findViewById(R.id.edit_appointment_time_text));
+                            } else {
                                 firstEdit=false;
                             }
-                            appointment.type = l.getDocuments().get(checkedId).getId();
+
                             if (userType == UserType.BusinessOwner) {
                                 ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
                             } else {
                                     ((TextView) findViewById(R.id.edit_appointment_notes_text)).setText(appointment.notes);
                                     firstEdit = false;
-
                             }
                             radioButton_id = l.getDocuments().get(checkedId).getId();
+                            setChip=true;
                         } else {
                             radioButton_id="";
                             appointment.type="";
+                            setChip=false;
                         }
 
                     });
@@ -246,22 +254,6 @@ public class EditAppointmentActivity extends AppCompatActivity
                             findViewById(R.id.noteTitle).setVisibility(View.GONE);
                             findViewById(R.id.edit_appointment_notes_text).setVisibility(View.INVISIBLE);
                             findViewById(R.id.edit_appointment_note_laylout).setVisibility(View.VISIBLE);
-                            ((EditText)findViewById(R.id.edit_appointment_notes_text_edit_text)).addTextChangedListener(new TextWatcher() {
-                                @Override
-                                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-                                }
-
-                                @Override
-                                public void onTextChanged(CharSequence s, int start, int before, int count) {
-                                    changed = true;
-                                }
-
-                                @Override
-                                public void afterTextChanged(Editable s) {
-
-                                }
-                            });
                             ((com.google.android.material.textfield.TextInputEditText)(findViewById(R.id.edit_appointment_notes_text_edit_text))).setText(appointment.notes);
 
                         } else {
@@ -274,8 +266,9 @@ public class EditAppointmentActivity extends AppCompatActivity
                         TextView date = findViewById(R.id.edit_appointment_time_text);
                         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
                         date.setText(sdf.format(appointment.date ));
+                        loadTypes(); // load appointments type
                     }
-                    loadTypes(); // load appointments type
+
 
                 });
     }
@@ -288,13 +281,16 @@ public class EditAppointmentActivity extends AppCompatActivity
     }
 
     public void changeDate(View view) {
-        if (didChooseType()) {
+        //setDate=false;
+        if ((appointment.type!=null) && (!appointment.type.equals(""))) {
             ClientChooseDateFragment newFragment = new ClientChooseDateFragment();
             newFragment.show(getSupportFragmentManager(), "datePicker");
         } else {
-            Toast.makeText(getBaseContext(),
-                    "please choose an appointment type first",
-                    Toast.LENGTH_SHORT).show();
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("First Choose Appointment Type.")
+                    .setMessage("")
+                    .setPositiveButton("Ok", null)
+                    .show();
         }
     }
 
@@ -307,189 +303,178 @@ public class EditAppointmentActivity extends AppCompatActivity
 
         findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.VISIBLE);
         findViewById(R.id.edit_appointment_save_button).setClickable(false);
-        if (changed) {
+        if ((setDate) && (setChip)) {
             String doer;
-            if (FirebaseAuth.getInstance().getUid()
-                    .equals(appointment.business_id)) {
-                doer = "business";
+            if (FirebaseAuth.getInstance().getUid().equals(appointment.business_id)) { doer = "business"; } else { doer = "client"; }
+
+            //appointment.date = new Timestamp(((TextView) findViewById(R.id.edit_appointment_time_text)).getText().toString());
+            if (userType == UserType.BusinessOwner) {
+                appointment.notes = ((com.google.android.material.textfield.TextInputEditText) findViewById(R.id.edit_appointment_notes_text_edit_text)).getText().toString();
             } else {
-                doer = "client";
+                appointment.notes = ((TextView)findViewById(R.id.edit_appointment_notes_text)).getText().toString();
             }
 
-
-            if ((((TextView) findViewById(R.id.edit_appointment_time_text)).getText().equals("Choose a Date")) ||
-                    ((TextView) findViewById(R.id.edit_appointment_time_text)).getText().equals("") ||
-                    ((TextView) findViewById(R.id.edit_appointment_time_text)).getText() == null ||
-                    (!didChooseType())) {
-                findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
-                new MaterialAlertDialogBuilder(this)
-                        .setTitle("Please Choose a date and Appointment Type")
-                        .setMessage("")
-                        .setPositiveButton("Ok", null)
-                        .setNegativeButton("Cancel", null)
-                        .show();
-
-            } else {
-                //appointment.date = new Timestamp(((TextView) findViewById(R.id.edit_appointment_time_text)).getText().toString());
-                if (userType == UserType.BusinessOwner) {
-                    appointment.notes = ((com.google.android.material.textfield.TextInputEditText) findViewById(R.id.edit_appointment_notes_text_edit_text)).getText().toString();
-                }
-
-                if (!appointment.id.equals("")) {// reschedule  appointment
-                    appointment.type = radioButton_id;
-                    String oldAppointmentId = appointment.id;
-                    appointment.id = "";// avoid adding old appointmet_id to  firestore
-                    FirebaseFirestore.getInstance()
-                            .collection(APPOINTMENTS_COLLECTION)
-                            .document()
-                            .set(appointment).addOnCompleteListener(task ->
-                            FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
-                                    .document(oldAppointmentId).delete().addOnSuccessListener(result -> { // deleting old appointment
-                                findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
-                                Toast.makeText(getApplicationContext(), "Appointment Rescheduled Successfully ", Toast.LENGTH_LONG).show();
-                                // --
-
-                                finish();
-                                //--
-                            }));
+            if (!appointment.id.equals("")) {// reschedule  appointment
+                appointment.type = radioButton_id;
+                String oldAppointmentId = appointment.id;
+                appointment.id = "";// avoid adding old appointmet_id to  firestore
+                FirebaseFirestore.getInstance()
+                        .collection(APPOINTMENTS_COLLECTION)
+                        .document()
+                        .set(appointment).addOnCompleteListener(task ->
+                        FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
+                                .document(oldAppointmentId).delete().addOnSuccessListener(result -> { // deleting old appointment
+                            findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
+                            Toast.makeText(getApplicationContext(), "Appointment Rescheduled Successfully ", Toast.LENGTH_LONG).show();
+                            // --
+                            finish();
+                            //--
+                        }));
 
                       /*
                       additions by Ophir on 6/1
                        */
 
-                    // Awful everything D:
-                    FirebaseFirestore.getInstance()
-                            .collection(CLIENTS_COLLECTION)
-                            .document(appointment.client_id)
-                            .get()
-                            .addOnSuccessListener(client  ->
-                                    FirebaseFirestore.getInstance()
-                                    .collection(BUSINESSES_COLLECTION)
-                                    .document(appointment.business_id)
-                                    .collection(TYPES_COLLECTION)
-                                    .document(appointment.type)
-                                    .get()
-                                    .addOnSuccessListener(type -> {
-                                        String notes;
-                                        if (appointment.notes.equals("No notes yet.")) {
-                                            notes = type.getString("notes");
-                                        } else {
-                                            notes = appointment.notes;
-                                        }
-                                        FirebaseFirestore.getInstance()
-                                                .collection(BUSINESSES_COLLECTION)
-                                                .document(appointment.business_id)
-                                                .collection(TYPES_COLLECTION)
-                                                .document(old_appointment_type)
-                                                .get()
-                                                .addOnSuccessListener(old_type -> {
-                                                    Business.AppointmentAction aa =
-                                                            new Business.AppointmentAction(
-                                                                    "rescheduling",
-                                                                    client.getString("name"),
-                                                                    new Date(),
-                                                                    old_appointment_date,
-                                                                    appointment.date,
-                                                                    type.getString("name"),
-                                                                    old_type.getString("name"),
-                                                                    doer,
-                                                                    notes
-                                                            );
+                // Awful everything D:
+                FirebaseFirestore.getInstance()
+                        .collection(CLIENTS_COLLECTION)
+                        .document(appointment.client_id)
+                        .get()
+                        .addOnSuccessListener(client  ->
+                                FirebaseFirestore.getInstance()
+                                        .collection(BUSINESSES_COLLECTION)
+                                        .document(appointment.business_id)
+                                        .collection(TYPES_COLLECTION)
+                                        .document(appointment.type)
+                                        .get()
+                                        .addOnSuccessListener(type -> {
+                                            String notes;
+                                            if (appointment.notes.equals("No notes yet.")) {
+                                                notes = type.getString("notes");
+                                            } else {
+                                                notes = appointment.notes;
+                                            }
+                                            FirebaseFirestore.getInstance()
+                                                    .collection(BUSINESSES_COLLECTION)
+                                                    .document(appointment.business_id)
+                                                    .collection(TYPES_COLLECTION)
+                                                    .document(old_appointment_type)
+                                                    .get()
+                                                    .addOnSuccessListener(old_type -> {
+                                                        Business.AppointmentAction aa =
+                                                                new Business.AppointmentAction(
+                                                                        "rescheduling",
+                                                                        client.getString("name"),
+                                                                        new Date(),
+                                                                        old_appointment_date,
+                                                                        appointment.date,
+                                                                        type.getString("name"),
+                                                                        old_type.getString("name"),
+                                                                        doer,
+                                                                        notes
+                                                                );
 
 
-                                                    FirebaseFirestore.getInstance()
-                                                            .collection(BUSINESSES_COLLECTION)
-                                                            .document(appointment.business_id)
-                                                            .collection(APPOINTMENT_ACTIONS_COLLECTION)
-                                                            .document()
-                                                            .set(aa);
-                                                });
+                                                        FirebaseFirestore.getInstance()
+                                                                .collection(BUSINESSES_COLLECTION)
+                                                                .document(appointment.business_id)
+                                                                .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                                .document()
+                                                                .set(aa);
+                                                    });
 
-                                    }));
-                } else {                                // new appointment
-                    appointment.type = radioButton_id;
+                                        }));
+            } else {                                // new appointment
+                appointment.type = radioButton_id;
+                appointment.date = calendar.getTime();
+                FirebaseFirestore.getInstance()
+                        .collection(APPOINTMENTS_COLLECTION)
+                        .document()
+                        .set(appointment).addOnCompleteListener(task -> {
 
-                   // if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
-
-                    FirebaseFirestore.getInstance()
-                            .collection(APPOINTMENTS_COLLECTION)
-                            .document()
-                            .set(appointment).addOnCompleteListener(task -> {
-
-                        Toast.makeText(getApplicationContext(), "Appointment scheduled Successfully ", Toast.LENGTH_LONG).show();
-                        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
-                        finish();
-                    });
+                    Toast.makeText(getApplicationContext(), "Appointment Acheduled Successfully ", Toast.LENGTH_LONG).show();
+                    findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
+                    finish();
+                });
 
                 /*
                 additions by Ophir on 8/1
                 */
 
-                    FirebaseFirestore.getInstance()
-                            .collection(CLIENTS_COLLECTION)
-                            .document(appointment.client_id)
-                            .get()
-                            .addOnSuccessListener(client  ->
-                                    FirebaseFirestore.getInstance()
-                                            .collection(BUSINESSES_COLLECTION)
-                                            .document(appointment.business_id)
-                                            .collection(TYPES_COLLECTION)
-                                            .document(appointment.type)
-                                            .get()
-                                            .addOnSuccessListener(type -> {
-                                                String notes;
+                FirebaseFirestore.getInstance()
+                        .collection(CLIENTS_COLLECTION)
+                        .document(appointment.client_id)
+                        .get()
+                        .addOnSuccessListener(client  ->
+                                FirebaseFirestore.getInstance()
+                                        .collection(BUSINESSES_COLLECTION)
+                                        .document(appointment.business_id)
+                                        .collection(TYPES_COLLECTION)
+                                        .document(appointment.type)
+                                        .get()
+                                        .addOnSuccessListener(type -> {
+                                            String notes;
 
-                                                if ((appointment.notes == null) || appointment.notes.equals("No notes yet.")) {
+                                            if ((appointment.notes == null) || appointment.notes.equals("No notes yet.")) {
 
-                                                    notes = type.getString("notes");
-                                                } else {
-                                                    notes = appointment.notes;
-                                                }
-                                                Business.AppointmentAction aa =
-                                                        new Business.AppointmentAction(
-                                                                "scheduling",
-                                                                client.getString("name"),
-                                                                new Date(),
-                                                                appointment.date,
-                                                                appointment.date,
-                                                                type.getString("name"),
-                                                                type.getString("name"),
-                                                                doer,
-                                                                notes
-                                                        );
-
-
-                                                FirebaseFirestore.getInstance()
-                                                        .collection(BUSINESSES_COLLECTION)
-                                                        .document(appointment.business_id)
-                                                        .collection(APPOINTMENT_ACTIONS_COLLECTION)
-                                                        .document()
-                                                        .set(aa);
+                                                notes = type.getString("notes");
+                                            } else {
+                                                notes = appointment.notes;
+                                            }
+                                            Business.AppointmentAction aa =
+                                                    new Business.AppointmentAction(
+                                                            "scheduling",
+                                                            client.getString("name"),
+                                                            new Date(),
+                                                            appointment.date,
+                                                            appointment.date,
+                                                            type.getString("name"),
+                                                            type.getString("name"),
+                                                            doer,
+                                                            notes
+                                                    );
 
 
-                                                FirebaseFirestore.getInstance()
-                                                        .collection(BUSINESSES_COLLECTION)
-                                                        .document(appointment.business_id)
-                                                        .collection(CLIENTELE_COLLECTION)
-                                                        .whereEqualTo("client_id", appointment.client_id)
-                                                        .get()
-                                                        .addOnSuccessListener(ds -> {
-                                                            if (ds.isEmpty())
-                                                                FirebaseFirestore.getInstance()
-                                                                        .collection(BUSINESSES_COLLECTION)
-                                                                        .document(appointment.business_id)
-                                                                        .collection(CLIENTELE_COLLECTION)
-                                                                        .document()
-                                                                        .set(new Business.ClienteleMember(appointment.client_id, client.getString("name")));
-                                                        });
+                                            FirebaseFirestore.getInstance()
+                                                    .collection(BUSINESSES_COLLECTION)
+                                                    .document(appointment.business_id)
+                                                    .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                    .document()
+                                                    .set(aa);
 
-                                            }));
-                }
 
+                                            FirebaseFirestore.getInstance()
+                                                    .collection(BUSINESSES_COLLECTION)
+                                                    .document(appointment.business_id)
+                                                    .collection(CLIENTELE_COLLECTION)
+                                                    .whereEqualTo("client_id", appointment.client_id)
+                                                    .get()
+                                                    .addOnSuccessListener(ds -> {
+                                                        if (ds.isEmpty())
+                                                            FirebaseFirestore.getInstance()
+                                                                    .collection(BUSINESSES_COLLECTION)
+                                                                    .document(appointment.business_id)
+                                                                    .collection(CLIENTELE_COLLECTION)
+                                                                    .document()
+                                                                    .set(new Business.ClienteleMember(appointment.client_id, client.getString("name")));
+                                                    });
+
+                                        }));
             }
+
+
         } else {
-            finish();
+            new MaterialAlertDialogBuilder(this)
+                    .setTitle("Please Choose Date and Appointment Type." + setDate + "/"+ setChip)
+                    .setMessage("")
+                    .setPositiveButton("Ok", null)
+                    .setNegativeButton("Cancel", null)
+                    .show();
+            findViewById(R.id.edit_appointment_save_button).setClickable(true);
+            findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
+
         }
+
     }
 
     private void createNotificationChannel() {
@@ -510,7 +495,6 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     @SuppressLint("ResourceType")
     public Boolean didChooseType() {
-        ChipGroup radioGroup = findViewById(R.id.edit_appoinment_radiogroup);
         return !radioButton_id.equals("");
     }
 
@@ -577,51 +561,53 @@ public class EditAppointmentActivity extends AppCompatActivity
 
         String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
-        db.collection(BUSINESSES_COLLECTION)
-                .document(business.id)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-                    Calendar c = Calendar.getInstance();
-                    c.setTime(start);
-                    Map<String, String> open_hours = (Map<String, String>)documentSnapshot.get("open_hours");
-                    String currentDayOpenHours = open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
-                    try {
-                        if (currentDayOpenHours != "") {
-                            Date openingHour = sdf.parse(currentDayOpenHours.split("-")[0]);
-                            Calendar opening_c = Calendar.getInstance();
-                            opening_c.setTime(openingHour);
-                            opening_c.set(c.get(Calendar.YEAR),
-                                    c.get(Calendar.MONTH),
-                                    c.get(Calendar.DAY_OF_MONTH),
-                                    opening_c.get(Calendar.HOUR_OF_DAY),
-                                    opening_c.get(Calendar.MINUTE));
-                            Date closingHour = sdf.parse(currentDayOpenHours.split("-")[1]);
-                            Calendar closing_c = Calendar.getInstance();
-                            closing_c.setTime(closingHour);
-                            closing_c.set(c.get(Calendar.YEAR),
-                                    c.get(Calendar.MONTH),
-                                    c.get(Calendar.DAY_OF_MONTH),
-                                    closing_c.get(Calendar.HOUR_OF_DAY),
-                                    closing_c.get(Calendar.MINUTE));
-                            if (end.getTime() > closing_c.getTimeInMillis() ||
-                                    start.getTime() < opening_c.getTimeInMillis()) {
-                                onUnavailableAppointment(oldDate, old, "Open hours in this day are " + currentDayOpenHours);
-                            } else {
-                                db.collection(APPOINTMENTS_COLLECTION)
-                                        .whereEqualTo("business_id", appointment.business_id)
-                                        .orderBy("date")
-                                        .get().addOnCompleteListener(l -> {
-                                    findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
-                                    if (l.getResult().getDocuments().isEmpty())
-                                        changed = true;
-                                    for (DocumentSnapshot document : l.getResult().getDocuments()) {
-                                        if ((document.exists()) && (document.getId() != appointment.id)) {
-                                            Date appointmentDate = ((Timestamp) document.get("date")).toDate();
-                                            int duration = atm.get(document.getString("type"));
-                                            Calendar c2 = Calendar.getInstance();
-                                            c2.setTime(appointmentDate);
-                                            c2.add(Calendar.MINUTE, duration);
+
+
+        Tasks.whenAllSuccess(t).addOnSuccessListener(sl ->{
+            db.collection(BUSINESSES_COLLECTION)
+                    .document(business.id)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                        Calendar c = Calendar.getInstance();
+                        c.setTime(start);
+                        Map<String, String> open_hours = (Map<String, String>)documentSnapshot.get("open_hours");
+                        String currentDayOpenHours = open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+                        try {
+                            if (currentDayOpenHours != "") {
+                                Date openingHour = sdf.parse(currentDayOpenHours.split("-")[0]);
+                                Calendar opening_c = Calendar.getInstance();
+                                opening_c.setTime(openingHour);
+                                opening_c.set(c.get(Calendar.YEAR),
+                                        c.get(Calendar.MONTH),
+                                        c.get(Calendar.DAY_OF_MONTH),
+                                        opening_c.get(Calendar.HOUR_OF_DAY),
+                                        opening_c.get(Calendar.MINUTE));
+                                Date closingHour = sdf.parse(currentDayOpenHours.split("-")[1]);
+                                Calendar closing_c = Calendar.getInstance();
+                                closing_c.setTime(closingHour);
+                                closing_c.set(c.get(Calendar.YEAR),
+                                        c.get(Calendar.MONTH),
+                                        c.get(Calendar.DAY_OF_MONTH),
+                                        closing_c.get(Calendar.HOUR_OF_DAY),
+                                        closing_c.get(Calendar.MINUTE));
+                                if (end.getTime() > closing_c.getTimeInMillis() ||
+                                        start.getTime() < opening_c.getTimeInMillis()) {
+                                    onUnavailableAppointment(oldDate, old, "Open hours in this day are " + currentDayOpenHours);
+                                } else {
+                                    db.collection(APPOINTMENTS_COLLECTION)
+                                            .whereEqualTo("business_id", appointment.business_id)
+                                            .orderBy("date")
+                                            .get().addOnCompleteListener(l -> {
+                                        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
+
+                                            for (DocumentSnapshot document : l.getResult().getDocuments()) {
+                                                if ((document.exists()) && (document.getId() != appointment.id)) {
+                                                    Date appointmentDate = ((Timestamp) document.get("date")).toDate();
+                                                    int duration = atm.get(document.getString("type"));
+                                                    Calendar c2 = Calendar.getInstance();
+                                                    c2.setTime(appointmentDate);
+                                                    c2.add(Calendar.MINUTE, duration);
 
                                     /*
                                     cases where scheduling is impossible:
@@ -629,35 +615,39 @@ public class EditAppointmentActivity extends AppCompatActivity
                                     2) appointment ends in the middle of another appointment
                                     3) appointment is scheduled when the business is closed (checked above)
                                      */
-                                            if ((start.getTime() > appointmentDate.getTime()
-                                                    && start.getTime() < c2.getTimeInMillis()) ||
-                                                    ((end.getTime() < c2.getTimeInMillis())
-                                                            && end.getTime() > appointmentDate.getTime())) {
-                                                onUnavailableAppointment(oldDate, old, "Choose another time. Open hour in this day are " + currentDayOpenHours);
+                                                    if ((start.getTime() > appointmentDate.getTime()
+                                                            && start.getTime() < c2.getTimeInMillis()) ||
+                                                            ((end.getTime() < c2.getTimeInMillis())
+                                                                    && end.getTime() > appointmentDate.getTime())) {
+                                                        onUnavailableAppointment(oldDate, old, "Choose another time. Open hour in this day are " + currentDayOpenHours);
 
-                                                break;
-                                            } else {
-                                                changed = true;
+                                                        break;
+                                                    } else {
+                                                        setDate = true;
+                                                    }
+                                                } else {
+                                                    setDate = true;
+                                                }
                                             }
-                                        }
-                                    }
-                                });
+                                    });
+                                }
+
+                            } else {
+
+                                onUnavailableAppointment(oldDate, old, "Business not open.  ");
                             }
-
-                        } else {
-
-                            onUnavailableAppointment(oldDate, old, "Business not open.  ");
-
-
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
 
-                });
-//
-//        Tasks.whenAllSuccess(t).addOnSuccessListener(sl ->
-//               );
+                    });
+
+
+
+
+
+            }
+        );
     }
 
     private void onUnavailableAppointment(String oldDate, Date old,String message) {
