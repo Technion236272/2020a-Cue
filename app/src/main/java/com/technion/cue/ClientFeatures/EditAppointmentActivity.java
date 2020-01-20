@@ -209,8 +209,8 @@ public class EditAppointmentActivity extends AppCompatActivity
                             rb[i].setText(document.getString("name"));
                             rg.addView(rb[i]);
                             // Get types notes :
-                            typesIdAndNotes.put(i, (((Map<String, String>)document.get("attributes")).get("note:" +
-                                    "") != null ? ((Map<String, String>)document.get("attributes")).get("note") : "No notes yet."));
+                            typesIdAndNotes.put(i, (((Map<String, String>)document.get("attributes")).get("notes" +
+                                    "") != null ? ((Map<String, String>)document.get("attributes")).get("notes") : "No notes yet."));
                             rb[i].setId(i);
                             if (document.getId().equals(appointment.type) ) {
                                 rg.check(rb[i].getId());

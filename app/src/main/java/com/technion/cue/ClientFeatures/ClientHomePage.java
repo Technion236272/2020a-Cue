@@ -61,8 +61,8 @@ public class ClientHomePage extends AppCompatActivity  {
         mAuth = FirebaseAuth.getInstance();
 
 
+        TabLayout tabLayout = findViewById(R.id.tabLayout);
 
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tabLayout);
         tabLayout.addTab(tabLayout.newTab().setText("Home"));
         tabLayout.addTab(tabLayout.newTab().setText("Calendar"));
         tabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
@@ -89,6 +89,21 @@ public class ClientHomePage extends AppCompatActivity  {
         ClientPagerAdapter adapter = new ClientPagerAdapter(getSupportFragmentManager(),tabLayout.getTabCount());
         viewPager.setAdapter(adapter);
         viewPager.addOnPageChangeListener(new TabLayout.TabLayoutOnPageChangeListener(tabLayout));
+
+        Bundle b = getIntent().getExtras();
+        if (b != null && b.containsKey("year")) {
+            Fragment bsd = new ClientAppointmentsPerDayFragment();
+            b.putBoolean("useBack", false);
+            bsd.setArguments(b);
+            findViewById(R.id.day_fragment).setVisibility(View.VISIBLE);
+            findViewById(R.id.container).setVisibility(View.GONE);
+            findViewById(R.id.tabLayout).setVisibility(View.GONE);
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.day_fragment, bsd)
+                    .addToBackStack(null)
+                    .commit();
+        }
 
 
 
@@ -139,8 +154,8 @@ public class ClientHomePage extends AppCompatActivity  {
 
                                         alertDialog.setCancelable(false);
 
-                                        final EditText etComments = (EditText) view.findViewById(R.id.etComments);
-                                        final TextView etComments_text = (TextView) view.findViewById(R.id.etComments_title);
+                                        final EditText etComments = view.findViewById(R.id.etComments);
+                                        final TextView etComments_text = view.findViewById(R.id.etComments_title);
                                         etComments_text.setText("Review About " + b.business_name);
                                         alertDialog.setPositiveButton("Send", (t, t2) -> {
                                             if (!etComments.getText().equals("")) {
@@ -241,16 +256,18 @@ public class ClientHomePage extends AppCompatActivity  {
         }
     }
 
-
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            ActionBar actionBar = getSupportActionBar();
-            actionBar.setCustomView(R.layout.client_homepage_action_bar);
-            actionBar.setDisplayShowTitleEnabled(true);
-            actionBar.setDisplayShowCustomEnabled(true);
+    public void onBackPressed() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+        ActionBar actionBar = getSupportActionBar();
+        actionBar.setCustomView(R.layout.client_homepage_action_bar);
+        actionBar.setDisplayShowTitleEnabled(true);
+        actionBar.setDisplayShowCustomEnabled(true);
+        int count = getSupportFragmentManager().getBackStackEntryCount();
+        if (count == 0) {
+            super.onBackPressed();
+        } else {
+            finish();
         }
-        return super.onKeyDown(keyCode, event);
     }
 }

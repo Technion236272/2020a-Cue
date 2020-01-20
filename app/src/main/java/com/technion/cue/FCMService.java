@@ -22,6 +22,8 @@ import com.google.firebase.messaging.RemoteMessage;
 import com.technion.cue.BusinessFeatures.BOBusinessHomePage;
 import com.technion.cue.BusinessFeatures.BusinessSchedule;
 import com.technion.cue.BusinessFeatures.BusinessScheduleDay;
+import com.technion.cue.ClientFeatures.ClientAppointmentsPerDayFragment;
+import com.technion.cue.ClientFeatures.ClientHomePage;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -171,12 +173,22 @@ public class FCMService extends FirebaseMessagingService {
                                     break;
                             }
 
+                            Intent resultIntent = new Intent(this, ClientHomePage.class);
+                            resultIntent.putExtras(b);
+                            TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+                            stackBuilder.addNextIntentWithParentStack(resultIntent);
+                            PendingIntent resultPendingIntent =
+                                    stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
                             Notification notification =
                                     new NotificationCompat.Builder(getApplicationContext(), "0")
                                             .setSmallIcon(R.drawable.business_icon)
                                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
                                             .setStyle(bigTextStyle)
+                                            .setContentIntent(resultPendingIntent)
+                                            .setAutoCancel(true)
                                             .build();
+
                             mNotificationManager.notify(0, notification);
 
                             Intent alarmIntent = new Intent(this, AlarmReceiver.class);

@@ -58,7 +58,7 @@ public class ClientCalendarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        c = (CalendarView)view.findViewById(R.id.calendar_page_date_picker);
+        c = view.findViewById(R.id.calendar_page_date_picker);
         c.setMinDate((new Date().getTime()));
         c.setVisibility(View.VISIBLE);
         c.setOnDateChangeListener((c_view, year, month, day) -> {
