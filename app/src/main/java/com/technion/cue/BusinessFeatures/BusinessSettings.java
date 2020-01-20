@@ -1,5 +1,22 @@
 package com.technion.cue.BusinessFeatures;
 
+import android.app.Dialog;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.Switch;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBar;
@@ -12,22 +29,6 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.app.Dialog;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.CheckBox;
-import android.widget.EditText;
-import android.widget.RadioButton;
-import android.widget.RadioGroup;
-import android.widget.Switch;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.textfield.TextInputEditText;
@@ -48,8 +49,7 @@ import java.util.Map;
 
 import static android.text.TextUtils.isDigitsOnly;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
-import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
-import static com.technion.cue.data_classes.Business.*;
+import static com.technion.cue.data_classes.Business.AppointmentType;
 
 @ModuleAuthor("Topaz")
 public class BusinessSettings extends AppCompatActivity {
@@ -63,25 +63,29 @@ public class BusinessSettings extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         ActionBar actionBar = getSupportActionBar();
-        actionBar.setCustomView(R.layout.business_settings_action_bar);
         actionBar.setDisplayShowTitleEnabled(true);
         actionBar.setDisplayShowCustomEnabled(true);
+        actionBar.setDisplayHomeAsUpEnabled(true);
 
         setContentView(R.layout.settings_activity);
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_setting, new MySettingsFragment())
                 .commit();
-
-
     }
 
-    public void cancelChanges(View view) {
-        FragmentManager fm = getSupportFragmentManager();
-        if (fm.getBackStackEntryCount() > 0)
-            fm.popBackStack();
-        else
-            finish();
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            FragmentManager fm = getSupportFragmentManager();
+            if (fm.getBackStackEntryCount() > 0)
+                fm.popBackStack();
+            else {
+                finish();
+            }
+            return true;
+        }
+        return true;
     }
 
     /*
@@ -114,7 +118,7 @@ public class BusinessSettings extends AppCompatActivity {
             private final Dialog dialog;
             private final String title;
 
-            public CustomListener(Dialog dialog, String title) {
+            CustomListener(Dialog dialog, String title) {
                 this.dialog = dialog;
                 this.title = title;
             }
@@ -373,7 +377,7 @@ public class BusinessSettings extends AppCompatActivity {
     public static class typesFragment extends Fragment {
         AppointmentTypesListAdapter tAdapter;
         public FirebaseFirestore db;
-        public FirebaseStorage storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
         @Override
@@ -457,7 +461,7 @@ public class BusinessSettings extends AppCompatActivity {
 
     public static class newTypesFragment extends Fragment {
         public FirebaseFirestore db;
-        public FirebaseStorage storage = FirebaseStorage.getInstance();
+        FirebaseStorage storage = FirebaseStorage.getInstance();
         StorageReference storageRef = storage.getReference();
 
         @Override

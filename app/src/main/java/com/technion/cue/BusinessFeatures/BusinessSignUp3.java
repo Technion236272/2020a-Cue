@@ -16,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
+/**
+ * the third business sign-up screen
+ * used for declaring appointment types
+ */
 @ModuleAuthor("Topaz & Ophir")
 public class BusinessSignUp3 extends Fragment {
 

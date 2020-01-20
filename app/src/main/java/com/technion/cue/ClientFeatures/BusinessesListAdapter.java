@@ -4,10 +4,11 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.technion.cue.R;
@@ -46,15 +47,12 @@ import com.technion.cue.data_classes.Business;
                     .inflate(R.layout.client_business_list,parent,false);
 
             itemHolder  holder = new itemHolder(v);
-            v.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Intent getIntentBOPage = new Intent(parent.getContext(), ClientBusinessHomepage.class);
-                    // TODO: start using appointmet object !!! - refactoring later.
-                    getIntentBOPage.putExtra("business_id",holder.id);
-                    parent.getContext().startActivity(getIntentBOPage);
+            v.setOnClickListener(v1 -> {
+                Intent getIntentBOPage = new Intent(parent.getContext(), ClientBusinessHomepage.class);
+                // TODO: start using appointmet object !!! - refactoring later.
+                getIntentBOPage.putExtra("business_id",holder.id);
+                parent.getContext().startActivity(getIntentBOPage);
 
-                }
             });
             return holder;
 

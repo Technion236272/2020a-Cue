@@ -51,6 +51,8 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
 
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
         bnv.getMenu().getItem(0).setChecked(true);
+
+        getSupportActionBar().setElevation(0);
     }
 
     public void openBusinessSchedule(MenuItem item) { }
