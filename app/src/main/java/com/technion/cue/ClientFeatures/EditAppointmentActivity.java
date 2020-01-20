@@ -334,7 +334,6 @@ public class EditAppointmentActivity extends AppCompatActivity
                 //appointment.date = new Timestamp(((TextView) findViewById(R.id.edit_appointment_time_text)).getText().toString());
                 if (userType == UserType.BusinessOwner) {
                     appointment.notes = ((com.google.android.material.textfield.TextInputEditText) findViewById(R.id.edit_appointment_notes_text_edit_text)).getText().toString();
-                    System.out.println("--------- " + appointment.notes +" -----------------");
                 }
 
                 if (!appointment.id.equals("")) {// reschedule  appointment
@@ -411,7 +410,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                 } else {                                // new appointment
                     appointment.type = radioButton_id;
 
-                    if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
+                   // if (appointment.notes !=null) {  appointment.notes="No notes yet." ;}
 
                     FirebaseFirestore.getInstance()
                             .collection(APPOINTMENTS_COLLECTION)
