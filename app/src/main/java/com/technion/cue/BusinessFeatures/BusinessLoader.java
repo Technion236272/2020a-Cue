@@ -1,17 +1,12 @@
 package com.technion.cue.BusinessFeatures;
 
-import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.DataSource;
-import com.bumptech.glide.load.engine.GlideException;
-import com.bumptech.glide.request.RequestListener;
-import com.bumptech.glide.request.target.Target;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -53,7 +48,7 @@ class BusinessLoader {
      */
     @ModuleAuthor("Ophir Eyal")
      void load() {
-        if (business == null) {
+        if (business == null || !business.id.equals(FirebaseAuth.getInstance().getUid())) {
             db.collection(BUSINESSES_COLLECTION)
                     .document(business_id)
                     .get()

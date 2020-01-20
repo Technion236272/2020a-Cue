@@ -286,6 +286,12 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
         }
 
         @Override
+        public void onDataChanged() {
+            if (getItemCount() == 0)
+                findViewById(R.id.progress_bar).setVisibility(View.GONE);
+        }
+
+        @Override
         protected void onBindViewHolder(@NonNull itemHolder holder,
                                         int position,
                                         @NonNull Business.Review model) {
