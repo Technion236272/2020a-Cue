@@ -379,13 +379,13 @@ public class EditAppointmentActivity extends AppCompatActivity
                                         }));
             } else {                                // new appointment
                 appointment.type = radioButton_id;
-                appointment.date = calendar.getTime();
+               // appointment.date = calendar.getTime();
                 FirebaseFirestore.getInstance()
                         .collection(APPOINTMENTS_COLLECTION)
                         .document()
                         .set(appointment).addOnCompleteListener(task -> {
 
-                    Toast.makeText(getApplicationContext(), "Appointment Acheduled Successfully ", Toast.LENGTH_LONG).show();
+                    Toast.makeText(getApplicationContext(), "Appointment Scheduled Successfully ", Toast.LENGTH_LONG).show();
                     findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
                     finish();
                 });
