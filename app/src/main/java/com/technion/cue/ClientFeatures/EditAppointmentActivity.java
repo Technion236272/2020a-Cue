@@ -458,7 +458,7 @@ public class EditAppointmentActivity extends AppCompatActivity
 
         } else {
             new MaterialAlertDialogBuilder(this)
-                    .setTitle("Please Choose Date and Appointment Type." + setDate + "/"+ setChip)
+                    .setTitle("Please Choose Date and Appointment Type.")
                     .setMessage("")
                     .setPositiveButton("Ok", null)
                     .setNegativeButton("Cancel", null)
