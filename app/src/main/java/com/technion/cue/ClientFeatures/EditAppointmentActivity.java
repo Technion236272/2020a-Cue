@@ -68,8 +68,8 @@ public class EditAppointmentActivity extends AppCompatActivity
     UserType userType;
     Boolean firstEdit=false;// needed to change
     Boolean editAppointment=false;
-    Boolean setDate=false;
-    Boolean setChip=false;
+    Boolean setDate=true;
+    Boolean setChip=true;
 
     private Date old_appointment_date;
     private String old_appointment_type;
