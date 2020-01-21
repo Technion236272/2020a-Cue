@@ -114,6 +114,7 @@ public class MyFavoriteListAdapter extends
         if ( parentView != null) {
             if (getItemCount() == 0) {
                 parentView.findViewById(R.id.client_no_appointments_message_fav).setVisibility(View.VISIBLE);
+                parentView.findViewById(R.id.client_homepage_progress_bar).setVisibility(View.GONE);
             } else {
                 parentView.findViewById(R.id.client_no_appointments_message_fav).setVisibility(View.GONE);
             }

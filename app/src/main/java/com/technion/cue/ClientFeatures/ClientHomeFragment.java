@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
+import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -19,8 +20,6 @@ import com.google.firebase.firestore.Query;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Client;
-
-import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 
@@ -72,10 +71,9 @@ public class ClientHomeFragment extends Fragment {
 
 
     private void setUpRecycleAppointmentAView() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
         queryAppointment =FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("client_id", FirebaseAuth.getInstance().getUid())
-                .whereGreaterThanOrEqualTo("date", new Date())
+                .whereGreaterThanOrEqualTo("date", Timestamp.now())
                 .orderBy("date", Query.Direction.ASCENDING)
                 .limit(5);
         FirestoreRecyclerOptions<Appointment> options =
@@ -86,12 +84,8 @@ public class ClientHomeFragment extends Fragment {
 
         RecyclerView recyclerView = getActivity().findViewById(R.id.myAppointmentList);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager
-                (new LinearLayoutManager(
-                        getContext(), LinearLayoutManager.VERTICAL,false));
-
         recyclerView.setAdapter(appointmentAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
     }
 
@@ -116,8 +110,6 @@ public class ClientHomeFragment extends Fragment {
                         getContext(), LinearLayoutManager.HORIZONTAL,false));
 
         recyclerView.setAdapter(favoriteAdapter);
-
-
 
     }
 
