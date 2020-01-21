@@ -10,9 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -68,8 +64,8 @@ public class EditAppointmentActivity extends AppCompatActivity
     UserType userType;
     Boolean firstEdit=false;// needed to change
     Boolean editAppointment=false;
-    Boolean setDate=false;
-    Boolean setChip=false;
+    Boolean setDate=true;
+    Boolean setChip=true;
 
     private Date old_appointment_date;
     private String old_appointment_type;

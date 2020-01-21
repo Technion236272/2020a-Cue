@@ -187,7 +187,6 @@ public class ClientHomePage extends AppCompatActivity  {
     protected void onStart() {
         super.onStart();
 
-
         checkForReview();
     }
 

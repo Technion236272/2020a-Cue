@@ -10,7 +10,8 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ClientFeatures.ClientBusinessHomepage"
-    android:id="@+id/view">
+    android:id="@+id/view"
+    android:visibility="gone">
 
 
     <FrameLayout

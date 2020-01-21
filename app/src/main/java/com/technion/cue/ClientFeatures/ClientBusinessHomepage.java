@@ -1,37 +1,24 @@
 package com.technion.cue.ClientFeatures;
 
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-
-import androidx.core.app.ActivityCompat;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-
 import android.Manifest;
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
-
 import android.content.pm.PackageManager;
-import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.technion.cue.BusinessFeatures.BusinessInfoFragment;
-
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 
@@ -76,41 +63,42 @@ public class ClientBusinessHomepage extends AppCompatActivity {
 
        }
 
-
-
         FirebaseDynamicLinks.getInstance()
                 .getDynamicLink(getIntent())
                 .addOnSuccessListener(this, pendingDynamicLinkData -> {
-                    // Get deep link from result (may be null if no link is found)
-                    if (pendingDynamicLinkData != null) {
-                        FirebaseFirestore.getInstance()
-                                .collection(CLIENTS_COLLECTION)
-                                .document(FirebaseAuth.getInstance().getUid())
-                                .get()
-                                .addOnSuccessListener(documentSnapshot -> {
-                                    if (documentSnapshot.exists()) {
-                                        Uri deepLink = pendingDynamicLinkData.getLink();
-                                        String formattedDeepLink = deepLink.toString()
-                                                .substring(deepLink.toString().indexOf('=') + 1)
-                                                .replace('+', ' ');
-                                        findViewById(R.id.switch_to_date_time_fragments)
-                                                .setVisibility(View.VISIBLE);
-                                        f = new ClientBusinessLoader(findViewById(android.R.id.content),db,formattedDeepLink);
-                                        this.bundle.putString("business_id",formattedDeepLink);
-                                        f.load();
-                                        checkIfFavorite();
-                                    } else {
-                                        Toast.makeText(getBaseContext(),
-                                                "You are not a client. " +
-                                                        "Please log in from a client account.",
-                                                Toast.LENGTH_SHORT)
-                                                .show();
-                                        finish();
-                                    }
+                            // Get deep link from result (may be null if no link is found)
+                            if (pendingDynamicLinkData != null) {
+                                FirebaseFirestore.getInstance()
+                                        .collection(CLIENTS_COLLECTION)
+                                        .document(FirebaseAuth.getInstance().getUid())
+                                        .get()
+                                        .addOnSuccessListener(documentSnapshot -> {
+                                            if (documentSnapshot.exists()) {
+                                                findViewById(R.id.view).setVisibility(View.VISIBLE);
+                                                Uri deepLink = pendingDynamicLinkData.getLink();
+                                                String formattedDeepLink = deepLink.toString()
+                                                        .substring(deepLink.toString().indexOf('=') + 1)
+                                                        .replace('+', ' ');
+                                                findViewById(R.id.switch_to_date_time_fragments)
+                                                        .setVisibility(View.VISIBLE);
+                                                f = new ClientBusinessLoader(findViewById(android.R.id.content), db, formattedDeepLink);
+                                                this.bundle.putString("business_id", formattedDeepLink);
+                                                f.load();
+                                                checkIfFavorite();
+                                            } else {
+                                                Toast.makeText(getBaseContext(),
+                                                        "You are not a client. " +
+                                                                "Please log in from a client account.",
+                                                        Toast.LENGTH_SHORT)
+                                                        .show();
+                                                finish();
+                                            }
 
-                                });
-                    }
-        });
+                                        });
+                            } else {
+                                findViewById(R.id.view).setVisibility(View.VISIBLE);
+                            }
+                        });
 
 
         findViewById(R.id.switch_to_date_time_fragments).setOnClickListener(l -> {
