@@ -597,7 +597,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                         findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
 
                                             for (DocumentSnapshot document : l.getResult().getDocuments()) {
-                                                if ((document.exists()) && (document.getId() != appointment.id)) {
+                                                if ((document.exists()) && !(document.getId().equals(appointment.id))) {
                                                     Date appointmentDate = ((Timestamp) document.get("date")).toDate();
                                                     int duration = atm.get(document.getString("type"));
                                                     Calendar c2 = Calendar.getInstance();
@@ -609,8 +609,9 @@ public class EditAppointmentActivity extends AppCompatActivity
                                     1) appointment starts in the middle of another appointment
                                     2) appointment ends in the middle of another appointment
                                     3) appointment is scheduled when the business is closed (checked above)
+                                    4) appointment starting time is in the past (before the scheduling time)
                                      */
-                                                    if ((start.getTime() > appointmentDate.getTime()
+                                                    if (start.getTime() < System.currentTimeMillis() || (start.getTime() > appointmentDate.getTime()
                                                             && start.getTime() < c2.getTimeInMillis()) ||
                                                             ((end.getTime() < c2.getTimeInMillis())
                                                                     && end.getTime() > appointmentDate.getTime())) {

@@ -13,7 +13,7 @@
       android:title="Allow change meeting"
       android:summary="Time frame where clients can't change a meeting"
       android:onClick = "popUpWindow"
-      android:icon="@drawable/edit_icon"
+      android:icon="@drawable/edit_icon_black"
       />
 
   <Preference

@@ -1,15 +1,12 @@
 package com.technion.cue;
 
-import android.app.IntentService;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.core.app.JobIntentService;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 public class AlarmService extends JobIntentService {
 
@@ -23,7 +20,8 @@ public class AlarmService extends JobIntentService {
     protected void onHandleWork(@NonNull Intent intent) {
         NotificationCompat.BigTextStyle bigTextStyle = new NotificationCompat.BigTextStyle();
 
-        bigTextStyle.setBigContentTitle("You have an appointment tomorrow!");
+        bigTextStyle.setBigContentTitle("You have an appointment on " +
+                intent.getStringExtra("date_for_reminder") + "!");
         bigTextStyle.bigText(
                 "You have an appointment of type " + intent.getStringExtra("type")
                         + " to " + intent.getStringExtra("business")
