@@ -527,6 +527,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                     );
                     Date end = calendar.getTime();
                     appointment.date = start;
+                    setDate=true;
                     checkIfDateAvailable(start, end, oldDate);
                 });
     }
@@ -587,6 +588,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                 if (end.getTime() > closing_c.getTimeInMillis() ||
                                         start.getTime() < opening_c.getTimeInMillis()) {
                                     onUnavailableAppointment(oldDate, old, "Open hours in this day are " + currentDayOpenHours);
+                                    setDate=false;
                                 } else {
                                     db.collection(APPOINTMENTS_COLLECTION)
                                             .whereEqualTo("business_id", appointment.business_id)
@@ -613,20 +615,16 @@ public class EditAppointmentActivity extends AppCompatActivity
                                                             ((end.getTime() < c2.getTimeInMillis())
                                                                     && end.getTime() > appointmentDate.getTime())) {
                                                         onUnavailableAppointment(oldDate, old, "Choose another time. Open hour in this day are " + currentDayOpenHours);
-
+                                                        setDate=false;
                                                         break;
-                                                    } else {
-                                                        setDate = true;
                                                     }
-                                                } else {
-                                                    setDate = true;
                                                 }
                                             }
                                     });
                                 }
 
                             } else {
-
+                                setDate=false;
                                 onUnavailableAppointment(oldDate, old, "Business not open.  ");
                             }
                         } catch (ParseException e) {

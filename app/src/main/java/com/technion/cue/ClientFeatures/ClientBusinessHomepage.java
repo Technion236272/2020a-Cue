@@ -148,6 +148,9 @@ public class ClientBusinessHomepage extends AppCompatActivity {
                         if (!l.isEmpty()) {
                             ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_black_30dp);
                             favorite = true;
+                        } else {
+                            ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_border_grey_30dp);
+                            favorite= false;
                         }
                     })
                     .addOnFailureListener(l -> {
