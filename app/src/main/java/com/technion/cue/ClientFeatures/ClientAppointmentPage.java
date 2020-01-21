@@ -277,6 +277,7 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         intentLocal.putExtra("appointment_type",intent.getExtras().getString("appointment_type"));
         intentLocal.putExtra("appointment_notes",intent.getExtras().getString("appointment_notes"));
         intentLocal.putExtra("appointment_date",intent.getExtras().getString("appointment_date"));
+        intentLocal.putExtra("appointment_date_type",(Date)intent.getExtras().get("appointment_date_type"));
         startActivity(intentLocal);
         finish();
 
