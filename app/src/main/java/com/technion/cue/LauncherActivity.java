@@ -61,7 +61,7 @@ public class LauncherActivity extends AppCompatActivity {
                                 }
                             } else {
                                 Toast.makeText(LauncherActivity.this,
-                                        "Authentication failed",
+                                        "Authentication failed. check your internet connection",
                                         Toast.LENGTH_LONG).show();
                             }
                         });

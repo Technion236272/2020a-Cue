@@ -12,6 +12,7 @@ import androidx.preference.PreferenceFragmentCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -209,6 +210,8 @@ public class BusinessSettings extends AppCompatActivity {
                             });
                 }
             }
+
+
         }
 
         /*
@@ -292,6 +295,7 @@ public class BusinessSettings extends AppCompatActivity {
                     }
                 });
             }
+
 
             /*here if we choose the time frame setting,
             it searches in the firebase for the previous settings and upload it to the edit text,
@@ -380,6 +384,8 @@ public class BusinessSettings extends AppCompatActivity {
     you go to newTypeFragment - another class fragment,
     and upload all the information about the type in the edit texts.
      */
+
+
     public static class typesFragment extends Fragment {
         AppointmentTypesListAdapter tAdapter;
         public FirebaseFirestore db;
@@ -618,9 +624,6 @@ public class BusinessSettings extends AppCompatActivity {
                                             .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
                                                     + "/Types").document(document_id).update(map);
                                 });
-//                                FirebaseFirestore.getInstance()
-//                                        .collection(BUSINESSES_COLLECTION + "/" + FirebaseAuth.getInstance().getUid()
-//                                                + "/Types").document().update(map);
 
                             } else {
                                 FirebaseFirestore.getInstance()
