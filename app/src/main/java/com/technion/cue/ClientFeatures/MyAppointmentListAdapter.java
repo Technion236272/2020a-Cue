@@ -5,17 +5,14 @@ import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
@@ -25,7 +22,6 @@ import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
-import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 
@@ -92,9 +88,6 @@ public class MyAppointmentListAdapter extends
 
     }
 
-
-
-
     @NonNull
     @Override
     public itemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -102,25 +95,19 @@ public class MyAppointmentListAdapter extends
                 .inflate(R.layout.my_appointment_list_adapter, parent,false);
         itemHolder holder = new itemHolder(v);
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent getIntentBOPage = new Intent(parent.getContext(), ClientAppointmentPage.class);
-                // TODO: start using appointmet object !!! - refactoring later.
-                getIntentBOPage.putExtra("business_name",holder.business.getText());
-                getIntentBOPage.putExtra("appointment_type",holder.type.getText());
-                getIntentBOPage.putExtra("appointment_date",holder.date.getText());
-                getIntentBOPage.putExtra("appointment_date_type",holder.dateType);
-                getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
-                getIntentBOPage.putExtra("business_id",holder.business_id);
-                getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
+        v.setOnClickListener(v1 -> {
+            Intent getIntentBOPage = new Intent(parent.getContext(), ClientAppointmentPage.class);
+            // TODO: start using appointmet object !!! - refactoring later.
+            getIntentBOPage.putExtra("business_name",holder.business.getText());
+            getIntentBOPage.putExtra("appointment_type",holder.type.getText());
+            getIntentBOPage.putExtra("appointment_date",holder.date.getText());
+            getIntentBOPage.putExtra("appointment_date_type",holder.dateType);
+            getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
+            getIntentBOPage.putExtra("business_id",holder.business_id);
+            getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
 
-                parent.getContext().startActivity(getIntentBOPage);
+            parent.getContext().startActivity(getIntentBOPage);
 
-
-
-
-            }
         });
         return holder;
     }

@@ -224,11 +224,13 @@ public class FCMService extends FirebaseMessagingService {
                 remoteMessage.getData().get("new_appointment_date");
 
         c.setTimeInMillis(Long.valueOf(ap_date));
+        DateFormat dateFormatter = new SimpleDateFormat("dd/MM");
 
         alarmIntent.putExtra("business", remoteMessage.getData().get("business_name"));
         alarmIntent.putExtra("notes", remoteMessage.getData().get("notes"));
         alarmIntent.putExtra("type", ap_type);
         alarmIntent.putExtra("date", formattingDateFormat.format(c.getTime()));
+        alarmIntent.putExtra("date_for_reminder", dateFormatter.format(c.getTime()));
 
         if (snapshot.contains("attributes")) {
             Map<String, String> attributes = (Map<String, String>)snapshot.get("attributes");

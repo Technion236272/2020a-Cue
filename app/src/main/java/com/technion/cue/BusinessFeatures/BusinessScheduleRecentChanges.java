@@ -23,7 +23,6 @@ import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
 import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENT_ACTIONS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
@@ -98,6 +97,13 @@ public class BusinessScheduleRecentChanges extends Fragment {
 
         RecentChangesAdapter(@NonNull FirestoreRecyclerOptions<Business.AppointmentAction> options) {
             super(options);
+        }
+
+        @Override
+        public void onDataChanged() {
+            if (getItemCount() == 0) {
+                getActivity().findViewById(R.id.progress_bar).setVisibility(View.GONE);
+            }
         }
 
         @Override

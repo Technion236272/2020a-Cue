@@ -10,9 +10,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -25,7 +22,6 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
-import com.google.android.material.datepicker.MaterialPickerOnPositiveButtonClickListener;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.Timestamp;
 import com.google.firebase.auth.FirebaseAuth;
@@ -601,7 +597,7 @@ public class EditAppointmentActivity extends AppCompatActivity
                                         findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
 
                                             for (DocumentSnapshot document : l.getResult().getDocuments()) {
-                                                if ((document.exists()) && (document.getId() != appointment.id)) {
+                                                if ((document.exists()) && !(document.getId().equals(appointment.id))) {
                                                     Date appointmentDate = ((Timestamp) document.get("date")).toDate();
                                                     int duration = atm.get(document.getString("type"));
                                                     Calendar c2 = Calendar.getInstance();
@@ -613,8 +609,9 @@ public class EditAppointmentActivity extends AppCompatActivity
                                     1) appointment starts in the middle of another appointment
                                     2) appointment ends in the middle of another appointment
                                     3) appointment is scheduled when the business is closed (checked above)
+                                    4) appointment starting time is in the past (before the scheduling time)
                                      */
-                                                    if ((start.getTime() > appointmentDate.getTime()
+                                                    if (start.getTime() < System.currentTimeMillis() || (start.getTime() > appointmentDate.getTime()
                                                             && start.getTime() < c2.getTimeInMillis()) ||
                                                             ((end.getTime() < c2.getTimeInMillis())
                                                                     && end.getTime() > appointmentDate.getTime())) {
