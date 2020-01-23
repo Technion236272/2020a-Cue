@@ -89,6 +89,10 @@
         android:layout_gravity="center"/>
 
 
+    <View
+        android:layout_width="wrap_content"
+        android:layout_height="50dp"/>
+
     <TextView
         android:id="@+id/business_join"
         android:layout_width="wrap_content"
