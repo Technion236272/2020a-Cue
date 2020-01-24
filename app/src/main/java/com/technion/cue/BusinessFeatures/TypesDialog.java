@@ -46,8 +46,20 @@ public class TypesDialog extends DialogFragment {
                 return;
             }
 
-            m.put("name", ((TextInputEditText)
-                    v.findViewById(R.id.businessTypeEditText)).getText().toString());
+            String name = ((TextInputEditText)
+                    v.findViewById(R.id.businessTypeEditText)).getText().toString();
+
+            // checking that no appointment type of this name exists
+            for (Map<String, String> map : businessSignUpContainer.types_fields) {
+                if (map.containsKey("name") && map.get("name").equals(name)) {
+                    Toast.makeText(getContext(),
+                            "An appointment type of this name already exists. Please choose a different name",
+                            Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            }
+
+            m.put("name", name);
             m.put("duration", ((TextInputEditText)
                     v.findViewById(R.id.businessTypeDurationEditText)).getText().toString());
             m.put("notes", ((TextInputEditText)
