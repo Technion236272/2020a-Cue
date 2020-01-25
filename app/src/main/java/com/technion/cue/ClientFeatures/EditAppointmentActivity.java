@@ -248,7 +248,14 @@ public class EditAppointmentActivity extends AppCompatActivity
                              // We will use "atm" to find each type duration
                              for (DocumentSnapshot document : data.getDocuments()) {
                                  Appointment app = document.toObject(Appointment.class);
-                                 int appDuration = atm.get(app.type); // duration in minutes
+                                 // duration in minutes
+                                 int appDuration;
+                                 if (atm.get(app.type)%10 != 0) {
+                                     appDuration = (atm.get(app.type) % 10 > 5 ? atm.get(app.type) + (10 - atm.get(app.type) % 10) : atm.get(app.type) + (5 - atm.get(app.type) % 10));
+                                 } else {
+                                     appDuration = atm.get(app.type);
+                                 }
+
                                  Long appStart = app.date.getTime();
                                  Date appEndDate = app.date;
                                  appEndDate.setTime(appStart + appDuration*60000); // 1 min = 60k milisec
