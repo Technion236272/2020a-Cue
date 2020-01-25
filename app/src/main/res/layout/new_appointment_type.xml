@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
@@ -10,6 +15,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
         android:text="@string/active_type"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -21,11 +27,11 @@
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
         android:hint="@string/hint_type_name"
         android:textSize="14sp"
         app:counterEnabled="true"
-        android:layout_below="@id/active_type"
-        app:counterMaxLength="30">
+        android:layout_below="@id/active_type">
 
         <com.google.android.material.textfield.TextInputEditText
             android:id="@+id/bTypeNameEdit"
@@ -39,6 +45,7 @@
         android:id="@+id/b_type_duration"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
         android:layout_width="360dp"
+        android:layout_centerHorizontal="true"
         android:layout_height="wrap_content"
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
@@ -65,6 +72,8 @@
         android:text="@string/check_available_type_days"
         android:textStyle="bold"
         android:layout_marginLeft="8dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
         android:layout_below="@id/b_type_duration"
         android:layout_marginStart="8dp" />
 
@@ -140,6 +149,7 @@
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
         android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
         android:hint="@string/notes_for_clients"
         android:textSize="14sp"
         android:layout_below="@id/check_boxes"
@@ -164,3 +174,4 @@
 
 
 </RelativeLayout>
+</ScrollView>
