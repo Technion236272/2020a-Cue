@@ -267,8 +267,11 @@ public class EditAppointmentActivity extends AppCompatActivity
                                  // mark each impossible  meeting time in 0L - long zero
                                  for (Long possibleApp : possibleAppointments) { // possibleApp - time im milisec
                                      // Var duration is the choosen duration time
+
                                      if (((possibleApp <appEnd) && (possibleApp >= appStart)) ||
-                                             ((possibleApp + duration*60000 <= appEnd) && (possibleApp + duration*60000 > appStart))) {
+                                             ((possibleApp + duration*60000 <= appEnd) && (possibleApp + duration*60000 > appStart)) ||
+                                             ((possibleApp < appStart) && (possibleApp + duration*60000 > appEnd)))
+                                              {
                                          possibleAppointments.set(index,0L);
                                      }
                                      index++;
