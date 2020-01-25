@@ -127,9 +127,6 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
     }
 
 
-
-
-
     private void setUpRecycleAppointmentAView() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
