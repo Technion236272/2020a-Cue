@@ -168,10 +168,13 @@ public class EditAppointmentActivity extends AppCompatActivity
         final Calendar opening_c=Calendar.getInstance();
         final Calendar closing_c=Calendar.getInstance();
 
-
+        int duration;
         // First we fix duration - if 21 then it will be 25 , if it 26 then it will be 30
-        final int duration = (atm.get(appointment.type)%10 > 5 ? atm.get(appointment.type) + (10 - atm.get(appointment.type)%10) : atm.get(appointment.type) + (5 - atm.get(appointment.type)%10) );
-
+        if (atm.get(appointment.type)%10 != 0) {
+             duration = (atm.get(appointment.type) % 10 > 5 ? atm.get(appointment.type) + (10 - atm.get(appointment.type) % 10) : atm.get(appointment.type) + (5 - atm.get(appointment.type) % 10));
+        } else {
+            duration = atm.get(appointment.type);
+        }
 
         String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
 
