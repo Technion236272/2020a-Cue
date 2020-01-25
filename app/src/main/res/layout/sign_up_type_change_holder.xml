@@ -23,7 +23,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:id="@+id/businessTypeEdit"
-                android:layout_width="240dp"
+                android:layout_width="200dp"
                 android:layout_height="wrap_content"
                 android:textSize="14sp"
                 android:layout_marginLeft="8dp"
@@ -40,7 +40,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:id="@+id/businessTypeDurationEdit"
-                android:layout_width="96dp"
+                android:layout_width="136dp"
                 android:layout_height="wrap_content"
                 android:textSize="12sp"
                 android:layout_marginLeft="8dp"
