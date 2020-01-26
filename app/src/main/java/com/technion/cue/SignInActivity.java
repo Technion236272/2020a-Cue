@@ -270,8 +270,10 @@ public class SignInActivity extends AppCompatActivity {
                         .document(uid)
                         .set(client).addOnCompleteListener(l->{
                     if(l.isSuccessful()){
+                        dialog.dismiss();
                         startClientHomepage();
                     }else{
+                        dialog.dismiss();
                         Toast.makeText(SignInActivity.this,
                                 "Authentication failed",
                                 Toast.LENGTH_LONG).show();
@@ -300,8 +302,6 @@ public class SignInActivity extends AppCompatActivity {
         Button save_button = alertDialog.getButton(DialogInterface.BUTTON_POSITIVE);
         save_button.setOnClickListener
                 (new CustomListener(alertDialog, user.getEmail(), user.getUid()));
-
-
     }
 
 
@@ -383,7 +383,13 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        moveTaskToBack(true);
+    protected void onPause() {
+        super.onPause();
+
     }
+
+    @Override
+    public void onBackPressed() {
+    moveTaskToBack(true);
+}
 }

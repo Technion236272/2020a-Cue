@@ -15,7 +15,7 @@
     <string name="button_signup">SIGN UP</string>
     <string name="bo_sign_up_text">Join Our Community</string>
     <string name="business_name">Business Name</string>
-    <string name="default_num">10</string>
+    <string name="default_num">Insert number</string>
     <string name="minutes">Minutes before</string>
     <string name="hours">Hours before</string>
     <string name="days">Days before</string>
