@@ -5,7 +5,6 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/c_full_name"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -14,7 +13,6 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         android:hint="@string/full_name_hint"
         android:textSize="14sp">
 
@@ -35,7 +33,6 @@
         android:layout_marginLeft="24dp"
         android:layout_marginRight="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
         android:hint="@string/client_phone_number">
 
         <com.google.android.material.textfield.TextInputEditText

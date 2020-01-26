@@ -32,6 +32,11 @@ import java.util.Objects;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 
+/**
+ * MyFavoriteListAdapter - adapter for favorite list
+ *  * which load information from firebase firestore into cell using
+ *  * object type(Business) that we set before.
+ * */
 public class MyFavoriteListAdapter extends
         FirestoreRecyclerAdapter<Client.Favorite, MyFavoriteListAdapter.itemHolder > {
     private ViewGroup parentView;
@@ -39,12 +44,18 @@ public class MyFavoriteListAdapter extends
     MyFavoriteListAdapter(@NonNull FirestoreRecyclerOptions<Client.Favorite> options) {
         super(options);
     }
-
+    /**
+     * keep parent view in parentView so changing UI in parent will be possible
+     * like progress bar and etc.
+     * */
     MyFavoriteListAdapter(@NonNull FirestoreRecyclerOptions<Client.Favorite> options,ViewGroup parent) {
         super(options);
         this.parentView = parent;
     }
-
+    /**
+     * onBindViewHolder - load  business name and image using glide
+     * from Firebase.
+     * */
     @Override
     protected void onBindViewHolder(final @NonNull itemHolder holder,
                                     int position, @NonNull Client.Favorite model) {
@@ -85,6 +96,7 @@ public class MyFavoriteListAdapter extends
 
     }
 
+
     @NonNull
     @Override
     public itemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -107,7 +119,10 @@ public class MyFavoriteListAdapter extends
         return holder;
 
     }
-
+    /**
+     * onDataChanged - abort progress bar and if not favorties then show
+     * "No Favorites yet."
+     * */
     @Override
     public void onDataChanged() {
         super.onDataChanged();

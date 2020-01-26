@@ -31,7 +31,15 @@ import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.REVIEWS_COLLECTION;
 
-
+/**
+ * ClientHomePage - container for 2 fragments:
+ * 1. home page fragment that show favorites and appointments
+ * 2. calender fragemnt which show appointment per date
+ *
+ * Using tabs. and added custimize action bar which
+ * 2 buttons : 1. Business list
+ *             2. Client Settings
+ * */
 public class ClientHomePage extends AppCompatActivity  {
 
 
@@ -118,7 +126,11 @@ public class ClientHomePage extends AppCompatActivity  {
 
 
     }
-
+    /**
+     * checkForReview - check if a client finish appointment
+     * so he can write a review that ONLY business owner will read it.
+     *  UI : load a dialog with text edit that a user can fill.
+     * */
     public void checkForReview() {
 
         db.collection(APPOINTMENTS_COLLECTION)
@@ -199,7 +211,10 @@ public class ClientHomePage extends AppCompatActivity  {
 
     }
 
-
+    /**
+     * Settings - a link Client settings fragment
+     * UI : button in action bar
+     * */
 
     public void Settings(View v) {
 
@@ -207,7 +222,10 @@ public class ClientHomePage extends AppCompatActivity  {
         startActivity(getIntentBOPage);
 
     }
-
+    /**
+     * showBusinesses - a link businesses fragment
+     * UI : button in action bar
+     * */
     public void showBusinesses(View v) {
         ClientBusinessList fragment = new ClientBusinessList();
         // R.id.container - the id of a view that will hold your fragment; usually a FrameLayout

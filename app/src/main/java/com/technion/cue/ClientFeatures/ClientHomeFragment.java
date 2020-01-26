@@ -22,7 +22,12 @@ import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Client;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
-
+/**
+ * ClientHomeFragment - contains 2 recycled views .
+ * First, Favorite - horizontal list
+ * Sec, Appointments - vertical list
+ *
+ * */
 
 public class ClientHomeFragment extends Fragment {
 
@@ -57,7 +62,12 @@ public class ClientHomeFragment extends Fragment {
 
         return view;
     }
-
+    /**
+     * onViewCreated - set  2 recycled views adapters.
+     * First, Favorite - horizontal list
+     * Sec, Appointments - vertical list
+     *
+     * */
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -69,7 +79,11 @@ public class ClientHomeFragment extends Fragment {
 
 
 
-
+    /**
+     * setUpRecycleAppointmentAView - set  Appointments recycled views adapter.
+     * and limit it to 5 in main homepage fragment
+     * if not appointment it will show "No Appointments yet"
+     * */
     private void setUpRecycleAppointmentAView() {
         queryAppointment =FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
                 .whereEqualTo("client_id", FirebaseAuth.getInstance().getUid())
@@ -89,7 +103,10 @@ public class ClientHomeFragment extends Fragment {
 
     }
 
-
+    /**
+     * setUpRecyclerFavoriteView - set  Favorites recycled views adapter.
+     *
+     * */
     private void setUpRecyclerFavoriteView() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();

@@ -93,16 +93,18 @@
             android:layout_width="wrap_content"
             android:layout_height="50dp"/>
 
-        <TextView
-            android:id="@+id/business_join"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:clickable="true"
-            android:focusable="true"
-            android:text="@string/business_join"
-            android:textStyle="bold"
-            android:layout_gravity="center"
-            android:layout_marginBottom="1sp"/>
+
+
+    <TextView
+        android:id="@+id/business_join"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:text="@string/business_join"
+        android:textStyle="bold"
+        android:layout_gravity="center"
+        android:layout_marginBottom="1sp"/>
 
 
     </LinearLayout>

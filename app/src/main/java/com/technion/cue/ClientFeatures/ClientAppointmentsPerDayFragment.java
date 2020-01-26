@@ -42,7 +42,10 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
 
-
+/**
+ * ClientAppointmentsPerDayFragment - on client homepage
+ * present daily appointmet (per day)
+ * */
 public class ClientAppointmentsPerDayFragment extends Fragment {
 
     private MyAppointmentListAdapter appointmentAdapter;
@@ -126,7 +129,10 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
         setUpRecycleAppointmentAView();
     }
 
-
+    /**
+     * setUpRecycleAppointmentAView - set recycleView for
+     * appointments in that day
+     * */
     private void setUpRecycleAppointmentAView() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();

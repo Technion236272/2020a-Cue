@@ -24,7 +24,11 @@ import java.util.Date;
 
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
-
+/**
+ * ClientBusinessList - Fragemnt which show
+ * list of businesses list
+ *
+ * */
 public class ClientBusinessList   extends Fragment {
 
     private Date currentDay;

@@ -28,6 +28,7 @@
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".SignInActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
+
         <activity android:name=".ClientFeatures.ClientSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".BusinessFeatures.ClienteleList"

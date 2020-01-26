@@ -20,7 +20,11 @@ import com.technion.cue.R;
 
 import java.util.Date;
 
-
+/**
+ * ClientCalendarFragment - Fragemnt which show
+ * calendar and relacent appointments
+ *
+ * */
 public class ClientCalendarFragment extends Fragment {
 
 
@@ -53,7 +57,11 @@ public class ClientCalendarFragment extends Fragment {
 
     }
 
-
+    /**
+     * onViewCreated - showing calendar view
+     * by loading into container
+     *
+     * */
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
