@@ -13,7 +13,9 @@ import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Business;
-
+/**
+ * BusinessesListAdapter - Adapter for businesses list
+ * */
  public class BusinessesListAdapter extends FirestoreRecyclerAdapter<Business, BusinessesListAdapter.itemHolder> {
 
         private ViewGroup parentView;
@@ -57,7 +59,9 @@ import com.technion.cue.data_classes.Business;
             return holder;
 
         }
-
+    /**
+     * onDataChanged - Mange loading bar - on or off
+     * */
         @Override
         public void onDataChanged() {
             super.onDataChanged();

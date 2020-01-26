@@ -157,6 +157,7 @@
             android:textSize="20sp"
             android:layout_gravity="end"
             android:gravity="end"
+            android:onClick="makeACall"
             android:layout_alignParentEnd="true"
             android:layout_alignParentRight="true"
             android:layout_toRightOf="@id/client_appointment_phone_title"/>

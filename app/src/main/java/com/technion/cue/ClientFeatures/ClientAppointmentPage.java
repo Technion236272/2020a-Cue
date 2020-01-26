@@ -59,7 +59,14 @@ import static com.technion.cue.FirebaseCollections.APPOINTMENT_ACTIONS_COLLECTIO
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
-
+/**
+ * ClientAppointmentPage - appointment page for client
+ * each appointment  have its own appointment page
+ * which every client can read about his appointment
+ * in convinent way.
+ * Navigate - to the place - using google maps.
+ * Call - to the place number.
+ * */
 public class ClientAppointmentPage extends AppCompatActivity  {
 
     Intent intent;
@@ -156,6 +163,9 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         return true;
     }
 
+    /**
+     * loadBusinessData - Load Business data
+     * */
 
     private void loadBusinessData(String business_id,Menu menu) {
         db.collection(BUSINESSES_COLLECTION)
@@ -212,6 +222,10 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
     }
 
+    /**
+     * checkEditPossibility - Check if business's edit time is aviable and update UI
+     *
+     * */
     public void checkEditPossibility(Menu menu) {
         timeFrame = (business.attributes.get("time frame") != null ? Integer.parseInt(business.attributes.get("time frame")) : 0);
             Date currentTime = new Date();
@@ -231,7 +245,10 @@ public class ClientAppointmentPage extends AppCompatActivity  {
 
     }
 
-
+    /**
+     * goToMap - Navigate to the business
+     *
+     * */
     public void goToMap(View view) {
         String location = ((TextView)findViewById(R.id.client_appointment_address_text)).getText().toString();
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + location);
@@ -240,7 +257,10 @@ public class ClientAppointmentPage extends AppCompatActivity  {
         startActivity(mapIntent);
     }
 
-
+    /**
+     * goToMap - call  the business
+     *
+     * */
     public void makeACall(View view) {
         String phoneNumber = ((TextView)findViewById(R.id.client_appointment_phone_text)).getText().toString();
         Intent mIntent = new Intent(Intent.ACTION_CALL);
@@ -284,7 +304,10 @@ public class ClientAppointmentPage extends AppCompatActivity  {
     }
 
 
-
+    /**
+     * abortAppointment - cancel appointment
+     *
+     * */
     public void abortAppointment(MenuItem v) {
         String doer;
         if (FirebaseAuth.getInstance().getUid()

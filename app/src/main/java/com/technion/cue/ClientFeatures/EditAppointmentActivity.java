@@ -54,6 +54,8 @@ import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.REVIEWS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
+
+
 enum UserType {
     BusinessOwner,
     Client
@@ -75,7 +77,7 @@ public class EditAppointmentActivity extends AppCompatActivity
     Boolean setDate=false;
     Boolean setChip=false;
     Map<String, Integer> atm; // Contain type + duration
-
+    long oneMinInMilisec = 60000;
     private Date old_appointment_date;
     private String old_appointment_type;
 
@@ -158,7 +160,12 @@ public class EditAppointmentActivity extends AppCompatActivity
         loadAppointmentData();
         loadBusinessData();
     }
-
+    /**
+     * loadAvailableAppointment - Mange possible Appointments times
+     * by the type the user choose and the day of month(calendar).
+     * and show a list of radio buttons which user can choose from.
+     *
+     * */
 
     public void loadAvailableAppointment (Calendar calendar) {
         // Loading optional appointments time
@@ -242,7 +249,7 @@ public class EditAppointmentActivity extends AppCompatActivity
         Tasks.whenAll(buildArrayOfPossibleAppointments).addOnSuccessListener(l->{
             db.collection(APPOINTMENTS_COLLECTION)
                     .whereEqualTo("business_id",business.id)
-                    .whereLessThan("date",new Timestamp(closing_c.getTime()))
+                    .whereLessThanOrEqualTo("date",new Timestamp(closing_c.getTime()))
                     .whereGreaterThanOrEqualTo("date",new Timestamp(opening_c.getTime()))
                     .get().addOnSuccessListener(data -> {
                              // We will use "atm" to find each type duration
@@ -255,10 +262,16 @@ public class EditAppointmentActivity extends AppCompatActivity
                                  } else {
                                      appDuration = atm.get(app.type);
                                  }
+                                 // Remove Zeros in Sec and mili
+                                 Calendar appDateNoSec = Calendar.getInstance();
+                                 appDateNoSec.setTime(app.date);
+                                 appDateNoSec.set(Calendar.MILLISECOND, 0);
+                                 appDateNoSec.set(Calendar.SECOND, 0);
 
+                                 app.date = appDateNoSec.getTime();
                                  Long appStart = app.date.getTime();
                                  Date appEndDate = app.date;
-                                 appEndDate.setTime(appStart + appDuration*60000); // 1 min = 60k milisec
+                                 appEndDate.setTime(appStart + appDuration*oneMinInMilisec); // 1 min = 60k milisec
 
                                  Long appEnd =  appEndDate.getTime();
 
@@ -269,8 +282,8 @@ public class EditAppointmentActivity extends AppCompatActivity
                                      // Var duration is the choosen duration time
 
                                      if (((possibleApp <appEnd) && (possibleApp >= appStart)) ||
-                                             ((possibleApp + duration*60000 <= appEnd) && (possibleApp + duration*60000 > appStart)) ||
-                                             ((possibleApp < appStart) && (possibleApp + duration*60000 > appEnd)))
+                                             ((possibleApp + duration*oneMinInMilisec <= appEnd) && (possibleApp + duration*oneMinInMilisec > appStart)) ||
+                                             ((possibleApp < appStart) && (possibleApp + duration*oneMinInMilisec > appEnd)))
                                               {
                                          possibleAppointments.set(index,0L);
                                      }
@@ -367,7 +380,9 @@ public class EditAppointmentActivity extends AppCompatActivity
 
 
     }
-
+    /**
+     * loadBusinessData  - Load Business Data and update UI
+     * */
     private void loadBusinessData() {
         db.collection(BUSINESSES_COLLECTION)
                 .document(appointment.business_id)
@@ -384,7 +399,9 @@ public class EditAppointmentActivity extends AppCompatActivity
                     }
                 });
     }
-
+    /**
+     * loadTypes  - Load Business Types and update UI
+     * */
     private void loadTypes() {
         FirebaseFirestore.getInstance()
                 .collection(BUSINESSES_COLLECTION)
@@ -446,7 +463,10 @@ public class EditAppointmentActivity extends AppCompatActivity
                     findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
                 });
     }
-
+    /**
+     * loadAppointmentData  - Load Appointment data when in EDIT MODE
+     * end update UI.
+     * */
 
     private void loadAppointmentData() {
 
@@ -489,7 +509,11 @@ public class EditAppointmentActivity extends AppCompatActivity
         loadTypes();
         ((TextView)findViewById(R.id.edit_appointment_time_text)).setText("Choose a time");
     }
-
+    /**
+     * changeDate  - When user wanna change date
+     * First we check that he chose a type and then
+     * allow him to chose a date.
+     * */
     public void changeDate(View view) {
         //setDate=false;
         if ((appointment.type!=null) && (!appointment.type.equals(""))) {
@@ -503,11 +527,23 @@ public class EditAppointmentActivity extends AppCompatActivity
                     .show();
         }
     }
+    /**
+     * exitEditAppointment
+     * Do NOT change or create any appointment.
+     *
+     * */
 
     public void exitEditAppointment(View view) {
         // exit and dont save
         finish();
     }
+
+    /**
+     * saveChanges
+     * Update appointment notes/date/type if in EDIT APPOINTMENT MODE
+     * Create appointment if in NEW APPOINTMENT MODE
+     *
+     * */
 
     public void saveChanges(View view) {
 
@@ -687,6 +723,12 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     }
 
+    /**
+     * createNotificationChannel
+     * Mange notifications
+     *
+     * */
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -708,7 +750,11 @@ public class EditAppointmentActivity extends AppCompatActivity
         return !radioButton_id.equals("");
     }
 
-    // handle the date selected
+    /**
+     * onDateSet
+     * Show pick date dialog for user to chose a day.
+     *
+     * */
     @Override
     public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
         // store the values selected into a Calendar instance
@@ -735,143 +781,12 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     }
 
-    // handle the time selected
-//    @Override
-//    public void onTimeSet(TimePicker view, int hour, int minute) {
-//        // store the values selected into a Calendar instance
-//        calendar.set(Calendar.HOUR_OF_DAY, hour);
-//        calendar.set(Calendar.MINUTE, minute);
-//        // TODO: will change to a chosen type in Sprint #2
-//        Date start = calendar.getTime();
-//        String oldDate =  ((TextView)findViewById(R.id.edit_appointment_time_text)).getText().toString();
-//        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/YYYY");
-//        ((TextView)findViewById(R.id.edit_appointment_time_text)).setText(sdf.format(calendar.getTime()));
-//        FirebaseFirestore.getInstance()
-//                .collection(BUSINESSES_COLLECTION)
-//                .document(business.id)
-//                .collection(TYPES_COLLECTION)
-//                .document(appointment.type)
-//                .get()
-//                .addOnSuccessListener(ds -> {
-//                    calendar.add(Calendar.MINUTE, Integer.valueOf(
-//                            ((Map<String, String>)ds.get("attributes")).get("duration"))
-//                    );
-//                    Date end = calendar.getTime();
-//                    appointment.date = start;
-//                    setDate=true;
-//                    checkIfDateAvailable(start, end, oldDate);
-//                });
-//    }
 
-
-//    public void checkIfDateAvailable(Date start, Date end, String oldDate) {
-//
-//        atm = new HashMap<>();
-//        Task t = db.collection(BUSINESSES_COLLECTION)
-//                .document(business.id)
-//                .collection(TYPES_COLLECTION)
-//                .get()
-//                .addOnSuccessListener(qs -> {
-//                    for (DocumentSnapshot d : qs.getDocuments()) {
-//                        atm.put(d.getId(), Integer.valueOf(
-//                                ((Map<String, String>)d.get("attributes")).get("duration"))
-//
-//                        );
-//                    }
-//                });
-//
-//        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.VISIBLE);
-//        // setting up appointment object
-//        Date old = appointment.date;
-//
-//        String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
-//
-//
-//
-//        Tasks.whenAllSuccess(t).addOnSuccessListener(sl ->{
-//            db.collection(BUSINESSES_COLLECTION)
-//                    .document(business.id)
-//                    .get()
-//                    .addOnSuccessListener(documentSnapshot -> {
-//                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
-//                        Calendar c = Calendar.getInstance();
-//                        c.setTime(start);
-//                        Map<String, String> open_hours = (Map<String, String>)documentSnapshot.get("open_hours");
-//                        String currentDayOpenHours = open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
-//                        try {
-//                            if (currentDayOpenHours != "") {
-//                                Date openingHour = sdf.parse(currentDayOpenHours.split("-")[0]);
-//                                Calendar opening_c = Calendar.getInstance();
-//                                opening_c.setTime(openingHour);
-//                                opening_c.set(c.get(Calendar.YEAR),
-//                                        c.get(Calendar.MONTH),
-//                                        c.get(Calendar.DAY_OF_MONTH),
-//                                        opening_c.get(Calendar.HOUR_OF_DAY),
-//                                        opening_c.get(Calendar.MINUTE));
-//                                Date closingHour = sdf.parse(currentDayOpenHours.split("-")[1]);
-//                                Calendar closing_c = Calendar.getInstance();
-//                                closing_c.setTime(closingHour);
-//                                closing_c.set(c.get(Calendar.YEAR),
-//                                        c.get(Calendar.MONTH),
-//                                        c.get(Calendar.DAY_OF_MONTH),
-//                                        closing_c.get(Calendar.HOUR_OF_DAY),
-//                                        closing_c.get(Calendar.MINUTE));
-//                                if (end.getTime() > closing_c.getTimeInMillis() ||
-//                                        start.getTime() < opening_c.getTimeInMillis()) {
-//                                    errorDialog("Open hours in this day are " + currentDayOpenHours);
-//                                    setDate=false;
-//                                } else {
-//                                    db.collection(APPOINTMENTS_COLLECTION)
-//                                            .whereEqualTo("business_id", appointment.business_id)
-//                                            .orderBy("date")
-//                                            .get().addOnCompleteListener(l -> {
-//                                        findViewById(R.id.client_edit_appointment_progress_bar).setVisibility(View.GONE);
-//
-//                                            for (DocumentSnapshot document : l.getResult().getDocuments()) {
-//                                                if ((document.exists()) && !(document.getId().equals(appointment.id))) {
-//                                                    Date appointmentDate = ((Timestamp) document.get("date")).toDate();
-//                                                    int duration = atm.get(document.getString("type"));
-//                                                    Calendar c2 = Calendar.getInstance();
-//                                                    c2.setTime(appointmentDate);
-//                                                    c2.add(Calendar.MINUTE, duration);
-//
-//                                    /*
-//                                    cases where scheduling is impossible:
-//                                    1) appointment starts in the middle of another appointment
-//                                    2) appointment ends in the middle of another appointment
-//                                    3) appointment is scheduled when the business is closed (checked above)
-//                                    4) appointment starting time is in the past (before the scheduling time)
-//                                     */
-//                                                    if (start.getTime() < System.currentTimeMillis() || (start.getTime() > appointmentDate.getTime()
-//                                                            && start.getTime() < c2.getTimeInMillis()) ||
-//                                                            ((end.getTime() < c2.getTimeInMillis())
-//                                                                    && end.getTime() > appointmentDate.getTime())) {
-//                                                        errorDialog( "Choose another time. Open hour in this day are " + currentDayOpenHours);
-//                                                        setDate=false;
-//                                                        break;
-//                                                    }
-//                                                }
-//                                            }
-//                                    });
-//                                }
-//
-//                            } else {
-//                                setDate=false;
-//                                errorDialog("Business not open.  ");
-//                            }
-//                        } catch (ParseException e) {
-//                            e.printStackTrace();
-//                        }
-//
-//                    });
-//
-//
-//
-//
-//
-//            }
-//        );
-//    }
+    /**
+     * errorDialog
+     * make a ui - using dialog to show users errors
+     *
+     * */
 
     private void errorDialog(String message) {
 
@@ -893,7 +808,11 @@ public class EditAppointmentActivity extends AppCompatActivity
 
     }
 
-
+    /**
+     * abortAppointment
+     * cancel an appointment
+     *
+     * */
     public void abortAppointment(View view) {
         findViewById(R.id.delete_icon).setClickable(false);
         String doer;
