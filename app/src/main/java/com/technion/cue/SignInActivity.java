@@ -115,7 +115,7 @@ public class SignInActivity extends AppCompatActivity {
         final Button button_sign_in = findViewById(R.id.button_signin);
         final TextView client_sign_up = findViewById(R.id.client_join);
         final TextView bo_sign_up = findViewById(R.id.business_join);
-        
+
 
         // open up sign up activity for clients
         client_sign_up.setOnClickListener(v -> {

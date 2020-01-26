@@ -26,6 +26,7 @@
         <activity android:name=".ClientFeatures.EditAppointmentActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".SignInActivity" />
+
         <activity android:name=".ClientFeatures.ClientSettingsActivity"
             android:configChanges="keyboardHidden|orientation|screenSize"/>
         <activity android:name=".BusinessFeatures.ClienteleList"
