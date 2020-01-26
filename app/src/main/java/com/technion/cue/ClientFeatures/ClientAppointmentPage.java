@@ -328,31 +328,37 @@ public class ClientAppointmentPage extends AppCompatActivity  {
                                         .collection(CLIENTS_COLLECTION)
                                         .document(FirebaseAuth.getInstance().getUid())
                                         .get()
-                                        .addOnSuccessListener(ds -> {
-                                            SimpleDateFormat sdf =
-                                                    new SimpleDateFormat("HH:mm dd/MM/YYYY");
-                                            try {
-                                                Business.AppointmentAction aa = new Business.AppointmentAction(
-                                                        "cancellation",
-                                                        ds.getString("name"),
-                                                        new Date(),
-                                                        sdf.parse(a_date),
-                                                        sdf.parse(a_date),
-                                                        a_type,
-                                                        a_type,
-                                                        doer,
-                                                        a_id
-                                                );
-                                                FirebaseFirestore.getInstance()
-                                                        .collection(BUSINESSES_COLLECTION)
-                                                        .document(b_id)
-                                                        .collection(APPOINTMENT_ACTIONS_COLLECTION)
-                                                        .document()
-                                                        .set(aa);
-                                            } catch (ParseException e) {
-                                                e.printStackTrace();
-                                            }
-                                        });
+                                        .addOnSuccessListener(ds -> FirebaseFirestore.getInstance()
+                                                .collection(BUSINESSES_COLLECTION)
+                                                .document(b_id)
+                                                .collection(TYPES_COLLECTION)
+                                                .document(a_type)
+                                                .get()
+                                                .addOnSuccessListener(ds2 -> {
+                                                    SimpleDateFormat sdf =
+                                                            new SimpleDateFormat("HH:mm dd/MM/YYYY");
+                                                    try {
+                                                        Business.AppointmentAction aa = new Business.AppointmentAction(
+                                                                "cancellation",
+                                                                ds.getString("name"),
+                                                                new Date(),
+                                                                sdf.parse(a_date),
+                                                                sdf.parse(a_date),
+                                                                ds2.getString("name"),
+                                                                ds2.getString("name"),
+                                                                doer,
+                                                                a_id
+                                                        );
+                                                        FirebaseFirestore.getInstance()
+                                                                .collection(BUSINESSES_COLLECTION)
+                                                                .document(b_id)
+                                                                .collection(APPOINTMENT_ACTIONS_COLLECTION)
+                                                                .document()
+                                                                .set(aa);
+                                                    } catch (ParseException e) {
+                                                        e.printStackTrace();
+                                                    }
+                                                }));
 
                         findViewById(R.id.client_appointment_progress_bar).setVisibility(View.GONE);
                         Toast.makeText(getApplicationContext(), "Appointment canceled  Successfully ", Toast.LENGTH_LONG).show();

@@ -10,7 +10,7 @@
   <Preference
       android:id="@+id/timeFrame"
       android:key="time frame"
-      android:title="Allow change meeting"
+      android:title="Allow change of an appointment"
       android:summary="Time frame where clients can't change a meeting"
       android:onClick = "popUpWindow"
       android:icon="@drawable/edit_icon_black"
