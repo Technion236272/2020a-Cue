@@ -29,8 +29,10 @@ import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTELE_COLLECTION;
 import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 
-/*
-        Still need to set all up
+/**
+ *       ClientBusinessHomepage - client can see business owner
+ *       information and make a call and sechdule an appointment
+ *
  */
 
 @ModuleAuthor("Ben")
@@ -134,7 +136,11 @@ public class ClientBusinessHomepage extends AppCompatActivity {
 
 
 
-
+    /**
+     *       checkIfFavorite - check if client already a favorite
+     *       and update UI.
+     *
+     */
     private void  checkIfFavorite() {
         if (bundle.containsKey("favorite")) { // if came from client homepage
             ((ImageButton) findViewById(R.id.favoriteStar)).setImageResource(R.drawable.ic_star_black_30dp);
@@ -160,7 +166,11 @@ public class ClientBusinessHomepage extends AppCompatActivity {
 
         }
     }
-
+    /**
+     *       addOrRemoveFromFavorite - remove or add to client
+     *       favorites list depends if client is already favorite or not.
+     *
+     */
     public  void addOrRemoveFromFavorite(View view) { //
         findViewById(R.id.client_business_hp_progress_bar).setVisibility(View.VISIBLE);
         if (favorite == false)   {
@@ -212,7 +222,11 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-
+    /**
+     *       makeACall - feature that make a call to business owner office
+     *
+     *
+     */
     public void makeACall(View view) {
         String phoneNumber = businessLoader.getPhoneNumber();
         Intent mIntent = new Intent(Intent.ACTION_CALL);
@@ -237,7 +251,11 @@ public class ClientBusinessHomepage extends AppCompatActivity {
         }
 
     }
-
+    /**
+     *       makeAMap - navigation to business owner
+     *
+     *
+     */
     public void makeAMap(View view) {
         String location = businessLoader.getLocation();
         Uri gmmIntentUri = Uri.parse("geo:0,0?q=" + location);

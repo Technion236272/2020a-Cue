@@ -24,7 +24,11 @@ import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
-
+/**
+ * MyAppointmentListAdapter - adapter for appointment list
+ * which load information from firebase firestore into cell using
+ * object type(Appointment) that we set before.
+ * */
 public class MyAppointmentListAdapter extends
         FirestoreRecyclerAdapter<Appointment, MyAppointmentListAdapter.itemHolder>  {
 
@@ -43,7 +47,10 @@ public class MyAppointmentListAdapter extends
     }
 
 
-
+    /**
+     * onBindViewHolder - bring from firebase information
+     * about this appointment(using appointment id)
+     * */
     @Override
     protected void onBindViewHolder(@NonNull itemHolder holder, int position, @NonNull Appointment appointment) {
             // TODO: the texts should be the business & type names. currently, their document ids will be displayed
@@ -87,7 +94,11 @@ public class MyAppointmentListAdapter extends
 
 
     }
-
+    /**
+     * onCreateViewHolder - add a bundle for appointment page with
+     * all needed information(optimise) like :
+     * business name , appointment date,type'notes..
+     * */
     @NonNull
     @Override
     public itemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {

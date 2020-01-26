@@ -21,7 +21,11 @@ import com.technion.cue.R;
 
 
 import java.util.Calendar;  // do not import java.icu.utils.Calendar
-
+/**
+ * ClientChooseDateFragment - Extending dialogFragment
+ * set chosend date (day , month , year)
+ *
+ * */
 public class ClientChooseDateFragment extends DialogFragment {
 
     @Override

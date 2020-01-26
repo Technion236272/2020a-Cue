@@ -16,7 +16,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.technion.cue.LauncherActivity;
 import com.technion.cue.R;
 
-
+/**
+ * ClientSettingsActivity - Client Settings activity
+ * Contain Logout button
+ * and credit that load alert dialot with credit
+ * */
 public class ClientSettingsActivity extends AppCompatActivity  {
 
 

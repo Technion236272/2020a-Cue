@@ -4,7 +4,12 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;
-
+/**
+ * ClientPagerAdapter - Adapter for tabs
+ * which make all the magic - client can
+ * move from one framgnet to another easliy
+ *
+ * */
 public class ClientPagerAdapter extends FragmentStatePagerAdapter {
 
 
@@ -16,6 +21,10 @@ public class ClientPagerAdapter extends FragmentStatePagerAdapter {
 
     }
 
+    /**
+     * getItem - check which tab was clicked.
+     *
+     * */
     @NonNull
     @Override
     public Fragment getItem(int position) {
