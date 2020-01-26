@@ -54,9 +54,10 @@ public class BusinessInfoFragment extends Fragment {
         } else {
             business_to_fetch = FirebaseAuth.getInstance().getCurrentUser().getUid();
         }
+
         loader = new BusinessLoader(view,
                 FirebaseFirestore.getInstance(),
-                business_to_fetch);
+                business_to_fetch, getActivity());
         loader.load();
 
         String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <Switch
+        android:id="@+id/active_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="@string/active_type"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/b_type_name"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/hint_type_name"
+        android:textSize="14sp"
+        app:counterEnabled="true"
+        android:layout_below="@id/active_type">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bTypeNameEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text"/>
+        </com.google.android.material.textfield.TextInputLayout>
+
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/b_type_duration"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="360dp"
+        android:layout_centerHorizontal="true"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:hint="@string/type_duration_fill"
+        android:textSize="14sp"
+        app:counterEnabled="true"
+        android:layout_below="@id/b_type_name"
+        app:counterMaxLength="30">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bTypeDurationEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="numberDecimal"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+    <TextView
+        android:id="@+id/before_check_box"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/check_available_type_days"
+        android:textStyle="bold"
+        android:layout_marginLeft="8dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/b_type_duration"
+        android:layout_marginStart="8dp" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_horizontal"
+        android:layout_below="@id/before_check_box"
+        android:id="@+id/check_boxes">
+
+        <CheckBox
+            android:id="@+id/type_sunday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="S" />
+
+        <CheckBox
+            android:id="@+id/type_monday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:text="M"
+            android:layout_marginStart="4dp" />
+
+        <CheckBox
+            android:id="@+id/type_tuesday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:text="T" />
+
+        <CheckBox
+            android:id="@+id/type_wednesday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:text="W"
+            android:layout_marginStart="4dp" />
+
+        <CheckBox
+            android:id="@+id/type_thursday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:text="T"
+            android:layout_marginStart="4dp" />
+
+        <CheckBox
+            android:id="@+id/type_friday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:text="F"
+            android:layout_marginStart="4dp" />
+
+        <CheckBox
+            android:id="@+id/type_saturday"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:text="S"
+            android:layout_marginStart="4dp" />
+
+    </LinearLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:id="@+id/b_type_notes"
+        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+        android:layout_width="360dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="24dp"
+        android:layout_centerHorizontal="true"
+        android:hint="@string/notes_for_clients"
+        android:textSize="14sp"
+        android:layout_below="@id/check_boxes"
+        app:counterEnabled="true">
+
+        <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/bTypeNotesEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="text" />
+
+         </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/button_done"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:text="@string/done"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/b_type_notes"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+
+
+</RelativeLayout>
+</ScrollView>

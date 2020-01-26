@@ -76,10 +76,14 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_client_appointmets_per_day, container, false);
 
+        if (getArguments() != null && getArguments().containsKey("useBack") && !getArguments().getBoolean("useBack")) {
+            view.findViewById(R.id.client_calendar_fragment_appointment_top_back).setVisibility(View.GONE);
+        }
+
         dateText = view.findViewById(R.id.client_calendar_fragment_appointment_top_date);
         dateMonth = view.findViewById(R.id.client_calendar_fragment_appointment_top_date_month);
 
-        // use calendar to get month name
+        // use calendar to get month bo_name
         Calendar cal =Calendar.getInstance();
         cal.set(bundle.getInt("year"),bundle.getInt("month"),bundle.getInt("day"));
         String monthName = (new SimpleDateFormat("MMM").format(cal.getTime()));
@@ -88,33 +92,29 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
         dateMonth.setText(monthName);
 
         backButton = view.findViewById(R.id.client_calendar_fragment_appointment_top_back);
-        backButton.setOnClickListener(l->{
+        backButton.setOnClickListener(l->
+                view.animate()
+                .translationY(view.getHeight())
+                .setDuration(300)
+                .setListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        view.setVisibility(View.GONE);
 
-            view.animate()
-                    .translationY(view.getHeight())
-                    .setDuration(300)
-                    .setListener(new AnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationEnd(Animator animation) {
-                            super.onAnimationEnd(animation);
-                            view.setVisibility(View.GONE);
+                        Bundle b = new Bundle();
 
-                            Bundle b = new Bundle();
+                        Fragment bsd = new ClientCalendarFragment();
+                        bsd.setArguments(b);
 
-                            Fragment bsd = new ClientCalendarFragment();
-                            bsd.setArguments(b);
+                       getParentFragment().getChildFragmentManager()
+                               .beginTransaction()
+                               .setCustomAnimations(R.anim.animation_slideout_replace_fragment, 0)
+                               .replace(R.id.client_calendar_fragment_container, bsd)
+                               .commit();
 
-                           getParentFragment().getChildFragmentManager()
-                                   .beginTransaction()
-                                   .setCustomAnimations(R.anim.animation_slideout_replace_fragment, 0)
-                                   .replace(R.id.client_calendar_fragment_container, bsd)
-                                   .commit();
-
-                        }
-                    });
-
-
-        });
+                    }
+                }));
 
 
         return view;
@@ -125,9 +125,6 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         setUpRecycleAppointmentAView();
     }
-
-
-
 
 
     private void setUpRecycleAppointmentAView() {
@@ -191,6 +188,7 @@ public class ClientAppointmentsPerDayFragment extends Fragment {
         appointmentAdapter.stopListening();
 
     }
+
 
 
 

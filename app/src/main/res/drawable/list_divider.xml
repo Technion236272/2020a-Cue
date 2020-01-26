@@ -4,7 +4,7 @@
     android:insetRight="10dp" >
 
     <shape android:shape="rectangle" >
-        <solid android:color="@color/ColorSecondaryLight" />
+        <solid android:color="@color/secondaryLightColor" />
     </shape>
 
 </inset>

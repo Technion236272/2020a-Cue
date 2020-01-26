@@ -1,101 +1,123 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-  <com.mikhaellopez.circularimageview.CircularImageView
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+  <RelativeLayout xmlns:tools="http://schemas.android.com/tools"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      tools:context=".ClientFeatures.ClientBusinessHomepage"
+      android:id="@+id/info_holder">
+
+
+    <FrameLayout
+        android:id="@+id/fragment_holder_business_client"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+
+    <FrameLayout
+        android:id="@+id/actionBarTopBox"
+        android:layout_width="match_parent"
+        android:layout_height="120dp"
+        android:background="@color/primaryColor" />
+
+    <FrameLayout
+        android:id="@+id/actionBarTopBoxLine"
+        android:layout_width="match_parent"
+        android:layout_height="3dp"
+        android:background="@color/primaryLightColor"
+        android:layout_below="@id/actionBarTopBox"/>
+
+    <com.mikhaellopez.circularimageview.CircularImageView
         android:id="@+id/business_logo"
+        android:layout_marginTop="40dp"
         android:layout_width="150dp"
         android:layout_height="150dp"
-        android:layout_marginTop="24dp"
-        app:srcCompat="@drawable/ic_person_outline_black_24dp"
-        app:civ_border_color="@color/ColorSecondary"
+        app:srcCompat="@drawable/person_icon"
+        app:civ_border_color="@color/secondaryColor"
         app:civ_border_width="4dp"
-        android:layout_centerHorizontal="true"/>
-
-    <TextView
-        android:id="@+id/homepageBusinessName"
-        android:textColor="@color/TextOnBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="22sp"
-        android:layout_below="@id/business_logo"
-        android:layout_marginTop="24dp"
+        android:clickable="false"
         android:layout_centerHorizontal="true" />
 
     <TextView
-        android:id="@+id/homepageBusinessDescription"
-        android:textColor="@color/TextOnBackground"
+        android:id="@+id/homepageBusinessName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="16sp"
-        android:layout_below="@id/homepageBusinessName"
-        android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:maxWidth="300dip"
-        android:singleLine="false"/>
+        android:gravity="center"
+        android:layout_below="@id/business_logo"
+        android:textSize="35dp"
+        android:textColor="@color/primaryDarkColor"
+        android:layout_marginTop="15dp"
+        android:layout_marginBottom="10dp"
+        android:text=""
+        android:textStyle="bold" />
 
-  <LinearLayout
+    <TextView
+        android:id="@+id/homepageBusinessDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_below="@id/homepageBusinessName"
+        android:textSize="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColor="@color/primaryLightColor"
+        android:layout_marginBottom="10dp"
+        android:text="" />
+
+    <TextView
+        android:id="@+id/clientBusinessTitleLocation"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:layout_below="@id/homepageBusinessDescription"
+        android:textSize="15dp"
+        android:textColor="@color/primaryDarkColor"
+        android:layout_marginBottom="15dp"
+        android:text="" />
+
+  </RelativeLayout>
+
+  <TextView
+      android:layout_below="@id/info_holder"
       android:id="@+id/address"
-      android:layout_width="match_parent"
+      android:textColor="@color/secondaryTextColor"
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:orientation="horizontal"
-      android:layout_below="@id/homepageBusinessDescription"
-      android:layout_marginLeft="24dp"
-      android:layout_marginTop="48dp"
-      android:layout_marginStart="24dp">
+      android:layout_marginLeft="12dp"
+      android:textSize="16sp"
+      android:drawableLeft="@drawable/location_icon"
+      android:drawableStart="@drawable/location_icon"
+      android:gravity="center"
+      android:drawablePadding="16dp"
+      android:layout_marginBottom="24dp"
+      android:layout_marginStart="12dp" />
 
-    <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="2.5dp"
-        app:srcCompat="@drawable/location_icon"
-        android:contentDescription="location icon" />
-
-    <TextView
-        android:id="@+id/address_text"
-        android:textColor="@color/TextOnBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:textSize="16sp" />
-
-<!--    <com.google.android.material.floatingactionbutton.FloatingActionButton-->
-<!--        android:id="@+id/google_maps_link"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginLeft="24dp"-->
-<!--        app:srcCompat="@drawable/navigation_icon" />-->
-
-  </LinearLayout>
-
-  <LinearLayout
-      android:id="@+id/phone"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="horizontal"
+  <TextView
       android:layout_below="@id/address"
-      android:layout_marginLeft="24dp"
-      android:layout_marginTop="24dp"
-      android:layout_marginStart="24dp">
-
-    <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
-        android:layout_marginTop="2.5dp"
-        app:srcCompat="@drawable/phone_icon"
-        android:contentDescription="phone icon" />
-
-    <TextView
-        android:id="@+id/phone_text"
-        android:textColor="@color/TextOnBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:textSize="16sp" />
-
-  </LinearLayout>
+      android:id="@+id/phone"
+      android:textColor="@color/secondaryTextColor"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginLeft="12dp"
+      android:layout_marginStart="12dp"
+      android:textSize="16sp"
+      android:drawableLeft="@drawable/phone_icon"
+      android:drawableStart="@drawable/phone_icon"
+      android:drawablePadding="16dp"
+      android:layout_marginBottom="24dp" />
 
   <LinearLayout
       android:id="@+id/open_hours"
@@ -103,24 +125,25 @@
       android:layout_height="wrap_content"
       android:orientation="horizontal"
       android:layout_below="@id/phone"
-      android:layout_marginLeft="24dp"
-      android:layout_marginTop="24dp"
-      android:layout_marginStart="24dp">
+      android:layout_marginLeft="12dp"
+      android:layout_marginStart="12dp">
 
     <ImageView
-        android:layout_width="16dp"
-        android:layout_height="16dp"
+        android:layout_width="24dp"
+        android:layout_height="24dp"
         android:layout_marginTop="2.5dp"
         app:srcCompat="@drawable/clock_icon"
         android:contentDescription="clock icon" />
 
     <TextView
         android:id="@+id/current_day_hours"
-        android:textColor="@color/TextOnBackground"
+        android:textColor="@color/secondaryTextColor"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:textSize="16sp" />
+        android:textSize="16sp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_marginLeft="16dp" />
 
     <LinearLayout
         android:id="@+id/open_hours_list"
@@ -128,7 +151,8 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_marginLeft="12dp"
-        android:visibility="gone" >
+        android:visibility="gone"
+        android:layout_marginStart="12dp">
 
       <LinearLayout
           android:layout_width="match_parent"
@@ -137,7 +161,7 @@
 
         <TextView
             android:id="@+id/sunday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -146,7 +170,7 @@
 
         <TextView
             android:id="@+id/sunday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -162,7 +186,7 @@
 
         <TextView
             android:id="@+id/monday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -171,7 +195,7 @@
 
         <TextView
             android:id="@+id/monday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -187,7 +211,7 @@
 
         <TextView
             android:id="@+id/tuesday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -196,7 +220,7 @@
 
         <TextView
             android:id="@+id/tuesday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -212,7 +236,7 @@
 
         <TextView
             android:id="@+id/wednesday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -221,7 +245,7 @@
 
         <TextView
             android:id="@+id/wednesday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -237,7 +261,7 @@
 
         <TextView
             android:id="@+id/thursday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -246,7 +270,7 @@
 
         <TextView
             android:id="@+id/thursday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -262,7 +286,7 @@
 
         <TextView
             android:id="@+id/friday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -271,7 +295,7 @@
 
         <TextView
             android:id="@+id/friday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -287,7 +311,7 @@
 
         <TextView
             android:id="@+id/saturday_text"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="96dp"
             android:layout_height="wrap_content"
             android:layout_marginLeft="12dp"
@@ -296,7 +320,7 @@
 
         <TextView
             android:id="@+id/saturday"
-            android:textColor="@color/TextOnBackground"
+            android:textColor="@color/secondaryTextColor"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="24dp"
@@ -306,9 +330,8 @@
 
     </LinearLayout>
 
-
   </LinearLayout>
 
-
-
 </RelativeLayout>
+
+</ScrollView>

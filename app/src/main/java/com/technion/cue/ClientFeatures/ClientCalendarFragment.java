@@ -2,6 +2,7 @@ package com.technion.cue.ClientFeatures;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -58,7 +59,7 @@ public class ClientCalendarFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        c = (CalendarView)view.findViewById(R.id.calendar_page_date_picker);
+        c = view.findViewById(R.id.calendar_page_date_picker);
         c.setMinDate((new Date().getTime()));
         c.setVisibility(View.VISIBLE);
         c.setOnDateChangeListener((c_view, year, month, day) -> {
@@ -83,6 +84,7 @@ public class ClientCalendarFragment extends Fragment {
                                     .beginTransaction()
                                     .setCustomAnimations(R.anim.animation_slidein_replace_fragment, 0)
                                     .replace(R.id.client_calendar_fragment_container, bsd)
+                                    .addToBackStack(null)
                                     .commit();
                         }
                     });
@@ -91,6 +93,8 @@ public class ClientCalendarFragment extends Fragment {
 
         });
     }
+
+
 
     @Override
     public void onStop() {

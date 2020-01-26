@@ -7,8 +7,8 @@ android {
         applicationId "com.technion.cue"
         minSdkVersion 16
         targetSdkVersion 29
-        versionCode 102
-        versionName "1.0.2"
+        versionCode 203
+        versionName "2.0.3"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
         vectorDrawables.useSupportLibrary = true
@@ -101,6 +101,10 @@ dependencies {
 
     def lifecycle_version = "2.1.0"
     implementation "androidx.lifecycle:lifecycle-extensions:$lifecycle_version"
+    implementation 'com.google.firebase:firebase-messaging:20.1.0'
+
+    //for google sign in
+    implementation 'com.google.android.gms:play-services-auth:17.0.0'
 
 
 }

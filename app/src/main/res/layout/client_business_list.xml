@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="horizontal"
+    android:tag="cards main container">
+
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/card_view"
+        xmlns:card_view="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        card_view:cardBackgroundColor="@color/primaryTextColor"
+        card_view:cardCornerRadius="4dp"
+        card_view:cardElevation="3dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        card_view:cardUseCompatPadding="true"
+
+        >
+
+        <FrameLayout
+            android:background="@color/primaryDarkColor"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            />
+
+
+
+        <FrameLayout
+            android:background="@color/primaryDarkColor"
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_height="1dp"
+            />
+
+        <FrameLayout
+            android:background="@color/primaryDarkColor"
+            android:layout_width="1dp"
+            android:layout_gravity="left"
+            android:layout_height="match_parent"
+            />
+
+        <FrameLayout
+            android:background="@color/primaryDarkColor"
+            android:layout_width="1dp"
+            android:layout_gravity="right"
+            android:layout_height="match_parent"
+            />
+
+
+
+        <RelativeLayout
+
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/business_name"
+                android:textStyle="bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentTop="true"
+                android:text=""
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="20sp"
+                android:layout_gravity="center_vertical"
+                android:textColor="@color/primaryDarkColor" />
+
+
+
+            <TextView
+                android:id="@+id/business_description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:textSize="17sp"
+                android:textColor="@color/primaryColor"
+                android:layout_alignParentLeft="true"
+
+                android:layout_below="@+id/business_name" />
+
+
+            <TextView
+                android:id="@+id/business_location"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="4dp"
+                android:textSize="14sp"
+                android:textColor="@color/primaryColor"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/business_description" />
+
+                <ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                   android:layout_centerVertical="true"
+                    android:layout_alignParentEnd="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"
+                    android:background="@color/fui_transparent"
+
+                    app:srcCompat="@drawable/ic_navigate_next_black_24dp"/>
+
+
+        </RelativeLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+
+</LinearLayout>

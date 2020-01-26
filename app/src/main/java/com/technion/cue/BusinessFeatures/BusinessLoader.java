@@ -3,7 +3,10 @@ package com.technion.cue.BusinessFeatures;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.fragment.app.FragmentActivity;
+
 import com.bumptech.glide.Glide;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -29,18 +32,15 @@ class BusinessLoader {
     private View view;
     private FirebaseFirestore db;
     private String business_id;
+    private FragmentActivity activity;
 
+    public static Business business = null;
 
-    public Business business;
-
-    BusinessLoader(FirebaseFirestore db, String business_to_fetch) {
+    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch, FragmentActivity activity) {
         this.db = db;
         this.business_id = business_to_fetch;
-    }
-
-    BusinessLoader(View view, FirebaseFirestore db, String business_to_fetch) {
-        this(db, business_to_fetch);
         this.view = view;
+        this.activity = activity;
     }
 
     /**
@@ -48,14 +48,20 @@ class BusinessLoader {
      */
     @ModuleAuthor("Ophir Eyal")
      void load() {
-        db.collection(BUSINESSES_COLLECTION)
-                .document(business_id)
-                .get()
-                .addOnSuccessListener(documentSnapshot -> {
-                            business = documentSnapshot.toObject(Business.class);
-                            loadBusinessData();
-                            loadLogoFromFireBase();
-                });
+        if (business == null || !business.id.equals(FirebaseAuth.getInstance().getUid())) {
+            db.collection(BUSINESSES_COLLECTION)
+                    .document(business_id)
+                    .get()
+                    .addOnSuccessListener(documentSnapshot -> {
+                        business = documentSnapshot.toObject(Business.class);
+                        loadBusinessData();
+                        loadLogoFromFireBase();
+                    });
+        } else {
+            loadBusinessData();
+            loadLogoFromFireBase();
+        }
+
     }
 
 
@@ -73,27 +79,41 @@ class BusinessLoader {
         name.setText(business.business_name);
         desc.setText(business.description);
 
-        TextView location = view.findViewById(R.id.address_text);
+        TextView location = view.findViewById(R.id.address);
         String full_address = business.location.get("address") + ", "
                 + business.location.get("city") + ", "
                 + business.location.get("state");
         location.setText(full_address);
 
-        TextView phone = view.findViewById(R.id.phone_text);
+        TextView phone = view.findViewById(R.id.phone);
         phone.setText(business.phone_number);
 
         TextView current_day_hours = view.findViewById(R.id.current_day_hours);
         Calendar c = Calendar.getInstance();
         String[] days = {"Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"};
         String open_hours_today = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
-        c.add(Calendar.DAY_OF_WEEK, 1);
+        String open_hours_next = null;
 
-        String open_hours_tomorrow = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+        for (int i = 1 ; i < 7 ; i++) {
+            c.add(Calendar.DAY_OF_WEEK, 1);
+            open_hours_next = business.open_hours.get(days[c.get(Calendar.DAY_OF_WEEK) - 1]);
+            if (open_hours_next != null && open_hours_next.contains("-"))
+                break;
+            if (i == 6)
+                open_hours_next = null;
+        }
 
-        if ((open_hours_today==null) || (!open_hours_today.contains("-")))
-            current_day_hours.setText("Close.");
-        else {
+        if (open_hours_next == null)
+            current_day_hours.setText("Now Close.");
+        else if (open_hours_today == null || !open_hours_today.contains("-")) {
+            current_day_hours.setText(
+                    "Now Close. Opens on " +
+                            days[c.get(Calendar.DAY_OF_WEEK) - 1] +
+                            " at " + open_hours_next.split("-")[0]
+                    );
+        } else {
             try {
+
                 SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
                 Date when_opens = sdf.parse(open_hours_today.split("-")[0]);
                 Date when_closes = sdf.parse(open_hours_today.split("-")[1]);
@@ -114,31 +134,31 @@ class BusinessLoader {
                 long currentTime = currentDate.getTime();
 
                 if (open_time_millis <= currentTime && currentTime <= close_time_millis)
-                    current_day_hours.setText("Open. Closes " + open_hours_today.split("-")[1]);
+                    current_day_hours.setText("Now Open. Closes " + open_hours_today.split("-")[1]);
                 else if (currentTime < open_time_millis)
-                    current_day_hours.setText("Close. Opens " + open_hours_today.split("-")[0]);
+                    current_day_hours.setText("Now Close. Opens " + open_hours_today.split("-")[0]);
                 else
-                    current_day_hours.setText("Close. Opens " + open_hours_tomorrow.split("-")[0]);
-
-                ((TextView) view.findViewById(R.id.sunday))
-                        .setText(business.open_hours.get("Sunday"));
-                ((TextView) view.findViewById(R.id.monday))
-                        .setText(business.open_hours.get("Monday"));
-                ((TextView) view.findViewById(R.id.tuesday))
-                        .setText(business.open_hours.get("Tuesday"));
-                ((TextView) view.findViewById(R.id.wednesday))
-                        .setText(business.open_hours.get("Wednesday"));
-                ((TextView) view.findViewById(R.id.thursday))
-                        .setText(business.open_hours.get("Thursday"));
-                ((TextView) view.findViewById(R.id.friday))
-                        .setText(business.open_hours.get("Friday"));
-                ((TextView) view.findViewById(R.id.saturday))
-                        .setText(business.open_hours.get("Saturday"));
+                    current_day_hours.setText("Now Close. Opens " + open_hours_next.split("-")[0]);
 
             } catch (ParseException e) {
                 e.printStackTrace();
             }
         }
+
+        ((TextView) view.findViewById(R.id.sunday))
+                .setText(business.open_hours.get("Sunday"));
+        ((TextView) view.findViewById(R.id.monday))
+                .setText(business.open_hours.get("Monday"));
+        ((TextView) view.findViewById(R.id.tuesday))
+                .setText(business.open_hours.get("Tuesday"));
+        ((TextView) view.findViewById(R.id.wednesday))
+                .setText(business.open_hours.get("Wednesday"));
+        ((TextView) view.findViewById(R.id.thursday))
+                .setText(business.open_hours.get("Thursday"));
+        ((TextView) view.findViewById(R.id.friday))
+                .setText(business.open_hours.get("Friday"));
+        ((TextView) view.findViewById(R.id.saturday))
+                .setText(business.open_hours.get("Saturday"));
     }
 
     /**
@@ -154,7 +174,7 @@ class BusinessLoader {
         }
         Glide.with(logo.getContext())
                 .load(logoRef)
-                .error(R.drawable.ic_person_outline_black_24dp)
+                .error(R.drawable.person_icon)
                 .into(logo);
     }
 }

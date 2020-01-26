@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/edit_appointment_save_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true"
+        android:textColor="@color/primaryTextColor"
+        android:backgroundTint="@color/secondaryLightColor"
+        android:text="@string/save"
+        android:textSize="16sp"
+        android:onClick="saveChanges"
+
+
+        />
+
+
+    <ImageButton
+        android:id="@+id/edit_appointment_exit_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        app:srcCompat="@drawable/ic_close_black_24dp"
+        android:background="@color/fui_transparent"
+        android:tint="@color/primaryTextColor"
+        android:onClick="exitEditAppointment"
+
+        />
+
+</RelativeLayout>

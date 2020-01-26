@@ -1,19 +1,18 @@
 package com.technion.cue.BusinessFeatures;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
@@ -58,6 +57,7 @@ public class BusinessScheduleWeek extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              @Nullable Bundle savedInstanceState) {
+        getActivity().findViewById(R.id.progress_bar).setVisibility(View.VISIBLE);
         return inflater.inflate(R.layout.fragment_business_schedule_week,
                 container, false);
     }
@@ -72,7 +72,6 @@ public class BusinessScheduleWeek extends Fragment {
         week_days_list.setLayoutManager(layoutManager);
         week_days_list.setHasFixedSize(true);
 
-        // TODO: possibly allow business owners to choose the day in which the week begins
         Calendar c = Calendar.getInstance();
         for (int i = 1 ; i <= NUMBER_OF_DAYS_IN_WEEK ; i++) {
             c.set(Calendar.DAY_OF_WEEK, i);
@@ -144,10 +143,10 @@ public class BusinessScheduleWeek extends Fragment {
                     View list = itemView.findViewById(R.id.appointment_list_for_day);
                     if (list.getVisibility() == View.VISIBLE) {
                         list.setVisibility(View.GONE);
-                        list_arrow.setImageResource(R.drawable.list_drop_down);
+                        list_arrow.setImageResource(R.drawable.list_drop_down_icon);
                     } else {
                         list.setVisibility(View.VISIBLE);
-                        list_arrow.setImageResource(R.drawable.list_move_up);
+                        list_arrow.setImageResource(R.drawable.list_move_up_icon);
                     }
                 });
             }
@@ -169,7 +168,7 @@ public class BusinessScheduleWeek extends Fragment {
             if (DateUtils.isToday(position_date.getTime())) {
                 holder.day_of_the_week.setText("Today");
                 holder.day_of_the_week.setTextColor(getResources()
-                        .getColor(R.color.ColorSecondaryDark));
+                        .getColor(R.color.secondaryDarkColor));
             } else {
                 holder.day_of_the_week.setText(sdf.format(position_date));
             }

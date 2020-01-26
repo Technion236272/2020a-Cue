@@ -10,6 +10,7 @@ import androidx.viewpager.widget.ViewPager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.tabs.TabLayout;
@@ -39,11 +40,19 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         pagerAdapter = new ScreenSlidePagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
 
+        // disable swiping when in the monthly schedule view (calendar view)
+        pager.setOnTouchListener((v, event) -> {
+            pager.setCurrentItem(pager.getCurrentItem());
+            return pager.getCurrentItem() == 2;
+        });
+
         TabLayout tabs = findViewById(R.id.business_schedule_tabs);
         tabs.setupWithViewPager(pager);
 
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
         bnv.getMenu().getItem(0).setChecked(true);
+
+        getSupportActionBar().setElevation(0);
     }
 
     public void openBusinessSchedule(MenuItem item) { }
@@ -65,7 +74,7 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
     private class ScreenSlidePagerAdapter extends FragmentStatePagerAdapter {
 
         List<String> titleList = new ArrayList<>(
-                Arrays.asList("Today", "This Week", "This Month", "Recent Changes")
+                Arrays.asList("Today", "This Week", "ALL TIMES", "Recent Changes")
         );
 
         ScreenSlidePagerAdapter(FragmentManager fm) {
@@ -81,20 +90,27 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         public Fragment getItem(int position) {
             switch (titleList.get(position)) {
                 case "Today":
-                    Bundle b = new Bundle();
-                    Calendar c = Calendar.getInstance();
-                    b.putInt("year", c.get(Calendar.YEAR));
-                    b.putInt("month", c.get(Calendar.MONTH));
-                    b.putInt("day", c.get(Calendar.DAY_OF_MONTH));
+                    Bundle b;
+                    if (getIntent().hasExtra("year")) {
+                        b = getIntent().getExtras();
+                        findViewById(R.id.business_schedule_tabs).setVisibility(View.GONE);
+                    }
+                    else {
+                        b = new Bundle();
+                        Calendar c = Calendar.getInstance();
+                        b.putInt("year", c.get(Calendar.YEAR));
+                        b.putInt("month", c.get(Calendar.MONTH));
+                        b.putInt("day", c.get(Calendar.DAY_OF_MONTH));
+                    }
                     Fragment bsd = new BusinessScheduleDay();
                     bsd.setArguments(b);
                     return bsd;
                 case "This Week":
                     return new BusinessScheduleWeek();
-                case "This Month":
+                case "ALL TIMES":
                     return new BusinessScheduleMonth();
                 case "Recent Changes":
-                    return new BusinessScheduleFragmentPlaceholder();
+                    return new BusinessScheduleRecentChanges();
                 default:
                     return new BusinessScheduleFragmentPlaceholder();
             }
@@ -109,6 +125,8 @@ public class BusinessSchedule extends AppCompatActivity implements BusinessBotto
         public CharSequence getPageTitle(int position) {
             return titleList.get(position);
         }
+
+
     }
 
 }

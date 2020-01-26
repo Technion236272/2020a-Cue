@@ -4,41 +4,44 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
+import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.mikhaellopez.circularimageview.CircularImageView;
-import com.technion.cue.FirebaseCollections;
 import com.technion.cue.R;
-import com.technion.cue.Settings;
-import com.technion.cue.SignInActivity;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
 
-import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
+import static com.technion.cue.FirebaseCollections.REVIEWS_COLLECTION;
 
 @ModuleAuthor("Ophir Eyal")
 public class BOBusinessHomePage extends AppCompatActivity implements BusinessBottomMenu {
@@ -53,10 +56,17 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
 
     Business business;
 
+    private RecyclerView reviews_list;
+    private BOBusinessHomePage.ReviewsAdapter mAdapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bo_homepage);
+
+        FirebaseMessaging.getInstance()
+                .subscribeToTopic(FirebaseAuth.getInstance().getUid());
+
         business_info_fragment = findViewById(R.id.business_info);
         BottomNavigationView bnv = findViewById(R.id.bottom_navigation);
         // check the homepage item in the bottom menu
@@ -67,31 +77,48 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 .document(FirebaseAuth.getInstance().getUid())
                 .get()
                 .addOnSuccessListener(ds -> business = ds.toObject(Business.class));
+
+        reviews_list = findViewById(R.id.reviews_list);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getBaseContext());
+        reviews_list.setLayoutManager(layoutManager);
+
+        // a query to get all the 10 most recent reviews in the business'es schedule
+        Query query = FirebaseFirestore.getInstance()
+                .collection(BUSINESSES_COLLECTION)
+                .document(FirebaseAuth.getInstance().getUid())
+                .collection(REVIEWS_COLLECTION)
+                .orderBy("date", Query.Direction.DESCENDING)
+                .limit(10);
+
+        FirestoreRecyclerOptions<Business.Review> options =
+                new FirestoreRecyclerOptions.Builder<Business.Review>()
+                        .setQuery(query, Business.Review.class)
+                        .build();
+
+        mAdapter = new BOBusinessHomePage.ReviewsAdapter(options);
+        reviews_list.setAdapter(mAdapter);
+
+        getSupportActionBar().setElevation(0);
+
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.business_menu, menu);
         menu.getItem(0).setOnMenuItemClickListener(cl -> generateDynamicLink());
-        // go the profile edit activity
+
         menu.getItem(1).setOnMenuItemClickListener(cl -> {
+            startActivityForResult(new Intent(this, BusinessSettings.class), EDIT_RESULT);
+            return true;
+        });
+
+        // go the profile edit activity
+        menu.getItem(2).setOnMenuItemClickListener(cl -> {
             Intent intent = new Intent(this, BusinessProfileEdit.class);
             intent.putExtra("business", business);
             intent.putExtra("logo", logoData);
             startActivityForResult(intent, EDIT_RESULT);
-            return true;
-        });
-
-        // TODO: create listener for item 2 (settings)
-        menu.getItem(2).setOnMenuItemClickListener(cl -> {
-            startActivityForResult(new Intent(this, Settings.class), EDIT_RESULT);
-            return true;
-        });
-
-        menu.getItem(3).setOnMenuItemClickListener(cl -> {
-            FirebaseAuth.getInstance().signOut();
-            startActivity(new Intent(this, SignInActivity.class));
-            finish();
             return true;
         });
 
@@ -111,7 +138,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                     CircularImageView logo = business_info_fragment.findViewById(R.id.business_logo);
                     Glide.with(logo.getContext())
                             .load(logoData)
-                            .error(R.drawable.ic_person_outline_black_24dp)
+                            .error(R.drawable.person_icon)
                             .into(logo);
                 }
 
@@ -121,7 +148,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 businessName.setText(business.business_name);
                 businessDescription.setText(business.description);
 
-                TextView location = business_info_fragment.findViewById(R.id.address_text);
+                TextView location = business_info_fragment.findViewById(R.id.address);
 
 
                 String full_address = business.location.get("address") + ", "
@@ -129,7 +156,7 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                         + business.location.get("state");
                 location.setText(full_address);
 
-                TextView phone = business_info_fragment.findViewById(R.id.phone_text);
+                TextView phone = business_info_fragment.findViewById(R.id.phone);
                 phone.setText(business.phone_number);
 
                 TextView current_day_hours = business_info_fragment.findViewById(R.id.current_day_hours);
@@ -154,7 +181,6 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                         e.printStackTrace();
                     }
 
-                    // TODO: watch for potential issues here
                     if (when_opens == null || when_closes == null)
                         return;
 
@@ -177,15 +203,15 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                     if (open_time_millis <= currentTime && currentTime <= close_time_millis)
                         //  business is open
                         current_day_hours
-                                .setText("Open. Closes " + open_hours_today.split("-")[1]);
+                                .setText("Now Open. Closes " + open_hours_today.split("-")[1]);
                     else if (currentTime < open_time_millis)
                         // business is closed and will reopen later on today
                         current_day_hours
-                                .setText("Closed. Opens " + open_hours_today.split("-")[0]);
+                                .setText("Now Closed. Opens " + open_hours_today.split("-")[0]);
                     else
                         // business is closed and will reopen tomorrow
                         current_day_hours
-                                .setText("Closed. Opens " + open_hours_tomorrow.split("-")[0]);
+                                .setText("Now Closed. Opens " + open_hours_tomorrow.split("-")[0]);
                 }
 
                 int[] res_days =
@@ -219,9 +245,9 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
     private boolean generateDynamicLink() {
         FirebaseDynamicLinks.getInstance()
                 .createDynamicLink()
-                .setLink(Uri.parse("https://cueapp.com/?name=" +
+                .setLink(Uri.parse("https://cueapp2.com/?name=" +
                         FirebaseAuth.getInstance().getUid()))
-                .setDomainUriPrefix("https://cueapp.page.link")
+                .setDomainUriPrefix("https://cueapp2.page.link")
                 .setAndroidParameters(
                         new DynamicLink.AndroidParameters
                                 .Builder("com.technion.cue")
@@ -239,5 +265,56 @@ public class BOBusinessHomePage extends AppCompatActivity implements BusinessBot
                 });
         return true;
     }
-}
 
+    @Override
+    public void onStart() {
+        super.onStart();
+        mAdapter.startListening();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mAdapter.stopListening();
+    }
+
+    private class ReviewsAdapter extends
+            FirestoreRecyclerAdapter<Business.Review, BOBusinessHomePage.ReviewsAdapter.itemHolder> {
+
+        ReviewsAdapter(@NonNull FirestoreRecyclerOptions<Business.Review> options) {
+            super(options);
+        }
+
+        @Override
+        public void onDataChanged() {
+            if (getItemCount() == 0)
+                findViewById(R.id.progress_bar).setVisibility(View.GONE);
+        }
+
+        @Override
+        protected void onBindViewHolder(@NonNull itemHolder holder,
+                                        int position,
+                                        @NonNull Business.Review model) {
+            holder.reviewContent.setText(model.content);
+            findViewById(R.id.progress_bar).setVisibility(View.GONE);
+        }
+
+        @NonNull
+        @Override
+        public itemHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+            View v = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.reviews_row, parent,false);
+            return new itemHolder(v);
+        }
+
+        private class itemHolder extends RecyclerView.ViewHolder {
+
+            TextView reviewContent;
+
+            itemHolder(@NonNull View itemView) {
+                super(itemView);
+                reviewContent = itemView.findViewById(R.id.review_content);
+            }
+        }
+    }
+}

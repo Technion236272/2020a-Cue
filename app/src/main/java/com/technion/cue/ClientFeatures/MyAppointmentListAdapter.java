@@ -13,16 +13,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.BUSINESSES_COLLECTION;
-import static com.technion.cue.FirebaseCollections.CLIENTS_COLLECTION;
 import static com.technion.cue.FirebaseCollections.TYPES_COLLECTION;
 
 
@@ -37,8 +36,10 @@ public class MyAppointmentListAdapter extends
         this.parentView = view;
 
     }
+
     public MyAppointmentListAdapter(@NonNull FirestoreRecyclerOptions<Appointment> options) {
         super(options);
+
     }
 
 
@@ -74,16 +75,18 @@ public class MyAppointmentListAdapter extends
                 .limit(1)
                 .get()
                 .addOnSuccessListener(l -> {
-                    holder.appointment_id = l.getDocuments().get(0).getId();
-//                    holder.business.setTag(R.id.myAppointmentList,holder.appointment_id); // need to change - ben
+                    if (l.getDocuments().size() > 0 ) {
+                        holder.appointment_id = l.getDocuments().get(0).getId();
+                    }
+//                    holder.business.setTag(R.id.myAppointmentList,holder.notes); // need to change - ben
                 });
-            holder.notes.setText(appointment.notes);
+
+            holder.notes.setText(appointment.notes == null ? "No note yet." : appointment.notes);
+            holder.dateType = appointment.date;
+
 
 
     }
-
-
-
 
     @NonNull
     @Override
@@ -92,21 +95,19 @@ public class MyAppointmentListAdapter extends
                 .inflate(R.layout.my_appointment_list_adapter, parent,false);
         itemHolder holder = new itemHolder(v);
 
-        v.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent getIntentBOPage = new Intent(parent.getContext(), ClientAppointmentPage.class);
-                // TODO: start using appointmet object !!! - refactoring later.
-                getIntentBOPage.putExtra("business_name",holder.business.getText());
-                getIntentBOPage.putExtra("appointment_type",holder.type.getText());
-                getIntentBOPage.putExtra("appointment_date",holder.date.getText());
-                getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
-                getIntentBOPage.putExtra("business_id",holder.business_id);
-                getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
+        v.setOnClickListener(v1 -> {
+            Intent getIntentBOPage = new Intent(parent.getContext(), ClientAppointmentPage.class);
+            // TODO: start using appointmet object !!! - refactoring later.
+            getIntentBOPage.putExtra("business_name",holder.business.getText());
+            getIntentBOPage.putExtra("appointment_type",holder.type.getText());
+            getIntentBOPage.putExtra("appointment_date",holder.date.getText());
+            getIntentBOPage.putExtra("appointment_date_type",holder.dateType);
+            getIntentBOPage.putExtra("appointment_notes",holder.notes.getText());
+            getIntentBOPage.putExtra("business_id",holder.business_id);
+            getIntentBOPage.putExtra("appointment_id",holder.appointment_id);
 
-                parent.getContext().startActivity(getIntentBOPage);
+            parent.getContext().startActivity(getIntentBOPage);
 
-            }
         });
         return holder;
     }
@@ -118,6 +119,7 @@ public class MyAppointmentListAdapter extends
         TextView type;
         String appointment_id;
         String business_id;
+        Date dateType;
 
         public itemHolder(@NonNull View itemView) {
             super(itemView);
@@ -127,21 +129,21 @@ public class MyAppointmentListAdapter extends
             type = itemView.findViewById(R.id.type);
             appointment_id ="";
             business_id ="";
+            dateType=null;
 
         }
     }
-
+    @Override
     public void onDataChanged() {
         super.onDataChanged();
-        if ( parentView!= null) {
+        if ( parentView != null) {
             if (getItemCount() == 0) {
-                parentView.findViewById(R.id.no_appointments_message).setVisibility(View.VISIBLE);
+                parentView.findViewById(R.id.client_no_appointments_message_y).setVisibility(View.VISIBLE);
             } else {
-                parentView.findViewById(R.id.no_appointments_message).setVisibility(View.GONE);
-                // TODO: check if the flag needs to be moved
-                //  to a different meeting / assigned to a meeting
-                // TODO: check if need to change color of text inside items
+                parentView.findViewById(R.id.client_no_appointments_message_y).setVisibility(View.GONE);
             }
         }
     }
+
+
 }

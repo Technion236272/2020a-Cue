@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <Preference
+        android:id="@+id/client_logout_button"
+        android:key="logout"
+        android:title="Logout"
+        android:summary=""
+
+        android:icon="@drawable/ic_cancel_black_30dp"/>
+
+
+<!--    <Preference-->
+<!--        android:id="@+id/remindTime"-->
+<!--        android:key="remind time"-->
+<!--        android:title="Meetings reminder"-->
+<!--        android:summary="How much time to remind client before a meeting"-->
+<!--        android:icon="@drawable/send_reminder_icon" />-->
+
+    <Preference
+        android:id="@+id/client_about_button"
+        android:key="credits"
+        android:title="Credits"
+        android:icon="@drawable/help_icon" />
+
+
+</PreferenceScreen>

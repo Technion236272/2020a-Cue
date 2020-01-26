@@ -1,11 +1,5 @@
 package com.technion.cue.BusinessFeatures;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -14,13 +8,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
-import com.technion.cue.ClientFeatures.EditAppointmentActivity;
 import com.technion.cue.R;
 import com.technion.cue.annotations.ModuleAuthor;
 import com.technion.cue.data_classes.Business;
@@ -127,6 +125,7 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     .limit(1)
                     .get()
                     .addOnSuccessListener(documentSnapshots -> {
+                        findViewById(R.id.progress_bar).setVisibility(View.GONE);
                         if (!documentSnapshots.isEmpty() &&
                                 documentSnapshots.getDocuments()
                                         .get(0).getString("client_id").equals(cm.client_id)) {
@@ -137,8 +136,14 @@ public class ClienteleList extends AppCompatActivity implements BusinessBottomMe
                     });
 
             holder.client.setOnClickListener(cl ->
-                    new ClientInformationDialog(cm.client_id)
+                    new ClientInformationDialog(cm)
                             .show(getSupportFragmentManager(), null));
+        }
+
+        @Override
+        public void onDataChanged() {
+            if (getItemCount() == 0)
+                findViewById(R.id.progress_bar).setVisibility(View.GONE);
         }
 
         @NonNull

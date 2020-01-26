@@ -6,16 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.Query;
 import com.technion.cue.ClientFeatures.EditAppointmentActivity;
@@ -26,6 +27,7 @@ import com.technion.cue.data_classes.Appointment;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
@@ -45,6 +47,8 @@ public class DailyAppointmentListAdapter extends
     private final FragmentActivity activity;
     private ViewGroup parentView = null;
     private boolean useDivider = true;
+
+    static Map<String, Boolean> no_show_checked = new HashMap<>();
 
     DailyAppointmentListAdapter(FragmentActivity activity, ViewGroup view,
                                 Context context,
@@ -69,6 +73,7 @@ public class DailyAppointmentListAdapter extends
         TextView client;
         TextView date;
         TextView type;
+        boolean no_show_mark = false;
 
         itemHolder(@NonNull View itemView) {
             super(itemView);
@@ -95,15 +100,6 @@ public class DailyAppointmentListAdapter extends
                                     int position,
                                     @NonNull Appointment appointment) {
 
-        holder.itemView.findViewById(R.id.appointment_item).setOnClickListener(cl -> {
-            Bundle bundle = new Bundle();
-            bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
-            bundle.putString("appointment_id", appointment.id);
-            Intent intent = new Intent(context, EditAppointmentActivity.class);
-            intent.putExtras(bundle);
-            activity.startActivity(intent);
-        });
-
         SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
         holder.date.setText(sdf.format(appointment.date));
         FirebaseFirestore.getInstance()
@@ -112,18 +108,26 @@ public class DailyAppointmentListAdapter extends
                 .collection(TYPES_COLLECTION)
                 .document(appointment.type)
                 .get()
-                .addOnSuccessListener(l -> {
-                    holder.type.setText(l.getString("name"));
-                });
+                .addOnSuccessListener(l -> holder.type.setText(l.getString("name")));
         FirebaseFirestore.getInstance()
                 .collection(CLIENTS_COLLECTION)
                 .document(appointment.client_id)
                 .get()
-                .addOnSuccessListener(l -> {
-                    holder.client.setText(l.getString("name"));
-                });
+                .addOnSuccessListener(l -> holder.client.setText(l.getString("name")));
 
         Date currentTime = new Date(System.currentTimeMillis());
+        if (appointment.date.getTime() > currentTime.getTime()) {
+            holder.itemView.findViewById(R.id.no_show_mark).setVisibility(View.GONE);
+            holder.itemView.findViewById(R.id.appointment_item).setOnClickListener(cl -> {
+                Bundle bundle = new Bundle();
+                bundle.putString("business_id", FirebaseAuth.getInstance().getUid());
+                bundle.putString("appointment_id", appointment.id);
+                Intent intent = new Intent(context, EditAppointmentActivity.class);
+                intent.putExtras(bundle);
+                activity.startActivity(intent);
+            });
+        }
+
         FirebaseFirestore.getInstance()
                 .collection(APPOINTMENTS_COLLECTION)
                 .whereLessThanOrEqualTo("date", currentTime)
@@ -155,33 +159,45 @@ public class DailyAppointmentListAdapter extends
                                         if (c.getTime().getTime() >= currentTime.getTime()){
                                             holder.flag.setVisibility(View.VISIBLE);
                                             holder.type.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackground));
+                                                    .getColor(R.color.secondaryTextColor));
                                             holder.client.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackground));
+                                                    .getColor(R.color.secondaryTextColor));
                                             holder.date.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackground));
+                                                    .getColor(R.color.secondaryTextColor));
                                         }
                                         else {
-                                            holder.type.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackgroundTransparent));
                                             holder.client.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                                    .getColor(R.color.transparentTextOnBackground));
+                                            holder.type.setTextColor(context.getResources()
+                                                    .getColor(R.color.transparentTextOnBackground));
                                             holder.date.setTextColor(context.getResources()
-                                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                                    .getColor(R.color.transparentTextOnBackground));
                                         }
                                     });
                             // if the appointment's time has passed, display it
-                            // with a gray color
+                            // with a gray color and disable the option to click on it
                         } else if (appointment.date.getTime() < currentTime.getTime()) {
                             holder.type.setTextColor(context.getResources()
-                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                    .getColor(R.color.transparentTextOnBackground));
                             holder.client.setTextColor(context.getResources()
-                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                    .getColor(R.color.transparentTextOnBackground));
                             holder.date.setTextColor(context.getResources()
-                                    .getColor(R.color.TextOnBackgroundTransparent));
+                                    .getColor(R.color.transparentTextOnBackground));
+                            // if the appointment has not happened yet, disallow marking it as "NO-SHOW"
                         }
                     }
                 });
+
+        RadioButton no_show = holder.itemView.findViewById(R.id.no_show_mark);
+        no_show.setChecked(appointment.no_show);
+
+        // make sure this appointment would eventually be marked as "no-show"
+        no_show.setOnCheckedChangeListener((buttonView, isChecked) ->
+               no_show_checked.put(appointment.id, isChecked)
+        );
+
+        noShowClarify(holder, appointment.client_id);
+
     }
 
     @NonNull
@@ -195,20 +211,47 @@ public class DailyAppointmentListAdapter extends
     /**
      * checks whether there are items in the list.
      * If there are none, display the "no_appointments_message"
-     * If there are at least one, remove the message from the view
+     * If there are at least one, hide it
      */
     @Override
     public void onDataChanged() {
         super.onDataChanged();
         if (parentView != null) {
+            activity.findViewById(R.id.progress_bar).setVisibility(View.GONE);
             if (getItemCount() == 0) {
                 parentView.findViewById(R.id.no_appointments_message).setVisibility(View.VISIBLE);
             } else {
                 parentView.findViewById(R.id.no_appointments_message).setVisibility(View.GONE);
-                // TODO: check if the flag needs to be moved
-                //  to a different meeting / assigned to a meeting
-                // TODO: check if need to change color of text inside items
             }
         }
+    }
+
+    /**
+     * checks whether the given client has missed too many (at least 1/3) of his appointments so far.
+     * If so, we make sure the given appointment's radio button is checked
+     * @param holder: the appointment holder
+     * @param client_id: the id of the checked client
+     */
+    private void noShowClarify(itemHolder holder, String client_id) {
+        FirebaseFirestore.getInstance()
+                .collection(APPOINTMENTS_COLLECTION)
+                .whereEqualTo("business_id", FirebaseAuth.getInstance().getUid())
+                .whereEqualTo("client_id", client_id)
+                .get()
+                .addOnSuccessListener(documentSnapshots -> {
+                    double size = 0;
+                    double no_show_num = 0;
+                    for (DocumentSnapshot ds : documentSnapshots) {
+                        if (ds.getTimestamp("date").toDate().getTime() <= System.currentTimeMillis()) {
+                            size++;
+                            if (ds.contains("no_show") && ds.getBoolean("no_show"))
+                                no_show_num++;
+                        }
+                    }
+
+                    // if the client has missed at least 1/3 of his appointments thus far, "check him"
+                    if (size > 0 && no_show_num >= ((1.0/3.0) * size))
+                        holder.no_show_mark = true;
+                });
     }
 }

@@ -73,8 +73,6 @@ public class LauncherActivity extends AppCompatActivity {
 
         }
 
-
-
     }
 
     private void searchForBO(String uid) {

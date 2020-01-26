@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ClientFeatures.ClientCalendarFragment"
     android:orientation="vertical"
     android:id="@+id/client_calendar_fragment_container">
@@ -13,7 +14,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginHorizontal="5dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="5dp"
+
         />
 
 

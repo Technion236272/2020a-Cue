@@ -1,4 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="5dp"
+    android:scrollbars="none">
+
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,201 +12,275 @@
 
 
 
-    <TextView
-        android:id="@+id/client_appointment_business_Name"
-        android:textColor="@color/TextOnBackground"
-        android:layout_width="wrap_content"
+<!--    <TextView-->
+<!--        android:id="@+id/client_appointment_business_Name"-->
+<!--        android:textColor="@color/secondaryTextColor"-->
+<!--        android:layout_width="wrap_content"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:textSize="8sp"-->
+<!--        android:layout_marginTop="24dp"-->
+<!--        android:layout_centerHorizontal="true" />-->
+    <FrameLayout
+        android:id="@+id/client_appointment_business_type_frane"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="8sp"
-        android:layout_marginTop="24dp"
-        android:layout_centerHorizontal="true" />
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="16dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/custom_box_layout"
+        android:elevation="8dp"
+        android:layout_gravity="center"
+        android:minHeight="190dp">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_gravity="start|bottom">
+        <TextView
+            android:id="@+id/client_appointment_business_Name"
+            android:textColor="@color/primaryTextColor"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="28sp"
+            android:layout_marginLeft="8dp"
+            android:text=""
+            android:maxWidth="240dp"
+            android:layout_gravity="start|bottom"
+            android:gravity="bottom"
+            android:onClick="goToBusinessPage"
+
+            />
     <TextView
         android:id="@+id/client_appointment_business_type"
-        android:textColor="@color/TextColorSecondary"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="30sp"
-        android:layout_below="@id/client_appointment_business_Name"
-        android:layout_marginTop="20dp"
-        android:layout_centerHorizontal="true"
-        android:background="@color/colorPrimaryDark"
-        android:textStyle="bold"
-        android:paddingHorizontal="7dp"
-        android:paddingVertical="7dp"
-        />
-
-    <TextView
-        android:id="@+id/client_appointment_BusinessDescription"
-        android:textColor="@color/TextOnBackground"
-        android:layout_width="wrap_content"
+        android:textColor="@color/primaryTextColor"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textSize="20sp"
-        android:layout_below="@id/client_appointment_business_type"
-        android:layout_marginTop="16dp"
-        android:layout_centerHorizontal="true"
-        android:layout_marginLeft="5dp"/>
+        android:maxWidth="240dp"
+        android:layout_gravity="start|bottom"
+        android:maxLength="19"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginBottom="8dp"
 
-    <LinearLayout
+
+        />
+        </LinearLayout>
+
+
+    </FrameLayout>
+
+
+
+
+
+    <RelativeLayout
         android:id="@+id/client_appointment_address"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/client_appointment_BusinessDescription"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="48dp"
-        android:layout_marginStart="24dp">
+        android:layout_below="@id/client_appointment_business_type_frane"
+        android:layout_margin="16dp"
+        android:layout_marginTop="40dp"
+        >
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="1.0dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_place_black_30dp"
-            android:contentDescription="phone icon"
+        <TextView
+            android:id="@+id/client_appointment_address_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp"
+            android:background="@color/primaryTextColor"
+            android:layout_gravity="start"
+            android:gravity="left"
+            android:text="Location"
+            android:textStyle="bold"
             />
-
 
         <TextView
             android:id="@+id/client_appointment_address_text"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:textColor="#283593"
+            android:textColor="@android:color/holo_blue_dark"
             android:textSize="20sp"
-            android:background="@color/TextColorSecondary"
-            android:layout_gravity="center"
-            android:shadowColor="@color/colorPrimary"
-            android:shadowRadius="3"
-            android:layout_marginTop="1dp"
+            android:background="@color/primaryTextColor"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:onClick="goToMap"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/client_appointment_address_title"
              />
 
 
-    </LinearLayout>
+    </RelativeLayout>
 
-    <LinearLayout
-        android:id="@+id/client_appointment_phone"
+    <FrameLayout
+        android:id="@+id/divider1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/primaryLightColor"
+        android:layout_below="@id/client_appointment_address"
+        android:alpha="0.4"
+        />
+
+    <RelativeLayout
+        android:id="@+id/client_appointment_phone_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/client_appointment_address"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp"
+        android:layout_below="@id/divider1"
+        android:layout_margin="16dp"
         >
 
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="1.0dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_local_phone_black_30dp"
-            android:contentDescription="phone icon"
+        <TextView
+            android:id="@+id/client_appointment_phone_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp"
+            android:background="@color/primaryTextColor"
+            android:layout_gravity="start"
+            android:gravity="left"
+            android:text="Phone"
+            android:textStyle="bold"
             />
+
 
         <TextView
             android:id="@+id/client_appointment_phone_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
             android:text=""
-            android:textColor="#283593"
+            android:textColor="@android:color/holo_blue_dark"
             android:textSize="20sp"
-            android:background="@color/TextColorSecondary"
-            android:layout_gravity="center"
-            android:shadowColor="@color/colorPrimary"
-            android:shadowRadius="3"
-            android:layout_marginTop="1dp"/>
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:onClick="makeACall"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/client_appointment_phone_title"/>
 
-    </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/client_appointment_time"
+    </RelativeLayout>
+
+    <FrameLayout
+        android:id="@+id/divider2"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/primaryLightColor"
+        android:layout_below="@id/client_appointment_phone_layout"
+        android:alpha="0.4"
+        />
+
+
+    <RelativeLayout
+        android:id="@+id/client_appointment_time_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@id/client_appointment_phone"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp"
+        android:layout_below="@id/client_appointment_phone_layout"
+        android:layout_margin="16dp"
         >
-        <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="1.0dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_access_time_black_24dp"
-            android:contentDescription="time icon"
 
-
+        <TextView
+            android:id="@+id/client_appointment_time_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp"
+            android:background="@color/primaryTextColor"
+            android:layout_gravity="start"
+            android:gravity="left"
+            android:text="Date"
+            android:textStyle="bold"
             />
+
 
         <TextView
             android:id="@+id/client_appointment_time_text"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textColor="#283593"
-            android:textSize="20sp"
-            android:background="@color/TextColorSecondary"
-            android:layout_gravity="center"
-            android:shadowColor="@color/colorPrimary"
-            android:shadowRadius="3"
-            android:layout_marginTop="1dp"
-            android:layout_marginLeft="5dp"
-
-            />
-
-    </LinearLayout>
-    <RelativeLayout
-        android:id="@+id/client_appointment_page_notes"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:layout_below="@id/client_appointment_time"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="24dp"
-        android:layout_marginStart="24dp">
-
-
-        <ImageView
-            android:id="@+id/notes_icon"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginTop="1.0dp"
-            android:layout_marginRight="5dp"
-            app:srcCompat="@drawable/ic_note_black_30dp"
-            android:contentDescription="note_icon"
-
-
-            />
-            <TextView
-                android:id="@+id/client_appointment_page_notes_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textColor="#283593"
-                android:textSize="20sp"
-                android:layout_marginLeft="5dp"
-                android:background="@color/TextColorSecondary"
-                android:layout_gravity="center"
-                android:shadowColor="@color/colorPrimary"
-                android:shadowRadius="3"
-                android:layout_toRightOf="@+id/notes_icon"
-                android:layout_marginTop="1dp"/>
-
-
-    </RelativeLayout>
-
-
-    <RelativeLayout
-        android:id="@+id/loadingPanel"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center" >
-
-        <ProgressBar
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:indeterminate="true" />
+            android:text=""
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/client_appointment_time_title"/>
+
+
     </RelativeLayout>
 
+    <FrameLayout
+        android:id="@+id/divider3"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:background="@color/primaryLightColor"
+        android:layout_below="@id/client_appointment_time_layout"
+        android:alpha="0.4"
+        />
+
+    <RelativeLayout
+        android:id="@+id/client_appointment_note_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/client_appointment_time_layout"
+        android:layout_margin="16dp"
+
+        >
+
+        <TextView
+            android:id="@+id/client_appointment_page_notes_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/secondaryTextColor"
+            android:textSize="20sp"
+            android:background="@color/primaryTextColor"
+            android:layout_gravity="start"
+            android:gravity="left"
+            android:text="Note"
+            android:textStyle="bold"
+
+            />
+
+
+        <TextView
+            android:id="@+id/client_appointment_page_notes_text"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:maxWidth="200dp"
+            android:textSize="20sp"
+            android:layout_gravity="end"
+            android:gravity="end"
+            android:text=""
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/client_appointment_page_notes_title" />
+
+
+    </RelativeLayout>
+
+
+
+    <FrameLayout
+        android:id="@+id/client_appointment_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/client_homepage_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:progress="1" />
+    </FrameLayout>
+
 </RelativeLayout>
+
+</ScrollView>

@@ -1,52 +1,27 @@
 package com.technion.cue.ClientFeatures;
 
-import android.content.Context;
-import android.net.Uri;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.google.firebase.Timestamp;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.FirebaseFirestore;
-
-
-
-
-import android.content.Intent;
-
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-
-import com.google.firebase.firestore.Query;
-
+import com.google.firebase.Timestamp;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.Query;
 import com.technion.cue.R;
 import com.technion.cue.data_classes.Appointment;
 import com.technion.cue.data_classes.Client;
 
-import android.view.Menu;
-import android.view.MenuInflater;
-
-import android.widget.TextView;
-
 import static com.technion.cue.FirebaseCollections.APPOINTMENTS_COLLECTION;
-
-
-
-
-
-
-import com.technion.cue.R;
 
 
 public class ClientHomeFragment extends Fragment {
@@ -54,6 +29,8 @@ public class ClientHomeFragment extends Fragment {
     private MyAppointmentListAdapter appointmentAdapter;
     private MyFavoriteListAdapter favoriteAdapter;
 
+    Query queryAppointment;
+    Query queryFavorite;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -66,8 +43,7 @@ public class ClientHomeFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        db = FirebaseFirestore.getInstance();
-        mAuth = FirebaseAuth.getInstance();
+
 
     }
 
@@ -85,6 +61,8 @@ public class ClientHomeFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        db = FirebaseFirestore.getInstance();
+        mAuth = FirebaseAuth.getInstance();
         setUpRecycleAppointmentAView();
         setUpRecyclerFavoriteView();
     }
@@ -93,24 +71,21 @@ public class ClientHomeFragment extends Fragment {
 
 
     private void setUpRecycleAppointmentAView() {
-        FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection(APPOINTMENTS_COLLECTION)
-                .whereEqualTo("client_id", currentUser.getUid())
+        queryAppointment =FirebaseFirestore.getInstance().collection(APPOINTMENTS_COLLECTION)
+                .whereEqualTo("client_id", FirebaseAuth.getInstance().getUid())
                 .whereGreaterThanOrEqualTo("date", Timestamp.now())
                 .orderBy("date", Query.Direction.ASCENDING)
-                .limit(3);
+                .limit(5);
         FirestoreRecyclerOptions<Appointment> options =
                 new FirestoreRecyclerOptions.Builder<Appointment>()
-                        .setQuery(query, Appointment.class)
+                        .setQuery(queryAppointment, Appointment.class)
                         .build();
-        appointmentAdapter = new MyAppointmentListAdapter(options);
+        appointmentAdapter = new MyAppointmentListAdapter((ViewGroup)getView(),getContext(),options);
 
         RecyclerView recyclerView = getActivity().findViewById(R.id.myAppointmentList);
 
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
-
         recyclerView.setAdapter(appointmentAdapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
 
     }
 
@@ -118,15 +93,15 @@ public class ClientHomeFragment extends Fragment {
     private void setUpRecyclerFavoriteView() {
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
-        Query query = db.collection("Clients")
+        queryFavorite = db.collection("Clients")
                 .document(currentUser.getUid())
                 .collection("Favorites");
 
         FirestoreRecyclerOptions<Client.Favorite> options =
                 new FirestoreRecyclerOptions.Builder<Client.Favorite>()
-                .setQuery(query, Client.Favorite.class)
+                .setQuery(queryFavorite, Client.Favorite.class)
                 .build();
-        favoriteAdapter = new MyFavoriteListAdapter(options);
+        favoriteAdapter = new MyFavoriteListAdapter(options,(ViewGroup)getView());
 
         RecyclerView recyclerView = getActivity().findViewById(R.id.myFavoriteList);
         recyclerView.setHasFixedSize(true);
@@ -135,8 +110,6 @@ public class ClientHomeFragment extends Fragment {
                         getContext(), LinearLayoutManager.HORIZONTAL,false));
 
         recyclerView.setAdapter(favoriteAdapter);
-
-
 
     }
 
@@ -151,11 +124,11 @@ public class ClientHomeFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        setUpRecycleAppointmentAView();
-        setUpRecyclerFavoriteView();
         appointmentAdapter.startListening();
         favoriteAdapter.startListening();
     }
+
+
 
 
     @Override
