@@ -22,6 +22,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
@@ -158,11 +159,11 @@ public class SignInActivity extends AppCompatActivity {
                                         Toast.LENGTH_LONG).show();
                             }
                         }).addOnFailureListener(l -> {
-                            Log.w(TAG, "signInWithEmail:failure");
-                            Toast.makeText(SignInActivity.this,
-                                    "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                        });
+                    Log.w(TAG, "signInWithEmail:failure");
+                    Toast.makeText(SignInActivity.this,
+                            "Authentication failed.",
+                            Toast.LENGTH_SHORT).show();
+                });
             } else {
                 Toast.makeText(SignInActivity.this,
                         "email or password are empty, try again",
@@ -268,13 +269,13 @@ public class SignInActivity extends AppCompatActivity {
                 db.collection(CLIENTS_COLLECTION)
                         .document(uid)
                         .set(client).addOnCompleteListener(l->{
-                            if(l.isSuccessful()){
-                                startClientHomepage();
-                            }else{
-                                Toast.makeText(SignInActivity.this,
-                                        "Authentication failed",
-                                        Toast.LENGTH_LONG).show();
-                            }
+                    if(l.isSuccessful()){
+                        startClientHomepage();
+                    }else{
+                        Toast.makeText(SignInActivity.this,
+                                "Authentication failed",
+                                Toast.LENGTH_LONG).show();
+                    }
                     findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                 });
             }
@@ -282,11 +283,11 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     public void updateUIGoogle(FirebaseUser user) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(SignInActivity.this);
-
+        MaterialAlertDialogBuilder builder = new MaterialAlertDialogBuilder(SignInActivity.this);
+        View dialogView = getLayoutInflater().inflate(R.layout.sign_in_dialog,null);
+        builder.setView(dialogView);
         builder.setCancelable(false)
                 .setMessage("In order to continue, please insert this following details:")
-                .setView(R.layout.sign_in_dialog)
                 .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
@@ -319,9 +320,9 @@ public class SignInActivity extends AppCompatActivity {
                         }
                     } else {
                         Toast.makeText(SignInActivity.this,
-                                    "Authentication failed",
-                                    Toast.LENGTH_LONG).show();
-                                     findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
+                                "Authentication failed",
+                                Toast.LENGTH_LONG).show();
+                        findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                     }
                 });
     }
@@ -334,29 +335,29 @@ public class SignInActivity extends AppCompatActivity {
     }
 
     private void searchForBO(String uid) {
-            findViewById(R.id.loadingPanelSignin).setVisibility(View.VISIBLE);
-            FirebaseFirestore.getInstance()
-                    .collection(BUSINESSES_COLLECTION)
-                    .document(uid)
-                    .get()
-                    .addOnSuccessListener(l -> {
-                        if (l.exists()) {
-                            startActivity(new Intent(getBaseContext(), BOBusinessHomePage.class));
-                            finish();
-                        } else {
-                            findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
-                            Toast.makeText(SignInActivity.this,
-                                    "Authentication failed : Email us your username", // - ben - 17/12 - when user is not client and not bo
-                                    Toast.LENGTH_LONG).show();
-                                    findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
-                        }
-                    }).addOnFailureListener(l -> {
+        findViewById(R.id.loadingPanelSignin).setVisibility(View.VISIBLE);
+        FirebaseFirestore.getInstance()
+                .collection(BUSINESSES_COLLECTION)
+                .document(uid)
+                .get()
+                .addOnSuccessListener(l -> {
+                    if (l.exists()) {
+                        startActivity(new Intent(getBaseContext(), BOBusinessHomePage.class));
+                        finish();
+                    } else {
                         findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
                         Toast.makeText(SignInActivity.this,
-                                "Authentication failed",
+                                "Authentication failed : Email us your username", // - ben - 17/12 - when user is not client and not bo
                                 Toast.LENGTH_LONG).show();
                         findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
-                    });
+                    }
+                }).addOnFailureListener(l -> {
+            findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
+            Toast.makeText(SignInActivity.this,
+                    "Authentication failed",
+                    Toast.LENGTH_LONG).show();
+            findViewById(R.id.loadingPanelSignin).setVisibility(View.GONE);
+        });
 
     }
     private boolean checkIfEmailVerified()

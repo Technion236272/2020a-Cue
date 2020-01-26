@@ -61,7 +61,7 @@ public class LauncherActivity extends AppCompatActivity {
                                 }
                             } else {
                                 Toast.makeText(LauncherActivity.this,
-                                        "Authentication failed.##",
+                                        "Authentication failed. check your internet connection",
                                         Toast.LENGTH_LONG).show();
                             }
                         });
@@ -87,15 +87,19 @@ public class LauncherActivity extends AppCompatActivity {
                         finish();
                     } else {
                         Toast.makeText(LauncherActivity.this,
-                                "Authentication failed : Email us your username.##", // - ben - 17/12 - when user is not client and not bo
+                                "Authentication failed : Email us your username", // - ben - 17/12 - when user is not client and not bo
                                 Toast.LENGTH_LONG).show();
+                        startActivity(new Intent(getBaseContext(), SignInActivity.class));
                         findViewById(R.id.loadingPanelLauncher).setVisibility(View.GONE);
+                        finish();
                     }
                 }).addOnFailureListener(l ->
                 Toast.makeText(LauncherActivity.this,
-                        "Authentication failed.##",
+                        "Authentication failed",
                         Toast.LENGTH_LONG).show());
+        startActivity(new Intent(getBaseContext(), SignInActivity.class));
         findViewById(R.id.loadingPanelLauncher).setVisibility(View.GONE);
+        finish();
     }
 
     private void startClientHomepage() {
