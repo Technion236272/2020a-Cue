@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/secondaryColor"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/choose_time_dialog_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textStyle="italic"
+            android:textColor="@color/primaryTextColor"
+            android:layout_marginTop="18dp"
+            android:layout_gravity="center_horizontal"
+            android:textSize="39dp"
+            />
+
+
+    <TextView
+        android:id="@+id/choose_time_dialog_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Choose time "
+        android:alpha="0.75"
+        android:layout_margin="8dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="start"
+        android:textColor="@color/primaryTextColor"
+        android:textSize="28dp"
+        />
+
+
+
+
+    </LinearLayout>
+
+<ScrollView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="18dp"
+    android:layout_gravity="center_horizontal">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginRight="18dp"
+        android:checkedButton="@+id/first"
+        android:orientation="vertical"
+
+        >
+
+    </RadioGroup>
+
+
+</ScrollView>
+    <TextView
+        android:id="@+id/no_appointments_possible"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="No Possible Appointments."
+        android:alpha="0.75"
+        android:layout_margin="8dp"
+        android:layout_gravity="center_horizontal"
+        android:gravity="center_horizontal"
+        android:textColor="@color/primaryDarkColor"
+        android:textSize="28dp"
+        android:visibility="gone"
+        />
+
+</LinearLayout>

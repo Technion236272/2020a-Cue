@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <Preference
+      android:key="appointment type"
+      android:title="Set appointment types"
+      android:icon="@drawable/appointment_type_icon" />
+
+  <Preference
+      android:id="@+id/timeFrame"
+      android:key="time frame"
+      android:title="Allow change of an appointment"
+      android:summary="Time frame where clients can't change a meeting"
+      android:onClick = "popUpWindow"
+      android:icon="@drawable/edit_icon_black"
+      />
+
+  <Preference
+      android:id="@+id/remindTime"
+      android:key="remind time"
+      android:title="Meetings reminder"
+      android:summary="How much time to remind client before a meeting"
+      android:icon="@drawable/send_reminder_icon" />
+
+  <Preference
+      android:id="@+id/logout"
+      android:key="logout"
+      android:title="Logout"
+      android:icon="@drawable/logout_icon" />
+
+
+  <Preference
+      android:id="@+id/credits"
+      android:key="credits"
+      android:title="Credits"
+      android:icon="@drawable/help_icon" />
+
+</PreferenceScreen>

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="140dp"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_margin="1dp">
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="130dp"
+        android:layout_height="130dp"
+        app:cardCornerRadius="4dp"
+        app:cardElevation="0dp"
+        android:layout_centerInParent="true"
+        app:cardBackgroundColor="@color/primaryTextColor"
+        android:layout_marginTop="30dp"
+        android:layout_marginLeft="5dp">
+
+
+
+            <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true">
+
+                <com.mikhaellopez.circularimageview.CircularImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:civ_border_color="@color/secondaryColor"
+                    app:civ_shadow="true"
+                    app:civ_shadow_color="@color/dimTextOnBackground"
+                    app:civ_shadow_gravity="center"
+                    app:civ_border="true"
+                    app:civ_border_width="5dp"
+                    android:layout_marginTop="0dp"
+                    android:id="@+id/businessLogo"
+                    app:civ_shadow_radius="3"
+                    android:layout_gravity="center"
+                    />
+
+                <TextView
+                    android:id="@+id/businessName"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLength="16"
+                    android:text="Loading.."
+                    android:textColor="@color/primaryTextColor"
+                    android:layout_marginTop="0dp"
+                    android:autoSizeTextType="uniform"
+                    android:autoSizeMinTextSize="18sp"
+                    android:autoSizeMaxTextSize="22sp"
+                    android:shadowColor="@color/secondaryTextColor"
+                    android:shadowRadius="2"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:layout_gravity="center"
+                    android:gravity="center" />
+
+            </FrameLayout>
+
+
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>

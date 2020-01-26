@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ClientFeatures.ClientHomeFragment"
+    android:orientation="vertical">
+
+    <FrameLayout
+        android:id="@+id/client_homepage_progress_bar"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="visible">
+        <ProgressBar
+            android:id="@+id/client_homepage_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:indeterminate="true"
+            android:layout_gravity="center"
+            android:progress="1" />
+    </FrameLayout>
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:minHeight="130dp">
+        <TextView
+            android:id="@+id/client_no_appointments_message_fav"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textColor="@color/primaryColor"
+            android:text=" No Favorites yet. "
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:layout_marginTop="40dp"
+            android:layout_marginBottom="30dp"
+            />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myFavoriteList"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#ffffff"
+            android:scrollbars="horizontal"
+            android:layout_marginLeft="10dp"
+
+            />
+    </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:minHeight="160dp"
+            >
+        <TextView
+            android:id="@+id/client_no_appointments_message_y"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="35sp"
+            android:textColor="@color/primaryColor"
+            android:text="You have no appointments yet."
+            android:layout_marginTop="50dp"
+            android:visibility="gone"
+            android:layout_gravity="center"
+            android:gravity="center"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/myAppointmentList"
+            android:scrollbars="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/myFavoriteList"
+            >
+        </androidx.recyclerview.widget.RecyclerView>
+
+        </LinearLayout>
+
+</LinearLayout>

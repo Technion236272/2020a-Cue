@@ -1,0 +1,160 @@
+<RelativeLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="@drawable/dialog_rounded_corners" >
+
+    <LinearLayout
+        android:id="@+id/type_fields"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginTop="24dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginEnd="8dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="8dp">
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/businessTypeEdit"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:hint="@string/appointment_type_fill_in" >
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/businessTypeEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                android:id="@+id/businessTypeDurationEdit"
+                android:layout_width="136dp"
+                android:layout_height="wrap_content"
+                android:textSize="12sp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp"
+                android:hint="@string/type_duration_fill">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/businessTypeDurationEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="number" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </LinearLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            android:id="@+id/businessNotesEdit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="14sp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginBottom="16dp"
+            android:hint="@string/appointment_notes_fill" >
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/businessNotesEditText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/check_available_type_days"
+            android:textStyle="bold"
+            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
+
+            <CheckBox
+                android:id="@+id/type_sunday"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:text="S" />
+
+            <CheckBox
+                android:id="@+id/type_monday"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:text="M"
+                android:layout_marginStart="4dp" />
+
+            <CheckBox
+                android:id="@+id/type_tuesday"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:text="T" />
+
+            <CheckBox
+                android:id="@+id/type_wednesday"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:text="W"
+                android:layout_marginStart="4dp" />
+
+            <CheckBox
+                android:id="@+id/type_thursday"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:text="T"
+                android:layout_marginStart="4dp" />
+
+            <CheckBox
+                android:id="@+id/type_friday"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:text="F"
+                android:layout_marginStart="4dp" />
+
+            <CheckBox
+                android:id="@+id/type_saturday"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="4dp"
+                android:text="S"
+                android:layout_marginStart="4dp" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+        android:id="@+id/save_type_changes"
+        android:layout_below="@id/type_fields"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:text="SAVE TYPE"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="24dp" />
+
+</RelativeLayout>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".BusinessFeatures.BusinessScheduleDay"
+    android:id="@+id/business_schedule_day"
+    android:animateLayoutChanges="true">
+
+    <TextView
+        android:id="@+id/no_appointments_message"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="36sp"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:textColor="@color/dimTextOnBackground"
+        android:visibility="gone"
+        android:text="@string/no_appointments_today_message"
+        android:textAlignment="center"
+        android:gravity="center"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/daily_appointments_list"
+        android:scrollbars="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+    </androidx.recyclerview.widget.RecyclerView>
+
+</RelativeLayout>
